@@ -29,6 +29,8 @@ export interface Album {
   duration?: number
   recordLabel?: string
   awards?: MultilingualText
+  salePrice?: number
+  inStock?: boolean
   links?: {
     spotify?: string
     appleMusic?: string
@@ -94,6 +96,8 @@ export interface SessionListItem {
     genre: string
     coverImage: Image
     additionalImages?: Image[]
+    salePrice?: number
+    inStock?: boolean
   }
   sala: {
     _id: string

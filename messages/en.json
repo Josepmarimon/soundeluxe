@@ -26,6 +26,7 @@
     "upcomingSession": "Next session",
     "noSessions": "No sessions scheduled",
     "bookNow": "Book now",
+    "book": "Book",
     "soldOut": "Sold out",
     "placesAvailable": "{count} spots available",
     "onePlace": "1 spot available",
@@ -34,7 +35,9 @@
     "venue": "Venue",
     "sessionType": "Session type",
     "duration": "Duration",
-    "vinyl": "Vinyl"
+    "vinyl": "Vinyl",
+    "discPrice": "Disc price",
+    "buyDisc": "Buy Now"
   },
   "experience": {
     "title": "An unmatched sonic experience",

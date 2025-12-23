@@ -26,6 +26,7 @@
     "upcomingSession": "Propera sessió",
     "noSessions": "No hi ha sessions programades",
     "bookNow": "Reservar ara",
+    "book": "Comprar",
     "soldOut": "Esgotat",
     "placesAvailable": "{count} places disponibles",
     "onePlace": "1 plaça disponible",
@@ -34,7 +35,9 @@
     "venue": "Sala",
     "sessionType": "Tipus de sessió",
     "duration": "Durada",
-    "vinyl": "Vinil"
+    "vinyl": "Vinil",
+    "discPrice": "Preu del disc",
+    "buyDisc": "Vull Comprar"
   },
   "experience": {
     "title": "Una experiència sonora inigualable",

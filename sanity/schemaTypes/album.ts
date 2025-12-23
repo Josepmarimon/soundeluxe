@@ -153,6 +153,20 @@ export default defineType({
       of: [{ type: 'string' }],
       description: 'Grammy, Hall of Fame, etc.',
     }),
+    defineField({
+      name: 'salePrice',
+      title: 'Preu de venda (€)',
+      type: 'number',
+      validation: (Rule) => Rule.min(0).max(500),
+      description: 'Preu del disc per a la venda',
+    }),
+    defineField({
+      name: 'inStock',
+      title: 'En stock',
+      type: 'boolean',
+      description: 'Indica si el disc està disponible per a la venda',
+      initialValue: true,
+    }),
   ],
   preview: {
     select: {

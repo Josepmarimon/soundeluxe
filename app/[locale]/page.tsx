@@ -4,10 +4,12 @@ import { upcomingSessionsQuery, homePageQuery } from '@/lib/sanity/queries'
 import type { SessionListItem, HomePage, ExperienceFeature } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
 import SessionFilters from '@/components/SessionFilters'
+import HeroVideo from '@/components/HeroVideo'
 
-export default async function HomePage({ params }: { params: { locale: string } }) {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const t = await getTranslations()
-  const locale = params.locale as 'ca' | 'es' | 'en'
+  const { locale } = await params
+  const typedLocale = locale as 'ca' | 'es' | 'en'
 
   // Fetch upcoming sessions and home page config from Sanity
   const [sessions, homePageData]: [SessionListItem[], HomePage | null] = await Promise.all([
@@ -45,19 +47,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
 
         {homePageData?.heroBackgroundType === 'video' && homePageData?.heroBackgroundVideo?.asset?.url && (
           <>
-            <video
-              autoPlay
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover z-0"
-              onEnded={(e) => {
-                // Opcional: forçar a mostrar l'últim fotograma
-                const video = e.currentTarget
-                video.currentTime = video.duration
-              }}
-            >
-              <source src={homePageData.heroBackgroundVideo.asset.url} type="video/mp4" />
-            </video>
+            <HeroVideo videoUrl={homePageData.heroBackgroundVideo.asset.url} />
             <div className="absolute inset-0 bg-black/50 z-10" />
           </>
         )}
@@ -65,16 +55,16 @@ export default async function HomePage({ params }: { params: { locale: string } 
         {/* Content */}
         <div className="max-w-4xl mx-auto relative z-20">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-            {homePageData?.heroTitle?.[locale] || t('hero.title')}
+            {homePageData?.heroTitle?.[typedLocale] || t('hero.title')}
           </h1>
           <p className="text-xl md:text-2xl text-zinc-300 mb-8">
-            {homePageData?.heroSubtitle?.[locale] || t('hero.subtitle')}
+            {homePageData?.heroSubtitle?.[typedLocale] || t('hero.subtitle')}
           </p>
           <a
             href="#sessions"
             className="inline-block bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-8 py-4 rounded-full font-semibold hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-lg"
           >
-            {homePageData?.heroCta?.[locale] || t('hero.cta')}
+            {homePageData?.heroCta?.[typedLocale] || t('hero.cta')}
           </a>
         </div>
       </section>
@@ -101,13 +91,13 @@ export default async function HomePage({ params }: { params: { locale: string } 
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {homePageData?.experienceTitle && homePageData.experienceTitle[locale]
-                ? homePageData.experienceTitle[locale]
+              {homePageData?.experienceTitle && homePageData.experienceTitle[typedLocale]
+                ? homePageData.experienceTitle[typedLocale]
                 : t('experience.title')}
             </h2>
             <p className="text-xl text-zinc-400">
-              {homePageData?.experienceSubtitle && homePageData.experienceSubtitle[locale]
-                ? homePageData.experienceSubtitle[locale]
+              {homePageData?.experienceSubtitle && homePageData.experienceSubtitle[typedLocale]
+                ? homePageData.experienceSubtitle[typedLocale]
                 : t('experience.subtitle')}
             </p>
           </div>
@@ -120,8 +110,8 @@ export default async function HomePage({ params }: { params: { locale: string } 
               if (!imageBuilder) return null
               const imageUrl = imageBuilder.width(800).url()
 
-              const titleText = feature.title?.[locale] || feature.title?.ca || ''
-              const descriptionText = feature.description?.[locale] || feature.description?.ca || ''
+              const titleText = feature.title?.[typedLocale] || feature.title?.ca || ''
+              const descriptionText = feature.description?.[typedLocale] || feature.description?.ca || ''
               const altText = titleText || 'Feature image'
 
               return (

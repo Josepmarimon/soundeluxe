@@ -21,6 +21,8 @@ export const sessionsQuery = groq`
       duration,
       recordLabel,
       awards,
+      salePrice,
+      inStock,
       links
     },
     sala->{
@@ -58,7 +60,9 @@ export const upcomingSessionsQuery = groq`
       genre,
       coverImage,
       additionalImages,
-      description
+      description,
+      salePrice,
+      inStock
     },
     sala->{
       _id,
@@ -94,6 +98,8 @@ export const sessionByIdQuery = groq`
       duration,
       recordLabel,
       awards,
+      salePrice,
+      inStock,
       links
     },
     sala->{
@@ -124,7 +130,9 @@ export const albumsQuery = groq`
     genre,
     coverImage,
     additionalImages,
-    description
+    description,
+    salePrice,
+    inStock
   }
 `
 
@@ -142,6 +150,8 @@ export const albumByIdQuery = groq`
     duration,
     recordLabel,
     awards,
+    salePrice,
+    inStock,
     links
   }
 `
@@ -199,6 +209,8 @@ export const votableAlbumsQuery = groq`
     additionalImages,
     description,
     duration,
+    salePrice,
+    inStock,
     links,
     "hasFutureSessions": count(*[_type == "session" && isActive == true && date > now() && references(^._id)]) > 0
   } [hasFutureSessions == false] | order(year desc)

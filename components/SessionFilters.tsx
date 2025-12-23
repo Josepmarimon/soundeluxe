@@ -59,10 +59,10 @@ export default function SessionFilters({ sessions }: SessionFiltersProps) {
 
   return (
     <div>
-      {/* Filters - only visible on mobile, hidden on md and larger */}
+      {/* Filters - only visible on desktop, hidden on mobile */}
       {(genres.length > 1 || artists.length > 1) && (
-        <div className="mb-8 md:hidden">
-          <div className="flex flex-col gap-4 max-w-3xl mx-auto">
+        <div className="mb-8 hidden md:block">
+          <div className="flex flex-row gap-4 max-w-3xl mx-auto">
             {/* Genre Dropdown */}
             {genres.length > 1 && (
               <div className="relative flex-1">
@@ -158,7 +158,7 @@ export default function SessionFilters({ sessions }: SessionFiltersProps) {
           <p className="text-zinc-300 text-lg">{t('albums.noResults')}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
           {filteredSessions.map((session) => (
             <SessionCard key={session._id} session={session} />
           ))}
