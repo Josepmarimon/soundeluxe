@@ -81,7 +81,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               {t('sessions.noSessions')}
             </p>
           ) : (
-            <SessionFilters sessions={sessions} />
+            <SessionFilters sessions={sessions} showAlbumSale={false} enableFlip={true} />
           )}
         </div>
       </section>
@@ -102,7 +102,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-16">
             {featuresWithImages.map((feature, index) => {
               // TypeScript safety: image is guaranteed to exist after filter and map
               if (!feature.image) return null

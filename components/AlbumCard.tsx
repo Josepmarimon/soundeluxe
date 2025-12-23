@@ -30,7 +30,7 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
   }
 
   return (
-    <article className="group bg-[#F5F1E8] rounded-lg overflow-hidden hover:bg-[#EDE8DC] transition-colors shadow-md">
+    <article className="group bg-[#64748B] rounded-lg overflow-hidden hover:bg-[#54637A] transition-colors shadow-md">
       {/* Album Cover Carousel */}
       <div className="relative aspect-square overflow-hidden">
         <AlbumCarousel
@@ -54,26 +54,33 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
         <h3 className="text-xl font-bold text-black mb-1 group-hover:text-[#D4AF37] transition-colors">
           {album.title}
         </h3>
-        <p className="text-zinc-700 mb-2">{album.artist}</p>
+        <p className="text-zinc-700 mb-4">{album.artist}, {album.year}</p>
 
-        {/* Year & Duration */}
-        <div className="flex items-center gap-3 text-sm text-zinc-600 mb-4">
-          <span>{album.year}</span>
-          {album.duration && (
-            <>
-              <span>•</span>
-              <span>{album.duration} min</span>
-            </>
-          )}
-        </div>
+        {/* Price and Purchase Button */}
+        {album.salePrice && (
+          <div className="mb-4">
+            <div className="flex items-center justify-between">
+              <div className="text-2xl font-bold text-black">
+                {album.salePrice.toFixed(2)} €
+              </div>
+              {album.inStock ? (
+                <button className="px-6 py-2 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black font-semibold rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all">
+                  {t('albums.buyNow')}
+                </button>
+              ) : (
+                <span className="text-sm text-zinc-500 italic">
+                  {t('albums.outOfStock')}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Vote Section */}
-        {showVoteButton ? (
+        {showVoteButton && (
           <div className="mt-4">
             <VoteButton albumId={album._id} showCount={true} />
           </div>
-        ) : (
-          <VoteCount albumId={album._id} compact={true} />
         )}
 
         {/* Links */}

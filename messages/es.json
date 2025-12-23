@@ -7,8 +7,8 @@
   "navigation": {
     "home": "Inicio",
     "sessions": "Sesiones",
-    "albums": "Catálogo",
-    "votes": "Votos",
+    "albums": "Tienda",
+    "votes": "Votaciones",
     "about": "Nosotros",
     "contact": "Contacto",
     "login": "Acceder",
@@ -26,7 +26,7 @@
     "upcomingSession": "Próxima sesión",
     "noSessions": "No hay sesiones programadas",
     "bookNow": "Reservar ahora",
-    "book": "Comprar",
+    "book": "Reserva",
     "soldOut": "Agotado",
     "placesAvailable": "{count} plazas disponibles",
     "onePlace": "1 plaza disponible",
@@ -93,8 +93,8 @@
     "votes": "{count} votos"
   },
   "albums": {
-    "title": "Catálogo de álbumes",
-    "subtitle": "Descubre nuestra colección de álbumes icónicos",
+    "title": "Tienda de vinilos clásicos",
+    "subtitle": "Descubre nuestra colección de vinilos icónicos",
     "searchPlaceholder": "Buscar por título...",
     "searchArtist": "Buscar artista...",
     "allGenres": "Todos los géneros",
@@ -103,6 +103,8 @@
     "showingAll": "Mostrando todos los {count} álbumes",
     "showingFiltered": "Mostrando {count} de {total} álbumes",
     "noResults": "No se encontraron álbumes con estos filtros",
+    "buyNow": "Comprar",
+    "outOfStock": "Agotado",
     "genres": {
       "classical": "Clásica",
       "electronic": "Electrónica"

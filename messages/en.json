@@ -7,8 +7,8 @@
   "navigation": {
     "home": "Home",
     "sessions": "Sessions",
-    "albums": "Catalog",
-    "votes": "Votes",
+    "albums": "Store",
+    "votes": "Voting",
     "about": "About",
     "contact": "Contact",
     "login": "Login",
@@ -26,7 +26,7 @@
     "upcomingSession": "Next session",
     "noSessions": "No sessions scheduled",
     "bookNow": "Book now",
-    "book": "Book",
+    "book": "Reserve",
     "soldOut": "Sold out",
     "placesAvailable": "{count} spots available",
     "onePlace": "1 spot available",
@@ -93,8 +93,8 @@
     "votes": "{count} votes"
   },
   "albums": {
-    "title": "Album Catalog",
-    "subtitle": "Discover our collection of iconic albums",
+    "title": "Classic Vinyl Store",
+    "subtitle": "Discover our collection of iconic vinyl records",
     "searchPlaceholder": "Search by title...",
     "searchArtist": "Search artist...",
     "allGenres": "All genres",
@@ -103,6 +103,8 @@
     "showingAll": "Showing all {count} albums",
     "showingFiltered": "Showing {count} of {total} albums",
     "noResults": "No albums found with these filters",
+    "buyNow": "Buy Now",
+    "outOfStock": "Out of Stock",
     "genres": {
       "classical": "Classical",
       "electronic": "Electronic"

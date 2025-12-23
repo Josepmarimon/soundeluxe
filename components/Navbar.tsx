@@ -44,12 +44,6 @@ export default function Navbar() {
               {t('navigation.home')}
             </Link>
             <Link
-              href={`/${locale}/sessions`}
-              className="text-zinc-300 hover:text-white transition-colors"
-            >
-              {t('navigation.sessions')}
-            </Link>
-            <Link
               href={`/${locale}/albums`}
               className="text-zinc-300 hover:text-white transition-colors"
             >

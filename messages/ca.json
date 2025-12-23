@@ -7,8 +7,8 @@
   "navigation": {
     "home": "Inici",
     "sessions": "Sessions",
-    "albums": "Catàleg",
-    "votes": "Vots",
+    "albums": "Botiga",
+    "votes": "Votacions",
     "about": "Nosaltres",
     "contact": "Contacte",
     "login": "Accedir",
@@ -26,7 +26,7 @@
     "upcomingSession": "Propera sessió",
     "noSessions": "No hi ha sessions programades",
     "bookNow": "Reservar ara",
-    "book": "Comprar",
+    "book": "Reserva",
     "soldOut": "Esgotat",
     "placesAvailable": "{count} places disponibles",
     "onePlace": "1 plaça disponible",
@@ -93,8 +93,8 @@
     "votes": "{count} vots"
   },
   "albums": {
-    "title": "Catàleg d'àlbums",
-    "subtitle": "Descobreix la nostra col·lecció d'àlbums icònics",
+    "title": "Botiga de vinils clàssics",
+    "subtitle": "Descobreix la nostra col·lecció de vinils icònics",
     "searchPlaceholder": "Cerca per títol...",
     "searchArtist": "Cerca artista...",
     "allGenres": "Tots els gèneres",
@@ -103,6 +103,8 @@
     "showingAll": "Mostrant tots els {count} àlbums",
     "showingFiltered": "Mostrant {count} de {total} àlbums",
     "noResults": "No s'han trobat àlbums amb aquests filtres",
+    "buyNow": "Comprar",
+    "outOfStock": "Esgotat",
     "genres": {
       "classical": "Clàssica",
       "electronic": "Electrònica"
