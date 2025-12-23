@@ -1,9 +1,8 @@
 'use client'
 
 import { useLocale, useTranslations } from 'next-intl'
-import Image from 'next/image'
 import type { SessionListItem, Locale } from '@/lib/sanity/types'
-import { urlForImage } from '@/lib/sanity/image'
+import AlbumCarousel from '@/components/AlbumCarousel'
 
 interface SessionCardProps {
   session: SessionListItem
@@ -13,7 +12,6 @@ export default function SessionCard({ session }: SessionCardProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
 
-  const imageUrl = urlForImage(session.album.coverImage)?.width(600).height(600).url()
   const date = new Date(session.date)
 
   const formattedDate = date.toLocaleDateString(locale, {
@@ -27,17 +25,14 @@ export default function SessionCard({ session }: SessionCardProps) {
   return (
     <article className="group bg-zinc-900 rounded-lg overflow-hidden hover:bg-zinc-800 transition-colors">
       <a href={`/${locale}/sessions/${session._id}`}>
-        {/* Album Cover */}
+        {/* Album Cover Carousel */}
         <div className="relative aspect-square overflow-hidden">
-        {imageUrl && (
-          <Image
-            src={imageUrl}
-            alt={`${session.album.artist} - ${session.album.title}`}
-            width={600}
-            height={600}
-            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+          <AlbumCarousel
+            coverImage={session.album.coverImage}
+            additionalImages={session.album.additionalImages}
+            albumTitle={session.album.title}
+            artist={session.album.artist}
           />
-        )}
         </div>
       </a>
 

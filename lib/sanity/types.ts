@@ -93,6 +93,7 @@ export interface SessionListItem {
     year: number
     genre: string
     coverImage: Image
+    additionalImages?: Image[]
   }
   sala: {
     _id: string

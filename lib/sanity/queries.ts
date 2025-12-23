@@ -57,6 +57,7 @@ export const upcomingSessionsQuery = groq`
       year,
       genre,
       coverImage,
+      additionalImages,
       description
     },
     sala->{
