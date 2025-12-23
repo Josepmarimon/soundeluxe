@@ -18,7 +18,7 @@ export default function AlbumCarousel({
   albumTitle,
   artist,
 }: AlbumCarouselProps) {
-  const allImages = [coverImage, ...additionalImages]
+  const allImages = [coverImage, ...(additionalImages || [])]
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const goToPrevious = () => {
