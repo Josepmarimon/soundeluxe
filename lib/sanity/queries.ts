@@ -131,8 +131,10 @@ export const albumsQuery = groq`
     coverImage,
     additionalImages,
     description,
+    duration,
     salePrice,
-    inStock
+    inStock,
+    links
   }
 `
 
