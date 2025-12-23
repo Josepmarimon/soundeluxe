@@ -65,14 +65,13 @@ export default async function HomePage({ params }: { params: { locale: string } 
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {homePageData?.experienceFeatures?.map((feature, index) => {
-              if (!feature.image) return null
-
-              return (
+            {homePageData?.experienceFeatures
+              ?.filter((feature) => feature.image)
+              .map((feature, index) => (
                 <div key={index} className="group relative overflow-hidden rounded-2xl border border-zinc-800 hover:border-[#D4AF37]/30 transition-all duration-300">
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src={urlForImage(feature.image).width(800).url()}
+                      src={urlForImage(feature.image!).width(800).url()}
                       alt={feature.title[locale]}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
@@ -92,8 +91,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
                     </p>
                   </div>
                 </div>
-              )
-            })}
+              ))}
           </div>
         </div>
       </section>
