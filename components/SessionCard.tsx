@@ -3,7 +3,6 @@
 import { useLocale, useTranslations } from 'next-intl'
 import type { SessionListItem, Locale } from '@/lib/sanity/types'
 import AlbumCarousel from '@/components/AlbumCarousel'
-import VoteCount from '@/components/VoteCount'
 
 interface SessionCardProps {
   session: SessionListItem
@@ -39,13 +38,6 @@ export default function SessionCard({ session }: SessionCardProps) {
 
       {/* Session Info */}
       <div className="p-6">
-        {/* Session Type Badge */}
-        <div className="mb-3">
-          <span className="inline-block px-3 py-1 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-xs font-medium rounded-full shadow-md">
-            {session.sessionType.name[locale]}
-          </span>
-        </div>
-
         {/* Album & Artist */}
         <h3 className="text-xl font-bold text-black mb-1">
           {session.album.title}
@@ -58,27 +50,24 @@ export default function SessionCard({ session }: SessionCardProps) {
           <p className="text-zinc-700">{session.sala.name[locale]}</p>
         </div>
 
-        {/* Vote Count */}
+        {/* Available spots badge */}
         <div className="mb-4">
-          <VoteCount albumId={session.album._id} compact={true} />
+          <span className="inline-block px-3 py-1 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-xs font-semibold rounded-full shadow-md">
+            {session.totalPlaces === 1
+              ? t('sessions.onePlace')
+              : t('sessions.placesAvailable', { count: session.totalPlaces })}
+          </span>
         </div>
 
         {/* Price & Booking */}
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] bg-clip-text text-transparent">
+          <span className="text-2xl font-bold text-black">
             {session.price}€
           </span>
           <button className="bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-6 py-2 rounded-full font-semibold hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-md">
             {t('sessions.bookNow')}
           </button>
         </div>
-
-        {/* Available spots */}
-        <p className="text-zinc-600 text-xs mt-3">
-          {session.totalPlaces === 1
-            ? t('sessions.onePlace')
-            : t('sessions.placesAvailable', { count: session.totalPlaces })}
-        </p>
       </div>
     </article>
   )
