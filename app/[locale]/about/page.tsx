@@ -105,15 +105,15 @@ export default async function AboutPage({ params }: AboutPageProps) {
             </ul>
           </section>
 
-          <section className="bg-zinc-900 p-8 rounded-lg mt-12">
-            <h2 className="text-2xl font-bold text-white mb-4">
+          <section className="bg-[#F5F1E8] p-8 rounded-lg mt-12 shadow-lg">
+            <h2 className="text-2xl font-bold text-black mb-4">
               {locale === 'ca'
                 ? 'Vine a viure l\'experiència'
                 : locale === 'es'
                   ? 'Ven a vivir la experiencia'
                   : 'Come live the experience'}
             </h2>
-            <p className="text-zinc-300 mb-6">
+            <p className="text-zinc-700 mb-6">
               {locale === 'ca'
                 ? 'Descobreix les nostres properes sessions i reserva la teva plaça.'
                 : locale === 'es'
@@ -122,7 +122,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
             </p>
             <a
               href={`/${locale}/sessions`}
-              className="inline-block bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-zinc-200 transition-colors"
+              className="inline-block bg-[#D4AF37] text-black px-8 py-3 rounded-full font-semibold hover:bg-[#C5A028] transition-colors"
             >
               {t('navigation.sessions')}
             </a>

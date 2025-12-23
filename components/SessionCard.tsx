@@ -23,7 +23,7 @@ export default function SessionCard({ session }: SessionCardProps) {
   })
 
   return (
-    <article className="group bg-zinc-900 rounded-lg overflow-hidden hover:bg-zinc-800 transition-colors">
+    <article className="group bg-[#F5F1E8] rounded-lg overflow-hidden hover:bg-[#EDE8DC] transition-colors shadow-md">
       <a href={`/${locale}/sessions/${session._id}`}>
         {/* Album Cover Carousel */}
         <div className="relative aspect-square overflow-hidden">
@@ -40,35 +40,35 @@ export default function SessionCard({ session }: SessionCardProps) {
       <div className="p-6">
         {/* Session Type Badge */}
         <div className="mb-3">
-          <span className="inline-block px-3 py-1 bg-zinc-800 text-zinc-200 text-xs font-medium rounded-full">
+          <span className="inline-block px-3 py-1 bg-[#D4AF37] text-black text-xs font-medium rounded-full">
             {session.sessionType.name[locale]}
           </span>
         </div>
 
         {/* Album & Artist */}
-        <h3 className="text-xl font-bold text-white mb-1">
+        <h3 className="text-xl font-bold text-black mb-1">
           {session.album.title}
         </h3>
-        <p className="text-zinc-300 mb-4">{session.album.artist}</p>
+        <p className="text-zinc-700 mb-4">{session.album.artist}</p>
 
         {/* Date & Venue */}
         <div className="space-y-2 mb-4 text-sm">
-          <p className="text-zinc-200">{formattedDate}</p>
-          <p className="text-zinc-300">{session.sala.name[locale]}</p>
+          <p className="text-zinc-800">{formattedDate}</p>
+          <p className="text-zinc-700">{session.sala.name[locale]}</p>
         </div>
 
         {/* Price & Booking */}
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-white">
+          <span className="text-2xl font-bold text-[#D4AF37]">
             {session.price}€
           </span>
-          <button className="bg-white text-black px-6 py-2 rounded-full font-semibold hover:bg-zinc-200 transition-colors">
+          <button className="bg-[#D4AF37] text-black px-6 py-2 rounded-full font-semibold hover:bg-[#C5A028] transition-colors">
             {t('sessions.bookNow')}
           </button>
         </div>
 
         {/* Available spots */}
-        <p className="text-zinc-400 text-xs mt-3">
+        <p className="text-zinc-600 text-xs mt-3">
           {session.totalPlaces === 1
             ? t('sessions.onePlace')
             : t('sessions.placesAvailable', { count: session.totalPlaces })}

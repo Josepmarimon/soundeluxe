@@ -23,7 +23,7 @@ export default async function HomePage() {
           </p>
           <a
             href="#sessions"
-            className="inline-block bg-white text-black px-8 py-4 rounded-full font-semibold hover:bg-zinc-200 transition-colors"
+            className="inline-block bg-[#D4AF37] text-black px-8 py-4 rounded-full font-semibold hover:bg-[#C5A028] transition-colors"
           >
             {t('hero.cta')}
           </a>

@@ -43,7 +43,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
         {/* Back button */}
         <a
           href={`/${locale}`}
-          className="inline-flex items-center text-zinc-400 hover:text-white mb-8 transition-colors"
+          className="inline-flex items-center text-zinc-300 hover:text-white mb-8 transition-colors"
         >
           ← {t('navigation.home')}
         </a>
@@ -96,7 +96,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
                       href={session.album.links.spotify}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 bg-zinc-900 text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
+                      className="px-4 py-2 bg-black text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
                     >
                       Spotify
                     </a>
@@ -106,7 +106,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
                       href={session.album.links.appleMusic}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 bg-zinc-900 text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
+                      className="px-4 py-2 bg-black text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
                     >
                       Apple Music
                     </a>
@@ -116,7 +116,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
                       href={session.album.links.youtube}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 bg-zinc-900 text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
+                      className="px-4 py-2 bg-black text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
                     >
                       YouTube
                     </a>
@@ -128,14 +128,14 @@ export default async function SessionPage({ params }: SessionPageProps) {
 
           {/* Right Column - Session Info */}
           <div>
-            <div className="bg-zinc-900 rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-6">
+            <div className="bg-[#F5F1E8] rounded-lg p-8 shadow-lg">
+              <h2 className="text-2xl font-bold text-black mb-6">
                 {t('sessions.upcomingSession')}
               </h2>
 
               {/* Session Type */}
               <div className="mb-6">
-                <span className="inline-block px-4 py-2 bg-zinc-800 text-zinc-200 rounded-full text-sm font-medium">
+                <span className="inline-block px-4 py-2 bg-[#D4AF37] text-black rounded-full text-sm font-medium">
                   {session.sessionType.name[locale]}
                 </span>
               </div>
@@ -143,44 +143,44 @@ export default async function SessionPage({ params }: SessionPageProps) {
               {/* Session Details */}
               <div className="space-y-4 mb-8">
                 <div>
-                  <p className="text-zinc-400 text-sm mb-1">{t('sessions.date')}</p>
-                  <p className="text-white text-lg">{formattedDate}</p>
+                  <p className="text-zinc-600 text-sm mb-1">{t('sessions.date')}</p>
+                  <p className="text-black text-lg">{formattedDate}</p>
                 </div>
 
                 <div>
-                  <p className="text-zinc-400 text-sm mb-1">{t('sessions.venue')}</p>
-                  <p className="text-white text-lg">{session.sala.name[locale]}</p>
-                  <p className="text-zinc-300 text-sm">
+                  <p className="text-zinc-600 text-sm mb-1">{t('sessions.venue')}</p>
+                  <p className="text-black text-lg">{session.sala.name[locale]}</p>
+                  <p className="text-zinc-700 text-sm">
                     {session.sala.address.street}, {session.sala.address.city}
                   </p>
                 </div>
 
                 {session.vinylInfo && (
                   <div>
-                    <p className="text-zinc-400 text-sm mb-1">{t('sessions.vinyl')}</p>
-                    <p className="text-white">{session.vinylInfo[locale]}</p>
+                    <p className="text-zinc-600 text-sm mb-1">{t('sessions.vinyl')}</p>
+                    <p className="text-black">{session.vinylInfo[locale]}</p>
                   </div>
                 )}
 
                 <div>
-                  <p className="text-zinc-400 text-sm mb-1">
+                  <p className="text-zinc-600 text-sm mb-1">
                     {t('sessions.placesAvailable', { count: session.totalPlaces })}
                   </p>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-white">{session.price}€</span>
-                    <span className="text-zinc-300 text-sm">/ {t('booking.places').toLowerCase()}</span>
+                    <span className="text-4xl font-bold text-[#D4AF37]">{session.price}€</span>
+                    <span className="text-zinc-700 text-sm">/ {t('booking.places').toLowerCase()}</span>
                   </div>
                 </div>
               </div>
 
               {/* Booking Button */}
-              <button className="w-full bg-white text-black py-4 rounded-full font-semibold text-lg hover:bg-zinc-200 transition-colors">
+              <button className="w-full bg-[#D4AF37] text-black py-4 rounded-full font-semibold text-lg hover:bg-[#C5A028] transition-colors">
                 {t('sessions.bookNow')}
               </button>
 
               {session.specialNotes && session.specialNotes[locale] && (
-                <div className="mt-6 p-4 bg-zinc-800 rounded-lg">
-                  <p className="text-zinc-300 text-sm">{session.specialNotes[locale]}</p>
+                <div className="mt-6 p-4 bg-[#EDE8DC] rounded-lg border border-[#D4AF37]/20">
+                  <p className="text-zinc-700 text-sm">{session.specialNotes[locale]}</p>
                 </div>
               )}
             </div>

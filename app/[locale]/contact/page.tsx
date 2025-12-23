@@ -116,37 +116,37 @@ export default async function ContactPage({ params }: ContactPageProps) {
           {/* Contact Information */}
           <div className="space-y-8">
             {/* Email */}
-            <div className="bg-zinc-900 p-6 rounded-lg">
-              <h3 className="text-white font-semibold mb-2">
+            <div className="bg-[#F5F1E8] p-6 rounded-lg shadow-md">
+              <h3 className="text-black font-semibold mb-2">
                 {pageContent.email}
               </h3>
               <a
                 href="mailto:info@sounddeluxe.com"
-                className="text-zinc-300 hover:text-white transition-colors"
+                className="text-zinc-700 hover:text-[#D4AF37] transition-colors"
               >
                 info@sounddeluxe.com
               </a>
             </div>
 
             {/* Phone */}
-            <div className="bg-zinc-900 p-6 rounded-lg">
-              <h3 className="text-white font-semibold mb-2">
+            <div className="bg-[#F5F1E8] p-6 rounded-lg shadow-md">
+              <h3 className="text-black font-semibold mb-2">
                 {pageContent.phone}
               </h3>
               <a
                 href="tel:+34123456789"
-                className="text-zinc-300 hover:text-white transition-colors"
+                className="text-zinc-700 hover:text-[#D4AF37] transition-colors"
               >
                 +34 123 456 789
               </a>
             </div>
 
             {/* Address */}
-            <div className="bg-zinc-900 p-6 rounded-lg">
-              <h3 className="text-white font-semibold mb-2">
+            <div className="bg-[#F5F1E8] p-6 rounded-lg shadow-md">
+              <h3 className="text-black font-semibold mb-2">
                 {pageContent.address}
               </h3>
-              <address className="text-zinc-300 not-italic">
+              <address className="text-zinc-700 not-italic">
                 {pageContent.addressLine1}
                 <br />
                 {pageContent.addressLine2}
@@ -156,11 +156,11 @@ export default async function ContactPage({ params }: ContactPageProps) {
             </div>
 
             {/* Hours */}
-            <div className="bg-zinc-900 p-6 rounded-lg">
-              <h3 className="text-white font-semibold mb-3">
+            <div className="bg-[#F5F1E8] p-6 rounded-lg shadow-md">
+              <h3 className="text-black font-semibold mb-3">
                 {pageContent.hours.title}
               </h3>
-              <div className="space-y-1 text-zinc-300">
+              <div className="space-y-1 text-zinc-700">
                 <p>{pageContent.hours.weekdays}</p>
                 <p>{pageContent.hours.weekend}</p>
                 <p>{pageContent.hours.sunday}</p>
@@ -169,14 +169,14 @@ export default async function ContactPage({ params }: ContactPageProps) {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-zinc-900 p-8 rounded-lg">
-            <h2 className="text-2xl font-bold text-white mb-6">
+          <div className="bg-[#F5F1E8] p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold text-black mb-6">
               {pageContent.form.title}
             </h2>
             <form className="space-y-6">
               {/* Name */}
               <div>
-                <label htmlFor="name" className="block text-white mb-2">
+                <label htmlFor="name" className="block text-black mb-2">
                   {pageContent.form.name}
                 </label>
                 <input
@@ -184,14 +184,14 @@ export default async function ContactPage({ params }: ContactPageProps) {
                   id="name"
                   name="name"
                   placeholder={pageContent.form.namePlaceholder}
-                  className="w-full px-4 py-3 bg-zinc-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white"
+                  className="w-full px-4 py-3 bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                   required
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-white mb-2">
+                <label htmlFor="email" className="block text-black mb-2">
                   {pageContent.form.email}
                 </label>
                 <input
@@ -199,14 +199,14 @@ export default async function ContactPage({ params }: ContactPageProps) {
                   id="email"
                   name="email"
                   placeholder={pageContent.form.emailPlaceholder}
-                  className="w-full px-4 py-3 bg-zinc-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white"
+                  className="w-full px-4 py-3 bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                   required
                 />
               </div>
 
               {/* Subject */}
               <div>
-                <label htmlFor="subject" className="block text-white mb-2">
+                <label htmlFor="subject" className="block text-black mb-2">
                   {pageContent.form.subject}
                 </label>
                 <input
@@ -214,14 +214,14 @@ export default async function ContactPage({ params }: ContactPageProps) {
                   id="subject"
                   name="subject"
                   placeholder={pageContent.form.subjectPlaceholder}
-                  className="w-full px-4 py-3 bg-zinc-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white"
+                  className="w-full px-4 py-3 bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                   required
                 />
               </div>
 
               {/* Message */}
               <div>
-                <label htmlFor="message" className="block text-white mb-2">
+                <label htmlFor="message" className="block text-black mb-2">
                   {pageContent.form.message}
                 </label>
                 <textarea
@@ -229,7 +229,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
                   name="message"
                   rows={6}
                   placeholder={pageContent.form.messagePlaceholder}
-                  className="w-full px-4 py-3 bg-zinc-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white resize-none"
+                  className="w-full px-4 py-3 bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] resize-none"
                   required
                 />
               </div>
@@ -237,7 +237,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full bg-white text-black py-3 rounded-full font-semibold hover:bg-zinc-200 transition-colors"
+                className="w-full bg-[#D4AF37] text-black py-3 rounded-full font-semibold hover:bg-[#C5A028] transition-colors"
               >
                 {pageContent.form.submit}
               </button>

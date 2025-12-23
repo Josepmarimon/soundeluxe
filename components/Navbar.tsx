@@ -110,7 +110,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href={`/${locale}/register`}
-                  className="bg-white text-black px-4 py-2 rounded-full font-semibold hover:bg-zinc-200 transition-colors text-sm"
+                  className="bg-[#D4AF37] text-black px-4 py-2 rounded-full font-semibold hover:bg-[#C5A028] transition-colors text-sm"
                 >
                   {t('navigation.register')}
                 </Link>
