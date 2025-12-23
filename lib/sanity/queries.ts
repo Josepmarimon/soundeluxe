@@ -186,3 +186,20 @@ export const artistsQuery = groq`
     "artists": array::unique([].value)
   }[0]
 `
+
+// Get votable albums (albums without future scheduled sessions)
+export const votableAlbumsQuery = groq`
+  *[_type == "album"] {
+    _id,
+    title,
+    artist,
+    year,
+    genre,
+    coverImage,
+    additionalImages,
+    description,
+    duration,
+    links,
+    "hasFutureSessions": count(*[_type == "session" && isActive == true && date > now() && references(^._id)]) > 0
+  } [hasFutureSessions == false] | order(year desc)
+`

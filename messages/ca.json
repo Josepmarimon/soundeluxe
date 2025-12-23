@@ -8,6 +8,7 @@
     "home": "Inici",
     "sessions": "Sessions",
     "albums": "Catàleg",
+    "votes": "Vots",
     "about": "Nosaltres",
     "contact": "Contacte",
     "login": "Accedir",
@@ -82,6 +83,30 @@
     "genres": {
       "classical": "Clàssica",
       "electronic": "Electrònica"
+    }
+  },
+  "votes": {
+    "title": "Vota els teus àlbums favorits",
+    "subtitle": "Ajuda'ns a decidir quins àlbums programar en futures sessions",
+    "infoTitle": "Com funciona?",
+    "infoText": "Només pots votar àlbums que encara no tenen sessions programades. Els àlbums més votats seran considerats per a futures programacions. Necessites estar registrat per poder votar."
+  },
+  "profile": {
+    "title": "El meu perfil",
+    "myBookings": "Les meves reserves",
+    "myVotes": "Els meus vots",
+    "noBookings": "Encara no tens cap reserva",
+    "noVotes": "Encara no has votat cap àlbum",
+    "browseSessions": "Explorar sessions",
+    "voteForAlbums": "Votar àlbums",
+    "removeVote": "Eliminar vot",
+    "status": "Estat",
+    "bookingStatus": {
+      "pending": "Pendent",
+      "confirmed": "Confirmada",
+      "cancelled": "Cancel·lada",
+      "refunded": "Reemborsada",
+      "no_show": "No assistit"
     }
   },
   "venue": {

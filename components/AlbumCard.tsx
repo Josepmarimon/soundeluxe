@@ -4,12 +4,14 @@ import { useLocale, useTranslations } from 'next-intl'
 import type { Album, Locale } from '@/lib/sanity/types'
 import AlbumCarousel from '@/components/AlbumCarousel'
 import VoteCount from '@/components/VoteCount'
+import VoteButton from '@/components/VoteButton'
 
 interface AlbumCardProps {
   album: Album
+  showVoteButton?: boolean
 }
 
-export default function AlbumCard({ album }: AlbumCardProps) {
+export default function AlbumCard({ album, showVoteButton = false }: AlbumCardProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
 
@@ -65,8 +67,14 @@ export default function AlbumCard({ album }: AlbumCardProps) {
           )}
         </div>
 
-        {/* Vote Count */}
-        <VoteCount albumId={album._id} compact={true} />
+        {/* Vote Section */}
+        {showVoteButton ? (
+          <div className="mt-4">
+            <VoteButton albumId={album._id} showCount={true} />
+          </div>
+        ) : (
+          <VoteCount albumId={album._id} compact={true} />
+        )}
 
         {/* Links */}
         {album.links && (

@@ -8,6 +8,7 @@
     "home": "Inicio",
     "sessions": "Sesiones",
     "albums": "Catálogo",
+    "votes": "Votos",
     "about": "Nosotros",
     "contact": "Contacto",
     "login": "Acceder",
@@ -82,6 +83,30 @@
     "genres": {
       "classical": "Clásica",
       "electronic": "Electrónica"
+    }
+  },
+  "votes": {
+    "title": "Vota tus álbumes favoritos",
+    "subtitle": "Ayúdanos a decidir qué álbumes programar en futuras sesiones",
+    "infoTitle": "¿Cómo funciona?",
+    "infoText": "Solo puedes votar álbumes que aún no tienen sesiones programadas. Los álbumes más votados serán considerados para futuras programaciones. Necesitas estar registrado para poder votar."
+  },
+  "profile": {
+    "title": "Mi perfil",
+    "myBookings": "Mis reservas",
+    "myVotes": "Mis votos",
+    "noBookings": "Aún no tienes ninguna reserva",
+    "noVotes": "Aún no has votado ningún álbum",
+    "browseSessions": "Explorar sesiones",
+    "voteForAlbums": "Votar álbumes",
+    "removeVote": "Eliminar voto",
+    "status": "Estado",
+    "bookingStatus": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmada",
+      "cancelled": "Cancelada",
+      "refunded": "Reembolsada",
+      "no_show": "No asistió"
     }
   },
   "venue": {

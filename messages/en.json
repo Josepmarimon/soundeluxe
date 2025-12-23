@@ -8,6 +8,7 @@
     "home": "Home",
     "sessions": "Sessions",
     "albums": "Catalog",
+    "votes": "Votes",
     "about": "About",
     "contact": "Contact",
     "login": "Login",
@@ -82,6 +83,30 @@
     "genres": {
       "classical": "Classical",
       "electronic": "Electronic"
+    }
+  },
+  "votes": {
+    "title": "Vote for your favorite albums",
+    "subtitle": "Help us decide which albums to schedule for future sessions",
+    "infoTitle": "How does it work?",
+    "infoText": "You can only vote for albums that don't have scheduled sessions yet. The most voted albums will be considered for future programming. You need to be registered to vote."
+  },
+  "profile": {
+    "title": "My Profile",
+    "myBookings": "My Bookings",
+    "myVotes": "My Votes",
+    "noBookings": "You don't have any bookings yet",
+    "noVotes": "You haven't voted for any albums yet",
+    "browseSessions": "Browse Sessions",
+    "voteForAlbums": "Vote for Albums",
+    "removeVote": "Remove Vote",
+    "status": "Status",
+    "bookingStatus": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded",
+      "no_show": "No Show"
     }
   },
   "venue": {

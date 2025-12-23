@@ -33,6 +33,15 @@ export default function SessionCard({ session }: SessionCardProps) {
             albumTitle={session.album.title}
             artist={session.album.artist}
           />
+
+          {/* Available spots badge - positioned at top */}
+          <div className="absolute top-4 left-4 z-10">
+            <span className="inline-block px-3 py-1 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-xs font-semibold rounded-full shadow-md">
+              {session.totalPlaces === 1
+                ? t('sessions.onePlace')
+                : t('sessions.placesAvailable', { count: session.totalPlaces })}
+            </span>
+          </div>
         </div>
       </a>
 
@@ -48,15 +57,6 @@ export default function SessionCard({ session }: SessionCardProps) {
         <div className="space-y-2 mb-4 text-sm">
           <p className="text-zinc-800">{formattedDate}</p>
           <p className="text-zinc-700">{session.sala.name[locale]}</p>
-        </div>
-
-        {/* Available spots badge */}
-        <div className="mb-4">
-          <span className="inline-block px-3 py-1 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-xs font-semibold rounded-full shadow-md">
-            {session.totalPlaces === 1
-              ? t('sessions.onePlace')
-              : t('sessions.placesAvailable', { count: session.totalPlaces })}
-          </span>
         </div>
 
         {/* Price & Booking */}

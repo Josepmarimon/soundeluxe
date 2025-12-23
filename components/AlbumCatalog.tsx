@@ -9,9 +9,10 @@ interface AlbumCatalogProps {
   albums: Album[]
   genres: string[]
   artists: string[]
+  showVoteButton?: boolean
 }
 
-export default function AlbumCatalog({ albums, genres, artists }: AlbumCatalogProps) {
+export default function AlbumCatalog({ albums, genres, artists, showVoteButton = false }: AlbumCatalogProps) {
   const t = useTranslations()
   const [selectedGenre, setSelectedGenre] = useState<string>('')
   const [artistSearch, setArtistSearch] = useState<string>('')
@@ -160,7 +161,7 @@ export default function AlbumCatalog({ albums, genres, artists }: AlbumCatalogPr
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredAlbums.map((album) => (
-            <AlbumCard key={album._id} album={album} />
+            <AlbumCard key={album._id} album={album} showVoteButton={showVoteButton} />
           ))}
         </div>
       )}

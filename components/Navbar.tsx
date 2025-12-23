@@ -56,6 +56,12 @@ export default function Navbar() {
               {t('navigation.albums')}
             </Link>
             <Link
+              href={`/${locale}/votes`}
+              className="text-zinc-300 hover:text-white transition-colors"
+            >
+              {t('navigation.votes')}
+            </Link>
+            <Link
               href={`/${locale}/about`}
               className="text-zinc-300 hover:text-white transition-colors"
             >
