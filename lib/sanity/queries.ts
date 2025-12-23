@@ -16,6 +16,7 @@ export const sessionsQuery = groq`
       year,
       genre,
       coverImage,
+      additionalImages,
       description,
       duration,
       recordLabel,
@@ -87,6 +88,7 @@ export const sessionByIdQuery = groq`
       year,
       genre,
       coverImage,
+      additionalImages,
       description,
       duration,
       recordLabel,
@@ -120,6 +122,7 @@ export const albumsQuery = groq`
     year,
     genre,
     coverImage,
+    additionalImages,
     description
   }
 `
@@ -133,6 +136,7 @@ export const albumByIdQuery = groq`
     year,
     genre,
     coverImage,
+    additionalImages,
     description,
     duration,
     recordLabel,

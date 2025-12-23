@@ -6,6 +6,7 @@ import { sessionByIdQuery } from '@/lib/sanity/queries'
 import type { Session, Locale } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
 import PortableTextContent from '@/components/PortableTextContent'
+import AlbumCarousel from '@/components/AlbumCarousel'
 
 interface SessionPageProps {
   params: Promise<{
@@ -25,7 +26,6 @@ export default async function SessionPage({ params }: SessionPageProps) {
     notFound()
   }
 
-  const imageUrl = urlForImage(session.album.coverImage)?.width(800).height(800).url()
   const date = new Date(session.date)
 
   const formattedDate = date.toLocaleDateString(locale, {
@@ -51,18 +51,15 @@ export default async function SessionPage({ params }: SessionPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column - Album Info */}
           <div>
-            {/* Album Cover */}
-            {imageUrl && (
-              <div className="aspect-square rounded-lg overflow-hidden mb-6">
-                <Image
-                  src={imageUrl}
-                  alt={`${session.album.artist} - ${session.album.title}`}
-                  width={800}
-                  height={800}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            )}
+            {/* Album Cover Carousel */}
+            <div className="mb-6">
+              <AlbumCarousel
+                coverImage={session.album.coverImage}
+                additionalImages={session.album.additionalImages}
+                albumTitle={session.album.title}
+                artist={session.album.artist}
+              />
+            </div>
 
             {/* Album Details */}
             <div className="space-y-4">

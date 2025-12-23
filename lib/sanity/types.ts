@@ -24,6 +24,7 @@ export interface Album {
   year: number
   genre: string
   coverImage: Image
+  additionalImages?: Image[]
   description?: MultilingualRichText
   duration?: number
   recordLabel?: string
