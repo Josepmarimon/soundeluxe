@@ -30,16 +30,16 @@ export default async function HomePage({ params }: { params: { locale: string } 
       <section className="relative min-h-screen flex items-center justify-center text-center px-4">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-            {t('hero.title')}
+            {homePageData?.heroTitle?.[locale] || t('hero.title')}
           </h1>
           <p className="text-xl md:text-2xl text-zinc-300 mb-8">
-            {t('hero.subtitle')}
+            {homePageData?.heroSubtitle?.[locale] || t('hero.subtitle')}
           </p>
           <a
             href="#sessions"
             className="inline-block bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-8 py-4 rounded-full font-semibold hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-lg"
           >
-            {t('hero.cta')}
+            {homePageData?.heroCta?.[locale] || t('hero.cta')}
           </a>
         </div>
       </section>

@@ -208,6 +208,9 @@ export const votableAlbumsQuery = groq`
 export const homePageQuery = groq`
   *[_type == "homePage"][0] {
     _id,
+    heroTitle,
+    heroSubtitle,
+    heroCta,
     experienceTitle,
     experienceSubtitle,
     experienceFeatures[] {

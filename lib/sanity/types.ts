@@ -117,6 +117,9 @@ export interface ExperienceFeature {
 // Home Page Configuration
 export interface HomePage {
   _id: string
+  heroTitle?: MultilingualText
+  heroSubtitle?: MultilingualText
+  heroCta?: MultilingualText
   experienceTitle?: MultilingualText
   experienceSubtitle?: MultilingualText
   experienceFeatures?: ExperienceFeature[]
