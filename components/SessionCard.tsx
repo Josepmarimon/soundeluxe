@@ -40,7 +40,7 @@ export default function SessionCard({ session }: SessionCardProps) {
       <div className="p-6">
         {/* Session Type Badge */}
         <div className="mb-3">
-          <span className="inline-block px-3 py-1 bg-[#D4AF37] text-black text-xs font-medium rounded-full">
+          <span className="inline-block px-3 py-1 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-xs font-medium rounded-full shadow-md">
             {session.sessionType.name[locale]}
           </span>
         </div>
@@ -59,10 +59,10 @@ export default function SessionCard({ session }: SessionCardProps) {
 
         {/* Price & Booking */}
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-[#D4AF37]">
+          <span className="text-2xl font-bold bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] bg-clip-text text-transparent">
             {session.price}€
           </span>
-          <button className="bg-[#D4AF37] text-black px-6 py-2 rounded-full font-semibold hover:bg-[#C5A028] transition-colors">
+          <button className="bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-6 py-2 rounded-full font-semibold hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-md">
             {t('sessions.bookNow')}
           </button>
         </div>

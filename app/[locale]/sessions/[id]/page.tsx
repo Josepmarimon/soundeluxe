@@ -135,7 +135,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
 
               {/* Session Type */}
               <div className="mb-6">
-                <span className="inline-block px-4 py-2 bg-[#D4AF37] text-black rounded-full text-sm font-medium">
+                <span className="inline-block px-4 py-2 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black rounded-full text-sm font-medium shadow-md">
                   {session.sessionType.name[locale]}
                 </span>
               </div>
@@ -167,14 +167,14 @@ export default async function SessionPage({ params }: SessionPageProps) {
                     {t('sessions.placesAvailable', { count: session.totalPlaces })}
                   </p>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-[#D4AF37]">{session.price}€</span>
+                    <span className="text-4xl font-bold bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] bg-clip-text text-transparent">{session.price}€</span>
                     <span className="text-zinc-700 text-sm">/ {t('booking.places').toLowerCase()}</span>
                   </div>
                 </div>
               </div>
 
               {/* Booking Button */}
-              <button className="w-full bg-[#D4AF37] text-black py-4 rounded-full font-semibold text-lg hover:bg-[#C5A028] transition-colors">
+              <button className="w-full bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black py-4 rounded-full font-semibold text-lg hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-lg">
                 {t('sessions.bookNow')}
               </button>
 
