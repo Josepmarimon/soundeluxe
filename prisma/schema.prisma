@@ -1,0 +1,179 @@
+// Prisma Schema - Sound Deluxe
+// Base de dades: Neon Postgres (Frankfurt, EU)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// MODELS
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  password      String    // hash bcrypt
+  role          UserRole  @default(REGISTERED)
+  language      Language  @default(CA)  // detectat al registre
+  photoUrl      String?
+  emailVerified DateTime?
+  isPremium     Boolean   @default(false)  // futur
+  premiumUntil  DateTime?                  // futur
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relacions
+  reservas      Reserva[]
+  votaciones    Votacion[]
+  ressenyes     Ressenya[]
+  comentaris    Comentari[]
+  llistaEspera  LlistaEspera[]
+
+  @@map("users")
+}
+
+model Reserva {
+  id                  String        @id @default(cuid())
+  userId              String
+  sessionId           String        // ref a Sanity session._id
+  numPlaces           Int           @default(1)
+  totalAmount         Decimal       @db.Decimal(10, 2)
+  status              ReservaStatus @default(CONFIRMED)
+  paymentMethod       PaymentMethod
+  stripePaymentId     String?       @unique
+
+  // Cancel·lació i reemborsament
+  cancelledAt         DateTime?
+  cancellationReason  String?
+  refundAmount        Decimal?      @db.Decimal(10, 2)
+  refundStatus        RefundStatus?
+
+  // Assistència
+  attended            Boolean       @default(false)
+  attendedAt          DateTime?
+
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  // Relacions
+  user                User          @relation(fields: [userId], references: [id])
+  ressenya            Ressenya?
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([status])
+  @@map("reservas")
+}
+
+model Votacion {
+  id          String   @id @default(cuid())
+  userId      String
+  albumId     String   // ref a Sanity album._id
+  createdAt   DateTime @default(now())
+
+  // Relacions
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, albumId])  // 1 vot per usuari per àlbum
+  @@index([albumId])
+  @@map("votaciones")
+}
+
+model Ressenya {
+  id          String   @id @default(cuid())
+  reservaId   String   @unique
+  userId      String
+  sessionId   String   // ref a Sanity session._id
+  rating      Int      // 1-5 estrelles
+  comment     String?  @db.Text
+  isPublic    Boolean  @default(true)
+  moderated   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacions
+  reserva     Reserva  @relation(fields: [reservaId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([sessionId])
+  @@index([userId])
+  @@map("ressenyes")
+}
+
+model Comentari {
+  id          String   @id @default(cuid())
+  userId      String
+  albumId     String   // ref a Sanity album._id
+  comment     String   @db.Text
+  isPublic    Boolean  @default(true)
+  moderated   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacions
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([albumId])
+  @@index([userId])
+  @@map("comentaris")
+}
+
+model LlistaEspera {
+  id          String   @id @default(cuid())
+  userId      String
+  sessionId   String   // ref a Sanity session._id
+  notified    Boolean  @default(false)
+  notifiedAt  DateTime?
+  createdAt   DateTime @default(now())
+
+  // Relacions
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, sessionId])
+  @@index([sessionId, notified])
+  @@map("llista_espera")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum UserRole {
+  VISITOR       // no registrat (no guardat a DB)
+  REGISTERED    // pot reservar
+  PREMIUM       // futur: avantatges
+  EDITOR        // pot gestionar contingut
+  ADMIN         // control total
+}
+
+enum Language {
+  CA
+  ES
+  EN
+}
+
+enum ReservaStatus {
+  PENDING       // no hauria de passar (pago immediat)
+  CONFIRMED     // pagament OK
+  CANCELLED     // cancel·lada per usuari
+  REFUNDED      // reemborsada
+  NO_SHOW       // no va venir
+}
+
+enum PaymentMethod {
+  CARD          // Stripe card
+  BIZUM         // Stripe Bizum
+}
+
+enum RefundStatus {
+  PENDING
+  PARTIAL       // <48h cancel·lació
+  FULL          // >48h cancel·lació
+  REJECTED
+}
