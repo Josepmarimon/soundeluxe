@@ -23,6 +23,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
       image: feature.image!,
     }))
 
+
   return (
     <div className="min-h-screen bg-black pt-16">
       {/* Hero Section */}
@@ -65,10 +66,14 @@ export default async function HomePage({ params }: { params: { locale: string } 
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {homePageData?.experienceTitle?.[locale] || t('experience.title')}
+              {homePageData?.experienceTitle && homePageData.experienceTitle[locale]
+                ? homePageData.experienceTitle[locale]
+                : t('experience.title')}
             </h2>
             <p className="text-xl text-zinc-400">
-              {homePageData?.experienceSubtitle?.[locale] || t('experience.subtitle')}
+              {homePageData?.experienceSubtitle && homePageData.experienceSubtitle[locale]
+                ? homePageData.experienceSubtitle[locale]
+                : t('experience.subtitle')}
             </p>
           </div>
 
@@ -80,12 +85,16 @@ export default async function HomePage({ params }: { params: { locale: string } 
               if (!imageBuilder) return null
               const imageUrl = imageBuilder.width(800).url()
 
+              const titleText = feature.title?.[locale] || feature.title?.ca || ''
+              const descriptionText = feature.description?.[locale] || feature.description?.ca || ''
+              const altText = titleText || 'Feature image'
+
               return (
                 <div key={index} className="group relative overflow-hidden rounded-2xl border border-zinc-800 hover:border-[#D4AF37]/30 transition-all duration-300">
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={imageUrl}
-                      alt={feature.title[locale]}
+                      alt={altText}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/50 to-transparent"></div>
@@ -97,10 +106,10 @@ export default async function HomePage({ params }: { params: { locale: string } 
                   </div>
                   <div className="p-6 bg-zinc-900/50">
                     <h3 className="text-2xl font-bold text-white mb-3">
-                      {feature.title[locale]}
+                      {titleText}
                     </h3>
                     <p className="text-zinc-400 leading-relaxed">
-                      {feature.description[locale]}
+                      {descriptionText}
                     </p>
                   </div>
                 </div>
