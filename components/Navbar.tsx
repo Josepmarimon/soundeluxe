@@ -3,12 +3,14 @@
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useSession, signOut } from 'next-auth/react'
 import { locales, type Locale } from '@/i18n'
 
 export default function Navbar() {
   const t = useTranslations()
   const locale = useLocale() as Locale
   const pathname = usePathname()
+  const { data: session, status } = useSession()
 
   // Remove locale prefix from pathname to get the base path
   const pathnameWithoutLocale = pathname.replace(`/${locale}`, '') || '/'
@@ -81,18 +83,39 @@ export default function Navbar() {
             </div>
 
             {/* Auth Buttons */}
-            <Link
-              href={`/${locale}/login`}
-              className="text-zinc-400 hover:text-white transition-colors text-sm hidden sm:inline"
-            >
-              {t('navigation.login')}
-            </Link>
-            <Link
-              href={`/${locale}/register`}
-              className="bg-white text-black px-4 py-2 rounded-full font-semibold hover:bg-zinc-200 transition-colors text-sm"
-            >
-              {t('navigation.register')}
-            </Link>
+            {status === 'loading' ? (
+              <div className="w-8 h-8 rounded-full bg-zinc-800 animate-pulse" />
+            ) : session ? (
+              <div className="flex items-center gap-3">
+                <Link
+                  href={`/${locale}/profile`}
+                  className="text-zinc-400 hover:text-white transition-colors text-sm hidden sm:inline"
+                >
+                  {session.user?.name || t('navigation.profile')}
+                </Link>
+                <button
+                  onClick={() => signOut({ callbackUrl: `/${locale}` })}
+                  className="text-zinc-400 hover:text-white transition-colors text-sm"
+                >
+                  {t('navigation.logout')}
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href={`/${locale}/login`}
+                  className="text-zinc-400 hover:text-white transition-colors text-sm hidden sm:inline"
+                >
+                  {t('navigation.login')}
+                </Link>
+                <Link
+                  href={`/${locale}/register`}
+                  className="bg-white text-black px-4 py-2 rounded-full font-semibold hover:bg-zinc-200 transition-colors text-sm"
+                >
+                  {t('navigation.register')}
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

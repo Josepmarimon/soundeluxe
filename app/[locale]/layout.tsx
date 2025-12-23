@@ -7,6 +7,7 @@ import '../globals.css'
 import { locales } from '@/i18n'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import SessionProvider from '@/components/SessionProvider'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -49,11 +50,13 @@ export default async function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </NextIntlClientProvider>
+        <SessionProvider>
+          <NextIntlClientProvider messages={messages}>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </NextIntlClientProvider>
+        </SessionProvider>
       </body>
     </html>
   )
