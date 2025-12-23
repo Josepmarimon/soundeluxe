@@ -48,9 +48,13 @@ export default async function HomePage({ params }: { params: { locale: string } 
             <video
               autoPlay
               muted
-              loop
               playsInline
               className="absolute inset-0 w-full h-full object-cover z-0"
+              onEnded={(e) => {
+                // Opcional: forçar a mostrar l'últim fotograma
+                const video = e.currentTarget
+                video.currentTime = video.duration
+              }}
             >
               <source src={homePageData.heroBackgroundVideo.asset.url} type="video/mp4" />
             </video>
