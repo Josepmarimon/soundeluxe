@@ -1,0 +1,93 @@
+{
+  "common": {
+    "languageName": "Català",
+    "soundDeluxe": "Sound Deluxe",
+    "tagline": "Experiències audiòfiles d'alta fidelitat"
+  },
+  "navigation": {
+    "home": "Inici",
+    "sessions": "Sessions",
+    "about": "Nosaltres",
+    "contact": "Contacte",
+    "login": "Accedir",
+    "register": "Registrar-se",
+    "profile": "Perfil",
+    "logout": "Sortir"
+  },
+  "hero": {
+    "title": "Redescobrix la música com mai l'havies sentit",
+    "subtitle": "Sessions exclusives d'escolta en alta fidelitat per a autèntics audiòfils",
+    "cta": "Explorar sessions"
+  },
+  "sessions": {
+    "title": "Properes sessions",
+    "upcomingSession": "Propera sessió",
+    "noSessions": "No hi ha sessions programades",
+    "bookNow": "Reservar ara",
+    "soldOut": "Esgotat",
+    "placesAvailable": "{count} places disponibles",
+    "onePlace": "1 plaça disponible",
+    "price": "{price}€",
+    "date": "Data",
+    "venue": "Sala",
+    "sessionType": "Tipus de sessió",
+    "duration": "Durada",
+    "vinyl": "Vinil"
+  },
+  "sessionTypes": {
+    "standard": "Estàndard",
+    "debate": "Amb Debat",
+    "conference": "Amb Conferència",
+    "masterclass": "Masterclass"
+  },
+  "booking": {
+    "title": "Reservar plaça",
+    "selectPlaces": "Seleccionar places",
+    "places": "Places",
+    "total": "Total",
+    "paymentMethod": "Mètode de pagament",
+    "card": "Targeta",
+    "bizum": "Bizum",
+    "confirm": "Confirmar reserva",
+    "cancel": "Cancel·lar",
+    "success": "Reserva confirmada!",
+    "error": "Error al processar la reserva"
+  },
+  "album": {
+    "artist": "Artista",
+    "year": "Any",
+    "genre": "Gènere",
+    "label": "Segell",
+    "duration": "Durada",
+    "awards": "Premis",
+    "listenOn": "Escoltar a",
+    "comments": "Comentaris",
+    "addComment": "Afegir comentari",
+    "vote": "Votar aquest àlbum",
+    "votes": "{count} vots"
+  },
+  "venue": {
+    "capacity": "Capacitat",
+    "address": "Adreça",
+    "accessibility": "Accessibilitat",
+    "schedule": "Horaris",
+    "viewOnMap": "Veure al mapa"
+  },
+  "footer": {
+    "description": "Experiències audiòfiles d'alta fidelitat a Barcelona",
+    "links": "Enllaços",
+    "legal": "Legal",
+    "privacy": "Privacitat",
+    "terms": "Termes i condicions",
+    "cookies": "Política de cookies",
+    "social": "Xarxes socials",
+    "newsletter": "Subscriu-te al butlletí",
+    "subscribe": "Subscriure's",
+    "email": "Correu electrònic"
+  },
+  "errors": {
+    "notFound": "Pàgina no trobada",
+    "serverError": "Error del servidor",
+    "goHome": "Tornar a l'inici"
+  }
+}

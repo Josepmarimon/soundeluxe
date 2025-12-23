@@ -1,0 +1,93 @@
+{
+  "common": {
+    "languageName": "English",
+    "soundDeluxe": "Sound Deluxe",
+    "tagline": "High-fidelity audiophile experiences"
+  },
+  "navigation": {
+    "home": "Home",
+    "sessions": "Sessions",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Sign up",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Rediscover music like you've never heard it before",
+    "subtitle": "Exclusive high-fidelity listening sessions for true audiophiles",
+    "cta": "Explore sessions"
+  },
+  "sessions": {
+    "title": "Upcoming sessions",
+    "upcomingSession": "Next session",
+    "noSessions": "No sessions scheduled",
+    "bookNow": "Book now",
+    "soldOut": "Sold out",
+    "placesAvailable": "{count} spots available",
+    "onePlace": "1 spot available",
+    "price": "€{price}",
+    "date": "Date",
+    "venue": "Venue",
+    "sessionType": "Session type",
+    "duration": "Duration",
+    "vinyl": "Vinyl"
+  },
+  "sessionTypes": {
+    "standard": "Standard",
+    "debate": "With Debate",
+    "conference": "With Conference",
+    "masterclass": "Masterclass"
+  },
+  "booking": {
+    "title": "Book spot",
+    "selectPlaces": "Select spots",
+    "places": "Spots",
+    "total": "Total",
+    "paymentMethod": "Payment method",
+    "card": "Card",
+    "bizum": "Bizum",
+    "confirm": "Confirm booking",
+    "cancel": "Cancel",
+    "success": "Booking confirmed!",
+    "error": "Error processing booking"
+  },
+  "album": {
+    "artist": "Artist",
+    "year": "Year",
+    "genre": "Genre",
+    "label": "Label",
+    "duration": "Duration",
+    "awards": "Awards",
+    "listenOn": "Listen on",
+    "comments": "Comments",
+    "addComment": "Add comment",
+    "vote": "Vote for this album",
+    "votes": "{count} votes"
+  },
+  "venue": {
+    "capacity": "Capacity",
+    "address": "Address",
+    "accessibility": "Accessibility",
+    "schedule": "Schedule",
+    "viewOnMap": "View on map"
+  },
+  "footer": {
+    "description": "High-fidelity audiophile experiences in Barcelona",
+    "links": "Links",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms and conditions",
+    "cookies": "Cookie policy",
+    "social": "Social media",
+    "newsletter": "Subscribe to newsletter",
+    "subscribe": "Subscribe",
+    "email": "Email"
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "serverError": "Server error",
+    "goHome": "Go home"
+  }
+}

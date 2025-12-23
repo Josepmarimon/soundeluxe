@@ -1,0 +1,93 @@
+{
+  "common": {
+    "languageName": "Español",
+    "soundDeluxe": "Sound Deluxe",
+    "tagline": "Experiencias audiófilas de alta fidelidad"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "sessions": "Sesiones",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "login": "Acceder",
+    "register": "Registrarse",
+    "profile": "Perfil",
+    "logout": "Salir"
+  },
+  "hero": {
+    "title": "Redescubre la música como nunca la habías escuchado",
+    "subtitle": "Sesiones exclusivas de escucha en alta fidelidad para auténticos audiófilos",
+    "cta": "Explorar sesiones"
+  },
+  "sessions": {
+    "title": "Próximas sesiones",
+    "upcomingSession": "Próxima sesión",
+    "noSessions": "No hay sesiones programadas",
+    "bookNow": "Reservar ahora",
+    "soldOut": "Agotado",
+    "placesAvailable": "{count} plazas disponibles",
+    "onePlace": "1 plaza disponible",
+    "price": "{price}€",
+    "date": "Fecha",
+    "venue": "Sala",
+    "sessionType": "Tipo de sesión",
+    "duration": "Duración",
+    "vinyl": "Vinilo"
+  },
+  "sessionTypes": {
+    "standard": "Estándar",
+    "debate": "Con Debate",
+    "conference": "Con Conferencia",
+    "masterclass": "Masterclass"
+  },
+  "booking": {
+    "title": "Reservar plaza",
+    "selectPlaces": "Seleccionar plazas",
+    "places": "Plazas",
+    "total": "Total",
+    "paymentMethod": "Método de pago",
+    "card": "Tarjeta",
+    "bizum": "Bizum",
+    "confirm": "Confirmar reserva",
+    "cancel": "Cancelar",
+    "success": "¡Reserva confirmada!",
+    "error": "Error al procesar la reserva"
+  },
+  "album": {
+    "artist": "Artista",
+    "year": "Año",
+    "genre": "Género",
+    "label": "Sello",
+    "duration": "Duración",
+    "awards": "Premios",
+    "listenOn": "Escuchar en",
+    "comments": "Comentarios",
+    "addComment": "Añadir comentario",
+    "vote": "Votar este álbum",
+    "votes": "{count} votos"
+  },
+  "venue": {
+    "capacity": "Capacidad",
+    "address": "Dirección",
+    "accessibility": "Accesibilidad",
+    "schedule": "Horarios",
+    "viewOnMap": "Ver en el mapa"
+  },
+  "footer": {
+    "description": "Experiencias audiófilas de alta fidelidad en Barcelona",
+    "links": "Enlaces",
+    "legal": "Legal",
+    "privacy": "Privacidad",
+    "terms": "Términos y condiciones",
+    "cookies": "Política de cookies",
+    "social": "Redes sociales",
+    "newsletter": "Suscríbete al boletín",
+    "subscribe": "Suscribirse",
+    "email": "Correo electrónico"
+  },
+  "errors": {
+    "notFound": "Página no encontrada",
+    "serverError": "Error del servidor",
+    "goHome": "Volver al inicio"
+  }
+}
