@@ -203,3 +203,18 @@ export const votableAlbumsQuery = groq`
     "hasFutureSessions": count(*[_type == "session" && isActive == true && date > now() && references(^._id)]) > 0
   } [hasFutureSessions == false] | order(year desc)
 `
+
+// Get home page configuration
+export const homePageQuery = groq`
+  *[_type == "homePage"][0] {
+    _id,
+    experienceTitle,
+    experienceSubtitle,
+    experienceFeatures[] {
+      title,
+      description,
+      image,
+      icon
+    }
+  }
+`

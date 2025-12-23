@@ -105,3 +105,19 @@ export interface SessionListItem {
     name: MultilingualText
   }
 }
+
+// Experience Feature
+export interface ExperienceFeature {
+  title: MultilingualText
+  description: MultilingualText
+  image: Image
+  icon: string
+}
+
+// Home Page Configuration
+export interface HomePage {
+  _id: string
+  experienceTitle?: MultilingualText
+  experienceSubtitle?: MultilingualText
+  experienceFeatures?: ExperienceFeature[]
+}
