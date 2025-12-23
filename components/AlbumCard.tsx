@@ -56,8 +56,8 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
         </h3>
         <p className="text-zinc-700 mb-4">{album.artist}, {album.year}</p>
 
-        {/* Price and Purchase Button */}
-        {album.salePrice && (
+        {/* Price and Purchase Button - only show if not in voting mode */}
+        {!showVoteButton && album.salePrice && (
           <div className="mb-4">
             <div className="flex items-center justify-between">
               <div className="text-2xl font-bold text-black">
