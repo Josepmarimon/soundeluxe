@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { urlFor } from '@/lib/sanity/image'
+import { urlForImage } from '@/lib/sanity/image'
 
 interface Vote {
   id: string
@@ -200,7 +200,7 @@ export default function ProfilePage() {
                       <div className="flex-shrink-0">
                         <div className="relative w-32 h-32 rounded-lg overflow-hidden">
                           <Image
-                            src={urlFor(booking.session.album.coverImage).width(128).height(128).url()}
+                            src={urlForImage(booking.session.album.coverImage)?.width(128).height(128).url() || ''}
                             alt={booking.session.album.title}
                             fill
                             className="object-cover"
@@ -276,7 +276,7 @@ export default function ProfilePage() {
                     {/* Album Cover */}
                     <div className="relative aspect-square overflow-hidden">
                       <Image
-                        src={urlFor(vote.album.coverImage).width(400).height(400).url()}
+                        src={urlForImage(vote.album.coverImage)?.width(400).height(400).url() || ''}
                         alt={vote.album.title}
                         fill
                         className="object-cover"
