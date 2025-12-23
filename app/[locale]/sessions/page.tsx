@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server'
 import { client } from '@/lib/sanity/client'
 import { upcomingSessionsQuery } from '@/lib/sanity/queries'
 import type { SessionListItem } from '@/lib/sanity/types'
-import SessionCard from '@/components/SessionCard'
+import SessionFilters from '@/components/SessionFilters'
 
 export default async function SessionsPage() {
   const t = await getTranslations()
@@ -23,7 +23,7 @@ export default async function SessionsPage() {
           </p>
         </div>
 
-        {/* Sessions Grid */}
+        {/* Sessions with Filters */}
         {sessions.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-zinc-400 text-lg">
@@ -31,11 +31,7 @@ export default async function SessionsPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sessions.map((session) => (
-              <SessionCard key={session._id} session={session} />
-            ))}
-          </div>
+          <SessionFilters sessions={sessions} />
         )}
       </div>
     </div>
