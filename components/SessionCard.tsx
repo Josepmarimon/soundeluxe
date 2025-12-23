@@ -26,8 +26,9 @@ export default function SessionCard({ session }: SessionCardProps) {
 
   return (
     <article className="group bg-zinc-900 rounded-lg overflow-hidden hover:bg-zinc-800 transition-colors">
-      {/* Album Cover */}
-      <div className="relative aspect-square overflow-hidden">
+      <a href={`/${locale}/sessions/${session._id}`}>
+        {/* Album Cover */}
+        <div className="relative aspect-square overflow-hidden">
         {imageUrl && (
           <Image
             src={imageUrl}
@@ -37,7 +38,8 @@ export default function SessionCard({ session }: SessionCardProps) {
             className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
           />
         )}
-      </div>
+        </div>
+      </a>
 
       {/* Session Info */}
       <div className="p-6">

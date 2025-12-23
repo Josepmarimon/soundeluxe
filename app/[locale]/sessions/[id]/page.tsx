@@ -1,0 +1,218 @@
+import { getTranslations } from 'next-intl/server'
+import { notFound } from 'next/navigation'
+import Image from 'next/image'
+import { client } from '@/lib/sanity/client'
+import { sessionByIdQuery } from '@/lib/sanity/queries'
+import type { Session, Locale } from '@/lib/sanity/types'
+import { urlForImage } from '@/lib/sanity/image'
+import { PortableText } from '@portabletext/react'
+
+interface SessionPageProps {
+  params: Promise<{
+    locale: Locale
+    id: string
+  }>
+}
+
+export default async function SessionPage({ params }: SessionPageProps) {
+  const { locale, id } = await params
+  const t = await getTranslations()
+
+  // Fetch session from Sanity
+  const session: Session | null = await client.fetch(sessionByIdQuery, { id })
+
+  if (!session) {
+    notFound()
+  }
+
+  const imageUrl = urlForImage(session.album.coverImage)?.width(800).height(800).url()
+  const date = new Date(session.date)
+
+  const formattedDate = date.toLocaleDateString(locale, {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+
+  return (
+    <div className="min-h-screen bg-black pt-16">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        {/* Back button */}
+        <a
+          href={`/${locale}`}
+          className="inline-flex items-center text-zinc-400 hover:text-white mb-8 transition-colors"
+        >
+          ← {t('navigation.home')}
+        </a>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Left Column - Album Info */}
+          <div>
+            {/* Album Cover */}
+            {imageUrl && (
+              <div className="aspect-square rounded-lg overflow-hidden mb-6">
+                <Image
+                  src={imageUrl}
+                  alt={`${session.album.artist} - ${session.album.title}`}
+                  width={800}
+                  height={800}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            )}
+
+            {/* Album Details */}
+            <div className="space-y-4">
+              <div>
+                <h1 className="text-4xl font-bold text-white mb-2">
+                  {session.album.title}
+                </h1>
+                <p className="text-2xl text-zinc-400">{session.album.artist}</p>
+              </div>
+
+              <div className="flex items-center gap-4 text-sm text-zinc-400">
+                <span>{session.album.year}</span>
+                <span>•</span>
+                <span>{session.album.genre}</span>
+                {session.album.duration && (
+                  <>
+                    <span>•</span>
+                    <span>{session.album.duration} min</span>
+                  </>
+                )}
+              </div>
+
+              {session.album.description && (
+                <div className="prose prose-invert max-w-none">
+                  <PortableText value={session.album.description[locale]} />
+                </div>
+              )}
+
+              {/* Streaming Links */}
+              {session.album.links && (
+                <div className="flex flex-wrap gap-3 pt-4">
+                  {session.album.links.spotify && (
+                    <a
+                      href={session.album.links.spotify}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-zinc-900 text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
+                    >
+                      Spotify
+                    </a>
+                  )}
+                  {session.album.links.appleMusic && (
+                    <a
+                      href={session.album.links.appleMusic}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-zinc-900 text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
+                    >
+                      Apple Music
+                    </a>
+                  )}
+                  {session.album.links.youtube && (
+                    <a
+                      href={session.album.links.youtube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-zinc-900 text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
+                    >
+                      YouTube
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Column - Session Info */}
+          <div>
+            <div className="bg-zinc-900 rounded-lg p-8">
+              <h2 className="text-2xl font-bold text-white mb-6">
+                {t('sessions.upcomingSession')}
+              </h2>
+
+              {/* Session Type */}
+              <div className="mb-6">
+                <span className="inline-block px-4 py-2 bg-zinc-800 text-zinc-300 rounded-full text-sm font-medium">
+                  {session.sessionType.name[locale]}
+                </span>
+              </div>
+
+              {/* Session Details */}
+              <div className="space-y-4 mb-8">
+                <div>
+                  <p className="text-zinc-500 text-sm mb-1">{t('sessions.date')}</p>
+                  <p className="text-white text-lg">{formattedDate}</p>
+                </div>
+
+                <div>
+                  <p className="text-zinc-500 text-sm mb-1">{t('sessions.venue')}</p>
+                  <p className="text-white text-lg">{session.sala.name[locale]}</p>
+                  <p className="text-zinc-400 text-sm">
+                    {session.sala.address.street}, {session.sala.address.city}
+                  </p>
+                </div>
+
+                {session.vinylInfo && (
+                  <div>
+                    <p className="text-zinc-500 text-sm mb-1">{t('sessions.vinyl')}</p>
+                    <p className="text-white">{session.vinylInfo[locale]}</p>
+                  </div>
+                )}
+
+                <div>
+                  <p className="text-zinc-500 text-sm mb-1">
+                    {t('sessions.placesAvailable', { count: session.totalPlaces })}
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-bold text-white">{session.price}€</span>
+                    <span className="text-zinc-400 text-sm">/ {t('booking.places').toLowerCase()}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Booking Button */}
+              <button className="w-full bg-white text-black py-4 rounded-full font-semibold text-lg hover:bg-zinc-200 transition-colors">
+                {t('sessions.bookNow')}
+              </button>
+
+              {session.specialNotes && session.specialNotes[locale] && (
+                <div className="mt-6 p-4 bg-zinc-800 rounded-lg">
+                  <p className="text-zinc-300 text-sm">{session.specialNotes[locale]}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Venue Info */}
+            {session.sala.photos && session.sala.photos.length > 0 && (
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-white mb-4">{t('venue.capacity')}</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {session.sala.photos.slice(0, 4).map((photo, index) => {
+                    const photoUrl = urlForImage(photo)?.width(400).height(300).url()
+                    return photoUrl ? (
+                      <div key={index} className="aspect-video rounded-lg overflow-hidden">
+                        <Image
+                          src={photoUrl}
+                          alt={`Sala ${index + 1}`}
+                          width={400}
+                          height={300}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                    ) : null
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
