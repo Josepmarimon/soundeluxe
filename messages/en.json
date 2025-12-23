@@ -7,6 +7,7 @@
   "navigation": {
     "home": "Home",
     "sessions": "Sessions",
+    "albums": "Catalog",
     "about": "About",
     "contact": "Contact",
     "login": "Login",
@@ -66,6 +67,21 @@
     "vote": "Vote for this album",
     "voted": "Voted",
     "votes": "{count} votes"
+  },
+  "albums": {
+    "title": "Album Catalog",
+    "subtitle": "Discover our collection of iconic albums",
+    "searchPlaceholder": "Search by title or artist...",
+    "allGenres": "All genres",
+    "allArtists": "All artists",
+    "clearFilters": "Clear filters",
+    "showingAll": "Showing all {count} albums",
+    "showingFiltered": "Showing {count} of {total} albums",
+    "noResults": "No albums found with these filters",
+    "genres": {
+      "classical": "Classical",
+      "electronic": "Electronic"
+    }
   },
   "venue": {
     "capacity": "Capacity",

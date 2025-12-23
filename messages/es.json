@@ -7,6 +7,7 @@
   "navigation": {
     "home": "Inicio",
     "sessions": "Sesiones",
+    "albums": "Catálogo",
     "about": "Nosotros",
     "contact": "Contacto",
     "login": "Acceder",
@@ -66,6 +67,21 @@
     "vote": "Votar este álbum",
     "voted": "Votado",
     "votes": "{count} votos"
+  },
+  "albums": {
+    "title": "Catálogo de álbumes",
+    "subtitle": "Descubre nuestra colección de álbumes icónicos",
+    "searchPlaceholder": "Buscar por título o artista...",
+    "allGenres": "Todos los géneros",
+    "allArtists": "Todos los artistas",
+    "clearFilters": "Limpiar filtros",
+    "showingAll": "Mostrando todos los {count} álbumes",
+    "showingFiltered": "Mostrando {count} de {total} álbumes",
+    "noResults": "No se encontraron álbumes con estos filtros",
+    "genres": {
+      "classical": "Clásica",
+      "electronic": "Electrónica"
+    }
   },
   "venue": {
     "capacity": "Capacidad",

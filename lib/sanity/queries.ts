@@ -168,3 +168,21 @@ export const sessionTypesQuery = groq`
     description
   }
 `
+
+// Get unique genres from albums
+export const genresQuery = groq`
+  *[_type == "album"] | order(genre asc) {
+    "value": genre
+  } | {
+    "genres": array::unique([].value)
+  }[0]
+`
+
+// Get unique artists from albums
+export const artistsQuery = groq`
+  *[_type == "album"] | order(artist asc) {
+    "value": artist
+  } | {
+    "artists": array::unique([].value)
+  }[0]
+`

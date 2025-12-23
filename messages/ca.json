@@ -7,6 +7,7 @@
   "navigation": {
     "home": "Inici",
     "sessions": "Sessions",
+    "albums": "Catàleg",
     "about": "Nosaltres",
     "contact": "Contacte",
     "login": "Accedir",
@@ -66,6 +67,21 @@
     "vote": "Votar aquest àlbum",
     "voted": "Votat",
     "votes": "{count} vots"
+  },
+  "albums": {
+    "title": "Catàleg d'àlbums",
+    "subtitle": "Descobreix la nostra col·lecció d'àlbums icònics",
+    "searchPlaceholder": "Cerca per títol o artista...",
+    "allGenres": "Tots els gèneres",
+    "allArtists": "Tots els artistes",
+    "clearFilters": "Netejar filtres",
+    "showingAll": "Mostrant tots els {count} àlbums",
+    "showingFiltered": "Mostrant {count} de {total} àlbums",
+    "noResults": "No s'han trobat àlbums amb aquests filtres",
+    "genres": {
+      "classical": "Clàssica",
+      "electronic": "Electrònica"
+    }
   },
   "venue": {
     "capacity": "Capacitat",
