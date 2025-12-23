@@ -107,7 +107,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
             {pageContent.title}
           </h1>
-          <p className="text-xl text-zinc-400">
+          <p className="text-xl text-zinc-300">
             {pageContent.subtitle}
           </p>
         </div>
@@ -122,7 +122,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
               </h3>
               <a
                 href="mailto:info@sounddeluxe.com"
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-zinc-300 hover:text-white transition-colors"
               >
                 info@sounddeluxe.com
               </a>
@@ -135,7 +135,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
               </h3>
               <a
                 href="tel:+34123456789"
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-zinc-300 hover:text-white transition-colors"
               >
                 +34 123 456 789
               </a>
@@ -146,7 +146,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
               <h3 className="text-white font-semibold mb-2">
                 {pageContent.address}
               </h3>
-              <address className="text-zinc-400 not-italic">
+              <address className="text-zinc-300 not-italic">
                 {pageContent.addressLine1}
                 <br />
                 {pageContent.addressLine2}
@@ -160,7 +160,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
               <h3 className="text-white font-semibold mb-3">
                 {pageContent.hours.title}
               </h3>
-              <div className="space-y-1 text-zinc-400">
+              <div className="space-y-1 text-zinc-300">
                 <p>{pageContent.hours.weekdays}</p>
                 <p>{pageContent.hours.weekend}</p>
                 <p>{pageContent.hours.sunday}</p>

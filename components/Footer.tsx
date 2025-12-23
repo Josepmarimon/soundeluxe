@@ -22,7 +22,7 @@ export default function Footer() {
                 {t('common.soundDeluxe')}
               </span>
             </div>
-            <p className="text-zinc-400 max-w-md">
+            <p className="text-zinc-300 max-w-md">
               {t('footer.description')}
             </p>
           </div>
@@ -36,7 +36,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={`/${locale}`}
-                  className="text-zinc-400 hover:text-white transition-colors"
+                  className="text-zinc-300 hover:text-white transition-colors"
                 >
                   {t('navigation.home')}
                 </Link>
@@ -44,7 +44,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={`/${locale}/sessions`}
-                  className="text-zinc-400 hover:text-white transition-colors"
+                  className="text-zinc-300 hover:text-white transition-colors"
                 >
                   {t('navigation.sessions')}
                 </Link>
@@ -52,7 +52,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={`/${locale}/about`}
-                  className="text-zinc-400 hover:text-white transition-colors"
+                  className="text-zinc-300 hover:text-white transition-colors"
                 >
                   {t('navigation.about')}
                 </Link>
@@ -60,7 +60,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={`/${locale}/contact`}
-                  className="text-zinc-400 hover:text-white transition-colors"
+                  className="text-zinc-300 hover:text-white transition-colors"
                 >
                   {t('navigation.contact')}
                 </Link>
@@ -77,7 +77,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={`/${locale}/privacy`}
-                  className="text-zinc-400 hover:text-white transition-colors"
+                  className="text-zinc-300 hover:text-white transition-colors"
                 >
                   {t('footer.privacy')}
                 </Link>
@@ -85,7 +85,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={`/${locale}/terms`}
-                  className="text-zinc-400 hover:text-white transition-colors"
+                  className="text-zinc-300 hover:text-white transition-colors"
                 >
                   {t('footer.terms')}
                 </Link>
@@ -93,7 +93,7 @@ export default function Footer() {
               <li>
                 <Link
                   href={`/${locale}/cookies`}
-                  className="text-zinc-400 hover:text-white transition-colors"
+                  className="text-zinc-300 hover:text-white transition-colors"
                 >
                   {t('footer.cookies')}
                 </Link>
@@ -105,7 +105,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-zinc-800">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-zinc-500 text-sm">
+            <p className="text-zinc-400 text-sm">
               © {new Date().getFullYear()} Sound Deluxe. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
@@ -113,7 +113,7 @@ export default function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-zinc-300 hover:text-white transition-colors"
               >
                 Instagram
               </a>
@@ -121,7 +121,7 @@ export default function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-zinc-300 hover:text-white transition-colors"
               >
                 Facebook
               </a>
@@ -129,7 +129,7 @@ export default function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-zinc-300 hover:text-white transition-colors"
               >
                 Twitter
               </a>

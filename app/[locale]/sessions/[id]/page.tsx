@@ -5,7 +5,7 @@ import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
 import type { Session, Locale } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
-import { PortableText } from '@portabletext/react'
+import PortableTextContent from '@/components/PortableTextContent'
 
 interface SessionPageProps {
   params: Promise<{
@@ -70,10 +70,10 @@ export default async function SessionPage({ params }: SessionPageProps) {
                 <h1 className="text-4xl font-bold text-white mb-2">
                   {session.album.title}
                 </h1>
-                <p className="text-2xl text-zinc-400">{session.album.artist}</p>
+                <p className="text-2xl text-zinc-300">{session.album.artist}</p>
               </div>
 
-              <div className="flex items-center gap-4 text-sm text-zinc-400">
+              <div className="flex items-center gap-4 text-sm text-zinc-300">
                 <span>{session.album.year}</span>
                 <span>•</span>
                 <span>{session.album.genre}</span>
@@ -86,8 +86,8 @@ export default async function SessionPage({ params }: SessionPageProps) {
               </div>
 
               {session.album.description && (
-                <div className="prose prose-invert max-w-none">
-                  <PortableText value={session.album.description[locale]} />
+                <div className="max-w-none">
+                  <PortableTextContent value={session.album.description[locale]} />
                 </div>
               )}
 
@@ -138,7 +138,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
 
               {/* Session Type */}
               <div className="mb-6">
-                <span className="inline-block px-4 py-2 bg-zinc-800 text-zinc-300 rounded-full text-sm font-medium">
+                <span className="inline-block px-4 py-2 bg-zinc-800 text-zinc-200 rounded-full text-sm font-medium">
                   {session.sessionType.name[locale]}
                 </span>
               </div>
@@ -146,32 +146,32 @@ export default async function SessionPage({ params }: SessionPageProps) {
               {/* Session Details */}
               <div className="space-y-4 mb-8">
                 <div>
-                  <p className="text-zinc-500 text-sm mb-1">{t('sessions.date')}</p>
+                  <p className="text-zinc-400 text-sm mb-1">{t('sessions.date')}</p>
                   <p className="text-white text-lg">{formattedDate}</p>
                 </div>
 
                 <div>
-                  <p className="text-zinc-500 text-sm mb-1">{t('sessions.venue')}</p>
+                  <p className="text-zinc-400 text-sm mb-1">{t('sessions.venue')}</p>
                   <p className="text-white text-lg">{session.sala.name[locale]}</p>
-                  <p className="text-zinc-400 text-sm">
+                  <p className="text-zinc-300 text-sm">
                     {session.sala.address.street}, {session.sala.address.city}
                   </p>
                 </div>
 
                 {session.vinylInfo && (
                   <div>
-                    <p className="text-zinc-500 text-sm mb-1">{t('sessions.vinyl')}</p>
+                    <p className="text-zinc-400 text-sm mb-1">{t('sessions.vinyl')}</p>
                     <p className="text-white">{session.vinylInfo[locale]}</p>
                   </div>
                 )}
 
                 <div>
-                  <p className="text-zinc-500 text-sm mb-1">
+                  <p className="text-zinc-400 text-sm mb-1">
                     {t('sessions.placesAvailable', { count: session.totalPlaces })}
                   </p>
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-bold text-white">{session.price}€</span>
-                    <span className="text-zinc-400 text-sm">/ {t('booking.places').toLowerCase()}</span>
+                    <span className="text-zinc-300 text-sm">/ {t('booking.places').toLowerCase()}</span>
                   </div>
                 </div>
               </div>

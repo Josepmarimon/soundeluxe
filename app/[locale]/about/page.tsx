@@ -113,7 +113,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
                   ? 'Ven a vivir la experiencia'
                   : 'Come live the experience'}
             </h2>
-            <p className="text-zinc-400 mb-6">
+            <p className="text-zinc-300 mb-6">
               {locale === 'ca'
                 ? 'Descobreix les nostres properes sessions i reserva la teva plaça.'
                 : locale === 'es'

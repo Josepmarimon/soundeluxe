@@ -45,7 +45,7 @@ export default function SessionCard({ session }: SessionCardProps) {
       <div className="p-6">
         {/* Session Type Badge */}
         <div className="mb-3">
-          <span className="inline-block px-3 py-1 bg-zinc-800 text-zinc-400 text-xs font-medium rounded-full">
+          <span className="inline-block px-3 py-1 bg-zinc-800 text-zinc-200 text-xs font-medium rounded-full">
             {session.sessionType.name[locale]}
           </span>
         </div>
@@ -54,12 +54,12 @@ export default function SessionCard({ session }: SessionCardProps) {
         <h3 className="text-xl font-bold text-white mb-1">
           {session.album.title}
         </h3>
-        <p className="text-zinc-400 mb-4">{session.album.artist}</p>
+        <p className="text-zinc-300 mb-4">{session.album.artist}</p>
 
         {/* Date & Venue */}
         <div className="space-y-2 mb-4 text-sm">
-          <p className="text-zinc-300">{formattedDate}</p>
-          <p className="text-zinc-400">{session.sala.name[locale]}</p>
+          <p className="text-zinc-200">{formattedDate}</p>
+          <p className="text-zinc-300">{session.sala.name[locale]}</p>
         </div>
 
         {/* Price & Booking */}
@@ -73,7 +73,7 @@ export default function SessionCard({ session }: SessionCardProps) {
         </div>
 
         {/* Available spots */}
-        <p className="text-zinc-500 text-xs mt-3">
+        <p className="text-zinc-400 text-xs mt-3">
           {session.totalPlaces === 1
             ? t('sessions.onePlace')
             : t('sessions.placesAvailable', { count: session.totalPlaces })}

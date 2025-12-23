@@ -39,25 +39,25 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-8">
             <Link
               href={`/${locale}`}
-              className="text-zinc-400 hover:text-white transition-colors"
+              className="text-zinc-300 hover:text-white transition-colors"
             >
               {t('navigation.home')}
             </Link>
             <Link
               href={`/${locale}/sessions`}
-              className="text-zinc-400 hover:text-white transition-colors"
+              className="text-zinc-300 hover:text-white transition-colors"
             >
               {t('navigation.sessions')}
             </Link>
             <Link
               href={`/${locale}/about`}
-              className="text-zinc-400 hover:text-white transition-colors"
+              className="text-zinc-300 hover:text-white transition-colors"
             >
               {t('navigation.about')}
             </Link>
             <Link
               href={`/${locale}/contact`}
-              className="text-zinc-400 hover:text-white transition-colors"
+              className="text-zinc-300 hover:text-white transition-colors"
             >
               {t('navigation.contact')}
             </Link>
@@ -74,7 +74,7 @@ export default function Navbar() {
                   className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                     locale === loc
                       ? 'bg-white text-black'
-                      : 'text-zinc-400 hover:text-white'
+                      : 'text-zinc-300 hover:text-white'
                   }`}
                 >
                   {loc.toUpperCase()}
@@ -89,13 +89,13 @@ export default function Navbar() {
               <div className="flex items-center gap-3">
                 <Link
                   href={`/${locale}/profile`}
-                  className="text-zinc-400 hover:text-white transition-colors text-sm hidden sm:inline"
+                  className="text-zinc-300 hover:text-white transition-colors text-sm hidden sm:inline"
                 >
                   {session.user?.name || t('navigation.profile')}
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: `/${locale}` })}
-                  className="text-zinc-400 hover:text-white transition-colors text-sm"
+                  className="text-zinc-300 hover:text-white transition-colors text-sm"
                 >
                   {t('navigation.logout')}
                 </button>
@@ -104,7 +104,7 @@ export default function Navbar() {
               <>
                 <Link
                   href={`/${locale}/login`}
-                  className="text-zinc-400 hover:text-white transition-colors text-sm hidden sm:inline"
+                  className="text-zinc-300 hover:text-white transition-colors text-sm hidden sm:inline"
                 >
                   {t('navigation.login')}
                 </Link>

@@ -18,7 +18,7 @@ export default async function HomePage() {
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
             {t('hero.title')}
           </h1>
-          <p className="text-xl md:text-2xl text-zinc-400 mb-8">
+          <p className="text-xl md:text-2xl text-zinc-300 mb-8">
             {t('hero.subtitle')}
           </p>
           <a
@@ -38,7 +38,7 @@ export default async function HomePage() {
           </h2>
 
           {sessions.length === 0 ? (
-            <p className="text-center text-zinc-400 text-lg">
+            <p className="text-center text-zinc-300 text-lg">
               {t('sessions.noSessions')}
             </p>
           ) : (
