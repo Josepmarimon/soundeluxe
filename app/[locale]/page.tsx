@@ -27,8 +27,39 @@ export default async function HomePage({ params }: { params: { locale: string } 
   return (
     <div className="min-h-screen bg-black pt-16">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center text-center px-4">
-        <div className="max-w-4xl mx-auto">
+      <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
+        {/* Background Image/Video */}
+        {homePageData?.heroBackgroundType === 'image' && homePageData?.heroBackgroundImage && (
+          <>
+            <div
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundImage: `url(${urlForImage(homePageData.heroBackgroundImage)?.width(1920).url()})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <div className="absolute inset-0 bg-black/60 z-10" />
+          </>
+        )}
+
+        {homePageData?.heroBackgroundType === 'video' && homePageData?.heroBackgroundVideo?.asset?.url && (
+          <>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover z-0"
+            >
+              <source src={homePageData.heroBackgroundVideo.asset.url} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-black/50 z-10" />
+          </>
+        )}
+
+        {/* Content */}
+        <div className="max-w-4xl mx-auto relative z-20">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
             {homePageData?.heroTitle?.[locale] || t('hero.title')}
           </h1>

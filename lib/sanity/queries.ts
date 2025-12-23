@@ -211,6 +211,14 @@ export const homePageQuery = groq`
     heroTitle,
     heroSubtitle,
     heroCta,
+    heroBackgroundType,
+    heroBackgroundImage,
+    heroBackgroundVideo {
+      asset->{
+        url,
+        _id
+      }
+    },
     experienceTitle,
     experienceSubtitle,
     experienceFeatures[] {

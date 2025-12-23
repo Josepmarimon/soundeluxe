@@ -120,6 +120,14 @@ export interface HomePage {
   heroTitle?: MultilingualText
   heroSubtitle?: MultilingualText
   heroCta?: MultilingualText
+  heroBackgroundType?: 'image' | 'video' | 'none'
+  heroBackgroundImage?: Image
+  heroBackgroundVideo?: {
+    asset: {
+      url: string
+      _id: string
+    }
+  }
   experienceTitle?: MultilingualText
   experienceSubtitle?: MultilingualText
   experienceFeatures?: ExperienceFeature[]

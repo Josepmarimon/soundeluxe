@@ -92,6 +92,46 @@ export default defineType({
       ],
     },
     {
+      name: 'heroBackgroundType',
+      type: 'string',
+      title: 'Hero Background Type',
+      options: {
+        list: [
+          { title: 'Image', value: 'image' },
+          { title: 'Video', value: 'video' },
+          { title: 'None', value: 'none' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'none',
+    },
+    {
+      name: 'heroBackgroundImage',
+      type: 'image',
+      title: 'Hero Background Image',
+      hidden: ({ document }) => document?.heroBackgroundType !== 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+        },
+      ],
+    },
+    {
+      name: 'heroBackgroundVideo',
+      type: 'file',
+      title: 'Hero Background Video',
+      hidden: ({ document }) => document?.heroBackgroundType !== 'video',
+      options: {
+        accept: 'video/*',
+      },
+      description: 'Upload an MP4 video for the hero background. Keep file size under 10MB for optimal performance.',
+    },
+    {
       name: 'experienceTitle',
       type: 'object',
       title: 'Experience Section Title',
