@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authConfig } from '@/lib/auth'
+import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 // POST - Create a vote
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig)
+    const session = await auth()
 
     if (!session?.user) {
       return NextResponse.json(
@@ -55,7 +54,7 @@ export async function POST(request: NextRequest) {
 // DELETE - Remove a vote
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig)
+    const session = await auth()
 
     if (!session?.user) {
       return NextResponse.json(

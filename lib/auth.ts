@@ -1,4 +1,4 @@
-import { NextAuthConfig } from 'next-auth'
+import NextAuth, { NextAuthConfig } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcrypt'
 import { prisma } from './prisma'
@@ -67,3 +67,5 @@ export const authConfig: NextAuthConfig = {
     strategy: 'jwt',
   },
 }
+
+export const { handlers, auth, signIn, signOut } = NextAuth(authConfig)

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authConfig } from '@/lib/auth'
+import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 // GET - Check if current user has voted for an album
@@ -9,7 +8,7 @@ export async function GET(
   { params }: { params: Promise<{ albumId: string }> }
 ) {
   try {
-    const session = await getServerSession(authConfig)
+    const session = await auth()
 
     if (!session?.user) {
       return NextResponse.json(
