@@ -75,7 +75,10 @@ export default async function HomePage({ params }: { params: { locale: string } 
           <div className="grid md:grid-cols-2 gap-8">
             {featuresWithImages.map((feature, index) => {
               // TypeScript safety: image is guaranteed to exist after filter and map
-              const imageUrl = urlForImage(feature.image as NonNullable<typeof feature.image>).width(800).url()
+              if (!feature.image) return null
+              const imageBuilder = urlForImage(feature.image)
+              if (!imageBuilder) return null
+              const imageUrl = imageBuilder.width(800).url()
 
               return (
                 <div key={index} className="group relative overflow-hidden rounded-2xl border border-zinc-800 hover:border-[#D4AF37]/30 transition-all duration-300">
