@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl'
 import type { SessionListItem, Locale } from '@/lib/sanity/types'
 import AlbumCarousel from '@/components/AlbumCarousel'
+import VoteCount from '@/components/VoteCount'
 
 interface SessionCardProps {
   session: SessionListItem
@@ -55,6 +56,11 @@ export default function SessionCard({ session }: SessionCardProps) {
         <div className="space-y-2 mb-4 text-sm">
           <p className="text-zinc-800">{formattedDate}</p>
           <p className="text-zinc-700">{session.sala.name[locale]}</p>
+        </div>
+
+        {/* Vote Count */}
+        <div className="mb-4">
+          <VoteCount albumId={session.album._id} compact={true} />
         </div>
 
         {/* Price & Booking */}

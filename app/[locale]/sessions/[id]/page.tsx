@@ -7,6 +7,7 @@ import type { Session, Locale } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
 import PortableTextContent from '@/components/PortableTextContent'
 import AlbumCarousel from '@/components/AlbumCarousel'
+import VoteButton from '@/components/VoteButton'
 
 interface SessionPageProps {
   params: Promise<{
@@ -87,6 +88,11 @@ export default async function SessionPage({ params }: SessionPageProps) {
                   <PortableTextContent value={session.album.description[locale]} />
                 </div>
               )}
+
+              {/* Vote Button */}
+              <div className="pt-4">
+                <VoteButton albumId={session.album._id} showCount={true} />
+              </div>
 
               {/* Streaming Links */}
               {session.album.links && (

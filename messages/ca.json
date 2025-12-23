@@ -64,6 +64,7 @@
     "comments": "Comentaris",
     "addComment": "Afegir comentari",
     "vote": "Votar aquest àlbum",
+    "voted": "Votat",
     "votes": "{count} vots"
   },
   "venue": {

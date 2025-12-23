@@ -64,6 +64,7 @@
     "comments": "Comentarios",
     "addComment": "Añadir comentario",
     "vote": "Votar este álbum",
+    "voted": "Votado",
     "votes": "{count} votos"
   },
   "venue": {
