@@ -71,7 +71,8 @@
   "albums": {
     "title": "Catàleg d'àlbums",
     "subtitle": "Descobreix la nostra col·lecció d'àlbums icònics",
-    "searchPlaceholder": "Cerca per títol o artista...",
+    "searchPlaceholder": "Cerca per títol...",
+    "searchArtist": "Cerca artista...",
     "allGenres": "Tots els gèneres",
     "allArtists": "Tots els artistes",
     "clearFilters": "Netejar filtres",

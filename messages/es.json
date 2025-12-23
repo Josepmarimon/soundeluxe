@@ -71,7 +71,8 @@
   "albums": {
     "title": "Catálogo de álbumes",
     "subtitle": "Descubre nuestra colección de álbumes icónicos",
-    "searchPlaceholder": "Buscar por título o artista...",
+    "searchPlaceholder": "Buscar por título...",
+    "searchArtist": "Buscar artista...",
     "allGenres": "Todos los géneros",
     "allArtists": "Todos los artistas",
     "clearFilters": "Limpiar filtros",

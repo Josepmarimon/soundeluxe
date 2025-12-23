@@ -12,7 +12,8 @@ interface SessionFiltersProps {
 export default function SessionFilters({ sessions }: SessionFiltersProps) {
   const t = useTranslations()
   const [selectedGenre, setSelectedGenre] = useState<string>('')
-  const [selectedArtist, setSelectedArtist] = useState<string>('')
+  const [artistSearch, setArtistSearch] = useState<string>('')
+  const [genresOpen, setGenresOpen] = useState<boolean>(false)
 
   // Extract unique genres and artists from sessions
   const { genres, artists } = useMemo(() => {
@@ -34,11 +35,13 @@ export default function SessionFilters({ sessions }: SessionFiltersProps) {
   const filteredSessions = useMemo(() => {
     return sessions.filter((session) => {
       const matchesGenre = !selectedGenre || session.album.genre === selectedGenre
-      const matchesArtist = !selectedArtist || session.album.artist === selectedArtist
+      const matchesArtist =
+        !artistSearch ||
+        session.album.artist.toLowerCase().includes(artistSearch.toLowerCase())
 
       return matchesGenre && matchesArtist
     })
-  }, [sessions, selectedGenre, selectedArtist])
+  }, [sessions, selectedGenre, artistSearch])
 
   // Get genre display name
   const getGenreName = (genre: string) => {
@@ -58,103 +61,86 @@ export default function SessionFilters({ sessions }: SessionFiltersProps) {
     <div>
       {/* Filters */}
       {(genres.length > 1 || artists.length > 1) && (
-        <div className="mb-12">
-          {/* Genre Filter - Toggle Buttons */}
-          {genres.length > 1 && (
-            <div className="mb-6">
-              <h3 className="text-white text-sm font-medium mb-3 text-center">
-                {t('albums.allGenres')}
-              </h3>
-              <div className="flex flex-wrap justify-center gap-3">
-                {/* All Genres Button */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row gap-4 max-w-3xl mx-auto">
+            {/* Genre Dropdown */}
+            {genres.length > 1 && (
+              <div className="relative flex-1">
                 <button
-                  onClick={() => setSelectedGenre('')}
-                  className={`px-6 py-2.5 rounded-full font-medium transition-all shadow-md ${
-                    selectedGenre === ''
+                  onClick={() => setGenresOpen(!genresOpen)}
+                  className={`w-full px-6 py-3 rounded-full font-medium shadow-md transition-all flex items-center justify-between ${
+                    selectedGenre
                       ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
                       : 'bg-[#F5F1E8] text-black hover:bg-[#EDE8DC]'
                   }`}
                 >
-                  {t('albums.allGenres')}
+                  <span>{selectedGenre ? getGenreName(selectedGenre) : t('albums.allGenres')}</span>
+                  <svg
+                    className={`w-5 h-5 transition-transform ${genresOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </button>
 
-                {/* Individual Genre Buttons */}
-                {genres.map((genre) => (
-                  <button
-                    key={genre}
-                    onClick={() => setSelectedGenre(genre)}
-                    className={`px-6 py-2.5 rounded-full font-medium transition-all shadow-md ${
-                      selectedGenre === genre
-                        ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
-                        : 'bg-[#F5F1E8] text-black hover:bg-[#EDE8DC]'
-                    }`}
-                  >
-                    {getGenreName(genre)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Artist Filter - Styled Select */}
-          {artists.length > 1 && (
-            <div className="mb-6">
-              <h3 className="text-white text-sm font-medium mb-3 text-center">
-                {t('albums.allArtists')}
-              </h3>
-              <div className="max-w-md mx-auto">
-                <div className="relative">
-                  <select
-                    value={selectedArtist}
-                    onChange={(e) => setSelectedArtist(e.target.value)}
-                    className="w-full px-6 py-3 bg-[#F5F1E8] text-black rounded-full font-medium shadow-md appearance-none cursor-pointer hover:bg-[#EDE8DC] transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black"
-                  >
-                    <option value="">{t('albums.allArtists')}</option>
-                    {artists.map((artist) => (
-                      <option key={artist} value={artist}>
-                        {artist}
-                      </option>
-                    ))}
-                  </select>
-                  {/* Custom dropdown arrow */}
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg
-                      className="w-5 h-5 text-black"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                {/* Genre Dropdown Menu */}
+                {genresOpen && (
+                  <div className="absolute z-10 w-full mt-2 bg-[#F5F1E8] rounded-2xl shadow-xl overflow-hidden">
+                    <button
+                      onClick={() => {
+                        setSelectedGenre('')
+                        setGenresOpen(false)
+                      }}
+                      className="w-full px-6 py-3 text-left text-black hover:bg-[#EDE8DC] transition-colors font-medium"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
+                      {t('albums.allGenres')}
+                    </button>
+                    {genres.map((genre) => (
+                      <button
+                        key={genre}
+                        onClick={() => {
+                          setSelectedGenre(genre)
+                          setGenresOpen(false)
+                        }}
+                        className="w-full px-6 py-3 text-left text-black hover:bg-[#EDE8DC] transition-colors font-medium"
+                      >
+                        {getGenreName(genre)}
+                      </button>
+                    ))}
                   </div>
-                </div>
+                )}
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Clear Filters Button */}
-          {(selectedGenre || selectedArtist) && (
-            <div className="text-center mb-4">
-              <button
-                onClick={() => {
-                  setSelectedGenre('')
-                  setSelectedArtist('')
-                }}
-                className="px-8 py-2.5 bg-zinc-800 text-white rounded-full font-medium hover:bg-zinc-700 transition-colors shadow-md"
-              >
-                {t('albums.clearFilters')}
-              </button>
-            </div>
-          )}
+            {/* Artist Search */}
+            {artists.length > 1 && (
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  placeholder={t('albums.searchArtist')}
+                  value={artistSearch}
+                  onChange={(e) => setArtistSearch(e.target.value)}
+                  className="w-full px-6 py-3 bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
+                />
+                {artistSearch && (
+                  <button
+                    onClick={() => setArtistSearch('')}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-black transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Results count */}
-          {(selectedGenre || selectedArtist) && (
-            <div className="text-zinc-400 text-sm text-center">
+          {(selectedGenre || artistSearch) && (
+            <div className="text-zinc-400 text-sm text-center mt-4">
               {filteredSessions.length === sessions.length
                 ? t('albums.showingAll', { count: sessions.length })
                 : t('albums.showingFiltered', {

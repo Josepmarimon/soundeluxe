@@ -71,7 +71,8 @@
   "albums": {
     "title": "Album Catalog",
     "subtitle": "Discover our collection of iconic albums",
-    "searchPlaceholder": "Search by title or artist...",
+    "searchPlaceholder": "Search by title...",
+    "searchArtist": "Search artist...",
     "allGenres": "All genres",
     "allArtists": "All artists",
     "clearFilters": "Clear filters",
