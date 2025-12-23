@@ -7,9 +7,40 @@ import SessionCard from '@/components/SessionCard'
 
 interface SessionFiltersProps {
   sessions: SessionListItem[]
+  showAlbumSale?: boolean
+  enableFlip?: boolean
 }
 
-export default function SessionFilters({ sessions }: SessionFiltersProps) {
+interface SessionCardsGridProps {
+  sessions: SessionListItem[]
+  showAlbumSale?: boolean
+  enableFlip?: boolean
+}
+
+function SessionCardsGrid({ sessions, showAlbumSale = true, enableFlip = false }: SessionCardsGridProps) {
+  const [flippedCard, setFlippedCard] = useState<string | null>(null)
+
+  const handleCardFlip = (sessionId: string) => {
+    setFlippedCard(flippedCard === sessionId ? null : sessionId)
+  }
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+      {sessions.map((session) => (
+        <SessionCard
+          key={session._id}
+          session={session}
+          showAlbumSale={showAlbumSale}
+          enableFlip={enableFlip}
+          isFlipped={flippedCard === session._id}
+          onFlip={() => handleCardFlip(session._id)}
+        />
+      ))}
+    </div>
+  )
+}
+
+export default function SessionFilters({ sessions, showAlbumSale = true, enableFlip = false }: SessionFiltersProps) {
   const t = useTranslations()
   const [selectedGenre, setSelectedGenre] = useState<string>('')
   const [artistSearch, setArtistSearch] = useState<string>('')
@@ -62,74 +93,52 @@ export default function SessionFilters({ sessions }: SessionFiltersProps) {
       {/* Filters - only visible on desktop, hidden on mobile */}
       {(genres.length > 1 || artists.length > 1) && (
         <div className="mb-8 hidden md:block">
-          <div className="flex flex-row gap-4 max-w-3xl mx-auto">
-            {/* Genre Dropdown */}
+          <div className="flex flex-wrap justify-center items-center gap-2 max-w-5xl mx-auto">
+            {/* Genre Buttons */}
             {genres.length > 1 && (
-              <div className="relative flex-1">
+              <>
                 <button
-                  onClick={() => setGenresOpen(!genresOpen)}
-                  className={`w-full px-6 py-3 rounded-full font-medium shadow-md transition-all flex items-center justify-between ${
-                    selectedGenre
+                  onClick={() => setSelectedGenre('')}
+                  className={`px-4 py-1.5 text-sm rounded-full font-medium shadow-md transition-all ${
+                    !selectedGenre
                       ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
                       : 'bg-[#F5F1E8] text-black hover:bg-[#EDE8DC]'
                   }`}
                 >
-                  <span>{selectedGenre ? getGenreName(selectedGenre) : t('albums.allGenres')}</span>
-                  <svg
-                    className={`w-5 h-5 transition-transform ${genresOpen ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+                  {t('albums.allGenres')}
                 </button>
-
-                {/* Genre Dropdown Menu */}
-                {genresOpen && (
-                  <div className="absolute z-10 w-full mt-2 bg-[#F5F1E8] rounded-2xl shadow-xl overflow-hidden">
-                    <button
-                      onClick={() => {
-                        setSelectedGenre('')
-                        setGenresOpen(false)
-                      }}
-                      className="w-full px-6 py-3 text-left text-black hover:bg-[#EDE8DC] transition-colors font-medium"
-                    >
-                      {t('albums.allGenres')}
-                    </button>
-                    {genres.map((genre) => (
-                      <button
-                        key={genre}
-                        onClick={() => {
-                          setSelectedGenre(genre)
-                          setGenresOpen(false)
-                        }}
-                        className="w-full px-6 py-3 text-left text-black hover:bg-[#EDE8DC] transition-colors font-medium"
-                      >
-                        {getGenreName(genre)}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+                {genres.map((genre) => (
+                  <button
+                    key={genre}
+                    onClick={() => setSelectedGenre(genre)}
+                    className={`px-4 py-1.5 text-sm rounded-full font-medium shadow-md transition-all ${
+                      selectedGenre === genre
+                        ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
+                        : 'bg-[#F5F1E8] text-black hover:bg-[#EDE8DC]'
+                    }`}
+                  >
+                    {getGenreName(genre)}
+                  </button>
+                ))}
+              </>
             )}
 
             {/* Artist Search */}
             {artists.length > 1 && (
-              <div className="relative flex-1">
+              <div className="relative w-48">
                 <input
                   type="text"
                   placeholder={t('albums.searchArtist')}
                   value={artistSearch}
                   onChange={(e) => setArtistSearch(e.target.value)}
-                  className="w-full px-6 py-3 bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
+                  className="w-full px-4 py-1.5 text-sm bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
                 />
                 {artistSearch && (
                   <button
                     onClick={() => setArtistSearch('')}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-black transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-black transition-colors"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -158,11 +167,7 @@ export default function SessionFilters({ sessions }: SessionFiltersProps) {
           <p className="text-zinc-300 text-lg">{t('albums.noResults')}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
-          {filteredSessions.map((session) => (
-            <SessionCard key={session._id} session={session} />
-          ))}
-        </div>
+        <SessionCardsGrid sessions={filteredSessions} showAlbumSale={showAlbumSale} enableFlip={enableFlip} />
       )}
     </div>
   )
