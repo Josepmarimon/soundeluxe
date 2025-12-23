@@ -36,6 +36,26 @@
     "duration": "Duration",
     "vinyl": "Vinyl"
   },
+  "experience": {
+    "title": "An unmatched sonic experience",
+    "subtitle": "Discover why Sound Deluxe offers an authentic audiophile experience",
+    "acoustics": {
+      "title": "Exceptional acoustics",
+      "description": "Acoustically treated space meeting the highest current standards"
+    },
+    "hiend": {
+      "title": "Hi-End equipment",
+      "description": "High-fidelity equipment revealing the finest details hidden in standard systems"
+    },
+    "atmosphere": {
+      "title": "Minimalist atmosphere",
+      "description": "Clean, distraction-free space for maximum attention to the music"
+    },
+    "comfort": {
+      "title": "Premium comfort",
+      "description": "Comfortable and welcoming space for special occasions"
+    }
+  },
   "sessionTypes": {
     "standard": "Standard",
     "debate": "With Debate",

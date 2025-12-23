@@ -36,6 +36,26 @@
     "duration": "Durada",
     "vinyl": "Vinil"
   },
+  "experience": {
+    "title": "Una experiència sonora inigualable",
+    "subtitle": "Descobreix per què Sound Deluxe ofereix una autèntica experiència audiòfila",
+    "acoustics": {
+      "title": "Acústica excepcional",
+      "description": "Espai acústicament tractat amb els estàndards més alts de l'actualitat"
+    },
+    "hiend": {
+      "title": "Equipament Hi-End",
+      "description": "Equipament d'alta fidelitat que revela els mínims detalls ocults en equips estàndard"
+    },
+    "atmosphere": {
+      "title": "Ambient minimalista",
+      "description": "Espai net i sense distraccions per a una atenció màxima a la música"
+    },
+    "comfort": {
+      "title": "Confort premium",
+      "description": "Espai còmode i acollidor per a situacions especials"
+    }
+  },
   "sessionTypes": {
     "standard": "Estàndard",
     "debate": "Amb Debat",
