@@ -96,6 +96,7 @@ export interface SessionListItem {
     genre: string
     coverImage: Image
     additionalImages?: Image[]
+    description?: MultilingualRichText
     salePrice?: number
     inStock?: boolean
   }
