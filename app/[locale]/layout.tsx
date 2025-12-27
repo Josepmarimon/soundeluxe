@@ -22,6 +22,25 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Sound Deluxe - Experiències audiòfiles d\'alta fidelitat',
   description: 'Sessions exclusives d\'escolta en alta fidelitat per a autèntics audiòfils a Barcelona',
+  openGraph: {
+    title: 'Sound Deluxe - Experiències audiòfiles d\'alta fidelitat',
+    description: 'Sessions exclusives d\'escolta en alta fidelitat per a autèntics audiòfils a Barcelona',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Sound Deluxe',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sound Deluxe - Experiències audiòfiles d\'alta fidelitat',
+    description: 'Sessions exclusives d\'escolta en alta fidelitat per a autèntics audiòfils a Barcelona',
+    images: ['/og-image.png'],
+  },
 }
 
 export function generateStaticParams() {
