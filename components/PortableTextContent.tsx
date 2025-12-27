@@ -20,7 +20,7 @@ const components: PortableTextComponents = {
       <h3 className="text-xl font-bold text-white mt-4 mb-2">{children}</h3>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-zinc-600 pl-4 italic text-zinc-300 my-4">
+      <blockquote className="border-l-4 border-[#D4AF37] pl-4 italic text-zinc-300 my-4">
         {children}
       </blockquote>
     ),
@@ -33,7 +33,7 @@ const components: PortableTextComponents = {
       <em className="italic text-zinc-200">{children}</em>
     ),
     code: ({ children }) => (
-      <code className="bg-zinc-800 text-zinc-100 px-2 py-1 rounded text-sm font-mono">
+      <code className="bg-[#1a3a5c] text-zinc-100 px-2 py-1 rounded text-sm font-mono">
         {children}
       </code>
     ),

@@ -38,7 +38,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
   })
 
   return (
-    <div className="min-h-screen bg-black pt-16">
+    <div className="min-h-screen bg-transparent pt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Back button */}
         <a
@@ -96,7 +96,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
                       href={session.album.links.spotify}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 bg-black text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
+                      className="px-4 py-2 bg-[#0a1929] text-white rounded-full hover:bg-[#1a3a5c] transition-colors text-sm"
                     >
                       Spotify
                     </a>
@@ -106,7 +106,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
                       href={session.album.links.appleMusic}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 bg-black text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
+                      className="px-4 py-2 bg-[#0a1929] text-white rounded-full hover:bg-[#1a3a5c] transition-colors text-sm"
                     >
                       Apple Music
                     </a>
@@ -116,7 +116,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
                       href={session.album.links.youtube}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 bg-black text-white rounded-full hover:bg-zinc-800 transition-colors text-sm"
+                      className="px-4 py-2 bg-[#0a1929] text-white rounded-full hover:bg-[#1a3a5c] transition-colors text-sm"
                     >
                       YouTube
                     </a>

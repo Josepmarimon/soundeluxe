@@ -62,7 +62,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const pageContent = content[locale]
 
   return (
-    <div className="min-h-screen bg-black pt-16">
+    <div className="min-h-screen bg-transparent pt-16">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-8">
           {pageContent.title}

@@ -109,7 +109,7 @@ export default function VoteButton({
   if (checkingVote) {
     return (
       <div className="flex items-center gap-2">
-        <div className="animate-pulse bg-zinc-700 h-10 w-32 rounded-full" />
+        <div className="animate-pulse bg-[#1a3a5c] h-10 w-32 rounded-full" />
       </div>
     )
   }
@@ -126,7 +126,7 @@ export default function VoteButton({
           ${
             hasVoted
               ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028]'
-              : 'bg-zinc-800 text-white hover:bg-zinc-700 border border-[#D4AF37]/30'
+              : 'bg-[#0a1929] text-white hover:bg-[#1a3a5c] border border-[#D4AF37]/30'
           }
         `}
       >

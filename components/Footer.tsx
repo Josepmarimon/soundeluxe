@@ -9,7 +9,7 @@ export default function Footer() {
   const locale = useLocale() as Locale
 
   return (
-    <footer className="bg-zinc-950 border-t border-zinc-800">
+    <footer className="bg-[#0a1929] border-t border-[#254a6e]/30">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -103,7 +103,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-zinc-800">
+        <div className="mt-12 pt-8 border-t border-[#254a6e]/30">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-zinc-400 text-sm">
               © {new Date().getFullYear()} Sound Deluxe. All rights reserved.

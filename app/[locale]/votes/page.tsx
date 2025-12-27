@@ -18,7 +18,7 @@ export default async function VotesPage() {
   const artists = artistsData?.artists || []
 
   return (
-    <div className="min-h-screen bg-black pt-16">
+    <div className="min-h-screen bg-transparent pt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12">

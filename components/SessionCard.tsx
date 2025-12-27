@@ -142,7 +142,7 @@ export default function SessionCard({ session, showAlbumSale = true, enableFlip 
                   <a
                     href={`/${locale}/sessions/${session._id}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="bg-black text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold text-sm md:text-base shadow-lg inline-block hover:bg-zinc-800 transition-colors"
+                    className="bg-[#0a1929] text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold text-sm md:text-base shadow-lg inline-block hover:bg-[#1a3a5c] transition-colors"
                   >
                     {t('sessions.book')}
                   </a>
@@ -216,7 +216,7 @@ export default function SessionCard({ session, showAlbumSale = true, enableFlip 
                   {session.album.salePrice}€
                 </span>
               </div>
-              <button className="bg-black text-white px-3 md:px-6 py-1.5 md:py-2 rounded-full font-semibold text-xs md:text-base hover:bg-zinc-800 transition-all shadow-md">
+              <button className="bg-[#0a1929] text-white px-3 md:px-6 py-1.5 md:py-2 rounded-full font-semibold text-xs md:text-base hover:bg-[#1a3a5c] transition-all shadow-md">
                 {t('sessions.buyDisc')}
               </button>
             </div>

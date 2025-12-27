@@ -122,7 +122,7 @@ export default function ProfilePage() {
 
   if (status === 'loading' || isLoading) {
     return (
-      <div className="min-h-screen bg-black pt-16 flex items-center justify-center">
+      <div className="min-h-screen bg-transparent pt-16 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#D4AF37]"></div>
       </div>
     )
@@ -133,7 +133,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-16">
+    <div className="min-h-screen bg-transparent pt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12">
@@ -152,7 +152,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-8 border-b border-zinc-800">
+        <div className="flex gap-4 mb-8 border-b border-[#254a6e]">
           <button
             onClick={() => setActiveTab('bookings')}
             className={`pb-4 px-6 font-semibold transition-colors ${
@@ -193,7 +193,7 @@ export default function ProfilePage() {
                 {bookings.map((booking) => (
                   <div
                     key={booking.id}
-                    className="bg-zinc-900 rounded-lg overflow-hidden hover:bg-zinc-800 transition-colors"
+                    className="bg-velvet-card rounded-lg overflow-hidden hover:bg-[#1a3a5c]/60 transition-colors"
                   >
                     <div className="flex flex-col md:flex-row gap-6 p-6">
                       {/* Album Cover */}
@@ -302,7 +302,7 @@ export default function ProfilePage() {
                       {/* Remove Vote Button */}
                       <button
                         onClick={() => handleRemoveVote(vote.albumId)}
-                        className="w-full px-4 py-2 bg-zinc-800 text-white hover:bg-zinc-700 rounded-full font-medium transition-colors text-sm"
+                        className="w-full px-4 py-2 bg-[#0a1929] text-white hover:bg-[#1a3a5c] rounded-full font-medium transition-colors text-sm"
                       >
                         {t('profile.removeVote')}
                       </button>

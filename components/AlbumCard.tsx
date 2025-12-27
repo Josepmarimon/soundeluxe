@@ -30,7 +30,7 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
   }
 
   return (
-    <article className="group bg-[#64748B] rounded-lg overflow-hidden hover:bg-[#54637A] transition-colors shadow-md">
+    <article className="group bg-[#F5F1E8] rounded-lg overflow-hidden hover:bg-[#EDE8DC] transition-colors shadow-md">
       {/* Album Cover Carousel */}
       <div className="relative aspect-square overflow-hidden">
         <AlbumCarousel

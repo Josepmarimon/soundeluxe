@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
 import { locales, type Locale } from '@/i18n'
@@ -22,17 +23,19 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-b border-zinc-800">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a1929]/95 backdrop-blur-sm border-b border-[#254a6e]/30">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-              <span className="text-black font-bold text-lg">SD</span>
-            </div>
-            <span className="text-white font-bold text-xl hidden sm:inline">
-              {t('common.soundDeluxe')}
-            </span>
+          <Link href={`/${locale}`} className="flex items-center">
+            <Image
+              src="/logo.svg"
+              alt="Sound Deluxe"
+              width={220}
+              height={60}
+              className="h-10 w-auto"
+              priority
+            />
           </Link>
 
           {/* Navigation Links */}
@@ -72,7 +75,7 @@ export default function Navbar() {
           {/* Language Selector & Auth */}
           <div className="flex items-center gap-4">
             {/* Language Selector */}
-            <div className="flex items-center gap-1 bg-zinc-900 rounded-full p-1">
+            <div className="flex items-center gap-1 bg-[#1a3a5c] rounded-full p-1">
               {locales.map((loc) => (
                 <button
                   key={loc}
@@ -90,7 +93,7 @@ export default function Navbar() {
 
             {/* Auth Buttons */}
             {status === 'loading' ? (
-              <div className="w-8 h-8 rounded-full bg-zinc-800 animate-pulse" />
+              <div className="w-8 h-8 rounded-full bg-[#1a3a5c] animate-pulse" />
             ) : session ? (
               <div className="flex items-center gap-3">
                 <Link
