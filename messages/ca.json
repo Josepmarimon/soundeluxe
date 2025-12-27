@@ -157,5 +157,77 @@
     "notFound": "Pàgina no trobada",
     "serverError": "Error del servidor",
     "goHome": "Tornar a l'inici"
+  },
+  "newsletter": {
+    "title": "Subscriu-te al butlletí",
+    "subtitle": "Rep notificacions sobre noves sessions i novetats exclusives",
+    "placeholder": "El teu correu electrònic",
+    "subscribe": "Subscriure'm",
+    "subscribing": "Subscrivint...",
+    "success": "Gràcies! Comprova el teu correu per confirmar la subscripció.",
+    "error": "Hi ha hagut un error. Torna-ho a provar.",
+    "invalidEmail": "Introdueix un correu electrònic vàlid",
+    "privacyConsent": "Accepto rebre comunicacions. Puc donar-me de baixa en qualsevol moment.",
+    "privacyLink": "Política de privacitat",
+    "confirmTitle": "Subscripció confirmada!",
+    "confirmMessage": "A partir d'ara rebràs les nostres novetats al teu correu.",
+    "confirmError": "L'enllaç de confirmació no és vàlid o ha caducat.",
+    "confirmExpired": "L'enllaç ha caducat. Torna a subscriure't.",
+    "unsubscribeTitle": "T'has donat de baixa",
+    "unsubscribeMessage": "Ja no rebràs els nostres correus.",
+    "unsubscribeResubscribe": "Tornar a subscriure'm",
+    "alreadyConfirmed": "Aquesta subscripció ja estava confirmada.",
+    "alreadyUnsubscribed": "Ja t'havies donat de baixa anteriorment.",
+    "backHome": "Tornar a l'inici"
+  },
+  "privacy": {
+    "title": "Política de Privacitat",
+    "lastUpdated": "Última actualització",
+    "intro": "A Sound Deluxe ens comprometem a protegir la teva privacitat. Aquesta política explica com recollim, utilitzem i protegim les teves dades personals.",
+    "dataCollected": {
+      "title": "Dades que recollim",
+      "description": "Recollim les següents dades:",
+      "email": "Correu electrònic: Per enviar-te el butlletí i comunicacions",
+      "language": "Idioma preferit: Per enviar-te el contingut en el teu idioma",
+      "consent": "Registre de consentiment: Data, hora i IP del moment de la subscripció"
+    },
+    "purpose": {
+      "title": "Finalitat del tractament",
+      "description": "Utilitzem les teves dades per:",
+      "newsletter": "Enviar-te informació sobre noves sessions d'escolta",
+      "updates": "Comunicar-te novetats i ofertes exclusives",
+      "service": "Millorar els nostres serveis"
+    },
+    "rights": {
+      "title": "Els teus drets",
+      "description": "Tens dret a:",
+      "access": "Accedir a les teves dades personals",
+      "rectify": "Rectificar dades incorrectes",
+      "delete": "Sol·licitar l'eliminació de les teves dades",
+      "unsubscribe": "Donar-te de baixa en qualsevol moment"
+    },
+    "unsubscribe": {
+      "title": "Com donar-te de baixa",
+      "description": "Pots donar-te de baixa en qualsevol moment:",
+      "emailLink": "Clicant l'enllaç de baixa a qualsevol correu",
+      "profile": "Des del teu perfil d'usuari si estàs registrat"
+    },
+    "contact": {
+      "title": "Contacte",
+      "description": "Per qualsevol consulta sobre les teves dades, contacta'ns a:"
+    },
+    "retention": {
+      "title": "Conservació de dades",
+      "description": "Mantenim les teves dades mentre la subscripció estigui activa. Si et dones de baixa, conservem un registre mínim per complir amb la legislació vigent."
+    }
+  },
+  "profilePreferences": {
+    "communicationTitle": "Preferències de comunicació",
+    "newsletterLabel": "Rebre butlletí amb novetats i sessions",
+    "newsletterEnabled": "Subscrit al butlletí",
+    "newsletterDisabled": "No subscrit al butlletí",
+    "savePreferences": "Guardar preferències",
+    "saving": "Guardant...",
+    "saved": "Preferències guardades"
   }
 }

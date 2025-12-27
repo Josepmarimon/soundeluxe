@@ -157,5 +157,77 @@
     "notFound": "Page not found",
     "serverError": "Server error",
     "goHome": "Go home"
+  },
+  "newsletter": {
+    "title": "Subscribe to our newsletter",
+    "subtitle": "Get notified about new sessions and exclusive updates",
+    "placeholder": "Your email address",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing...",
+    "success": "Thanks! Check your email to confirm your subscription.",
+    "error": "Something went wrong. Please try again.",
+    "invalidEmail": "Please enter a valid email address",
+    "privacyConsent": "I agree to receive communications. I can unsubscribe at any time.",
+    "privacyLink": "Privacy Policy",
+    "confirmTitle": "Subscription confirmed!",
+    "confirmMessage": "You will now receive our updates in your inbox.",
+    "confirmError": "The confirmation link is invalid or has expired.",
+    "confirmExpired": "The link has expired. Please subscribe again.",
+    "unsubscribeTitle": "You have unsubscribed",
+    "unsubscribeMessage": "You will no longer receive our emails.",
+    "unsubscribeResubscribe": "Subscribe again",
+    "alreadyConfirmed": "This subscription was already confirmed.",
+    "alreadyUnsubscribed": "You had already unsubscribed.",
+    "backHome": "Back to home"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated",
+    "intro": "At Sound Deluxe we are committed to protecting your privacy. This policy explains how we collect, use and protect your personal data.",
+    "dataCollected": {
+      "title": "Data we collect",
+      "description": "We collect the following data:",
+      "email": "Email address: To send you the newsletter and communications",
+      "language": "Preferred language: To send you content in your language",
+      "consent": "Consent record: Date, time and IP of subscription"
+    },
+    "purpose": {
+      "title": "Purpose of processing",
+      "description": "We use your data to:",
+      "newsletter": "Send you information about new listening sessions",
+      "updates": "Communicate news and exclusive offers",
+      "service": "Improve our services"
+    },
+    "rights": {
+      "title": "Your rights",
+      "description": "You have the right to:",
+      "access": "Access your personal data",
+      "rectify": "Correct inaccurate data",
+      "delete": "Request deletion of your data",
+      "unsubscribe": "Unsubscribe at any time"
+    },
+    "unsubscribe": {
+      "title": "How to unsubscribe",
+      "description": "You can unsubscribe at any time:",
+      "emailLink": "By clicking the unsubscribe link in any email",
+      "profile": "From your user profile if you are registered"
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "For any questions about your data, contact us at:"
+    },
+    "retention": {
+      "title": "Data retention",
+      "description": "We keep your data while the subscription is active. If you unsubscribe, we keep a minimal record to comply with current legislation."
+    }
+  },
+  "profilePreferences": {
+    "communicationTitle": "Communication preferences",
+    "newsletterLabel": "Receive newsletter with news and sessions",
+    "newsletterEnabled": "Subscribed to newsletter",
+    "newsletterDisabled": "Not subscribed to newsletter",
+    "savePreferences": "Save preferences",
+    "saving": "Saving...",
+    "saved": "Preferences saved"
   }
 }

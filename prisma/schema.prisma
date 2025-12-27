@@ -28,6 +28,10 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // Newsletter (GDPR compliant)
+  newsletterSubscribed  Boolean   @default(false)
+  newsletterConfirmedAt DateTime?
+
   // Relacions
   reservas      Reserva[]
   votaciones    Votacion[]
@@ -138,6 +142,36 @@ model LlistaEspera {
   @@unique([userId, sessionId])
   @@index([sessionId, notified])
   @@map("llista_espera")
+}
+
+// Newsletter subscribers (usuaris no registrats)
+// GDPR compliant amb doble opt-in
+model Subscriber {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  language         Language  @default(CA)
+
+  // Confirmació (doble opt-in)
+  confirmed        Boolean   @default(false)
+  confirmToken     String    @unique @default(cuid())
+  tokenExpiresAt   DateTime
+  confirmedAt      DateTime?
+
+  // Baixa (GDPR - soft delete)
+  unsubscribeToken String    @unique @default(cuid())
+  unsubscribedAt   DateTime?
+
+  // GDPR: Registre de consentiment
+  consentedAt      DateTime?
+  consentIp        String?
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([email])
+  @@index([confirmToken])
+  @@index([unsubscribeToken])
+  @@map("subscribers")
 }
 
 // ============================================

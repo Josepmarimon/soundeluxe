@@ -157,5 +157,77 @@
     "notFound": "Página no encontrada",
     "serverError": "Error del servidor",
     "goHome": "Volver al inicio"
+  },
+  "newsletter": {
+    "title": "Suscríbete al boletín",
+    "subtitle": "Recibe notificaciones sobre nuevas sesiones y novedades exclusivas",
+    "placeholder": "Tu correo electrónico",
+    "subscribe": "Suscribirme",
+    "subscribing": "Suscribiendo...",
+    "success": "¡Gracias! Comprueba tu correo para confirmar la suscripción.",
+    "error": "Ha habido un error. Inténtalo de nuevo.",
+    "invalidEmail": "Introduce un correo electrónico válido",
+    "privacyConsent": "Acepto recibir comunicaciones. Puedo darme de baja en cualquier momento.",
+    "privacyLink": "Política de privacidad",
+    "confirmTitle": "¡Suscripción confirmada!",
+    "confirmMessage": "A partir de ahora recibirás nuestras novedades en tu correo.",
+    "confirmError": "El enlace de confirmación no es válido o ha caducado.",
+    "confirmExpired": "El enlace ha caducado. Vuelve a suscribirte.",
+    "unsubscribeTitle": "Te has dado de baja",
+    "unsubscribeMessage": "Ya no recibirás nuestros correos.",
+    "unsubscribeResubscribe": "Volver a suscribirme",
+    "alreadyConfirmed": "Esta suscripción ya estaba confirmada.",
+    "alreadyUnsubscribed": "Ya te habías dado de baja anteriormente.",
+    "backHome": "Volver al inicio"
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "lastUpdated": "Última actualización",
+    "intro": "En Sound Deluxe nos comprometemos a proteger tu privacidad. Esta política explica cómo recogemos, utilizamos y protegemos tus datos personales.",
+    "dataCollected": {
+      "title": "Datos que recogemos",
+      "description": "Recogemos los siguientes datos:",
+      "email": "Correo electrónico: Para enviarte el boletín y comunicaciones",
+      "language": "Idioma preferido: Para enviarte el contenido en tu idioma",
+      "consent": "Registro de consentimiento: Fecha, hora e IP del momento de la suscripción"
+    },
+    "purpose": {
+      "title": "Finalidad del tratamiento",
+      "description": "Utilizamos tus datos para:",
+      "newsletter": "Enviarte información sobre nuevas sesiones de escucha",
+      "updates": "Comunicarte novedades y ofertas exclusivas",
+      "service": "Mejorar nuestros servicios"
+    },
+    "rights": {
+      "title": "Tus derechos",
+      "description": "Tienes derecho a:",
+      "access": "Acceder a tus datos personales",
+      "rectify": "Rectificar datos incorrectos",
+      "delete": "Solicitar la eliminación de tus datos",
+      "unsubscribe": "Darte de baja en cualquier momento"
+    },
+    "unsubscribe": {
+      "title": "Cómo darte de baja",
+      "description": "Puedes darte de baja en cualquier momento:",
+      "emailLink": "Haciendo clic en el enlace de baja en cualquier correo",
+      "profile": "Desde tu perfil de usuario si estás registrado"
+    },
+    "contact": {
+      "title": "Contacto",
+      "description": "Para cualquier consulta sobre tus datos, contáctanos en:"
+    },
+    "retention": {
+      "title": "Conservación de datos",
+      "description": "Mantenemos tus datos mientras la suscripción esté activa. Si te das de baja, conservamos un registro mínimo para cumplir con la legislación vigente."
+    }
+  },
+  "profilePreferences": {
+    "communicationTitle": "Preferencias de comunicación",
+    "newsletterLabel": "Recibir boletín con novedades y sesiones",
+    "newsletterEnabled": "Suscrito al boletín",
+    "newsletterDisabled": "No suscrito al boletín",
+    "savePreferences": "Guardar preferencias",
+    "saving": "Guardando...",
+    "saved": "Preferencias guardadas"
   }
 }

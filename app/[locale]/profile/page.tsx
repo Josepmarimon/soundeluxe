@@ -65,8 +65,13 @@ export default function ProfilePage() {
 
   const [votes, setVotes] = useState<Vote[]>([])
   const [bookings, setBookings] = useState<Booking[]>([])
-  const [activeTab, setActiveTab] = useState<'votes' | 'bookings'>('bookings')
+  const [activeTab, setActiveTab] = useState<'votes' | 'bookings' | 'preferences'>('bookings')
   const [isLoading, setIsLoading] = useState(true)
+
+  // Newsletter preferences
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false)
+  const [savingPreferences, setSavingPreferences] = useState(false)
+  const [preferencesSaved, setPreferencesSaved] = useState(false)
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -83,16 +88,19 @@ export default function ProfilePage() {
       try {
         setIsLoading(true)
 
-        const [votesRes, bookingsRes] = await Promise.all([
+        const [votesRes, bookingsRes, newsletterRes] = await Promise.all([
           fetch('/api/user/votes'),
           fetch('/api/user/bookings'),
+          fetch('/api/user/newsletter'),
         ])
 
         const votesData = await votesRes.json()
         const bookingsData = await bookingsRes.json()
+        const newsletterData = await newsletterRes.json()
 
         setVotes(votesData.votes || [])
         setBookings(bookingsData.bookings || [])
+        setNewsletterSubscribed(newsletterData.subscribed || false)
       } catch (error) {
         console.error('Error fetching user data:', error)
       } finally {
@@ -104,6 +112,30 @@ export default function ProfilePage() {
       fetchUserData()
     }
   }, [session])
+
+  // Handle newsletter toggle
+  const handleNewsletterToggle = async () => {
+    setSavingPreferences(true)
+    setPreferencesSaved(false)
+
+    try {
+      const response = await fetch('/api/user/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscribed: !newsletterSubscribed }),
+      })
+
+      if (response.ok) {
+        setNewsletterSubscribed(!newsletterSubscribed)
+        setPreferencesSaved(true)
+        setTimeout(() => setPreferencesSaved(false), 3000)
+      }
+    } catch (error) {
+      console.error('Error updating newsletter preferences:', error)
+    } finally {
+      setSavingPreferences(false)
+    }
+  }
 
   // Handle vote removal
   const handleRemoveVote = async (albumId: string) => {
@@ -172,6 +204,16 @@ export default function ProfilePage() {
             }`}
           >
             {t('profile.myVotes')} ({votes.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('preferences')}
+            className={`pb-4 px-6 font-semibold transition-colors ${
+              activeTab === 'preferences'
+                ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            {t('profilePreferences.communicationTitle')}
           </button>
         </div>
 
@@ -311,6 +353,55 @@ export default function ProfilePage() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === 'preferences' && (
+          <div className="max-w-xl">
+            <div className="bg-velvet-card rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-6">
+                {t('profilePreferences.communicationTitle')}
+              </h3>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white font-medium">
+                    {t('profilePreferences.newsletterLabel')}
+                  </p>
+                  <p className="text-sm text-zinc-400 mt-1">
+                    {newsletterSubscribed
+                      ? t('profilePreferences.newsletterEnabled')
+                      : t('profilePreferences.newsletterDisabled')}
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleNewsletterToggle}
+                  disabled={savingPreferences}
+                  className={`relative w-14 h-8 rounded-full transition-colors ${
+                    newsletterSubscribed ? 'bg-[#D4AF37]' : 'bg-zinc-600'
+                  } ${savingPreferences ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  <span
+                    className={`absolute top-1 w-6 h-6 rounded-full bg-white transition-transform ${
+                      newsletterSubscribed ? 'left-7' : 'left-1'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {preferencesSaved && (
+                <p className="mt-4 text-sm text-green-500">
+                  {t('profilePreferences.saved')}
+                </p>
+              )}
+
+              {savingPreferences && (
+                <p className="mt-4 text-sm text-zinc-400">
+                  {t('profilePreferences.saving')}
+                </p>
+              )}
+            </div>
           </div>
         )}
       </div>

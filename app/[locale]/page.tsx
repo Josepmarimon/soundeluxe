@@ -6,6 +6,7 @@ import type { SessionListItem, HomePage, ExperienceFeature } from '@/lib/sanity/
 import { urlForImage } from '@/lib/sanity/image'
 import SessionFilters from '@/components/SessionFilters'
 import HeroVideo from '@/components/HeroVideo'
+import NewsletterForm from '@/components/NewsletterForm'
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const t = await getTranslations()
@@ -153,6 +154,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               )
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-24 px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            {t('newsletter.title')}
+          </h2>
+          <p className="text-zinc-400 text-lg mb-8">
+            {t('newsletter.subtitle')}
+          </p>
+          <NewsletterForm />
         </div>
       </section>
     </div>
