@@ -116,7 +116,9 @@
     "title": "Vote for your favorite albums",
     "subtitle": "Help us decide which albums to schedule for future sessions",
     "infoTitle": "How does it work?",
-    "infoText": "You can only vote for albums that don't have scheduled sessions yet. The most voted albums will be considered for future programming. You need to be registered to vote."
+    "infoText": "You can only vote for albums that don't have scheduled sessions yet. The most voted albums will be considered for future programming. You need to be registered to vote.",
+    "rankingTitle": "Top Voted Albums",
+    "noVotesYet": "No votes yet. Be the first to vote!"
   },
   "profile": {
     "title": "My Profile",

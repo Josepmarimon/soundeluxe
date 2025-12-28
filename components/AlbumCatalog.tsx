@@ -10,9 +10,10 @@ interface AlbumCatalogProps {
   genres: string[]
   artists: string[]
   showVoteButton?: boolean
+  hideTitleSearch?: boolean
 }
 
-export default function AlbumCatalog({ albums, genres, artists, showVoteButton = false }: AlbumCatalogProps) {
+export default function AlbumCatalog({ albums, genres, artists, showVoteButton = false, hideTitleSearch = false }: AlbumCatalogProps) {
   const t = useTranslations()
   const [selectedGenre, setSelectedGenre] = useState<string>('')
   const [artistSearch, setArtistSearch] = useState<string>('')
@@ -52,16 +53,18 @@ export default function AlbumCatalog({ albums, genres, artists, showVoteButton =
     <div>
       {/* Filters */}
       <div className="mb-8">
-        {/* Search by Title */}
-        <div className="mb-4 max-w-3xl mx-auto">
-          <input
-            type="text"
-            placeholder={t('albums.searchPlaceholder')}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-6 py-3 bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
-          />
-        </div>
+        {/* Search by Title - hidden when hideTitleSearch is true */}
+        {!hideTitleSearch && (
+          <div className="mb-4 max-w-3xl mx-auto">
+            <input
+              type="text"
+              placeholder={t('albums.searchPlaceholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-6 py-3 bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
+            />
+          </div>
+        )}
 
         {/* Genre & Artist Filters */}
         <div className="flex flex-col sm:flex-row gap-4 max-w-3xl mx-auto">

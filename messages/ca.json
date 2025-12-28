@@ -116,7 +116,9 @@
     "title": "Vota els teus àlbums favorits",
     "subtitle": "Ajuda'ns a decidir quins àlbums programar en futures sessions",
     "infoTitle": "Com funciona?",
-    "infoText": "Només pots votar àlbums que encara no tenen sessions programades. Els àlbums més votats seran considerats per a futures programacions. Necessites estar registrat per poder votar."
+    "infoText": "Només pots votar àlbums que encara no tenen sessions programades. Els àlbums més votats seran considerats per a futures programacions. Necessites estar registrat per poder votar.",
+    "rankingTitle": "Top Àlbums més votats",
+    "noVotesYet": "Encara no hi ha vots. Sigues el primer en votar!"
   },
   "profile": {
     "title": "El meu perfil",

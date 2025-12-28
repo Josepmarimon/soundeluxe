@@ -116,7 +116,9 @@
     "title": "Vota tus álbumes favoritos",
     "subtitle": "Ayúdanos a decidir qué álbumes programar en futuras sesiones",
     "infoTitle": "¿Cómo funciona?",
-    "infoText": "Solo puedes votar álbumes que aún no tienen sesiones programadas. Los álbumes más votados serán considerados para futuras programaciones. Necesitas estar registrado para poder votar."
+    "infoText": "Solo puedes votar álbumes que aún no tienen sesiones programadas. Los álbumes más votados serán considerados para futuras programaciones. Necesitas estar registrado para poder votar.",
+    "rankingTitle": "Top Álbumes más votados",
+    "noVotesYet": "Todavía no hay votos. ¡Sé el primero en votar!"
   },
   "profile": {
     "title": "Mi perfil",
