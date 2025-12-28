@@ -162,6 +162,7 @@
     "privacy": "Privacidad",
     "terms": "Términos y condiciones",
     "cookies": "Política de cookies",
+    "faq": "FAQ y Políticas",
     "social": "Redes sociales",
     "newsletter": "Suscríbete al boletín",
     "subscribe": "Suscribirse",
@@ -261,5 +262,11 @@
     "subtitle": "Nuestra comunidad, capturada en imágenes",
     "all": "Todos",
     "share": "Comparte tu momento"
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Todo lo que necesitas saber sobre nuestras sesiones y servicios",
+    "cancellationTitle": "Política de cancelación y devoluciones",
+    "backToHome": "Volver al inicio"
   }
 }

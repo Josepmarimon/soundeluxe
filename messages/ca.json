@@ -162,6 +162,7 @@
     "privacy": "Privacitat",
     "terms": "Termes i condicions",
     "cookies": "Política de cookies",
+    "faq": "FAQ i Polítiques",
     "social": "Xarxes socials",
     "newsletter": "Subscriu-te al butlletí",
     "subscribe": "Subscriure's",
@@ -261,5 +262,11 @@
     "subtitle": "La nostra comunitat, capturada en imatges",
     "all": "Tots",
     "share": "Comparteix el teu moment"
+  },
+  "faq": {
+    "title": "Preguntes Freqüents",
+    "subtitle": "Tot el que necessites saber sobre les nostres sessions i serveis",
+    "cancellationTitle": "Política de cancel·lació i devolucions",
+    "backToHome": "Tornar a l'inici"
   }
 }

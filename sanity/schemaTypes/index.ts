@@ -14,6 +14,7 @@ import testimonial from './testimonial'
 import galleryCategory from './galleryCategory'
 import galleryImage from './galleryImage'
 import galleryPage from './galleryPage'
+import faqPage from './faqPage'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -31,5 +32,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     galleryCategory,
     galleryImage,
     galleryPage,
+    faqPage,
   ],
 }

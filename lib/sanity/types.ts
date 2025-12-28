@@ -192,3 +192,30 @@ export interface GalleryPage {
   ctaText?: MultilingualText
   hashtag?: string
 }
+
+// FAQ Item
+export interface FAQItem {
+  _key: string
+  question: MultilingualText
+  answer: MultilingualText
+  category: 'sessions' | 'booking' | 'payments' | 'venue' | 'other'
+}
+
+// Policy Section
+export interface PolicySection {
+  _key: string
+  sectionTitle: MultilingualText
+  content: MultilingualRichText
+}
+
+// FAQ Page Configuration
+export interface FAQPage {
+  _id: string
+  title: MultilingualText
+  subtitle?: MultilingualText
+  faqs?: FAQItem[]
+  cancellationTitle?: MultilingualText
+  cancellationPolicy?: MultilingualRichText
+  additionalPolicies?: PolicySection[]
+  contactInfo?: MultilingualText
+}

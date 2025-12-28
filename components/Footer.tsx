@@ -98,6 +98,14 @@ export default function Footer() {
                   {t('footer.cookies')}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href={`/${locale}/faq`}
+                  className="text-zinc-300 hover:text-white transition-colors"
+                >
+                  {t('footer.faq')}
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

@@ -162,6 +162,7 @@
     "privacy": "Privacy",
     "terms": "Terms and conditions",
     "cookies": "Cookie policy",
+    "faq": "FAQ & Policies",
     "social": "Social media",
     "newsletter": "Subscribe to newsletter",
     "subscribe": "Subscribe",
@@ -261,5 +262,11 @@
     "subtitle": "Our community, captured in images",
     "all": "All",
     "share": "Share your moment"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about our sessions and services",
+    "cancellationTitle": "Cancellation and Refund Policy",
+    "backToHome": "Back to home"
   }
 }

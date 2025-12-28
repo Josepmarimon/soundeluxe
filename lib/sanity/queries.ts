@@ -370,3 +370,26 @@ export const galleryPageQuery = groq`
     hashtag
   }
 `
+
+// Get FAQ page configuration
+export const faqPageQuery = groq`
+  *[_type == "faqPage"][0] {
+    _id,
+    title,
+    subtitle,
+    faqs[] {
+      _key,
+      question,
+      answer,
+      category
+    },
+    cancellationTitle,
+    cancellationPolicy,
+    additionalPolicies[] {
+      _key,
+      sectionTitle,
+      content
+    },
+    contactInfo
+  }
+`
