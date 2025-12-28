@@ -55,7 +55,12 @@
   font-weight: 500;
   font-size: 0.75rem;
   text-transform: uppercase;
-  padding: 8px 0;
+  width: 40px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 /* Day cells */
@@ -155,6 +160,11 @@
 @media (max-width: 640px) {
   .rdp-root {
     padding: 12px;
+  }
+
+  .rdp-weekday {
+    width: 36px;
+    height: 28px;
   }
 
   .rdp-day {
