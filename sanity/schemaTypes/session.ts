@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import { CalendarIcon } from '@sanity/icons'
+import { CalendarIcon, CogIcon, DocumentTextIcon } from '@sanity/icons'
 
 /**
  * Session Schema
@@ -10,7 +10,13 @@ export default defineType({
   title: 'Sessions',
   type: 'document',
   icon: CalendarIcon,
+  groups: [
+    { name: 'config', title: '⚙️ Configuració', icon: CogIcon, default: true },
+    { name: 'details', title: '📅 Data i preu' },
+    { name: 'translations', title: '🌐 Traduccions', icon: DocumentTextIcon },
+  ],
   fields: [
+    // === CONFIGURACIÓ ===
     defineField({
       name: 'album',
       title: 'Àlbum',
@@ -18,6 +24,7 @@ export default defineType({
       to: [{ type: 'album' }],
       validation: (Rule) => Rule.required(),
       description: 'Àlbum que es reproduirà en aquesta sessió',
+      group: 'config',
     }),
     defineField({
       name: 'sala',
@@ -26,6 +33,7 @@ export default defineType({
       to: [{ type: 'sala' }],
       validation: (Rule) => Rule.required(),
       description: 'Sala on es farà la sessió',
+      group: 'config',
     }),
     defineField({
       name: 'sessionType',
@@ -34,7 +42,18 @@ export default defineType({
       to: [{ type: 'sessionType' }],
       validation: (Rule) => Rule.required(),
       description: 'Tipus de sessió (estàndard, debat, conferència, masterclass)',
+      group: 'config',
     }),
+    defineField({
+      name: 'isActive',
+      title: 'Sessió activa',
+      type: 'boolean',
+      description: 'Marcar com inactiva per ocultar-la del frontend',
+      initialValue: true,
+      group: 'config',
+    }),
+
+    // === DATA I PREU ===
     defineField({
       name: 'date',
       title: 'Data i hora',
@@ -46,6 +65,7 @@ export default defineType({
         timeFormat: 'HH:mm',
         timeStep: 15,
       },
+      group: 'details',
     }),
     defineField({
       name: 'price',
@@ -54,6 +74,7 @@ export default defineType({
       validation: (Rule) => Rule.required().min(0).max(1000),
       description: 'Preu per plaça en euros',
       initialValue: 15,
+      group: 'details',
     }),
     defineField({
       name: 'totalPlaces',
@@ -61,12 +82,16 @@ export default defineType({
       type: 'number',
       validation: (Rule) => Rule.required().min(1).max(100),
       description: 'Nombre total de places disponibles',
+      group: 'details',
     }),
+
+    // === TRADUCCIONS ===
     defineField({
       name: 'vinylInfo',
       title: 'Informació del vinil',
       type: 'object',
       description: 'Detalls sobre el vinil que es reproduirà',
+      group: 'translations',
       fields: [
         {
           name: 'ca',
@@ -93,6 +118,7 @@ export default defineType({
       title: 'Notes especials',
       type: 'object',
       description: 'Informació addicional sobre la sessió',
+      group: 'translations',
       fields: [
         {
           name: 'ca',
@@ -110,13 +136,6 @@ export default defineType({
           type: 'text',
         },
       ],
-    }),
-    defineField({
-      name: 'isActive',
-      title: 'Sessió activa',
-      type: 'boolean',
-      description: 'Marcar com inactiva per ocultar-la del frontend',
-      initialValue: true,
     }),
   ],
   preview: {

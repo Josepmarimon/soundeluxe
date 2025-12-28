@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import { HomeIcon } from '@sanity/icons'
+import { HomeIcon, PinIcon, ImageIcon, UsersIcon, ClockIcon } from '@sanity/icons'
 
 /**
  * Sala Schema
@@ -10,12 +10,21 @@ export default defineType({
   title: 'Sales Hi-Fi',
   type: 'document',
   icon: HomeIcon,
+  groups: [
+    { name: 'info', title: '🏠 Informació bàsica', default: true },
+    { name: 'location', title: '📍 Ubicació', icon: PinIcon },
+    { name: 'media', title: '🖼️ Fotos', icon: ImageIcon },
+    { name: 'access', title: '♿ Accessibilitat', icon: UsersIcon },
+    { name: 'schedule', title: '🕐 Horaris', icon: ClockIcon },
+  ],
   fields: [
+    // === INFORMACIÓ BÀSICA ===
     defineField({
       name: 'name',
       title: 'Nom de la sala',
       type: 'object',
       validation: (Rule) => Rule.required(),
+      group: 'info',
       fields: [
         {
           name: 'ca',
@@ -38,10 +47,21 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'capacity',
+      title: 'Capacitat màxima',
+      type: 'number',
+      description: 'Nombre màxim de persones',
+      validation: (Rule) => Rule.required().min(1).max(1000),
+      group: 'info',
+    }),
+
+    // === UBICACIÓ ===
+    defineField({
       name: 'address',
       title: 'Adreça',
       type: 'object',
       validation: (Rule) => Rule.required(),
+      group: 'location',
       fields: [
         {
           name: 'street',
@@ -85,17 +105,13 @@ export default defineType({
         },
       ],
     }),
-    defineField({
-      name: 'capacity',
-      title: 'Capacitat màxima',
-      type: 'number',
-      description: 'Nombre màxim de persones',
-      validation: (Rule) => Rule.required().min(1).max(1000),
-    }),
+
+    // === FOTOS ===
     defineField({
       name: 'photos',
       title: 'Fotos de la sala',
       type: 'array',
+      group: 'media',
       of: [
         {
           type: 'image',
@@ -111,11 +127,14 @@ export default defineType({
         },
       ],
     }),
+
+    // === ACCESSIBILITAT ===
     defineField({
       name: 'accessibility',
       title: 'Informació d\'accessibilitat',
       type: 'object',
       description: 'Cadira de rodes, ascensor, etc.',
+      group: 'access',
       fields: [
         {
           name: 'ca',
@@ -134,11 +153,14 @@ export default defineType({
         },
       ],
     }),
+
+    // === HORARIS ===
     defineField({
       name: 'schedule',
       title: 'Horaris',
       type: 'object',
       description: 'Horaris d\'obertura de la sala',
+      group: 'schedule',
       fields: [
         {
           name: 'ca',

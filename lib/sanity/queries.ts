@@ -218,10 +218,18 @@ export const votableAlbumsQuery = groq`
   } [hasFutureSessions == false] | order(year desc)
 `
 
+// Get site settings (lightweight query for navigation, etc.)
+export const siteSettingsQuery = groq`
+  *[_type == "homePage"][0] {
+    showShop
+  }
+`
+
 // Get home page configuration
 export const homePageQuery = groq`
   *[_type == "homePage"][0] {
     _id,
+    showShop,
     heroTitle,
     heroSubtitle,
     heroCta,

@@ -8,6 +8,8 @@ import { locales } from '@/i18n'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import SessionProvider from '@/components/SessionProvider'
+import { client } from '@/lib/sanity/client'
+import { siteSettingsQuery } from '@/lib/sanity/queries'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -61,8 +63,13 @@ export default async function LocaleLayout({
     notFound()
   }
 
-  // Providing all messages to the client side is the easiest way to get started
-  const messages = await getMessages()
+  // Fetch site settings and messages in parallel
+  const [messages, siteSettings] = await Promise.all([
+    getMessages(),
+    client.fetch<{ showShop?: boolean }>(siteSettingsQuery),
+  ])
+
+  const showShop = siteSettings?.showShop ?? true
 
   return (
     <html lang={locale}>
@@ -71,7 +78,7 @@ export default async function LocaleLayout({
       >
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
-            <Navbar />
+            <Navbar showShop={showShop} />
             <main>{children}</main>
             <Footer />
           </NextIntlClientProvider>

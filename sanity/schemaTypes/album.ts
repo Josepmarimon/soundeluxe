@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import { PlayIcon } from '@sanity/icons'
+import { PlayIcon, ImageIcon, TagIcon, LinkIcon } from '@sanity/icons'
 
 /**
  * Album Schema
@@ -10,13 +10,22 @@ export default defineType({
   title: 'Àlbums',
   type: 'document',
   icon: PlayIcon,
+  groups: [
+    { name: 'info', title: '🎵 Informació bàsica', default: true },
+    { name: 'media', title: '🖼️ Imatges', icon: ImageIcon },
+    { name: 'details', title: '📝 Detalls', icon: TagIcon },
+    { name: 'shop', title: '🛒 Botiga' },
+    { name: 'links', title: '🔗 Enllaços', icon: LinkIcon },
+  ],
   fields: [
+    // === INFORMACIÓ BÀSICA ===
     defineField({
       name: 'title',
       title: 'Títol',
       type: 'string',
       description: 'Sempre en idioma original (ex: "The Dark Side of the Moon")',
       validation: (Rule) => Rule.required(),
+      group: 'info',
     }),
     defineField({
       name: 'artist',
@@ -24,12 +33,14 @@ export default defineType({
       type: 'string',
       description: 'Nom de l\'artista o banda',
       validation: (Rule) => Rule.required(),
+      group: 'info',
     }),
     defineField({
       name: 'year',
       title: 'Any de llançament',
       type: 'number',
       validation: (Rule) => Rule.required().min(1900).max(new Date().getFullYear() + 1),
+      group: 'info',
     }),
     defineField({
       name: 'genre',
@@ -47,7 +58,17 @@ export default defineType({
         ],
       },
       validation: (Rule) => Rule.required(),
+      group: 'info',
     }),
+    defineField({
+      name: 'duration',
+      title: 'Durada total (minuts)',
+      type: 'number',
+      description: 'Durada aproximada de l\'àlbum en minuts',
+      group: 'info',
+    }),
+
+    // === IMATGES ===
     defineField({
       name: 'coverImage',
       title: 'Portada',
@@ -56,6 +77,7 @@ export default defineType({
         hotspot: true,
       },
       validation: (Rule) => Rule.required(),
+      group: 'media',
     }),
     defineField({
       name: 'additionalImages',
@@ -63,18 +85,16 @@ export default defineType({
       type: 'array',
       description: 'Back cover, gatefold, interior, etc.',
       of: [{ type: 'image', options: { hotspot: true } }],
+      group: 'media',
     }),
-    defineField({
-      name: 'duration',
-      title: 'Durada total (minuts)',
-      type: 'number',
-      description: 'Durada aproximada de l\'àlbum en minuts',
-    }),
+
+    // === DETALLS ===
     defineField({
       name: 'description',
       title: 'Descripció',
       type: 'object',
       description: 'Text editorial sobre l\'àlbum (història, context, etc.)',
+      group: 'details',
       fields: [
         {
           name: 'ca',
@@ -94,10 +114,39 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'awards',
+      title: 'Premis i reconeixements',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Grammy, Hall of Fame, etc.',
+      group: 'details',
+    }),
+
+    // === BOTIGA ===
+    defineField({
+      name: 'salePrice',
+      title: 'Preu de venda (€)',
+      type: 'number',
+      validation: (Rule) => Rule.min(0).max(500),
+      description: 'Preu del disc per a la venda',
+      group: 'shop',
+    }),
+    defineField({
+      name: 'inStock',
+      title: 'En stock',
+      type: 'boolean',
+      description: 'Indica si el disc està disponible per a la venda',
+      initialValue: true,
+      group: 'shop',
+    }),
+
+    // === ENLLAÇOS ===
+    defineField({
       name: 'links',
-      title: 'Enllaços',
+      title: 'Enllaços externs',
       type: 'object',
       description: 'Enllaços a plataformes de música',
+      group: 'links',
       fields: [
         {
           name: 'spotify',
@@ -145,27 +194,6 @@ export default defineType({
             }),
         },
       ],
-    }),
-    defineField({
-      name: 'awards',
-      title: 'Premis i reconeixements',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Grammy, Hall of Fame, etc.',
-    }),
-    defineField({
-      name: 'salePrice',
-      title: 'Preu de venda (€)',
-      type: 'number',
-      validation: (Rule) => Rule.min(0).max(500),
-      description: 'Preu del disc per a la venda',
-    }),
-    defineField({
-      name: 'inStock',
-      title: 'En stock',
-      type: 'boolean',
-      description: 'Indica si el disc està disponible per a la venda',
-      initialValue: true,
     }),
   ],
   preview: {

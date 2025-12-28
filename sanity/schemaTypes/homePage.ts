@@ -1,9 +1,15 @@
 import { defineType } from 'sanity'
+import { CogIcon, ImageIcon, StarIcon } from '@sanity/icons'
 
 export default defineType({
   name: 'homePage',
   type: 'document',
-  title: 'Home Page',
+  title: 'Configuració del lloc',
+  groups: [
+    { name: 'siteSettings', title: '⚙️ Configuració general', icon: CogIcon, default: true },
+    { name: 'hero', title: '🎬 Hero Section', icon: ImageIcon },
+    { name: 'experience', title: '✨ Experiència', icon: StarIcon },
+  ],
   fields: [
     {
       name: 'title',
@@ -12,11 +18,21 @@ export default defineType({
       initialValue: 'Home Page Configuration',
       hidden: true,
     },
+    // Site Settings
+    {
+      name: 'showShop',
+      type: 'boolean',
+      title: 'Mostrar secció Botiga',
+      description: 'Activa o desactiva la secció de botiga (venda de vinils) a la navegació i al lloc web',
+      initialValue: true,
+      group: 'siteSettings',
+    },
     // Hero Section
     {
       name: 'heroTitle',
       type: 'object',
       title: 'Hero Title',
+      group: 'hero',
       fields: [
         {
           name: 'ca',
@@ -42,6 +58,7 @@ export default defineType({
       name: 'heroSubtitle',
       type: 'object',
       title: 'Hero Subtitle',
+      group: 'hero',
       fields: [
         {
           name: 'ca',
@@ -70,6 +87,7 @@ export default defineType({
       name: 'heroCta',
       type: 'object',
       title: 'Hero Call to Action Button',
+      group: 'hero',
       fields: [
         {
           name: 'ca',
@@ -95,6 +113,7 @@ export default defineType({
       name: 'heroBackgroundType',
       type: 'string',
       title: 'Hero Background Type',
+      group: 'hero',
       options: {
         list: [
           { title: 'Image', value: 'image' },
@@ -109,6 +128,7 @@ export default defineType({
       name: 'heroBackgroundImage',
       type: 'image',
       title: 'Hero Background Image',
+      group: 'hero',
       hidden: ({ document }) => document?.heroBackgroundType !== 'image',
       options: {
         hotspot: true,
@@ -125,6 +145,7 @@ export default defineType({
       name: 'heroBackgroundVideo',
       type: 'file',
       title: 'Hero Background Video',
+      group: 'hero',
       hidden: ({ document }) => document?.heroBackgroundType !== 'video',
       options: {
         accept: 'video/*',
@@ -135,6 +156,7 @@ export default defineType({
       name: 'experienceTitle',
       type: 'object',
       title: 'Experience Section Title',
+      group: 'experience',
       fields: [
         {
           name: 'ca',
@@ -160,6 +182,7 @@ export default defineType({
       name: 'experienceSubtitle',
       type: 'object',
       title: 'Experience Section Subtitle',
+      group: 'experience',
       fields: [
         {
           name: 'ca',
@@ -185,6 +208,7 @@ export default defineType({
       name: 'experienceFeatures',
       type: 'array',
       title: 'Experience Features',
+      group: 'experience',
       of: [{ type: 'experienceFeature' }],
       validation: (rule) => rule.required().max(4),
     },

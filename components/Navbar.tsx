@@ -7,7 +7,11 @@ import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
 import { locales, type Locale } from '@/i18n'
 
-export default function Navbar() {
+interface NavbarProps {
+  showShop?: boolean
+}
+
+export default function Navbar({ showShop = true }: NavbarProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
   const pathname = usePathname()
@@ -46,12 +50,14 @@ export default function Navbar() {
             >
               {t('navigation.home')}
             </Link>
-            <Link
-              href={`/${locale}/albums`}
-              className="text-zinc-300 hover:text-white transition-colors"
-            >
-              {t('navigation.albums')}
-            </Link>
+            {showShop && (
+              <Link
+                href={`/${locale}/albums`}
+                className="text-zinc-300 hover:text-white transition-colors"
+              >
+                {t('navigation.albums')}
+              </Link>
+            )}
             <Link
               href={`/${locale}/votes`}
               className="text-zinc-300 hover:text-white transition-colors"

@@ -1,11 +1,21 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getLocale } from 'next-intl/server'
+import { redirect } from 'next/navigation'
 import { client } from '@/lib/sanity/client'
-import { albumsQuery, genresQuery, artistsQuery } from '@/lib/sanity/queries'
+import { albumsQuery, genresQuery, artistsQuery, siteSettingsQuery } from '@/lib/sanity/queries'
 import AlbumCatalog from '@/components/AlbumCatalog'
 import type { Album } from '@/lib/sanity/types'
 
 export default async function AlbumsPage() {
-  const t = await getTranslations()
+  const [t, locale, siteSettings] = await Promise.all([
+    getTranslations(),
+    getLocale(),
+    client.fetch<{ showShop?: boolean }>(siteSettingsQuery),
+  ])
+
+  // Redirect to home if shop is disabled
+  if (siteSettings?.showShop === false) {
+    redirect(`/${locale}`)
+  }
 
   // Fetch albums, genres, and artists
   const [albums, genresData, artistsData] = await Promise.all([
