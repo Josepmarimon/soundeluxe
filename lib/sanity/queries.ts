@@ -285,3 +285,88 @@ export const homePageQuery = groq`
     }
   }
 `
+
+// Get featured testimonials
+export const testimonialsQuery = groq`
+  *[_type == "testimonial" && featured == true] | order(order asc) {
+    _id,
+    name,
+    profession,
+    photo,
+    rating,
+    quote,
+    sessionText,
+    session->{
+      _id,
+      title,
+      artist
+    }
+  }
+`
+
+// Get all testimonials
+export const allTestimonialsQuery = groq`
+  *[_type == "testimonial"] | order(order asc) {
+    _id,
+    name,
+    profession,
+    photo,
+    rating,
+    quote,
+    sessionText,
+    session->{
+      _id,
+      title,
+      artist
+    }
+  }
+`
+
+// Get gallery categories
+export const galleryCategoriesQuery = groq`
+  *[_type == "galleryCategory"] | order(order asc) {
+    _id,
+    name,
+    "slug": slug.current
+  }
+`
+
+// Get gallery images
+export const galleryImagesQuery = groq`
+  *[_type == "galleryImage"] | order(featured desc, order asc, date desc) {
+    _id,
+    image,
+    caption,
+    featured,
+    date,
+    category->{
+      _id,
+      name,
+      "slug": slug.current
+    },
+    session->{
+      _id,
+      date,
+      album->{
+        title,
+        artist
+      }
+    },
+    sala->{
+      _id,
+      name
+    }
+  }
+`
+
+// Get gallery page configuration
+export const galleryPageQuery = groq`
+  *[_type == "galleryPage"][0] {
+    _id,
+    title,
+    subtitle,
+    intro,
+    ctaText,
+    hashtag
+  }
+`

@@ -10,6 +10,10 @@ import sala from './sala'
 import sessionType from './sessionType'
 import session from './session'
 import homePage from './homePage'
+import testimonial from './testimonial'
+import galleryCategory from './galleryCategory'
+import galleryImage from './galleryImage'
+import galleryPage from './galleryPage'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -23,5 +27,9 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     sessionType,
     session,
     homePage,
+    testimonial,
+    galleryCategory,
+    galleryImage,
+    galleryPage,
   ],
 }

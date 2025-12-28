@@ -137,3 +137,58 @@ export interface HomePage {
   experienceSubtitle?: MultilingualText
   experienceFeatures?: ExperienceFeature[]
 }
+
+// Testimonial
+export interface Testimonial {
+  _id: string
+  name: string
+  profession: string
+  photo?: Image
+  rating: number
+  quote: MultilingualText
+  sessionText?: string
+  session?: {
+    _id: string
+    title: string
+    artist: string
+  }
+}
+
+// Gallery Category
+export interface GalleryCategory {
+  _id: string
+  name: MultilingualText
+  slug: string
+}
+
+// Gallery Image
+export interface GalleryImage {
+  _id: string
+  image: Image
+  caption?: MultilingualText
+  featured: boolean
+  date?: string
+  category: GalleryCategory
+  session?: {
+    _id: string
+    date: string
+    album: {
+      title: string
+      artist: string
+    }
+  }
+  sala?: {
+    _id: string
+    name: MultilingualText
+  }
+}
+
+// Gallery Page Configuration
+export interface GalleryPage {
+  _id: string
+  title: MultilingualText
+  subtitle?: MultilingualText
+  intro?: MultilingualText
+  ctaText?: MultilingualText
+  hashtag?: string
+}
