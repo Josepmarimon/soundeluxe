@@ -3,12 +3,12 @@
   --rdp-accent-color: #D4AF37;
   --rdp-accent-background-color: rgba(212, 175, 55, 0.2);
 
-  background: rgba(16, 42, 67, 0.8);
-  backdrop-filter: blur(8px);
+  background: #F5F1E8;
   border-radius: 12px;
   padding: 16px;
-  border: 1px solid rgba(37, 74, 110, 0.3);
+  border: 1px solid #D4AF37;
   font-family: inherit;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Month caption */
@@ -20,7 +20,7 @@
 }
 
 .rdp-caption_label {
-  color: #F5F1E8;
+  color: #0a1929;
   font-weight: 600;
   font-size: 1.125rem;
   text-transform: capitalize;
@@ -46,7 +46,7 @@
 
 .rdp-button_previous:hover,
 .rdp-button_next:hover {
-  background: rgba(212, 175, 55, 0.2);
+  background: rgba(212, 175, 55, 0.3);
 }
 
 /* Weekday headers */
@@ -78,14 +78,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #F5F1E8;
+  color: #0a1929;
   border-radius: 8px;
   cursor: pointer;
   position: relative;
 }
 
 .rdp-day_button:hover {
-  background: rgba(245, 241, 232, 0.1);
+  background: rgba(212, 175, 55, 0.2);
 }
 
 /* Selected day */
@@ -102,7 +102,7 @@
 
 /* Outside days (other months) */
 .rdp-outside .rdp-day_button {
-  color: rgba(245, 241, 232, 0.3);
+  color: rgba(10, 25, 41, 0.3);
 }
 
 /* Days with sessions indicator */
@@ -125,7 +125,7 @@
 
 /* Disabled days */
 .rdp-disabled .rdp-day_button {
-  color: rgba(245, 241, 232, 0.2);
+  color: rgba(10, 25, 41, 0.2);
   cursor: not-allowed;
 }
 
