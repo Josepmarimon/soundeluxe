@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { DayPicker } from 'react-day-picker'
 import { ca, es, enUS } from 'date-fns/locale'
 import { format, parseISO } from 'date-fns'
+import { AnimatePresence, motion } from 'framer-motion'
 import type { Locale, MultilingualText } from '@/lib/sanity/types'
 import type { Image as SanityImage } from 'sanity'
 import SessionHighlight from './SessionHighlight'
@@ -180,12 +181,27 @@ export default function SessionsCalendar({ sessions, title }: SessionsCalendarPr
         </div>
 
         {/* Session Highlight - 2/3 */}
-        <div className="w-full lg:w-2/3">
-          <SessionHighlight
-            sessions={selectedSessions}
-            isNextSession={isNextSession}
-            selectedDate={selectedDate}
-          />
+        <div className="w-full lg:w-2/3 relative overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : 'empty'}
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ x: '100%', opacity: 0 }}
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 30,
+                duration: 0.3
+              }}
+            >
+              <SessionHighlight
+                sessions={selectedSessions}
+                isNextSession={isNextSession}
+                selectedDate={selectedDate}
+              />
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </div>
