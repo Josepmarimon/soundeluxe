@@ -7,6 +7,7 @@ import { urlForImage } from '@/lib/sanity/image'
 import SessionFilters from '@/components/SessionFilters'
 import HeroVideo from '@/components/HeroVideo'
 import NewsletterForm from '@/components/NewsletterForm'
+import SessionsCalendar from '@/components/calendar/SessionsCalendar'
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const t = await getTranslations()
@@ -88,6 +89,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-12 text-center">
             {t('sessions.title')}
           </h2>
+
+          {/* Calendar */}
+          {sessions.length > 0 && (
+            <div className="mb-12">
+              <SessionsCalendar sessions={sessions} title={t('calendar.title')} />
+            </div>
+          )}
 
           {sessions.length === 0 ? (
             <p className="text-center text-zinc-300 text-lg">
