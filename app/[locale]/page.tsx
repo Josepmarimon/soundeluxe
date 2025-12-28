@@ -86,7 +86,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       {/* Sessions Section */}
-      <section id="sessions" className="py-20 px-4">
+      <section id="sessions" className="py-20 px-4 bg-gradient-to-b from-zinc-950 via-zinc-900/80 to-zinc-950">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-12 text-center">
             {t('sessions.title')}
