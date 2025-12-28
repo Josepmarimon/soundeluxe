@@ -171,6 +171,40 @@ export const salasQuery = groq`
   }
 `
 
+// Get single sala by ID
+export const salaByIdQuery = groq`
+  *[_type == "sala" && _id == $id][0] {
+    _id,
+    name,
+    address,
+    capacity,
+    photos,
+    accessibility,
+    schedule
+  }
+`
+
+// Get sessions by sala ID (both future and past)
+export const sessionsBySalaQuery = groq`
+  *[_type == "session" && isActive == true && sala._ref == $salaId] | order(date desc) {
+    _id,
+    date,
+    price,
+    totalPlaces,
+    album->{
+      _id,
+      title,
+      artist,
+      coverImage
+    },
+    sessionType->{
+      _id,
+      key,
+      name
+    }
+  }
+`
+
 // Get all session types
 export const sessionTypesQuery = groq`
   *[_type == "sessionType"] {

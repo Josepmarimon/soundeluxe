@@ -8,6 +8,7 @@
     "home": "Home",
     "sessions": "Sessions",
     "albums": "Store",
+    "salas": "Venues",
     "votes": "Voting",
     "about": "About",
     "contact": "Contact",
@@ -140,6 +141,18 @@
     "accessibility": "Accessibility",
     "schedule": "Schedule",
     "viewOnMap": "View on map"
+  },
+  "salas": {
+    "title": "Hi-Fi Venues",
+    "subtitle": "Discover the spaces where we host our sessions",
+    "capacity": "Capacity",
+    "places": "seats",
+    "viewDetails": "View details",
+    "futureSessions": "Upcoming sessions",
+    "pastSessions": "Past sessions",
+    "noFutureSessions": "No upcoming sessions",
+    "noPastSessions": "No past sessions",
+    "backToList": "Back to venues"
   },
   "footer": {
     "description": "High-fidelity audiophile experiences in Barcelona",

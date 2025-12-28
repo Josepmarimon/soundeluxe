@@ -8,6 +8,7 @@
     "home": "Inicio",
     "sessions": "Sesiones",
     "albums": "Tienda",
+    "salas": "Salas",
     "votes": "Votaciones",
     "about": "Nosotros",
     "contact": "Contacto",
@@ -140,6 +141,18 @@
     "accessibility": "Accesibilidad",
     "schedule": "Horarios",
     "viewOnMap": "Ver en el mapa"
+  },
+  "salas": {
+    "title": "Salas Hi-Fi",
+    "subtitle": "Descubre los espacios donde celebramos nuestras sesiones",
+    "capacity": "Capacidad",
+    "places": "plazas",
+    "viewDetails": "Ver detalles",
+    "futureSessions": "Sesiones programadas",
+    "pastSessions": "Sesiones pasadas",
+    "noFutureSessions": "No hay sesiones programadas",
+    "noPastSessions": "No hay sesiones pasadas",
+    "backToList": "Volver a salas"
   },
   "footer": {
     "description": "Experiencias audiófilas de alta fidelidad en Barcelona",

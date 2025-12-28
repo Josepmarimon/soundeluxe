@@ -65,6 +65,12 @@ export default function Navbar({ showShop = true }: NavbarProps) {
               {t('navigation.votes')}
             </Link>
             <Link
+              href={`/${locale}/salas`}
+              className="text-zinc-300 hover:text-white transition-colors"
+            >
+              {t('navigation.salas')}
+            </Link>
+            <Link
               href={`/${locale}/about`}
               className="text-zinc-300 hover:text-white transition-colors"
             >
