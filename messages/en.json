@@ -250,8 +250,11 @@
     "hasSession": "Has sessions",
     "today": "Today",
     "oneSession": "1 session scheduled",
-    "sessionsCount": "{count} sessions scheduled",
-    "close": "Close"
+    "sessionsCount": "{count} sessions",
+    "close": "Close",
+    "selectDate": "Select a date with sessions",
+    "sessionsOnDate": "Sessions on this date",
+    "moreSessions": "More sessions this day"
   },
   "nextSession": {
     "inDays": "In {days} days",

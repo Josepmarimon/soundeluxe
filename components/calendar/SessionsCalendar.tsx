@@ -1,14 +1,13 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { DayPicker } from 'react-day-picker'
 import { ca, es, enUS } from 'date-fns/locale'
 import { format, parseISO } from 'date-fns'
 import type { Locale, MultilingualText } from '@/lib/sanity/types'
 import type { Image as SanityImage } from 'sanity'
-import SessionsModal from './SessionsModal'
-import NextSessionHighlight from './NextSessionHighlight'
+import SessionHighlight from './SessionHighlight'
 import './calendarStyles.css'
 
 const dateFnsLocales: Record<string, typeof ca> = {
@@ -17,7 +16,7 @@ const dateFnsLocales: Record<string, typeof ca> = {
   en: enUS,
 }
 
-interface CalendarSession {
+export interface CalendarSession {
   _id: string
   date: string
   price: number
@@ -47,8 +46,6 @@ interface SessionsCalendarProps {
 export default function SessionsCalendar({ sessions, title }: SessionsCalendarProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>()
-  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const dateFnsLocale = dateFnsLocales[locale] || enUS
 
@@ -65,6 +62,32 @@ export default function SessionsCalendar({ sessions, title }: SessionsCalendarPr
     return dateMap
   }, [sessions])
 
+  // Get the first future session date
+  const firstFutureSessionDate = useMemo(() => {
+    if (sessions.length === 0) return undefined
+
+    const now = new Date()
+    const futureSessions = sessions
+      .filter((s) => parseISO(s.date) >= now)
+      .sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime())
+
+    if (futureSessions.length > 0) {
+      return parseISO(futureSessions[0].date)
+    }
+
+    return undefined
+  }, [sessions])
+
+  // Initialize selected date with the first future session date
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(firstFutureSessionDate)
+
+  // Update selected date when firstFutureSessionDate changes
+  useEffect(() => {
+    if (firstFutureSessionDate && !selectedDate) {
+      setSelectedDate(firstFutureSessionDate)
+    }
+  }, [firstFutureSessionDate, selectedDate])
+
   // Get sessions for a specific date
   const getSessionsForDate = (date: Date) => {
     const dateKey = format(date, 'yyyy-MM-dd')
@@ -77,11 +100,10 @@ export default function SessionsCalendar({ sessions, title }: SessionsCalendarPr
     return sessionDates.has(dateKey)
   }
 
-  // Handle day click
+  // Handle day click - update selected date instead of opening modal
   const handleDayClick = (date: Date) => {
     if (hasSessionsOnDate(date)) {
       setSelectedDate(date)
-      setIsModalOpen(true)
     }
   }
 
@@ -94,21 +116,28 @@ export default function SessionsCalendar({ sessions, title }: SessionsCalendarPr
     hasSessions: 'has-sessions',
   }
 
-  // Get the first month that has sessions
+  // Get the month to display (based on selected date or first future session)
   const defaultMonth = useMemo(() => {
+    if (selectedDate) return selectedDate
+    if (firstFutureSessionDate) return firstFutureSessionDate
     if (sessions.length === 0) return new Date()
 
     const dates = sessions.map((s) => parseISO(s.date))
-    const now = new Date()
-
-    // Find the first future session date, or the first session date if all are past
-    const futureDates = dates.filter((d) => d >= now)
-    if (futureDates.length > 0) {
-      return new Date(Math.min(...futureDates.map((d) => d.getTime())))
-    }
-
     return new Date(Math.min(...dates.map((d) => d.getTime())))
-  }, [sessions])
+  }, [sessions, selectedDate, firstFutureSessionDate])
+
+  // Get sessions for the currently selected date
+  const selectedSessions = useMemo(() => {
+    if (!selectedDate) return []
+    return getSessionsForDate(selectedDate)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate, sessionDates])
+
+  // Check if selected date is the "next" session (first future session)
+  const isNextSession = useMemo(() => {
+    if (!selectedDate || !firstFutureSessionDate) return false
+    return format(selectedDate, 'yyyy-MM-dd') === format(firstFutureSessionDate, 'yyyy-MM-dd')
+  }, [selectedDate, firstFutureSessionDate])
 
   if (sessions.length === 0) {
     return null
@@ -120,47 +149,45 @@ export default function SessionsCalendar({ sessions, title }: SessionsCalendarPr
         <h3 className="text-xl font-semibold text-white">{title}</h3>
       )}
 
-      {/* Layout: Calendar + Next Session side by side on desktop */}
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start justify-center">
-        {/* Calendar section */}
-        <div className="flex flex-col items-center space-y-4">
-          <DayPicker
-            mode="single"
-            selected={selectedDate}
-            onDayClick={handleDayClick}
-            locale={dateFnsLocale}
-            modifiers={modifiers}
-            modifiersClassNames={modifiersClassNames}
-            showOutsideDays
-            defaultMonth={defaultMonth}
-          />
+      {/* Layout: Calendar 1/3 + Session Highlight 2/3 */}
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch">
+        {/* Calendar section - 1/3 */}
+        <div className="w-full lg:w-1/3 flex flex-col">
+          <div className="bg-zinc-900/50 backdrop-blur-sm rounded-2xl border border-zinc-800 p-4 flex flex-col items-center">
+            <DayPicker
+              mode="single"
+              selected={selectedDate}
+              onDayClick={handleDayClick}
+              locale={dateFnsLocale}
+              modifiers={modifiers}
+              modifiersClassNames={modifiersClassNames}
+              showOutsideDays
+              defaultMonth={defaultMonth}
+            />
 
-          {/* Legend */}
-          <div className="flex items-center justify-center gap-6 text-sm text-zinc-400">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F4E5AD]" />
-              <span>{t('calendar.hasSession')}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-5 h-5 border-2 border-[#D4AF37] rounded-lg" />
-              <span>{t('calendar.today')}</span>
+            {/* Legend */}
+            <div className="flex items-center justify-center gap-4 text-xs text-zinc-400 mt-4 pt-4 border-t border-zinc-800 w-full">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F4E5AD]" />
+                <span>{t('calendar.hasSession')}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-[#D4AF37] rounded" />
+                <span>{t('calendar.today')}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Next Session Highlight */}
-        <div className="w-full lg:w-[380px] flex-shrink-0">
-          <NextSessionHighlight sessions={sessions} />
+        {/* Session Highlight - 2/3 */}
+        <div className="w-full lg:w-2/3">
+          <SessionHighlight
+            sessions={selectedSessions}
+            isNextSession={isNextSession}
+            selectedDate={selectedDate}
+          />
         </div>
       </div>
-
-      {/* Sessions Modal */}
-      <SessionsModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        date={selectedDate}
-        sessions={selectedDate ? getSessionsForDate(selectedDate) : []}
-      />
     </div>
   )
 }

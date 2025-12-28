@@ -250,8 +250,11 @@
     "hasSession": "Amb sessions",
     "today": "Avui",
     "oneSession": "1 sessió programada",
-    "sessionsCount": "{count} sessions programades",
-    "close": "Tancar"
+    "sessionsCount": "{count} sessions",
+    "close": "Tancar",
+    "selectDate": "Selecciona una data amb sessions",
+    "sessionsOnDate": "Sessions del dia",
+    "moreSessions": "Més sessions aquest dia"
   },
   "nextSession": {
     "inDays": "En {days} dies",

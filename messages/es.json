@@ -250,8 +250,11 @@
     "hasSession": "Con sesiones",
     "today": "Hoy",
     "oneSession": "1 sesión programada",
-    "sessionsCount": "{count} sesiones programadas",
-    "close": "Cerrar"
+    "sessionsCount": "{count} sesiones",
+    "close": "Cerrar",
+    "selectDate": "Selecciona una fecha con sesiones",
+    "sessionsOnDate": "Sesiones del día",
+    "moreSessions": "Más sesiones este día"
   },
   "nextSession": {
     "inDays": "En {days} días",
