@@ -250,5 +250,15 @@
     "oneSession": "1 sesión programada",
     "sessionsCount": "{count} sesiones programadas",
     "close": "Cerrar"
+  },
+  "testimonials": {
+    "title": "Lo que dicen nuestros oyentes",
+    "subtitle": "Experiencias reales de nuestra comunidad"
+  },
+  "gallery": {
+    "title": "Momentos que suenan diferente",
+    "subtitle": "Nuestra comunidad, capturada en imágenes",
+    "all": "Todos",
+    "share": "Comparte tu momento"
   }
 }

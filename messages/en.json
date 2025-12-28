@@ -250,5 +250,15 @@
     "oneSession": "1 session scheduled",
     "sessionsCount": "{count} sessions scheduled",
     "close": "Close"
+  },
+  "testimonials": {
+    "title": "What our listeners say",
+    "subtitle": "Real experiences from our community"
+  },
+  "gallery": {
+    "title": "Moments that sound different",
+    "subtitle": "Our community, captured in images",
+    "all": "All",
+    "share": "Share your moment"
   }
 }

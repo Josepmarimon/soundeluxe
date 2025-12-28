@@ -1,23 +1,25 @@
 import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
 import { client } from '@/lib/sanity/client'
-import { upcomingSessionsQuery, homePageQuery } from '@/lib/sanity/queries'
-import type { SessionListItem, HomePage, ExperienceFeature } from '@/lib/sanity/types'
+import { upcomingSessionsQuery, homePageQuery, testimonialsQuery } from '@/lib/sanity/queries'
+import type { SessionListItem, HomePage, ExperienceFeature, Testimonial } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
 import SessionFilters from '@/components/SessionFilters'
 import HeroVideo from '@/components/HeroVideo'
 import NewsletterForm from '@/components/NewsletterForm'
 import SessionsCalendar from '@/components/calendar/SessionsCalendar'
+import Testimonials from '@/components/Testimonials'
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const t = await getTranslations()
   const { locale } = await params
   const typedLocale = locale as 'ca' | 'es' | 'en'
 
-  // Fetch upcoming sessions and home page config from Sanity
-  const [sessions, homePageData]: [SessionListItem[], HomePage | null] = await Promise.all([
+  // Fetch upcoming sessions, home page config, and testimonials from Sanity
+  const [sessions, homePageData, testimonials]: [SessionListItem[], HomePage | null, Testimonial[]] = await Promise.all([
     client.fetch(upcomingSessionsQuery),
     client.fetch(homePageQuery),
+    client.fetch(testimonialsQuery),
   ])
 
   // Filter features with images and map to safe type
@@ -164,6 +166,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
       </section>
+
+      {/* Testimonials Section */}
+      <Testimonials testimonials={testimonials} />
 
       {/* Newsletter Section */}
       <section className="py-24 px-4">

@@ -250,5 +250,15 @@
     "oneSession": "1 sessió programada",
     "sessionsCount": "{count} sessions programades",
     "close": "Tancar"
+  },
+  "testimonials": {
+    "title": "El que diuen els nostres oients",
+    "subtitle": "Experiències reals de la nostra comunitat"
+  },
+  "gallery": {
+    "title": "Moments que sonen diferent",
+    "subtitle": "La nostra comunitat, capturada en imatges",
+    "all": "Tots",
+    "share": "Comparteix el teu moment"
   }
 }
