@@ -253,6 +253,14 @@
     "sessionsCount": "{count} sessions programades",
     "close": "Tancar"
   },
+  "nextSession": {
+    "inDays": "En {days} dies",
+    "tomorrow": "Demà",
+    "inHours": "En {hours} hores",
+    "today": "Avui",
+    "time": "Hora",
+    "priceFrom": "Des de"
+  },
   "testimonials": {
     "title": "El que diuen els nostres oients",
     "subtitle": "Experiències reals de la nostra comunitat"

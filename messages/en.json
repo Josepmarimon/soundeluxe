@@ -253,6 +253,14 @@
     "sessionsCount": "{count} sessions scheduled",
     "close": "Close"
   },
+  "nextSession": {
+    "inDays": "In {days} days",
+    "tomorrow": "Tomorrow",
+    "inHours": "In {hours} hours",
+    "today": "Today",
+    "time": "Time",
+    "priceFrom": "From"
+  },
   "testimonials": {
     "title": "What our listeners say",
     "subtitle": "Real experiences from our community"

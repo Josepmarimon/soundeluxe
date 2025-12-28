@@ -8,6 +8,7 @@ import { format, parseISO } from 'date-fns'
 import type { Locale, MultilingualText } from '@/lib/sanity/types'
 import type { Image as SanityImage } from 'sanity'
 import SessionsModal from './SessionsModal'
+import NextSessionHighlight from './NextSessionHighlight'
 import './calendarStyles.css'
 
 const dateFnsLocales: Record<string, typeof ca> = {
@@ -26,6 +27,10 @@ interface CalendarSession {
     title: string
     artist: string
     coverImage?: SanityImage
+  }
+  sala?: {
+    _id: string
+    name: MultilingualText
   }
   sessionType?: {
     _id: string
@@ -110,33 +115,42 @@ export default function SessionsCalendar({ sessions, title }: SessionsCalendarPr
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {title && (
         <h3 className="text-xl font-semibold text-white">{title}</h3>
       )}
 
-      <div className="flex justify-center">
-        <DayPicker
-          mode="single"
-          selected={selectedDate}
-          onDayClick={handleDayClick}
-          locale={dateFnsLocale}
-          modifiers={modifiers}
-          modifiersClassNames={modifiersClassNames}
-          showOutsideDays
-          defaultMonth={defaultMonth}
-        />
-      </div>
+      {/* Layout: Calendar + Next Session side by side on desktop */}
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start justify-center">
+        {/* Calendar section */}
+        <div className="flex flex-col items-center space-y-4">
+          <DayPicker
+            mode="single"
+            selected={selectedDate}
+            onDayClick={handleDayClick}
+            locale={dateFnsLocale}
+            modifiers={modifiers}
+            modifiersClassNames={modifiersClassNames}
+            showOutsideDays
+            defaultMonth={defaultMonth}
+          />
 
-      {/* Legend */}
-      <div className="flex items-center justify-center gap-6 text-sm text-zinc-400">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F4E5AD]" />
-          <span>{t('calendar.hasSession')}</span>
+          {/* Legend */}
+          <div className="flex items-center justify-center gap-6 text-sm text-zinc-400">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F4E5AD]" />
+              <span>{t('calendar.hasSession')}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 border-2 border-[#D4AF37] rounded-lg" />
+              <span>{t('calendar.today')}</span>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 border-2 border-[#D4AF37] rounded-lg" />
-          <span>{t('calendar.today')}</span>
+
+        {/* Next Session Highlight */}
+        <div className="w-full lg:w-[380px] flex-shrink-0">
+          <NextSessionHighlight sessions={sessions} />
         </div>
       </div>
 
