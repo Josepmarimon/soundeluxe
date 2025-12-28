@@ -7,6 +7,7 @@ import { salaByIdQuery, sessionsBySalaQuery } from '@/lib/sanity/queries'
 import type { Sala, Locale, MultilingualText } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
 import type { Image as SanityImage } from 'sanity'
+import SessionsCalendar from '@/components/calendar/SessionsCalendar'
 
 interface SalaSession {
   _id: string
@@ -185,6 +186,13 @@ export default async function SalaPage({ params }: SalaPageProps) {
             </div>
           </div>
         </div>
+
+        {/* Calendar */}
+        {sessions.length > 0 && (
+          <div className="mb-12">
+            <SessionsCalendar sessions={sessions} title={t('calendar.title')} />
+          </div>
+        )}
 
         {/* Sessions Section */}
         <div className="space-y-12">

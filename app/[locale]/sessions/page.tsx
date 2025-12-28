@@ -3,6 +3,7 @@ import { client } from '@/lib/sanity/client'
 import { upcomingSessionsQuery } from '@/lib/sanity/queries'
 import type { SessionListItem } from '@/lib/sanity/types'
 import SessionFilters from '@/components/SessionFilters'
+import SessionsCalendar from '@/components/calendar/SessionsCalendar'
 
 export default async function SessionsPage() {
   const t = await getTranslations()
@@ -22,6 +23,13 @@ export default async function SessionsPage() {
             {t('common.tagline')}
           </p>
         </div>
+
+        {/* Calendar */}
+        {sessions.length > 0 && (
+          <div className="mb-12">
+            <SessionsCalendar sessions={sessions} title={t('calendar.title')} />
+          </div>
+        )}
 
         {/* Sessions with Filters */}
         {sessions.length === 0 ? (

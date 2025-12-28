@@ -242,5 +242,13 @@
     "savePreferences": "Guardar preferències",
     "saving": "Guardant...",
     "saved": "Preferències guardades"
+  },
+  "calendar": {
+    "title": "Calendari de sessions",
+    "hasSession": "Amb sessions",
+    "today": "Avui",
+    "oneSession": "1 sessió programada",
+    "sessionsCount": "{count} sessions programades",
+    "close": "Tancar"
   }
 }

@@ -242,5 +242,13 @@
     "savePreferences": "Save preferences",
     "saving": "Saving...",
     "saved": "Preferences saved"
+  },
+  "calendar": {
+    "title": "Session calendar",
+    "hasSession": "Has sessions",
+    "today": "Today",
+    "oneSession": "1 session scheduled",
+    "sessionsCount": "{count} sessions scheduled",
+    "close": "Close"
   }
 }

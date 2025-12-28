@@ -1,0 +1,168 @@
+/* Custom DayPicker theme for Sound Deluxe */
+.rdp-root {
+  --rdp-accent-color: #D4AF37;
+  --rdp-accent-background-color: rgba(212, 175, 55, 0.2);
+
+  background: rgba(16, 42, 67, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(37, 74, 110, 0.3);
+  font-family: inherit;
+}
+
+/* Month caption */
+.rdp-month_caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 12px 0;
+}
+
+.rdp-caption_label {
+  color: #F5F1E8;
+  font-weight: 600;
+  font-size: 1.125rem;
+  text-transform: capitalize;
+}
+
+/* Navigation buttons */
+.rdp-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.rdp-button_previous,
+.rdp-button_next {
+  color: #D4AF37;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.rdp-button_previous:hover,
+.rdp-button_next:hover {
+  background: rgba(212, 175, 55, 0.2);
+}
+
+/* Weekday headers */
+.rdp-weekday {
+  color: #D4AF37;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 8px 0;
+}
+
+/* Day cells */
+.rdp-day {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.rdp-day_button {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #F5F1E8;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+.rdp-day_button:hover {
+  background: rgba(245, 241, 232, 0.1);
+}
+
+/* Selected day */
+.rdp-selected .rdp-day_button {
+  background: linear-gradient(135deg, #D4AF37 0%, #F4E5AD 50%, #D4AF37 100%);
+  color: #0a1929;
+  font-weight: 600;
+}
+
+/* Today */
+.rdp-today .rdp-day_button {
+  border: 2px solid #D4AF37;
+}
+
+/* Outside days (other months) */
+.rdp-outside .rdp-day_button {
+  color: rgba(245, 241, 232, 0.3);
+}
+
+/* Days with sessions indicator */
+.rdp-day.has-sessions .rdp-day_button::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(135deg, #D4AF37, #F4E5AD);
+  border-radius: 50%;
+}
+
+/* When selected, make the dot darker */
+.rdp-day.has-sessions.rdp-selected .rdp-day_button::after {
+  background: #0a1929;
+}
+
+/* Disabled days */
+.rdp-disabled .rdp-day_button {
+  color: rgba(245, 241, 232, 0.2);
+  cursor: not-allowed;
+}
+
+.rdp-disabled .rdp-day_button:hover {
+  background: transparent;
+}
+
+/* Weeks grid */
+.rdp-weeks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rdp-week {
+  display: flex;
+  gap: 2px;
+}
+
+.rdp-weekdays {
+  display: flex;
+  gap: 2px;
+}
+
+/* Month grid */
+.rdp-month {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .rdp-root {
+    padding: 12px;
+  }
+
+  .rdp-day {
+    width: 36px;
+    height: 36px;
+  }
+
+  .rdp-caption_label {
+    font-size: 1rem;
+  }
+}
