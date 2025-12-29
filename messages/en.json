@@ -25,6 +25,7 @@
   },
   "sessions": {
     "title": "Upcoming sessions",
+    "allSessions": "All sessions",
     "upcomingSession": "Next session",
     "noSessions": "No sessions scheduled",
     "bookNow": "Book now",
@@ -118,24 +119,48 @@
     "infoTitle": "How does it work?",
     "infoText": "You can only vote for albums that don't have scheduled sessions yet. The most voted albums will be considered for future programming. You need to be registered to vote.",
     "rankingTitle": "Top Voted Albums",
-    "noVotesYet": "No votes yet. Be the first to vote!"
+    "noVotesYet": "No votes yet. Be the first to vote!",
+    "suggestion": {
+      "title": "Suggest an album",
+      "subtitle": "Can't find the album you want? Suggest it and we'll consider adding it to the catalog.",
+      "artistLabel": "Artist",
+      "artistPlaceholder": "Type the artist name...",
+      "albumLabel": "Select an album",
+      "noAlbums": "No albums found for this artist",
+      "submit": "Submit suggestion",
+      "submitting": "Submitting...",
+      "success": "Thank you! We've received your suggestion and will review it.",
+      "error": "Something went wrong. Please try again.",
+      "alreadySuggested": "You have already suggested this album."
+    }
   },
   "profile": {
     "title": "My Profile",
     "myBookings": "My Bookings",
     "myVotes": "My Votes",
+    "mySuggestions": "My Suggestions",
     "noBookings": "You don't have any bookings yet",
     "noVotes": "You haven't voted for any albums yet",
+    "noSuggestions": "You haven't suggested any albums yet",
     "browseSessions": "Browse Sessions",
     "voteForAlbums": "Vote for Albums",
+    "suggestAlbum": "Suggest an Album",
     "removeVote": "Remove Vote",
     "status": "Status",
+    "suggestedOn": "Suggested on {date}",
+    "adminResponse": "Response from Sound Deluxe:",
     "bookingStatus": {
       "pending": "Pending",
       "confirmed": "Confirmed",
       "cancelled": "Cancelled",
       "refunded": "Refunded",
       "no_show": "No Show"
+    },
+    "suggestionStatus": {
+      "pending": "Pending review",
+      "approved": "Approved",
+      "rejected": "Not available",
+      "added": "Added to catalog"
     }
   },
   "venue": {
@@ -143,7 +168,8 @@
     "address": "Address",
     "accessibility": "Accessibility",
     "schedule": "Schedule",
-    "viewOnMap": "View on map"
+    "viewOnMap": "View on map",
+    "theSpace": "The space"
   },
   "salas": {
     "title": "Hi-Fi Venues",
@@ -245,7 +271,11 @@
     "newsletterDisabled": "Not subscribed to newsletter",
     "savePreferences": "Save preferences",
     "saving": "Saving...",
-    "saved": "Preferences saved"
+    "saved": "Preferences saved",
+    "privacyTitle": "Privacy",
+    "showInPublicListsLabel": "Appear in public lists",
+    "showInPublicListsEnabled": "Your name will be visible in votes, comments and social network",
+    "showInPublicListsDisabled": "Your name will not appear in public lists"
   },
   "calendar": {
     "title": "Session calendar",

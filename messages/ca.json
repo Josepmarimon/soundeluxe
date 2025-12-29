@@ -25,6 +25,7 @@
   },
   "sessions": {
     "title": "Properes sessions",
+    "allSessions": "Totes les sessions",
     "upcomingSession": "Propera sessió",
     "noSessions": "No hi ha sessions programades",
     "bookNow": "Reservar ara",
@@ -118,24 +119,48 @@
     "infoTitle": "Com funciona?",
     "infoText": "Només pots votar àlbums que encara no tenen sessions programades. Els àlbums més votats seran considerats per a futures programacions. Necessites estar registrat per poder votar.",
     "rankingTitle": "Top Àlbums més votats",
-    "noVotesYet": "Encara no hi ha vots. Sigues el primer en votar!"
+    "noVotesYet": "Encara no hi ha vots. Sigues el primer en votar!",
+    "suggestion": {
+      "title": "Suggereix un disc",
+      "subtitle": "No trobes el disc que vols? Suggereix-lo i el considerarem per afegir-lo al catàleg.",
+      "artistLabel": "Artista",
+      "artistPlaceholder": "Escriu el nom de l'artista...",
+      "albumLabel": "Selecciona un àlbum",
+      "noAlbums": "No s'han trobat àlbums per aquest artista",
+      "submit": "Enviar suggerència",
+      "submitting": "Enviant...",
+      "success": "Gràcies! Hem rebut la teva suggerència i la revisarem.",
+      "error": "Hi ha hagut un error. Torna-ho a provar.",
+      "alreadySuggested": "Ja has suggerit aquest àlbum anteriorment."
+    }
   },
   "profile": {
     "title": "El meu perfil",
     "myBookings": "Les meves reserves",
     "myVotes": "Els meus vots",
+    "mySuggestions": "Les meves suggerències",
     "noBookings": "Encara no tens cap reserva",
     "noVotes": "Encara no has votat cap àlbum",
+    "noSuggestions": "Encara no has suggerit cap disc",
     "browseSessions": "Explorar sessions",
     "voteForAlbums": "Votar àlbums",
+    "suggestAlbum": "Suggerir un disc",
     "removeVote": "Eliminar vot",
     "status": "Estat",
+    "suggestedOn": "Suggerit el {date}",
+    "adminResponse": "Resposta de Sound Deluxe:",
     "bookingStatus": {
       "pending": "Pendent",
       "confirmed": "Confirmada",
       "cancelled": "Cancel·lada",
       "refunded": "Reemborsada",
       "no_show": "No assistit"
+    },
+    "suggestionStatus": {
+      "pending": "Pendent de revisió",
+      "approved": "Aprovat",
+      "rejected": "No disponible",
+      "added": "Afegit al catàleg"
     }
   },
   "venue": {
@@ -143,7 +168,8 @@
     "address": "Adreça",
     "accessibility": "Accessibilitat",
     "schedule": "Horaris",
-    "viewOnMap": "Veure al mapa"
+    "viewOnMap": "Veure al mapa",
+    "theSpace": "L'espai"
   },
   "salas": {
     "title": "Sales Hi-Fi",
@@ -245,7 +271,11 @@
     "newsletterDisabled": "No subscrit al butlletí",
     "savePreferences": "Guardar preferències",
     "saving": "Guardant...",
-    "saved": "Preferències guardades"
+    "saved": "Preferències guardades",
+    "privacyTitle": "Privacitat",
+    "showInPublicListsLabel": "Aparèixer en llistats públics",
+    "showInPublicListsEnabled": "El teu nom serà visible en votacions, comentaris i xarxa social",
+    "showInPublicListsDisabled": "El teu nom no apareixerà en llistats públics"
   },
   "calendar": {
     "title": "Calendari de sessions",

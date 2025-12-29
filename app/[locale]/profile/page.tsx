@@ -57,6 +57,18 @@ interface Booking {
   }
 }
 
+interface Suggestion {
+  id: string
+  artistName: string
+  albumTitle: string
+  coverUrl: string | null
+  year: number | null
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'ADDED'
+  adminResponse: string | null
+  respondedAt: string | null
+  createdAt: string
+}
+
 export default function ProfilePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -65,13 +77,19 @@ export default function ProfilePage() {
 
   const [votes, setVotes] = useState<Vote[]>([])
   const [bookings, setBookings] = useState<Booking[]>([])
-  const [activeTab, setActiveTab] = useState<'votes' | 'bookings' | 'preferences'>('bookings')
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([])
+  const [activeTab, setActiveTab] = useState<'votes' | 'bookings' | 'suggestions' | 'preferences'>('bookings')
   const [isLoading, setIsLoading] = useState(true)
 
   // Newsletter preferences
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false)
   const [savingPreferences, setSavingPreferences] = useState(false)
   const [preferencesSaved, setPreferencesSaved] = useState(false)
+
+  // Privacy preferences
+  const [showInPublicLists, setShowInPublicLists] = useState(true)
+  const [savingPrivacy, setSavingPrivacy] = useState(false)
+  const [privacySaved, setPrivacySaved] = useState(false)
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -88,19 +106,25 @@ export default function ProfilePage() {
       try {
         setIsLoading(true)
 
-        const [votesRes, bookingsRes, newsletterRes] = await Promise.all([
+        const [votesRes, bookingsRes, suggestionsRes, newsletterRes, preferencesRes] = await Promise.all([
           fetch('/api/user/votes'),
           fetch('/api/user/bookings'),
+          fetch('/api/suggestions'),
           fetch('/api/user/newsletter'),
+          fetch('/api/user/preferences'),
         ])
 
         const votesData = await votesRes.json()
         const bookingsData = await bookingsRes.json()
+        const suggestionsData = await suggestionsRes.json()
         const newsletterData = await newsletterRes.json()
+        const preferencesData = await preferencesRes.json()
 
         setVotes(votesData.votes || [])
         setBookings(bookingsData.bookings || [])
+        setSuggestions(suggestionsData.suggestions || [])
         setNewsletterSubscribed(newsletterData.subscribed || false)
+        setShowInPublicLists(preferencesData.showInPublicLists ?? true)
       } catch (error) {
         console.error('Error fetching user data:', error)
       } finally {
@@ -134,6 +158,30 @@ export default function ProfilePage() {
       console.error('Error updating newsletter preferences:', error)
     } finally {
       setSavingPreferences(false)
+    }
+  }
+
+  // Handle privacy toggle
+  const handlePrivacyToggle = async () => {
+    setSavingPrivacy(true)
+    setPrivacySaved(false)
+
+    try {
+      const response = await fetch('/api/user/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ showInPublicLists: !showInPublicLists }),
+      })
+
+      if (response.ok) {
+        setShowInPublicLists(!showInPublicLists)
+        setPrivacySaved(true)
+        setTimeout(() => setPrivacySaved(false), 3000)
+      }
+    } catch (error) {
+      console.error('Error updating privacy preferences:', error)
+    } finally {
+      setSavingPrivacy(false)
     }
   }
 
@@ -184,10 +232,10 @@ export default function ProfilePage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-8 border-b border-[#254a6e]">
+        <div className="flex flex-wrap gap-2 md:gap-4 mb-8 border-b border-[#254a6e]">
           <button
             onClick={() => setActiveTab('bookings')}
-            className={`pb-4 px-6 font-semibold transition-colors ${
+            className={`pb-4 px-4 md:px-6 font-semibold transition-colors text-sm md:text-base ${
               activeTab === 'bookings'
                 ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
                 : 'text-zinc-400 hover:text-white'
@@ -197,7 +245,7 @@ export default function ProfilePage() {
           </button>
           <button
             onClick={() => setActiveTab('votes')}
-            className={`pb-4 px-6 font-semibold transition-colors ${
+            className={`pb-4 px-4 md:px-6 font-semibold transition-colors text-sm md:text-base ${
               activeTab === 'votes'
                 ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
                 : 'text-zinc-400 hover:text-white'
@@ -206,8 +254,18 @@ export default function ProfilePage() {
             {t('profile.myVotes')} ({votes.length})
           </button>
           <button
+            onClick={() => setActiveTab('suggestions')}
+            className={`pb-4 px-4 md:px-6 font-semibold transition-colors text-sm md:text-base ${
+              activeTab === 'suggestions'
+                ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            {t('profile.mySuggestions')} ({suggestions.length})
+          </button>
+          <button
             onClick={() => setActiveTab('preferences')}
-            className={`pb-4 px-6 font-semibold transition-colors ${
+            className={`pb-4 px-4 md:px-6 font-semibold transition-colors text-sm md:text-base ${
               activeTab === 'preferences'
                 ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
                 : 'text-zinc-400 hover:text-white'
@@ -356,8 +414,110 @@ export default function ProfilePage() {
           </div>
         )}
 
+        {activeTab === 'suggestions' && (
+          <div>
+            {suggestions.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="text-zinc-400 text-lg mb-6">{t('profile.noSuggestions')}</p>
+                <a
+                  href={`/${locale}/votes`}
+                  className="inline-block px-8 py-3 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black font-semibold rounded-full hover:shadow-lg transition-shadow"
+                >
+                  {t('profile.suggestAlbum')}
+                </a>
+              </div>
+            ) : (
+              <div className="grid gap-6">
+                {suggestions.map((suggestion) => (
+                  <div
+                    key={suggestion.id}
+                    className="bg-velvet-card rounded-lg overflow-hidden"
+                  >
+                    <div className="flex flex-col md:flex-row gap-6 p-6">
+                      {/* Album Cover */}
+                      <div className="flex-shrink-0">
+                        <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-zinc-800">
+                          {suggestion.coverUrl ? (
+                            <Image
+                              src={suggestion.coverUrl}
+                              alt={suggestion.albumTitle}
+                              fill
+                              className="object-cover"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <svg className="w-8 h-8 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Suggestion Details */}
+                      <div className="flex-grow">
+                        <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
+                          <div>
+                            <h3 className="text-xl font-bold text-white">
+                              {suggestion.albumTitle}
+                            </h3>
+                            <p className="text-zinc-400">
+                              {suggestion.artistName} {suggestion.year && `· ${suggestion.year}`}
+                            </p>
+                          </div>
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            suggestion.status === 'PENDING' ? 'bg-yellow-900/50 text-yellow-400' :
+                            suggestion.status === 'APPROVED' ? 'bg-green-900/50 text-green-400' :
+                            suggestion.status === 'REJECTED' ? 'bg-red-900/50 text-red-400' :
+                            'bg-blue-900/50 text-blue-400'
+                          }`}>
+                            {t(`profile.suggestionStatus.${suggestion.status.toLowerCase()}`)}
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-zinc-500 mb-3">
+                          {t('profile.suggestedOn', {
+                            date: new Date(suggestion.createdAt).toLocaleDateString(locale, {
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                            })
+                          })}
+                        </p>
+
+                        {/* Admin Response */}
+                        {suggestion.adminResponse && (
+                          <div className="mt-4 p-4 bg-zinc-800/50 rounded-lg border-l-4 border-[#D4AF37]">
+                            <p className="text-sm text-zinc-300 font-medium mb-1">
+                              {t('profile.adminResponse')}
+                            </p>
+                            <p className="text-zinc-400 text-sm whitespace-pre-wrap">
+                              {suggestion.adminResponse}
+                            </p>
+                            {suggestion.respondedAt && (
+                              <p className="text-xs text-zinc-500 mt-2">
+                                {new Date(suggestion.respondedAt).toLocaleDateString(locale, {
+                                  day: 'numeric',
+                                  month: 'long',
+                                  year: 'numeric',
+                                })}
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {activeTab === 'preferences' && (
-          <div className="max-w-xl">
+          <div className="max-w-xl space-y-6">
+            {/* Newsletter preferences */}
             <div className="bg-velvet-card rounded-lg p-6">
               <h3 className="text-xl font-bold text-white mb-6">
                 {t('profilePreferences.communicationTitle')}
@@ -397,6 +557,52 @@ export default function ProfilePage() {
               )}
 
               {savingPreferences && (
+                <p className="mt-4 text-sm text-zinc-400">
+                  {t('profilePreferences.saving')}
+                </p>
+              )}
+            </div>
+
+            {/* Privacy preferences */}
+            <div className="bg-velvet-card rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-6">
+                {t('profilePreferences.privacyTitle')}
+              </h3>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white font-medium">
+                    {t('profilePreferences.showInPublicListsLabel')}
+                  </p>
+                  <p className="text-sm text-zinc-400 mt-1">
+                    {showInPublicLists
+                      ? t('profilePreferences.showInPublicListsEnabled')
+                      : t('profilePreferences.showInPublicListsDisabled')}
+                  </p>
+                </div>
+
+                <button
+                  onClick={handlePrivacyToggle}
+                  disabled={savingPrivacy}
+                  className={`relative w-14 h-8 rounded-full transition-colors ${
+                    showInPublicLists ? 'bg-[#D4AF37]' : 'bg-zinc-600'
+                  } ${savingPrivacy ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  <span
+                    className={`absolute top-1 w-6 h-6 rounded-full bg-white transition-transform ${
+                      showInPublicLists ? 'left-7' : 'left-1'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {privacySaved && (
+                <p className="mt-4 text-sm text-green-500">
+                  {t('profilePreferences.saved')}
+                </p>
+              )}
+
+              {savingPrivacy && (
                 <p className="mt-4 text-sm text-zinc-400">
                   {t('profilePreferences.saving')}
                 </p>

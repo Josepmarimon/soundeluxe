@@ -32,12 +32,19 @@ model User {
   newsletterSubscribed  Boolean   @default(false)
   newsletterConfirmedAt DateTime?
 
+  // Privacitat
+  showInPublicLists     Boolean   @default(true)  // Aparèixer en llistats públics (votacions, comentaris, assistents...)
+
+  // Testing
+  isTestUser            Boolean   @default(false) // Usuaris de test que reben emails encara que estiguin pausats
+
   // Relacions
-  reservas      Reserva[]
-  votaciones    Votacion[]
-  ressenyes     Ressenya[]
-  comentaris    Comentari[]
-  llistaEspera  LlistaEspera[]
+  reservas          Reserva[]
+  votaciones        Votacion[]
+  ressenyes         Ressenya[]
+  comentaris        Comentari[]
+  llistaEspera      LlistaEspera[]
+  albumSuggestions  AlbumSuggestion[]
 
   @@map("users")
 }
@@ -144,6 +151,37 @@ model LlistaEspera {
   @@map("llista_espera")
 }
 
+// Suggerències d'àlbums dels usuaris
+model AlbumSuggestion {
+  id            String   @id @default(cuid())
+  userId        String
+  artistName    String
+  albumTitle    String
+  mbid          String?  // MusicBrainz Release ID (opcional)
+  coverUrl      String?  // URL de la portada (opcional)
+  year          Int?     // Any de llançament (opcional)
+  status        SuggestionStatus @default(PENDING)
+
+  // Resposta de l'administrador
+  adminResponse String?  @db.Text  // Missatge de resposta per a l'usuari
+  respondedAt   DateTime?          // Quan s'ha respost
+  respondedBy   String?            // Email o nom de l'admin que ha respost
+
+  // Notes internes (no visibles per l'usuari)
+  adminNotes    String?  @db.Text
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relacions
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, artistName, albumTitle])  // Evitar duplicats per usuari
+  @@index([status])
+  @@index([artistName])
+  @@map("album_suggestions")
+}
+
 // Newsletter subscribers (usuaris no registrats)
 // GDPR compliant amb doble opt-in
 model Subscriber {
@@ -210,4 +248,11 @@ enum RefundStatus {
   PARTIAL       // <48h cancel·lació
   FULL          // >48h cancel·lació
   REJECTED
+}
+
+enum SuggestionStatus {
+  PENDING       // Esperant revisió
+  APPROVED      // Aprovat per afegir
+  REJECTED      // Rebutjat
+  ADDED         // Ja afegit al catàleg
 }

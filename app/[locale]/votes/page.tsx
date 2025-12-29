@@ -3,6 +3,7 @@ import { client } from '@/lib/sanity/client'
 import { votableAlbumsQuery, genresQuery, artistsQuery } from '@/lib/sanity/queries'
 import AlbumCatalog from '@/components/AlbumCatalog'
 import VotesRanking from '@/components/VotesRanking'
+import AlbumSuggestionForm from '@/components/AlbumSuggestionForm'
 import type { Album } from '@/lib/sanity/types'
 
 export default async function VotesPage() {
@@ -34,6 +35,11 @@ export default async function VotesPage() {
         {/* Ranking Section */}
         <div className="mb-12">
           <VotesRanking />
+        </div>
+
+        {/* Album Suggestion Form */}
+        <div className="mb-12">
+          <AlbumSuggestionForm />
         </div>
 
         {/* Catalog with filters - showing vote buttons, hiding title search */}

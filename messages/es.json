@@ -25,6 +25,7 @@
   },
   "sessions": {
     "title": "Próximas sesiones",
+    "allSessions": "Todas las sesiones",
     "upcomingSession": "Próxima sesión",
     "noSessions": "No hay sesiones programadas",
     "bookNow": "Reservar ahora",
@@ -118,24 +119,48 @@
     "infoTitle": "¿Cómo funciona?",
     "infoText": "Solo puedes votar álbumes que aún no tienen sesiones programadas. Los álbumes más votados serán considerados para futuras programaciones. Necesitas estar registrado para poder votar.",
     "rankingTitle": "Top Álbumes más votados",
-    "noVotesYet": "Todavía no hay votos. ¡Sé el primero en votar!"
+    "noVotesYet": "Todavía no hay votos. ¡Sé el primero en votar!",
+    "suggestion": {
+      "title": "Sugiere un disco",
+      "subtitle": "¿No encuentras el disco que quieres? Sugiérelo y lo consideraremos para añadirlo al catálogo.",
+      "artistLabel": "Artista",
+      "artistPlaceholder": "Escribe el nombre del artista...",
+      "albumLabel": "Selecciona un álbum",
+      "noAlbums": "No se encontraron álbumes para este artista",
+      "submit": "Enviar sugerencia",
+      "submitting": "Enviando...",
+      "success": "¡Gracias! Hemos recibido tu sugerencia y la revisaremos.",
+      "error": "Ha habido un error. Inténtalo de nuevo.",
+      "alreadySuggested": "Ya has sugerido este álbum anteriormente."
+    }
   },
   "profile": {
     "title": "Mi perfil",
     "myBookings": "Mis reservas",
     "myVotes": "Mis votos",
+    "mySuggestions": "Mis sugerencias",
     "noBookings": "Aún no tienes ninguna reserva",
     "noVotes": "Aún no has votado ningún álbum",
+    "noSuggestions": "Aún no has sugerido ningún disco",
     "browseSessions": "Explorar sesiones",
     "voteForAlbums": "Votar álbumes",
+    "suggestAlbum": "Sugerir un disco",
     "removeVote": "Eliminar voto",
     "status": "Estado",
+    "suggestedOn": "Sugerido el {date}",
+    "adminResponse": "Respuesta de Sound Deluxe:",
     "bookingStatus": {
       "pending": "Pendiente",
       "confirmed": "Confirmada",
       "cancelled": "Cancelada",
       "refunded": "Reembolsada",
       "no_show": "No asistió"
+    },
+    "suggestionStatus": {
+      "pending": "Pendiente de revisión",
+      "approved": "Aprobado",
+      "rejected": "No disponible",
+      "added": "Añadido al catálogo"
     }
   },
   "venue": {
@@ -143,7 +168,8 @@
     "address": "Dirección",
     "accessibility": "Accesibilidad",
     "schedule": "Horarios",
-    "viewOnMap": "Ver en el mapa"
+    "viewOnMap": "Ver en el mapa",
+    "theSpace": "El espacio"
   },
   "salas": {
     "title": "Salas Hi-Fi",
@@ -245,7 +271,11 @@
     "newsletterDisabled": "No suscrito al boletín",
     "savePreferences": "Guardar preferencias",
     "saving": "Guardando...",
-    "saved": "Preferencias guardadas"
+    "saved": "Preferencias guardadas",
+    "privacyTitle": "Privacidad",
+    "showInPublicListsLabel": "Aparecer en listados públicos",
+    "showInPublicListsEnabled": "Tu nombre será visible en votaciones, comentarios y red social",
+    "showInPublicListsDisabled": "Tu nombre no aparecerá en listados públicos"
   },
   "calendar": {
     "title": "Calendario de sesiones",
