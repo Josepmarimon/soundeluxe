@@ -13,24 +13,14 @@ export default function RegisterPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-
-    if (password !== confirmPassword) {
-      setError(
-        locale === 'ca'
-          ? 'Les contrasenyes no coincideixen'
-          : locale === 'es'
-            ? 'Las contraseñas no coinciden'
-            : 'Passwords do not match'
-      )
-      return
-    }
 
     if (password.length < 8) {
       setError(
@@ -73,8 +63,8 @@ export default function RegisterPage() {
         return
       }
 
-      // Redirect to login after successful registration
-      router.push(`/${locale}/login?registered=true`)
+      // Show success message
+      setSuccess(true)
     } catch (error) {
       setError(
         locale === 'ca'
@@ -86,6 +76,44 @@ export default function RegisterPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Success state - show email verification message
+  if (success) {
+    return (
+      <div className="min-h-screen bg-transparent pt-16 flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full">
+          <div className="bg-velvet-card rounded-lg p-8 text-center">
+            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-green-500">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-white mb-4">
+              {locale === 'ca'
+                ? 'Comprova el teu email'
+                : locale === 'es'
+                  ? 'Revisa tu email'
+                  : 'Check your email'}
+            </h1>
+            <p className="text-zinc-400 mb-6">
+              {locale === 'ca'
+                ? `Hem enviat un email de verificació a ${email}. Clica l'enllaç per activar el teu compte.`
+                : locale === 'es'
+                  ? `Hemos enviado un email de verificación a ${email}. Haz clic en el enlace para activar tu cuenta.`
+                  : `We've sent a verification email to ${email}. Click the link to activate your account.`}
+            </p>
+            <p className="text-zinc-500 text-sm">
+              {locale === 'ca'
+                ? 'No el trobes? Comprova la carpeta de spam.'
+                : locale === 'es'
+                  ? '¿No lo encuentras? Revisa la carpeta de spam.'
+                  : "Can't find it? Check your spam folder."}
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -150,36 +178,35 @@ export default function RegisterPage() {
                     ? 'Contraseña'
                     : 'Password'}
               </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-[#1a3a5c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-                required
-                disabled={isLoading}
-                minLength={8}
-              />
-            </div>
-
-            <div>
-              <label htmlFor="confirmPassword" className="block text-white mb-2">
-                {locale === 'ca'
-                  ? 'Confirmar contrasenya'
-                  : locale === 'es'
-                    ? 'Confirmar contraseña'
-                    : 'Confirm password'}
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-[#1a3a5c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-                required
-                disabled={isLoading}
-                minLength={8}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 pr-12 bg-[#1a3a5c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                  required
+                  disabled={isLoading}
+                  minLength={8}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
 
             <button

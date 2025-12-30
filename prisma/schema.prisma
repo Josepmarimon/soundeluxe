@@ -28,6 +28,10 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // Verificació d'email
+  verifyToken       String?   @unique  // Token per verificar email
+  verifyTokenExpiry DateTime?          // Expiració del token (24h)
+
   // Newsletter (GDPR compliant)
   newsletterSubscribed  Boolean   @default(false)
   newsletterConfirmedAt DateTime?
