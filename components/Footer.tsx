@@ -1,12 +1,20 @@
 'use client'
 
 import { useLocale, useTranslations } from 'next-intl'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import type { Locale } from '@/i18n'
+import { locales, type Locale } from '@/i18n'
 
 export default function Footer() {
   const t = useTranslations()
   const locale = useLocale() as Locale
+  const pathname = usePathname()
+
+  const changeLocale = (newLocale: Locale) => {
+    const pathnameWithoutLocale = pathname.replace(`/${locale}`, '') || '/'
+    const newPath = `/${newLocale}${pathnameWithoutLocale}`
+    window.location.href = newPath
+  }
 
   return (
     <footer className="bg-[#0a1929] border-t border-[#254a6e]/30">
@@ -116,31 +124,50 @@ export default function Footer() {
             <p className="text-zinc-400 text-sm">
               © {new Date().getFullYear()} Sound Deluxe. All rights reserved.
             </p>
-            <div className="flex items-center gap-4">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-zinc-300 hover:text-white transition-colors"
-              >
-                Instagram
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-zinc-300 hover:text-white transition-colors"
-              >
-                Facebook
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-zinc-300 hover:text-white transition-colors"
-              >
-                Twitter
-              </a>
+            <div className="flex items-center gap-6">
+              {/* Language Selector */}
+              <div className="flex items-center gap-1">
+                {locales.map((loc) => (
+                  <button
+                    key={loc}
+                    onClick={() => changeLocale(loc)}
+                    className={`px-2 py-1 text-xs font-medium transition-colors rounded ${
+                      locale === loc
+                        ? 'text-[#D4AF37]'
+                        : 'text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    {loc.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+              {/* Social Links */}
+              <div className="flex items-center gap-4">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-300 hover:text-white transition-colors"
+                >
+                  Instagram
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-300 hover:text-white transition-colors"
+                >
+                  Facebook
+                </a>
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-300 hover:text-white transition-colors"
+                >
+                  Twitter
+                </a>
+              </div>
             </div>
           </div>
         </div>

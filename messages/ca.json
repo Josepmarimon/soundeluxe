@@ -267,6 +267,7 @@
     }
   },
   "profilePreferences": {
+    "languageTitle": "Idioma",
     "communicationTitle": "Preferències de comunicació",
     "newsletterLabel": "Rebre butlletí amb novetats i sessions",
     "newsletterEnabled": "Subscrit al butlletí",

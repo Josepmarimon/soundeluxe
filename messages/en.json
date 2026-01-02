@@ -267,6 +267,7 @@
     }
   },
   "profilePreferences": {
+    "languageTitle": "Language",
     "communicationTitle": "Communication preferences",
     "newsletterLabel": "Receive newsletter with news and sessions",
     "newsletterEnabled": "Subscribed to newsletter",

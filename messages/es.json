@@ -267,6 +267,7 @@
     }
   },
   "profilePreferences": {
+    "languageTitle": "Idioma",
     "communicationTitle": "Preferencias de comunicación",
     "newsletterLabel": "Recibir boletín con novedades y sesiones",
     "newsletterEnabled": "Suscrito al boletín",

@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { urlForImage } from '@/lib/sanity/image'
+import { locales, type Locale } from '@/i18n'
 
 interface Vote {
   id: string
@@ -72,8 +73,23 @@ interface Suggestion {
 export default function ProfilePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const locale = useLocale()
+  const pathname = usePathname()
+  const locale = useLocale() as Locale
   const t = useTranslations()
+
+  // Language names for display
+  const localeNames: Record<Locale, string> = {
+    ca: 'Català',
+    es: 'Español',
+    en: 'English',
+  }
+
+  // Change locale handler
+  const changeLocale = (newLocale: Locale) => {
+    const pathnameWithoutLocale = pathname.replace(`/${locale}`, '') || '/'
+    const newPath = `/${newLocale}${pathnameWithoutLocale}`
+    window.location.href = newPath
+  }
 
   const [votes, setVotes] = useState<Vote[]>([])
   const [bookings, setBookings] = useState<Booking[]>([])
@@ -517,6 +533,29 @@ export default function ProfilePage() {
 
         {activeTab === 'preferences' && (
           <div className="max-w-xl space-y-6">
+            {/* Language selector */}
+            <div className="bg-velvet-card rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-6">
+                {t('profilePreferences.languageTitle')}
+              </h3>
+
+              <div className="flex flex-wrap gap-2">
+                {locales.map((loc) => (
+                  <button
+                    key={loc}
+                    onClick={() => changeLocale(loc)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      locale === loc
+                        ? 'bg-[#D4AF37] text-black'
+                        : 'bg-[#1a3a5c] text-zinc-300 hover:text-white hover:bg-[#254a6e]'
+                    }`}
+                  >
+                    {localeNames[loc]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Newsletter preferences */}
             <div className="bg-velvet-card rounded-lg p-6">
               <h3 className="text-xl font-bold text-white mb-6">
