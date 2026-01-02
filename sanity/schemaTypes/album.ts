@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import { PlayIcon, ImageIcon, TagIcon, LinkIcon, SearchIcon } from '@sanity/icons'
+import { PlayIcon, ImageIcon, TagIcon, LinkIcon } from '@sanity/icons'
 import { MusicBrainzSearch } from '../components/MusicBrainzSearch'
 
 /**
@@ -12,7 +12,6 @@ export default defineType({
   type: 'document',
   icon: PlayIcon,
   groups: [
-    { name: 'search', title: '🔍 Cercar', icon: SearchIcon },
     { name: 'info', title: '🎵 Informació bàsica', default: true },
     { name: 'media', title: '🖼️ Imatges', icon: ImageIcon },
     { name: 'details', title: '📝 Detalls', icon: TagIcon },
@@ -25,7 +24,7 @@ export default defineType({
       name: 'musicbrainzSearch',
       title: 'Cerca a MusicBrainz',
       type: 'object',
-      group: 'search',
+      group: 'info',
       description: 'Cerca i importa dades d\'àlbum des de MusicBrainz automàticament',
       fields: [
         {
