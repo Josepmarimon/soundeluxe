@@ -261,7 +261,6 @@ export default function AlbumSuggestionForm() {
             }}
             placeholder={t('votes.suggestion.artistPlaceholder')}
             className="w-full px-4 py-3 bg-zinc-800 text-white placeholder:text-zinc-500 rounded-xl border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
-            disabled={loadingArtists}
           />
 
           {/* Clear button */}
