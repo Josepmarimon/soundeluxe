@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { emitVoteEvent } from '@/hooks/useVoteEvents'
 
 interface VoteButtonProps {
   albumId: string
@@ -83,6 +84,7 @@ export default function VoteButton({
         if (response.ok) {
           setHasVoted(false)
           setVoteCount((prev) => Math.max(0, prev - 1))
+          emitVoteEvent(albumId, 'unvote')
         }
       } else {
         // Add vote
@@ -97,6 +99,7 @@ export default function VoteButton({
         if (response.ok) {
           setHasVoted(true)
           setVoteCount((prev) => prev + 1)
+          emitVoteEvent(albumId, 'vote')
         }
       }
     } catch (error) {

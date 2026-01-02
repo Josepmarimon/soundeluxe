@@ -1,0 +1,2484 @@
+[
+  {
+    "of": [
+      {
+        "marks": {
+          "annotations": [
+            {
+              "fields": [
+                {
+                  "validation": [
+                    {
+                      "rules": [
+                        {
+                          "flag": "uri",
+                          "constraint": {
+                            "options": {
+                              "scheme": [
+                                "/^http$/",
+                                "/^https$/"
+                              ],
+                              "allowRelative": false,
+                              "relativeOnly": false,
+                              "allowCredentials": false
+                            }
+                          }
+                        }
+                      ],
+                      "level": "error"
+                    }
+                  ],
+                  "name": "href",
+                  "type": "url",
+                  "title": "URL"
+                }
+              ],
+              "name": "link",
+              "type": "object",
+              "title": "URL"
+            }
+          ],
+          "decorators": [
+            {
+              "value": "strong",
+              "title": "Strong"
+            },
+            {
+              "value": "em",
+              "title": "Emphasis"
+            },
+            {
+              "value": "code",
+              "title": "Code"
+            }
+          ]
+        },
+        "lists": [
+          {
+            "value": "bullet",
+            "title": "Bullet"
+          },
+          {
+            "value": "number",
+            "title": "Numbered"
+          }
+        ],
+        "styles": [
+          {
+            "value": "normal",
+            "title": "Normal"
+          },
+          {
+            "value": "h1",
+            "title": "H1"
+          },
+          {
+            "value": "h2",
+            "title": "H2"
+          },
+          {
+            "value": "h3",
+            "title": "H3"
+          },
+          {
+            "value": "blockquote",
+            "title": "Quote"
+          }
+        ],
+        "of": [],
+        "type": "block"
+      }
+    ],
+    "name": "blockContent",
+    "type": "array"
+  },
+  {
+    "fields": [
+      {
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "title",
+        "type": "object"
+      },
+      {
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "description",
+        "type": "object"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "image",
+        "type": "image"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "SVG path data for the icon",
+        "name": "icon",
+        "type": "string"
+      }
+    ],
+    "name": "experienceFeature",
+    "type": "object"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Sempre en idioma original (ex: \"The Dark Side of the Moon\")",
+        "name": "title",
+        "type": "string",
+        "title": "Títol"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Nom de l'artista o banda",
+        "name": "artist",
+        "type": "string",
+        "title": "Artista"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1900
+              },
+              {
+                "flag": "max",
+                "constraint": 2026
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "year",
+        "type": "number",
+        "title": "Any de llançament"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Rock",
+              "value": "rock"
+            },
+            {
+              "title": "Jazz",
+              "value": "jazz"
+            },
+            {
+              "title": "Soul",
+              "value": "soul"
+            },
+            {
+              "title": "Clàssica",
+              "value": "clasica"
+            },
+            {
+              "title": "Electrònica",
+              "value": "electronica"
+            },
+            {
+              "title": "Pop",
+              "value": "pop"
+            },
+            {
+              "title": "Hip-Hop",
+              "value": "hiphop"
+            }
+          ]
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "rock",
+                  "jazz",
+                  "soul",
+                  "clasica",
+                  "electronica",
+                  "pop",
+                  "hiphop"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "genre",
+        "type": "string",
+        "title": "Gènere"
+      },
+      {
+        "description": "Durada aproximada de l'àlbum en minuts",
+        "name": "duration",
+        "type": "number",
+        "title": "Durada total (minuts)"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "coverImage",
+        "type": "image",
+        "title": "Portada"
+      },
+      {
+        "description": "Back cover, gatefold, interior, etc.",
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "type": "image"
+          }
+        ],
+        "name": "additionalImages",
+        "type": "array",
+        "title": "Imatges addicionals"
+      },
+      {
+        "description": "Text editorial sobre l'àlbum (història, context, etc.)",
+        "fields": [
+          {
+            "name": "ca",
+            "type": "blockContent",
+            "title": "Català"
+          },
+          {
+            "name": "es",
+            "type": "blockContent",
+            "title": "Español"
+          },
+          {
+            "name": "en",
+            "type": "blockContent",
+            "title": "English"
+          }
+        ],
+        "name": "description",
+        "type": "object",
+        "title": "Descripció"
+      },
+      {
+        "description": "Grammy, Hall of Fame, etc.",
+        "of": [
+          {
+            "type": "string"
+          }
+        ],
+        "name": "awards",
+        "type": "array",
+        "title": "Premis i reconeixements"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 0
+              },
+              {
+                "flag": "max",
+                "constraint": 500
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Preu del disc per a la venda",
+        "name": "salePrice",
+        "type": "number",
+        "title": "Preu de venda (€)"
+      },
+      {
+        "initialValue": true,
+        "description": "Indica si el disc està disponible per a la venda",
+        "name": "inStock",
+        "type": "boolean",
+        "title": "En stock"
+      },
+      {
+        "description": "Enllaços a plataformes de música",
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "spotify",
+            "type": "url"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "appleMusic",
+            "type": "url"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "youtube",
+            "type": "url",
+            "title": "YouTube"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "musicbrainz",
+            "type": "url",
+            "title": "MusicBrainz"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "discogs",
+            "type": "url"
+          }
+        ],
+        "name": "links",
+        "type": "object",
+        "title": "Enllaços externs"
+      }
+    ],
+    "name": "album",
+    "type": "document",
+    "title": "Àlbums"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "name",
+        "type": "object",
+        "title": "Nom de la sala"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              },
+              {
+                "flag": "max",
+                "constraint": 1000
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Nombre màxim de persones",
+        "name": "capacity",
+        "type": "number",
+        "title": "Capacitat màxima"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "street",
+            "type": "string",
+            "title": "Carrer i número"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "city",
+            "type": "string",
+            "title": "Ciutat"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "postalCode",
+            "type": "string",
+            "title": "Codi postal"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "country",
+            "type": "string",
+            "title": "País"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "description": "Enllaç directe a Google Maps",
+            "name": "googleMapsUrl",
+            "type": "url",
+            "title": "Google Maps URL"
+          },
+          {
+            "description": "Ubicació exacta per mapes",
+            "name": "coordinates",
+            "type": "geopoint",
+            "title": "Coordenades"
+          }
+        ],
+        "name": "address",
+        "type": "object",
+        "title": "Adreça"
+      },
+      {
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "description": "Descripció breu de la foto",
+                "name": "caption",
+                "type": "string",
+                "title": "Descripció"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "photos",
+        "type": "array",
+        "title": "Fotos de la sala"
+      },
+      {
+        "description": "Cadira de rodes, ascensor, etc.",
+        "fields": [
+          {
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "accessibility",
+        "type": "object",
+        "title": "Informació d'accessibilitat"
+      },
+      {
+        "description": "Horaris d'obertura de la sala",
+        "fields": [
+          {
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "schedule",
+        "type": "object",
+        "title": "Horaris"
+      }
+    ],
+    "name": "sala",
+    "type": "document",
+    "title": "Sales Hi-Fi"
+  },
+  {
+    "fields": [
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Estàndard",
+              "value": "standard"
+            },
+            {
+              "title": "Amb Debat",
+              "value": "debate"
+            },
+            {
+              "title": "Amb Conferència",
+              "value": "conference"
+            },
+            {
+              "title": "Masterclass",
+              "value": "masterclass"
+            }
+          ]
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "standard",
+                  "debate",
+                  "conference",
+                  "masterclass"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Identificador únic del tipus (ex: standard, debate, conference, masterclass)",
+        "name": "key",
+        "type": "string",
+        "title": "Clau"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "name",
+        "type": "object",
+        "title": "Nom"
+      },
+      {
+        "description": "Descripció breu del tipus de sessió",
+        "fields": [
+          {
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "description",
+        "type": "object",
+        "title": "Descripció"
+      }
+    ],
+    "name": "sessionType",
+    "type": "document",
+    "title": "Tipus de Sessió"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Àlbum que es reproduirà en aquesta sessió",
+        "to": [
+          {
+            "type": "album"
+          }
+        ],
+        "name": "album",
+        "type": "reference",
+        "title": "Àlbum"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Sala on es farà la sessió",
+        "to": [
+          {
+            "type": "sala"
+          }
+        ],
+        "name": "sala",
+        "type": "reference"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Tipus de sessió (estàndard, debat, conferència, masterclass)",
+        "to": [
+          {
+            "type": "sessionType"
+          }
+        ],
+        "name": "sessionType",
+        "type": "reference",
+        "title": "Tipus de Sessió"
+      },
+      {
+        "initialValue": true,
+        "description": "Marcar com inactiva per ocultar-la del frontend",
+        "name": "isActive",
+        "type": "boolean",
+        "title": "Sessió activa"
+      },
+      {
+        "options": {
+          "dateFormat": "DD-MM-YYYY",
+          "timeFormat": "HH:mm",
+          "timeStep": 15
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Data i hora de la sessió",
+        "name": "date",
+        "type": "datetime",
+        "title": "Data i hora"
+      },
+      {
+        "initialValue": 15,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 0
+              },
+              {
+                "flag": "max",
+                "constraint": 1000
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Preu per plaça en euros",
+        "name": "price",
+        "type": "number",
+        "title": "Preu (€)"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              },
+              {
+                "flag": "max",
+                "constraint": 100
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Nombre total de places disponibles",
+        "name": "totalPlaces",
+        "type": "number",
+        "title": "Places totals"
+      },
+      {
+        "description": "Detalls sobre el vinil que es reproduirà",
+        "fields": [
+          {
+            "placeholder": "Ex: Vinilo Original Motown",
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "placeholder": "Ej: Vinilo Original Motown",
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "placeholder": "Ex: Original Motown Vinyl",
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "vinylInfo",
+        "type": "object",
+        "title": "Informació del vinil"
+      },
+      {
+        "description": "Informació addicional sobre la sessió",
+        "fields": [
+          {
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "specialNotes",
+        "type": "object",
+        "title": "Notes especials"
+      }
+    ],
+    "name": "session",
+    "type": "document",
+    "title": "Sessions"
+  },
+  {
+    "fields": [
+      {
+        "initialValue": "Home Page Configuration",
+        "hidden": true,
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "initialValue": true,
+        "description": "Activa o desactiva la secció de botiga (venda de vinils) a la navegació i al lloc web",
+        "name": "showShop",
+        "type": "boolean",
+        "title": "Mostrar secció Botiga"
+      },
+      {
+        "fields": [
+          {
+            "initialValue": "Viu la música com mai abans",
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "initialValue": "Vive la música como nunca antes",
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "initialValue": "Experience music like never before",
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "heroTitle",
+        "type": "object"
+      },
+      {
+        "fields": [
+          {
+            "rows": 2,
+            "initialValue": "Sessions exclusives d'escoltes de vinils amb àudio d'alta fidelitat en un espai acústicament perfecte",
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "rows": 2,
+            "initialValue": "Sesiones exclusivas de escucha de vinilos con audio de alta fidelidad en un espacio acústicamente perfecto",
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "rows": 2,
+            "initialValue": "Exclusive vinyl listening sessions with high-fidelity audio in an acoustically perfect space",
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "heroSubtitle",
+        "type": "object"
+      },
+      {
+        "fields": [
+          {
+            "initialValue": "Descobreix les sessions",
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "initialValue": "Descubre las sesiones",
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "initialValue": "Discover sessions",
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "heroCta",
+        "type": "object",
+        "title": "Hero Call to Action Button"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Image",
+              "value": "image"
+            },
+            {
+              "title": "Video",
+              "value": "video"
+            },
+            {
+              "title": "None",
+              "value": "none"
+            }
+          ],
+          "layout": "radio"
+        },
+        "initialValue": "none",
+        "name": "heroBackgroundType",
+        "type": "string"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Alternative text"
+          }
+        ],
+        "hidden": "conditional",
+        "name": "heroBackgroundImage",
+        "type": "image"
+      },
+      {
+        "options": {
+          "accept": "video/*"
+        },
+        "description": "Upload an MP4 video for the hero background. Keep file size under 10MB for optimal performance.",
+        "hidden": "conditional",
+        "name": "heroBackgroundVideo",
+        "type": "file"
+      },
+      {
+        "fields": [
+          {
+            "initialValue": "Una experiència sonora inigualable",
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "initialValue": "Una experiencia sonora inigualable",
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "initialValue": "An unmatched sonic experience",
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "experienceTitle",
+        "type": "object",
+        "title": "Experience Section Title"
+      },
+      {
+        "fields": [
+          {
+            "initialValue": "Descobreix per què Sound Deluxe ofereix una autèntica experiència audiòfila",
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "initialValue": "Descubre por qué Sound Deluxe ofrece una auténtica experiencia audiófila",
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "initialValue": "Discover why Sound Deluxe offers an authentic audiophile experience",
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "experienceSubtitle",
+        "type": "object",
+        "title": "Experience Section Subtitle"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "max",
+                "constraint": 4
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "of": [
+          {
+            "type": "experienceFeature"
+          }
+        ],
+        "name": "experienceFeatures",
+        "type": "array"
+      }
+    ],
+    "name": "homePage",
+    "type": "document",
+    "title": "Configuració del lloc"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Nom complet del client",
+        "name": "name",
+        "type": "string",
+        "title": "Nom"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Professió o ocupació",
+        "name": "profession",
+        "type": "string",
+        "title": "Professió"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Foto del client (opcional)",
+        "name": "photo",
+        "type": "image",
+        "title": "Foto"
+      },
+      {
+        "initialValue": 5,
+        "options": {
+          "list": [
+            {
+              "title": "⭐",
+              "value": 1
+            },
+            {
+              "title": "⭐⭐",
+              "value": 2
+            },
+            {
+              "title": "⭐⭐⭐",
+              "value": 3
+            },
+            {
+              "title": "⭐⭐⭐⭐",
+              "value": 4
+            },
+            {
+              "title": "⭐⭐⭐⭐⭐",
+              "value": 5
+            }
+          ]
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              },
+              {
+                "flag": "max",
+                "constraint": 5
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Estrelles (1-5)",
+        "name": "rating",
+        "type": "number",
+        "title": "Puntuació"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "El testimoni en diferents idiomes (màx 50 paraules)",
+        "fields": [
+          {
+            "rows": 3,
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "max",
+                    "constraint": 300
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "rows": 3,
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "max",
+                    "constraint": 300
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "rows": 3,
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "max",
+                    "constraint": 300
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "quote",
+        "type": "object",
+        "title": "Testimoni"
+      },
+      {
+        "description": "Àlbum de la sessió a la qual va assistir",
+        "to": [
+          {
+            "type": "album"
+          }
+        ],
+        "name": "session",
+        "type": "reference",
+        "title": "Sessió assistida"
+      },
+      {
+        "description": "Si no hi ha referència a àlbum, escriu manualment (ex: \"Kind of Blue — Miles Davis\")",
+        "name": "sessionText",
+        "type": "string",
+        "title": "Text de sessió (alternatiu)"
+      },
+      {
+        "initialValue": true,
+        "description": "Mostrar a la pàgina principal",
+        "name": "featured",
+        "type": "boolean",
+        "title": "Destacat"
+      },
+      {
+        "initialValue": 0,
+        "description": "Ordre de visualització (menor = primer)",
+        "name": "order",
+        "type": "number",
+        "title": "Ordre"
+      }
+    ],
+    "name": "testimonial",
+    "type": "document",
+    "title": "Testimonis"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "name",
+        "type": "object",
+        "title": "Nom"
+      },
+      {
+        "options": {
+          "source": "name.ca",
+          "maxLength": 50
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Identificador únic per filtrar",
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "initialValue": 0,
+        "description": "Ordre de visualització",
+        "name": "order",
+        "type": "number",
+        "title": "Ordre"
+      }
+    ],
+    "name": "galleryCategory",
+    "type": "document",
+    "title": "Categories de Galeria"
+  },
+  {
+    "fields": [
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "image",
+        "type": "image",
+        "title": "Imatge"
+      },
+      {
+        "description": "Text descriptiu de la imatge",
+        "fields": [
+          {
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "caption",
+        "type": "object",
+        "title": "Peu de foto"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "to": [
+          {
+            "type": "galleryCategory"
+          }
+        ],
+        "name": "category",
+        "type": "reference",
+        "title": "Categoria"
+      },
+      {
+        "description": "Si la foto és d'una sessió específica",
+        "to": [
+          {
+            "type": "session"
+          }
+        ],
+        "name": "session",
+        "type": "reference",
+        "title": "Sessió relacionada"
+      },
+      {
+        "description": "Si la foto és d'una sala específica",
+        "to": [
+          {
+            "type": "sala"
+          }
+        ],
+        "name": "sala",
+        "type": "reference"
+      },
+      {
+        "description": "Data en què es va fer la foto",
+        "name": "date",
+        "type": "date",
+        "title": "Data"
+      },
+      {
+        "initialValue": false,
+        "description": "Mostrar en posició destacada",
+        "name": "featured",
+        "type": "boolean",
+        "title": "Destacada"
+      },
+      {
+        "initialValue": 0,
+        "description": "Ordre de visualització (menor = primer)",
+        "name": "order",
+        "type": "number",
+        "title": "Ordre"
+      }
+    ],
+    "name": "galleryImage",
+    "type": "document",
+    "title": "Imatges de Galeria"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "title",
+        "type": "object",
+        "title": "Títol (H1)"
+      },
+      {
+        "fields": [
+          {
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "subtitle",
+        "type": "object",
+        "title": "Subtítol"
+      },
+      {
+        "description": "2-3 frases sobre la galeria",
+        "fields": [
+          {
+            "rows": 3,
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "rows": 3,
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "rows": 3,
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "intro",
+        "type": "object",
+        "title": "Text introductori"
+      },
+      {
+        "description": "Text animant a compartir amb hashtag",
+        "fields": [
+          {
+            "rows": 2,
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "rows": 2,
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "rows": 2,
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "ctaText",
+        "type": "object",
+        "title": "CTA per compartir"
+      },
+      {
+        "initialValue": "SoundDeluxeBCN",
+        "description": "Hashtag per compartir (sense #)",
+        "name": "hashtag",
+        "type": "string"
+      }
+    ],
+    "name": "galleryPage",
+    "type": "document",
+    "title": "Pàgina de Galeria"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "fields": [
+          {
+            "initialValue": "Preguntes Freqüents",
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "initialValue": "Preguntas Frecuentes",
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "initialValue": "Frequently Asked Questions",
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "title",
+        "type": "object",
+        "title": "Títol de la pàgina"
+      },
+      {
+        "fields": [
+          {
+            "rows": 2,
+            "initialValue": "Tot el que necessites saber sobre les nostres sessions i serveis",
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "rows": 2,
+            "initialValue": "Todo lo que necesitas saber sobre nuestras sesiones y servicios",
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "rows": 2,
+            "initialValue": "Everything you need to know about our sessions and services",
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "subtitle",
+        "type": "object",
+        "title": "Subtítol"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "fields": [
+                  {
+                    "validation": [
+                      {
+                        "rules": [
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ],
+                        "level": "error"
+                      }
+                    ],
+                    "name": "ca",
+                    "type": "string",
+                    "title": "Català"
+                  },
+                  {
+                    "validation": [
+                      {
+                        "rules": [
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ],
+                        "level": "error"
+                      }
+                    ],
+                    "name": "es",
+                    "type": "string",
+                    "title": "Español"
+                  },
+                  {
+                    "validation": [
+                      {
+                        "rules": [
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ],
+                        "level": "error"
+                      }
+                    ],
+                    "name": "en",
+                    "type": "string",
+                    "title": "English"
+                  }
+                ],
+                "name": "question",
+                "type": "object",
+                "title": "Pregunta"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "fields": [
+                  {
+                    "rows": 4,
+                    "validation": [
+                      {
+                        "rules": [
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ],
+                        "level": "error"
+                      }
+                    ],
+                    "name": "ca",
+                    "type": "text",
+                    "title": "Català"
+                  },
+                  {
+                    "rows": 4,
+                    "validation": [
+                      {
+                        "rules": [
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ],
+                        "level": "error"
+                      }
+                    ],
+                    "name": "es",
+                    "type": "text",
+                    "title": "Español"
+                  },
+                  {
+                    "rows": 4,
+                    "validation": [
+                      {
+                        "rules": [
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ],
+                        "level": "error"
+                      }
+                    ],
+                    "name": "en",
+                    "type": "text",
+                    "title": "English"
+                  }
+                ],
+                "name": "answer",
+                "type": "object",
+                "title": "Resposta"
+              },
+              {
+                "options": {
+                  "list": [
+                    {
+                      "title": "Sessions",
+                      "value": "sessions"
+                    },
+                    {
+                      "title": "Reserves",
+                      "value": "booking"
+                    },
+                    {
+                      "title": "Pagaments",
+                      "value": "payments"
+                    },
+                    {
+                      "title": "Espai",
+                      "value": "venue"
+                    },
+                    {
+                      "title": "Altres",
+                      "value": "other"
+                    }
+                  ]
+                },
+                "initialValue": "sessions",
+                "name": "category",
+                "type": "string",
+                "title": "Categoria"
+              }
+            ],
+            "type": "object",
+            "name": "faqItem",
+            "title": "Pregunta"
+          }
+        ],
+        "name": "faqs",
+        "type": "array",
+        "title": "Preguntes Freqüents"
+      },
+      {
+        "fields": [
+          {
+            "initialValue": "Política de cancel·lació i devolucions",
+            "name": "ca",
+            "type": "string",
+            "title": "Català"
+          },
+          {
+            "initialValue": "Política de cancelación y devoluciones",
+            "name": "es",
+            "type": "string",
+            "title": "Español"
+          },
+          {
+            "initialValue": "Cancellation and Refund Policy",
+            "name": "en",
+            "type": "string",
+            "title": "English"
+          }
+        ],
+        "name": "cancellationTitle",
+        "type": "object",
+        "title": "Títol de la secció de cancel·lació"
+      },
+      {
+        "description": "Text complet de la política de cancel·lació i devolucions",
+        "fields": [
+          {
+            "name": "ca",
+            "type": "blockContent",
+            "title": "Català"
+          },
+          {
+            "name": "es",
+            "type": "blockContent",
+            "title": "Español"
+          },
+          {
+            "name": "en",
+            "type": "blockContent",
+            "title": "English"
+          }
+        ],
+        "name": "cancellationPolicy",
+        "type": "object",
+        "title": "Contingut de la política de cancel·lació"
+      },
+      {
+        "description": "Afegeix més seccions legals si cal (termes d'ús, normes, etc.)",
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "fields": [
+                  {
+                    "validation": [
+                      {
+                        "rules": [
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ],
+                        "level": "error"
+                      }
+                    ],
+                    "name": "ca",
+                    "type": "string",
+                    "title": "Català"
+                  },
+                  {
+                    "validation": [
+                      {
+                        "rules": [
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ],
+                        "level": "error"
+                      }
+                    ],
+                    "name": "es",
+                    "type": "string",
+                    "title": "Español"
+                  },
+                  {
+                    "validation": [
+                      {
+                        "rules": [
+                          {
+                            "flag": "presence",
+                            "constraint": "required"
+                          }
+                        ],
+                        "level": "error"
+                      }
+                    ],
+                    "name": "en",
+                    "type": "string",
+                    "title": "English"
+                  }
+                ],
+                "name": "sectionTitle",
+                "type": "object",
+                "title": "Títol de la secció"
+              },
+              {
+                "fields": [
+                  {
+                    "name": "ca",
+                    "type": "blockContent",
+                    "title": "Català"
+                  },
+                  {
+                    "name": "es",
+                    "type": "blockContent",
+                    "title": "Español"
+                  },
+                  {
+                    "name": "en",
+                    "type": "blockContent",
+                    "title": "English"
+                  }
+                ],
+                "name": "content",
+                "type": "object",
+                "title": "Contingut"
+              }
+            ],
+            "type": "object",
+            "name": "policySection",
+            "title": "Secció legal"
+          }
+        ],
+        "name": "additionalPolicies",
+        "type": "array",
+        "title": "Seccions legals addicionals"
+      },
+      {
+        "description": "Text que apareix al final amb informació de contacte",
+        "fields": [
+          {
+            "rows": 2,
+            "initialValue": "Si tens alguna pregunta addicional, no dubtis en contactar-nos a info@soundeluxe.com",
+            "name": "ca",
+            "type": "text",
+            "title": "Català"
+          },
+          {
+            "rows": 2,
+            "initialValue": "Si tienes alguna pregunta adicional, no dudes en contactarnos en info@soundeluxe.com",
+            "name": "es",
+            "type": "text",
+            "title": "Español"
+          },
+          {
+            "rows": 2,
+            "initialValue": "If you have any additional questions, don't hesitate to contact us at info@soundeluxe.com",
+            "name": "en",
+            "type": "text",
+            "title": "English"
+          }
+        ],
+        "name": "contactInfo",
+        "type": "object",
+        "title": "Informació de contacte"
+      }
+    ],
+    "name": "faqPage",
+    "type": "document",
+    "title": "FAQ i Polítiques"
+  }
+]

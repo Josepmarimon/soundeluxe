@@ -105,20 +105,36 @@
   color: rgba(10, 25, 41, 0.3);
 }
 
-/* Days with sessions indicator */
+/* Days with sessions - background highlight */
+.rdp-day.has-sessions .rdp-day_button {
+  background: rgba(212, 175, 55, 0.25);
+  font-weight: 600;
+  color: #0a1929;
+}
+
+.rdp-day.has-sessions .rdp-day_button:hover {
+  background: rgba(212, 175, 55, 0.4);
+}
+
+/* Days with sessions indicator dot */
 .rdp-day.has-sessions .rdp-day_button::after {
   content: '';
   position: absolute;
-  bottom: 4px;
+  bottom: 3px;
   left: 50%;
   transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   background: linear-gradient(135deg, #D4AF37, #F4E5AD);
   border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* When selected, make the dot darker */
+/* When selected, adjust styles */
+.rdp-day.has-sessions.rdp-selected .rdp-day_button {
+  background: linear-gradient(135deg, #D4AF37 0%, #F4E5AD 50%, #D4AF37 100%);
+}
+
 .rdp-day.has-sessions.rdp-selected .rdp-day_button::after {
   background: #0a1929;
 }

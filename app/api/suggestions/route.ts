@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     const userId = (session.user as { id: string }).id
+    console.log('[DEBUG] Session userId:', userId, 'email:', session.user.email)
 
     // Create suggestion (unique constraint will prevent duplicates per user)
     const suggestion = await prisma.albumSuggestion.create({

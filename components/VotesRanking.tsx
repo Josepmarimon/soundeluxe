@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import { urlForImage } from '@/lib/sanity/image'
 import Image from 'next/image'
+import { useVoteEvents } from '@/hooks/useVoteEvents'
 
 interface RankingItem {
   position: number
@@ -24,21 +25,27 @@ export default function VotesRanking() {
   const [ranking, setRanking] = useState<RankingItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    const fetchRanking = async () => {
-      try {
-        const response = await fetch('/api/votes/ranking?limit=10')
-        const data = await response.json()
-        setRanking(data.ranking || [])
-      } catch (error) {
-        console.error('Error fetching ranking:', error)
-      } finally {
-        setIsLoading(false)
-      }
+  const fetchRanking = useCallback(async () => {
+    try {
+      const response = await fetch('/api/votes/ranking?limit=10')
+      const data = await response.json()
+      setRanking(data.ranking || [])
+    } catch (error) {
+      console.error('Error fetching ranking:', error)
+    } finally {
+      setIsLoading(false)
     }
-
-    fetchRanking()
   }, [])
+
+  // Fetch ranking on mount
+  useEffect(() => {
+    fetchRanking()
+  }, [fetchRanking])
+
+  // Listen for vote events and refresh ranking
+  useVoteEvents(() => {
+    fetchRanking()
+  })
 
   if (isLoading) {
     return (

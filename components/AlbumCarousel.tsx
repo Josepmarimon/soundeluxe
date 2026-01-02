@@ -10,6 +10,7 @@ interface AlbumCarouselProps {
   additionalImages?: SanityImage[]
   albumTitle: string
   artist: string
+  showThumbnails?: boolean
 }
 
 export default function AlbumCarousel({
@@ -17,6 +18,7 @@ export default function AlbumCarousel({
   additionalImages = [],
   albumTitle,
   artist,
+  showThumbnails = false,
 }: AlbumCarouselProps) {
   const allImages = [coverImage, ...(additionalImages || [])]
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -52,6 +54,75 @@ export default function AlbumCarousel({
             className="object-cover w-full h-full"
           />
         )}
+      </div>
+    )
+  }
+
+  // Layout with thumbnails on the right
+  if (showThumbnails && additionalImages && additionalImages.length > 0) {
+    return (
+      <div className="flex gap-3">
+        {/* Main Image */}
+        <div className="flex-1 relative group">
+          <div className="aspect-square rounded-lg overflow-hidden">
+            {currentImageUrl && (
+              <Image
+                src={currentImageUrl}
+                alt={`${artist} - ${albumTitle} - Image ${currentIndex + 1}`}
+                width={800}
+                height={800}
+                className="object-cover w-full h-full"
+              />
+            )}
+          </div>
+
+          {/* Navigation arrows */}
+          <button
+            onClick={goToPrevious}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Previous image"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+          <button
+            onClick={goToNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Next image"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Thumbnails Grid */}
+        <div className="grid grid-cols-2 gap-2 w-[45%]">
+          {allImages.slice(1, 5).map((image, index) => {
+            const thumbUrl = urlForImage(image)?.width(200).height(200).url()
+            const actualIndex = index + 1 // +1 because we skip the cover image
+            return thumbUrl ? (
+              <button
+                key={index}
+                onClick={() => goToSlide(actualIndex)}
+                className={`aspect-square rounded-md overflow-hidden border-2 transition-all ${
+                  currentIndex === actualIndex
+                    ? 'border-[#D4AF37] ring-2 ring-[#D4AF37]/50'
+                    : 'border-transparent hover:border-zinc-500'
+                }`}
+              >
+                <Image
+                  src={thumbUrl}
+                  alt={`${albumTitle} - Image ${actualIndex + 1}`}
+                  width={200}
+                  height={200}
+                  className="object-cover w-full h-full"
+                />
+              </button>
+            ) : null
+          })}
+        </div>
       </div>
     )
   }

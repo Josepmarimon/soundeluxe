@@ -25,7 +25,7 @@ function SessionCardsGrid({ sessions, showAlbumSale = true, enableFlip = false }
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-8 items-start">
       {sessions.map((session) => (
         <SessionCard
           key={session._id}
@@ -93,13 +93,13 @@ export default function SessionFilters({ sessions, showAlbumSale = true, enableF
       {/* Filters - only visible on desktop, hidden on mobile */}
       {(genres.length > 1 || artists.length > 1) && (
         <div className="mb-8 hidden md:block">
-          <div className="flex flex-wrap justify-center items-center gap-2 max-w-5xl mx-auto">
+          <div className="flex flex-wrap justify-center items-center gap-3 max-w-6xl mx-auto">
             {/* Genre Buttons */}
             {genres.length > 1 && (
               <>
                 <button
                   onClick={() => setSelectedGenre('')}
-                  className={`px-4 py-1.5 text-sm rounded-full font-medium shadow-md transition-all ${
+                  className={`px-6 py-2.5 text-base rounded-full font-medium shadow-md transition-all ${
                     !selectedGenre
                       ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
                       : 'bg-[#F5F1E8] text-black hover:bg-[#EDE8DC]'
@@ -111,7 +111,7 @@ export default function SessionFilters({ sessions, showAlbumSale = true, enableF
                   <button
                     key={genre}
                     onClick={() => setSelectedGenre(genre)}
-                    className={`px-4 py-1.5 text-sm rounded-full font-medium shadow-md transition-all ${
+                    className={`px-6 py-2.5 text-base rounded-full font-medium shadow-md transition-all ${
                       selectedGenre === genre
                         ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
                         : 'bg-[#F5F1E8] text-black hover:bg-[#EDE8DC]'
@@ -125,13 +125,13 @@ export default function SessionFilters({ sessions, showAlbumSale = true, enableF
 
             {/* Artist Search */}
             {artists.length > 1 && (
-              <div className="relative w-48">
+              <div className="relative w-52">
                 <input
                   type="text"
                   placeholder={t('albums.searchArtist')}
                   value={artistSearch}
                   onChange={(e) => setArtistSearch(e.target.value)}
-                  className="w-full px-4 py-1.5 text-sm bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
+                  className="w-full px-6 py-2.5 text-base bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
                 />
                 {artistSearch && (
                   <button

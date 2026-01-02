@@ -104,7 +104,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               {t('sessions.noSessions')}
             </p>
           ) : (
-            <SessionFilters sessions={sessions} showAlbumSale={false} enableFlip={true} />
+            <>
+              <h3 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
+                {t('sessions.allSessions')}
+              </h3>
+              <SessionFilters sessions={sessions} showAlbumSale={false} enableFlip={true} />
+            </>
           )}
         </div>
       </section>
