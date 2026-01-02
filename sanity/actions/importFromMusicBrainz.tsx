@@ -131,28 +131,22 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
         await client.patch(targetId).set(patchData).commit()
       } else {
         // Build create data with proper object structure
-        const createData: Record<string, unknown> = {
+        const createData = {
           _id: draftId,
-          _type: 'album',
+          _type: 'album' as const,
           title: selectedRelease.title,
           artist: selectedArtist.name,
           links: {
             musicbrainz: `https://musicbrainz.org/release-group/${selectedRelease.id}`,
           },
-        }
-
-        if (selectedRelease.year) {
-          createData.year = selectedRelease.year
-        }
-
-        if (coverImageAssetId) {
-          createData.coverImage = {
-            _type: 'image',
+          year: selectedRelease.year || undefined,
+          coverImage: coverImageAssetId ? {
+            _type: 'image' as const,
             asset: {
-              _type: 'reference',
+              _type: 'reference' as const,
               _ref: coverImageAssetId,
             },
-          }
+          } : undefined,
         }
 
         // Create new draft document
