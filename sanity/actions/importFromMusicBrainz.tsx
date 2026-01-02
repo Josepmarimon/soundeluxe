@@ -230,18 +230,34 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
                 <div style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(4, 1fr)',
-                  gap: '0.5rem',
+                  gap: '0.75rem',
                   maxHeight: '400px',
                   overflowY: 'auto',
+                  padding: '0.5rem',
                 }}>
                   {releases.map((release) => (
-                    <div
+                    <button
                       key={release.id}
-                      onClick={() => !importing && importAlbum(release)}
+                      type="button"
+                      onClick={() => importAlbum(release)}
+                      disabled={importing}
                       style={{
                         cursor: importing ? 'wait' : 'pointer',
                         opacity: importing ? 0.5 : 1,
                         textAlign: 'center',
+                        background: 'none',
+                        border: '2px solid transparent',
+                        borderRadius: '8px',
+                        padding: '4px',
+                        transition: 'border-color 0.2s',
+                      }}
+                      onMouseOver={(e) => {
+                        if (!importing) {
+                          e.currentTarget.style.borderColor = '#2276fc'
+                        }
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.borderColor = 'transparent'
                       }}
                     >
                       <img
@@ -252,6 +268,7 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
                           aspectRatio: '1',
                           objectFit: 'cover',
                           borderRadius: '4px',
+                          display: 'block',
                         }}
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = '/placeholder-album.png'
@@ -261,7 +278,7 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
                         {release.title}
                         {release.year && ` (${release.year})`}
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}
