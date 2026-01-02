@@ -23,7 +23,7 @@
         fill: url(#goldShine);
       }
       .st1 {
-        fill: #fff;
+        fill: url(#goldShine);
       }
     </style>
   </defs>
