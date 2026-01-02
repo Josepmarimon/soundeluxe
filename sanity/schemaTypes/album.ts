@@ -24,7 +24,35 @@ export default defineType({
       title: 'Títol',
       type: 'string',
       description: 'Sempre en idioma original (ex: "The Dark Side of the Moon")',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom(async (title, context) => {
+          if (!title) return true
+
+          const { document, getClient } = context
+          const artist = document?.artist as string | undefined
+
+          if (!artist) return true
+
+          const client = getClient({ apiVersion: '2024-01-01' })
+          const currentId = document?._id?.replace('drafts.', '')
+
+          // Check for existing album with same title and artist (case insensitive)
+          const existing = await client.fetch(
+            `*[_type == "album" && lower(title) == lower($title) && lower(artist) == lower($artist) && !(_id in [$currentId, $draftId])][0]`,
+            {
+              title,
+              artist,
+              currentId: currentId || '',
+              draftId: `drafts.${currentId}` || '',
+            }
+          )
+
+          if (existing) {
+            return `Ja existeix un àlbum "${existing.title}" de ${existing.artist}`
+          }
+
+          return true
+        }),
       group: 'info',
     }),
     defineField({
@@ -32,7 +60,35 @@ export default defineType({
       title: 'Artista',
       type: 'string',
       description: 'Nom de l\'artista o banda',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom(async (artist, context) => {
+          if (!artist) return true
+
+          const { document, getClient } = context
+          const title = document?.title as string | undefined
+
+          if (!title) return true
+
+          const client = getClient({ apiVersion: '2024-01-01' })
+          const currentId = document?._id?.replace('drafts.', '')
+
+          // Check for existing album with same title and artist (case insensitive)
+          const existing = await client.fetch(
+            `*[_type == "album" && lower(title) == lower($title) && lower(artist) == lower($artist) && !(_id in [$currentId, $draftId])][0]`,
+            {
+              title,
+              artist,
+              currentId: currentId || '',
+              draftId: `drafts.${currentId}` || '',
+            }
+          )
+
+          if (existing) {
+            return `Ja existeix un àlbum "${existing.title}" de ${existing.artist}`
+          }
+
+          return true
+        }),
       group: 'info',
     }),
     defineField({
