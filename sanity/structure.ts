@@ -16,6 +16,53 @@ export const structure: StructureResolver = (S) =>
             .title('Configuració general')
         ),
 
+      S.listItem()
+        .title('📋 Footer')
+        .icon(() => '📋')
+        .child(
+          S.document()
+            .schemaType('footerContent')
+            .documentId('footerContent')
+            .title('Contingut del Footer')
+        ),
+
+      S.listItem()
+        .title('📜 Pàgines Legals')
+        .icon(() => '📜')
+        .child(
+          S.list()
+            .title('Pàgines Legals')
+            .items([
+              S.listItem()
+                .title('Política de Privacitat')
+                .icon(() => '🔒')
+                .child(
+                  S.document()
+                    .schemaType('legalPage')
+                    .documentId('legalPage-privacy')
+                    .title('Política de Privacitat')
+                ),
+              S.listItem()
+                .title('Termes i Condicions')
+                .icon(() => '📄')
+                .child(
+                  S.document()
+                    .schemaType('legalPage')
+                    .documentId('legalPage-terms')
+                    .title('Termes i Condicions')
+                ),
+              S.listItem()
+                .title('Política de Cookies')
+                .icon(() => '🍪')
+                .child(
+                  S.document()
+                    .schemaType('legalPage')
+                    .documentId('legalPage-cookies')
+                    .title('Política de Cookies')
+                ),
+            ])
+        ),
+
       S.divider(),
 
       // === CONTINGUT PRINCIPAL ===

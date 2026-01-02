@@ -392,3 +392,46 @@ export const faqPageQuery = groq`
     contactInfo
   }
 `
+
+// Get legal page by slug
+export const legalPageQuery = groq`
+  *[_type == "legalPage" && slug == $slug][0] {
+    _id,
+    slug,
+    title,
+    lastUpdated,
+    intro,
+    sections[] {
+      _key,
+      title,
+      content
+    },
+    contactEmail
+  }
+`
+
+// Get footer content
+export const footerContentQuery = groq`
+  *[_type == "footerContent"][0] {
+    _id,
+    description,
+    contactInfo {
+      phone,
+      email,
+      address
+    },
+    socialLinks {
+      instagram,
+      facebook,
+      twitter,
+      youtube,
+      spotify
+    },
+    sectionTitles {
+      links,
+      legal,
+      contact
+    },
+    copyrightText
+  }
+`

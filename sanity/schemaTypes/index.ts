@@ -16,6 +16,8 @@ import galleryImage from './galleryImage'
 import galleryPage from './galleryPage'
 import faqPage from './faqPage'
 import siteSettings from './siteSettings'
+import footerContent from './footerContent'
+import legalPage from './legalPage'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -35,5 +37,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     galleryPage,
     faqPage,
     siteSettings,
+    footerContent,
+    legalPage,
   ],
 }

@@ -2,7 +2,11 @@
   "common": {
     "languageName": "English",
     "soundDeluxe": "Sound Deluxe",
-    "tagline": "High-fidelity audiophile experiences"
+    "tagline": "High-fidelity audiophile experiences",
+    "backToHome": "Back to home",
+    "lastUpdated": "Last updated",
+    "contact": "Contact",
+    "contactDescription": "For any questions, contact us at:"
   },
   "navigation": {
     "home": "Home",
@@ -189,6 +193,7 @@
     "description": "High-fidelity audiophile experiences in Barcelona",
     "links": "Links",
     "legal": "Legal",
+    "contact": "Contact",
     "privacy": "Privacy",
     "terms": "Terms and conditions",
     "cookies": "Cookie policy",

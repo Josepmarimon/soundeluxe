@@ -6,7 +6,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import '../globals.css'
 import { locales } from '@/i18n'
 import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import FooterWrapper from '@/components/FooterWrapper'
 import SessionProvider from '@/components/SessionProvider'
 import { client } from '@/lib/sanity/client'
 import { siteSettingsQuery } from '@/lib/sanity/queries'
@@ -80,7 +80,7 @@ export default async function LocaleLayout({
           <NextIntlClientProvider messages={messages}>
             <Navbar showShop={showShop} />
             <main>{children}</main>
-            <Footer />
+            <FooterWrapper />
           </NextIntlClientProvider>
         </SessionProvider>
       </body>

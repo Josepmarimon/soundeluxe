@@ -219,3 +219,44 @@ export interface FAQPage {
   additionalPolicies?: PolicySection[]
   contactInfo?: MultilingualText
 }
+
+// Legal Page
+export interface LegalPageSection {
+  _key: string
+  title: MultilingualText
+  content: MultilingualRichText
+}
+
+export interface LegalPage {
+  _id: string
+  slug: 'privacy' | 'terms' | 'cookies'
+  title: MultilingualText
+  lastUpdated?: string
+  intro?: MultilingualText
+  sections?: LegalPageSection[]
+  contactEmail?: string
+}
+
+// Footer Content
+export interface FooterContent {
+  _id: string
+  description?: MultilingualText
+  contactInfo?: {
+    phone?: string
+    email?: string
+    address?: MultilingualText
+  }
+  socialLinks?: {
+    instagram?: string
+    facebook?: string
+    twitter?: string
+    youtube?: string
+    spotify?: string
+  }
+  sectionTitles?: {
+    links?: MultilingualText
+    legal?: MultilingualText
+    contact?: MultilingualText
+  }
+  copyrightText?: MultilingualText
+}

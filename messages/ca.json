@@ -2,7 +2,11 @@
   "common": {
     "languageName": "Català",
     "soundDeluxe": "Sound Deluxe",
-    "tagline": "Experiències audiòfiles d'alta fidelitat"
+    "tagline": "Experiències audiòfiles d'alta fidelitat",
+    "backToHome": "Tornar a l'inici",
+    "lastUpdated": "Última actualització",
+    "contact": "Contacte",
+    "contactDescription": "Per qualsevol consulta, contacta'ns a:"
   },
   "navigation": {
     "home": "Inici",
@@ -189,6 +193,7 @@
     "description": "Experiències audiòfiles d'alta fidelitat a Barcelona",
     "links": "Enllaços",
     "legal": "Legal",
+    "contact": "Contacte",
     "privacy": "Privacitat",
     "terms": "Termes i condicions",
     "cookies": "Política de cookies",
