@@ -7,7 +7,7 @@ export const structure: StructureResolver = (S) =>
     .items([
       // === CONFIGURACIÓ ===
       S.listItem()
-        .title('⚙️ Configuració del lloc')
+        .title('Configuració del lloc')
         .icon(() => '⚙️')
         .child(
           S.document()
@@ -17,7 +17,7 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
-        .title('📋 Footer')
+        .title('Footer')
         .icon(() => '📋')
         .child(
           S.document()
@@ -27,7 +27,7 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
-        .title('📜 Pàgines Legals')
+        .title('Pàgines Legals')
         .icon(() => '📜')
         .child(
           S.list()
@@ -67,7 +67,7 @@ export const structure: StructureResolver = (S) =>
 
       // === CONTINGUT PRINCIPAL ===
       S.listItem()
-        .title('📅 Sessions')
+        .title('Sessions')
         .icon(() => '📅')
         .child(
           S.documentTypeList('session')
@@ -76,7 +76,7 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
-        .title('🎵 Àlbums')
+        .title('Àlbums')
         .icon(() => '🎵')
         .child(
           S.documentTypeList('album')
@@ -87,7 +87,7 @@ export const structure: StructureResolver = (S) =>
 
       // === CONFIGURACIÓ SECUNDÀRIA ===
       S.listItem()
-        .title('🏠 Sales Hi-Fi')
+        .title('Sales Hi-Fi')
         .icon(() => '🏠')
         .child(
           S.documentTypeList('sala')
@@ -95,7 +95,7 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
-        .title('🎭 Tipus de sessió')
+        .title('Tipus de sessió')
         .icon(() => '🎭')
         .child(
           S.documentTypeList('sessionType')

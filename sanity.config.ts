@@ -14,11 +14,15 @@ import {schema} from './sanity/schemaTypes'
 import {structure} from './sanity/structure'
 import {suggestionsPlugin} from './sanity/tools/suggestionsPlugin'
 import {importFromMusicBrainz} from './sanity/actions/importFromMusicBrainz'
+import {highContrastTheme} from './sanity/theme'
+import './sanity/studio.css'
 
 export default defineConfig({
   basePath: '/studio',
   projectId,
   dataset,
+  // Tema d'alt contrast per millorar accessibilitat
+  theme: highContrastTheme,
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [
