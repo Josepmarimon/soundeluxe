@@ -30,7 +30,7 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
   }
 
   return (
-    <article className="group bg-[#F5F1E8] rounded-lg overflow-hidden hover:bg-[#EDE8DC] transition-colors shadow-md">
+    <article className="group bg-[#F5F1E8] rounded-lg overflow-hidden hover:bg-[#EDE8DC] transition-colors shadow-md flex flex-col h-full">
       {/* Album Cover Carousel */}
       <div className="relative aspect-square overflow-hidden">
         <AlbumCarousel
@@ -42,23 +42,28 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
       </div>
 
       {/* Album Info */}
-      <div className="p-6">
-        {/* Genre Badge */}
-        <div className="mb-3">
-          <span className="inline-block px-3 py-1 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-xs font-medium rounded-full shadow-md">
-            {getGenreName(album.genre)}
-          </span>
-        </div>
+      <div className="p-4 flex flex-col flex-grow">
+        {/* Genre Badge - hidden in voting mode */}
+        {!showVoteButton && (
+          <div className="mb-2">
+            <span className="inline-block px-3 py-1 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-xs font-medium rounded-full shadow-md">
+              {getGenreName(album.genre)}
+            </span>
+          </div>
+        )}
 
         {/* Album Title & Artist */}
-        <h3 className="text-xl font-bold text-black mb-1 group-hover:text-[#D4AF37] transition-colors">
+        <h3 className="text-lg font-bold text-black mb-0.5 group-hover:text-[#D4AF37] transition-colors line-clamp-2">
           {album.title}
         </h3>
-        <p className="text-zinc-700 mb-4">{album.artist}, {album.year}</p>
+        <p className="text-zinc-700 text-sm">{album.artist}, {album.year}</p>
+
+        {/* Spacer to push content below to bottom */}
+        <div className="flex-grow" />
 
         {/* Price and Purchase Button - only show if not in voting mode */}
         {!showVoteButton && album.salePrice && (
-          <div className="mb-4">
+          <div className="mt-3">
             <div className="flex items-center justify-between">
               <div className="text-2xl font-bold text-black">
                 {album.salePrice.toFixed(2)} €
@@ -78,14 +83,14 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
 
         {/* Vote Section */}
         {showVoteButton && (
-          <div className="mt-4">
+          <div className="mt-3">
             <VoteButton albumId={album._id} showCount={true} />
           </div>
         )}
 
         {/* Links */}
         {album.links && (
-          <div className="mt-4 flex gap-2">
+          <div className="mt-3 flex gap-2">
             {album.links.spotify && (
               <a
                 href={album.links.spotify}

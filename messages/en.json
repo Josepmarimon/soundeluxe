@@ -91,7 +91,7 @@
     "listenOn": "Listen on",
     "comments": "Comments",
     "addComment": "Add comment",
-    "vote": "Vote for this album",
+    "vote": "Vote",
     "voted": "Voted",
     "votes": "{count} votes"
   },
@@ -119,20 +119,21 @@
     "infoTitle": "How does it work?",
     "infoText": "You can only vote for albums that don't have scheduled sessions yet. The most voted albums will be considered for future programming. You need to be registered to vote.",
     "rankingTitle": "Top Voted Albums",
+    "showMoreRanking": "Show more (+{count})",
+    "hideRanking": "Hide",
     "noVotesYet": "No votes yet. Be the first to vote!",
     "suggestion": {
-      "title": "Suggest an album",
-      "subtitle": "Can't find the album you want? Suggest it and we'll consider adding it to the catalog.",
+      "title": "Add an album",
+      "subtitle": "Can't find the album you want? Add it to the catalog so you can vote for it.",
       "artistLabel": "Artist",
       "artistPlaceholder": "Type the artist name...",
       "albumLabel": "Select an album",
       "noAlbums": "No albums found for this artist",
-      "submit": "Submit suggestion",
-      "submitting": "Submitting...",
-      "success": "Thank you! We've received your suggestion and will review it.",
+      "submit": "Add to catalog",
+      "submitting": "Adding...",
+      "success": "Album added successfully! You can now vote for it.",
       "error": "Something went wrong. Please try again.",
-      "alreadySuggested": "You have already suggested this album.",
-      "reviewNote": "Your suggestion will not appear immediately for voting. The Soundeluxe team will review each proposal to assess the availability of the album on vinyl or other analog formats."
+      "alreadySuggested": "This album already exists in the catalog."
     }
   },
   "profile": {

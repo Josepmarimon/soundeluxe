@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { writeClient } from '@/lib/sanity/writeClient'
+import { client } from '@/lib/sanity/client'
+import { groq } from 'next-sanity'
 
-// POST - Create an album suggestion
+// POST - Create an album directly from user suggestion
 export async function POST(request: NextRequest) {
   try {
     const session = await auth()
@@ -23,33 +25,59 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const userId = (session.user as { id: string }).id
-    console.log('[DEBUG] Session userId:', userId, 'email:', session.user.email)
+    // Check if album already exists in Sanity
+    const existingAlbum = await client.fetch(
+      groq`*[_type == "album" && lower(title) == lower($title) && lower(artist) == lower($artist)][0]`,
+      { title: albumTitle.trim(), artist: artistName.trim() }
+    )
 
-    // Create suggestion (unique constraint will prevent duplicates per user)
-    const suggestion = await prisma.albumSuggestion.create({
-      data: {
-        userId,
-        artistName: artistName.trim(),
-        albumTitle: albumTitle.trim(),
-        mbid: mbid || null,
-        coverUrl: coverUrl || null,
-        year: year ? parseInt(year) : null,
-      },
-    })
-
-    return NextResponse.json({ success: true, suggestion }, { status: 201 })
-  } catch (error: unknown) {
-    const prismaError = error as { code?: string }
-    // Check for unique constraint violation
-    if (prismaError.code === 'P2002') {
+    if (existingAlbum) {
       return NextResponse.json(
-        { error: 'You have already suggested this album' },
+        { error: 'This album already exists in the catalog' },
         { status: 409 }
       )
     }
 
-    console.error('Error creating suggestion:', error)
+    // Upload cover image from URL if provided
+    let coverImage = null
+    if (coverUrl) {
+      try {
+        const imageResponse = await fetch(coverUrl)
+        if (imageResponse.ok) {
+          const imageBuffer = await imageResponse.arrayBuffer()
+          const asset = await writeClient.assets.upload('image', Buffer.from(imageBuffer), {
+            filename: `${artistName.replace(/\s+/g, '_')}_${albumTitle.replace(/\s+/g, '_')}.jpg`,
+          })
+          coverImage = {
+            _type: 'image',
+            asset: {
+              _type: 'reference',
+              _ref: asset._id,
+            },
+          }
+        }
+      } catch (imageError) {
+        console.error('Error uploading cover image:', imageError)
+        // Continue without cover image
+      }
+    }
+
+    // Create album in Sanity
+    const album = await writeClient.create({
+      _type: 'album',
+      title: albumTitle.trim(),
+      artist: artistName.trim(),
+      year: year ? parseInt(year) : new Date().getFullYear(),
+      genre: 'rock', // Default genre - can be changed by admin
+      coverImage: coverImage,
+      links: mbid ? {
+        musicbrainz: `https://musicbrainz.org/release/${mbid}`,
+      } : undefined,
+    })
+
+    return NextResponse.json({ success: true, album }, { status: 201 })
+  } catch (error) {
+    console.error('Error creating album:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -57,28 +85,22 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET - Get user's suggestions
-export async function GET(request: NextRequest) {
+// GET - Get albums (for compatibility, redirects to regular album list)
+export async function GET() {
   try {
-    const session = await auth()
+    const albums = await client.fetch(
+      groq`*[_type == "album"] | order(_createdAt desc) [0...20] {
+        _id,
+        title,
+        artist,
+        year,
+        coverImage
+      }`
+    )
 
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
-    const userId = (session.user as { id: string }).id
-
-    const suggestions = await prisma.albumSuggestion.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-    })
-
-    return NextResponse.json({ suggestions })
+    return NextResponse.json({ albums })
   } catch (error) {
-    console.error('Error fetching suggestions:', error)
+    console.error('Error fetching albums:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

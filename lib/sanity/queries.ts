@@ -233,9 +233,9 @@ export const artistsQuery = groq`
   }[0]
 `
 
-// Get votable albums (albums without future scheduled sessions)
+// Get votable albums (all albums available for voting)
 export const votableAlbumsQuery = groq`
-  *[_type == "album"] {
+  *[_type == "album"] | order(year desc) {
     _id,
     title,
     artist,
@@ -247,9 +247,8 @@ export const votableAlbumsQuery = groq`
     duration,
     salePrice,
     inStock,
-    links,
-    "hasFutureSessions": count(*[_type == "session" && isActive == true && date > now() && references(^._id)]) > 0
-  } [hasFutureSessions == false] | order(year desc)
+    links
+  }
 `
 
 // Get site settings (lightweight query for navigation, etc.)

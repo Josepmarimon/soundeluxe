@@ -91,7 +91,7 @@
     "listenOn": "Escoltar a",
     "comments": "Comentaris",
     "addComment": "Afegir comentari",
-    "vote": "Votar aquest àlbum",
+    "vote": "Votar",
     "voted": "Votat",
     "votes": "{count} vots"
   },
@@ -119,20 +119,21 @@
     "infoTitle": "Com funciona?",
     "infoText": "Només pots votar àlbums que encara no tenen sessions programades. Els àlbums més votats seran considerats per a futures programacions. Necessites estar registrat per poder votar.",
     "rankingTitle": "Top Àlbums més votats",
+    "showMoreRanking": "Veure més (+{count})",
+    "hideRanking": "Amagar",
     "noVotesYet": "Encara no hi ha vots. Sigues el primer en votar!",
     "suggestion": {
-      "title": "Suggereix un disc",
-      "subtitle": "No trobes el disc que vols? Suggereix-lo i el considerarem per afegir-lo al catàleg.",
+      "title": "Afegeix un disc",
+      "subtitle": "No trobes el disc que vols? Afegeix-lo al catàleg per poder votar-lo.",
       "artistLabel": "Artista",
       "artistPlaceholder": "Escriu el nom de l'artista...",
       "albumLabel": "Selecciona un àlbum",
       "noAlbums": "No s'han trobat àlbums per aquest artista",
-      "submit": "Enviar suggerència",
-      "submitting": "Enviant...",
-      "success": "Gràcies! Hem rebut la teva suggerència i la revisarem.",
+      "submit": "Afegir al catàleg",
+      "submitting": "Afegint...",
+      "success": "L'àlbum s'ha afegit correctament! Ja pots votar-lo.",
       "error": "Hi ha hagut un error. Torna-ho a provar.",
-      "alreadySuggested": "Ja has suggerit aquest àlbum anteriorment.",
-      "reviewNote": "La teva suggerència no apareixerà immediatament per a votació. L'equip de Soundeluxe revisarà cada proposta per valorar la disponibilitat del disc en vinil o altres suports analògics."
+      "alreadySuggested": "Aquest àlbum ja existeix al catàleg."
     }
   },
   "profile": {
