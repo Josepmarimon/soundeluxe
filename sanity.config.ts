@@ -13,6 +13,7 @@ import {apiVersion, dataset, projectId} from './sanity/env'
 import {schema} from './sanity/schemaTypes'
 import {structure} from './sanity/structure'
 import {suggestionsPlugin} from './sanity/tools/suggestionsPlugin'
+import {importFromMusicBrainz} from './sanity/actions/importFromMusicBrainz'
 
 export default defineConfig({
   basePath: '/studio',
@@ -28,4 +29,13 @@ export default defineConfig({
     // Custom tools
     suggestionsPlugin(),
   ],
+  document: {
+    actions: (prev, context) => {
+      // Add MusicBrainz import action for album documents
+      if (context.schemaType === 'album') {
+        return [importFromMusicBrainz, ...prev]
+      }
+      return prev
+    },
+  },
 })

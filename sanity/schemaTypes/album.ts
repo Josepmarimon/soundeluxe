@@ -1,6 +1,5 @@
 import { defineField, defineType } from 'sanity'
 import { PlayIcon, ImageIcon, TagIcon, LinkIcon } from '@sanity/icons'
-import { MusicBrainzSearch } from '../components/MusicBrainzSearch'
 
 /**
  * Album Schema
@@ -19,25 +18,6 @@ export default defineType({
     { name: 'links', title: '🔗 Enllaços', icon: LinkIcon },
   ],
   fields: [
-    // === CERCA MUSICBRAINZ ===
-    defineField({
-      name: 'musicbrainzSearch',
-      title: 'Cerca a MusicBrainz',
-      type: 'object',
-      group: 'info',
-      description: 'Cerca i importa dades d\'àlbum des de MusicBrainz automàticament',
-      fields: [
-        {
-          name: 'placeholder',
-          type: 'string',
-          hidden: true,
-        },
-      ],
-      components: {
-        input: MusicBrainzSearch,
-      },
-    }),
-
     // === INFORMACIÓ BÀSICA ===
     defineField({
       name: 'title',
