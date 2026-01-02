@@ -117,9 +117,36 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
         }
       }
 
-      // Patch document
-      const docId = id.startsWith('drafts.') ? id : `drafts.${id}`
-      await client.patch(docId).set(setData).commit()
+      // Get document IDs
+      const publishedId = id.startsWith('drafts.') ? id.replace('drafts.', '') : id
+      const draftId = `drafts.${publishedId}`
+
+      // Check if draft exists, if not create it
+      const existingDraft = await client.getDocument(draftId)
+
+      if (existingDraft) {
+        // Patch existing draft
+        await client.patch(draftId).set(setData).commit()
+      } else {
+        // Check if published version exists
+        const existingPublished = await client.getDocument(publishedId)
+
+        if (existingPublished) {
+          // Create draft from published
+          await client.createOrReplace({
+            ...existingPublished,
+            _id: draftId,
+            ...setData,
+          })
+        } else {
+          // Create new draft document
+          await client.createOrReplace({
+            _id: draftId,
+            _type: 'album',
+            ...setData,
+          })
+        }
+      }
 
       // Close and refresh
       setIsOpen(false)
