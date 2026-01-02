@@ -96,56 +96,67 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
         }
       }
 
-      // Build data
-      const setData: Record<string, unknown> = {
-        title: selectedRelease.title,
-        artist: selectedArtist.name,
-        'links.musicbrainz': `https://musicbrainz.org/release-group/${selectedRelease.id}`,
-      }
-
-      if (selectedRelease.year) {
-        setData.year = selectedRelease.year
-      }
-
-      if (coverImageAssetId) {
-        setData.coverImage = {
-          _type: 'image',
-          asset: {
-            _type: 'reference',
-            _ref: coverImageAssetId,
-          },
-        }
-      }
-
       // Get document IDs
       const publishedId = id.startsWith('drafts.') ? id.replace('drafts.', '') : id
       const draftId = `drafts.${publishedId}`
 
       // Check if draft exists, if not create it
       const existingDraft = await client.getDocument(draftId)
+      const existingPublished = await client.getDocument(publishedId)
 
-      if (existingDraft) {
-        // Patch existing draft
-        await client.patch(draftId).set(setData).commit()
-      } else {
-        // Check if published version exists
-        const existingPublished = await client.getDocument(publishedId)
-
-        if (existingPublished) {
-          // Create draft from published
-          await client.createOrReplace({
-            ...existingPublished,
-            _id: draftId,
-            ...setData,
-          })
-        } else {
-          // Create new draft document
-          await client.createOrReplace({
-            _id: draftId,
-            _type: 'album',
-            ...setData,
-          })
+      if (existingDraft || existingPublished) {
+        // Build patch data with dot notation for nested fields
+        const patchData: Record<string, unknown> = {
+          title: selectedRelease.title,
+          artist: selectedArtist.name,
+          'links.musicbrainz': `https://musicbrainz.org/release-group/${selectedRelease.id}`,
         }
+
+        if (selectedRelease.year) {
+          patchData.year = selectedRelease.year
+        }
+
+        if (coverImageAssetId) {
+          patchData.coverImage = {
+            _type: 'image',
+            asset: {
+              _type: 'reference',
+              _ref: coverImageAssetId,
+            },
+          }
+        }
+
+        // Patch existing document
+        const targetId = existingDraft ? draftId : publishedId
+        await client.patch(targetId).set(patchData).commit()
+      } else {
+        // Build create data with proper object structure
+        const createData: Record<string, unknown> = {
+          _id: draftId,
+          _type: 'album',
+          title: selectedRelease.title,
+          artist: selectedArtist.name,
+          links: {
+            musicbrainz: `https://musicbrainz.org/release-group/${selectedRelease.id}`,
+          },
+        }
+
+        if (selectedRelease.year) {
+          createData.year = selectedRelease.year
+        }
+
+        if (coverImageAssetId) {
+          createData.coverImage = {
+            _type: 'image',
+            asset: {
+              _type: 'reference',
+              _ref: coverImageAssetId,
+            },
+          }
+        }
+
+        // Create new draft document
+        await client.createOrReplace(createData)
       }
 
       // Close and refresh
