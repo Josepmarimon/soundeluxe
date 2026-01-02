@@ -20,15 +20,16 @@ interface Release {
 }
 
 export const importFromMusicBrainz: DocumentActionComponent = (props) => {
-  const { id, type, published, draft } = props
+  const { id, type } = props
   const client = useClient({ apiVersion: '2024-01-01' })
 
   const [isOpen, setIsOpen] = useState(false)
-  const [step, setStep] = useState<'artist' | 'album'>('artist')
+  const [step, setStep] = useState<'artist' | 'album' | 'confirm'>('artist')
   const [artistQuery, setArtistQuery] = useState('')
   const [artists, setArtists] = useState<Artist[]>([])
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null)
   const [releases, setReleases] = useState<Release[]>([])
+  const [selectedRelease, setSelectedRelease] = useState<Release | null>(null)
   const [loading, setLoading] = useState(false)
   const [importing, setImporting] = useState(false)
 
@@ -68,16 +69,21 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
     }
   }, [])
 
-  const importAlbum = useCallback(async (release: Release) => {
-    if (!selectedArtist) return
+  const selectRelease = useCallback((release: Release) => {
+    setSelectedRelease(release)
+    setStep('confirm')
+  }, [])
+
+  const importAlbum = useCallback(async () => {
+    if (!selectedArtist || !selectedRelease) return
 
     setImporting(true)
     try {
       // Upload cover image
       let coverImageAssetId: string | null = null
-      if (release.coverUrl) {
+      if (selectedRelease.coverUrl) {
         try {
-          const response = await fetch(release.coverUrl)
+          const response = await fetch(selectedRelease.coverUrl)
           if (response.ok) {
             const blob = await response.blob()
             const asset = await client.assets.upload('image', blob, {
@@ -92,13 +98,13 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
 
       // Build data
       const setData: Record<string, unknown> = {
-        title: release.title,
+        title: selectedRelease.title,
         artist: selectedArtist.name,
-        'links.musicbrainz': `https://musicbrainz.org/release-group/${release.id}`,
+        'links.musicbrainz': `https://musicbrainz.org/release-group/${selectedRelease.id}`,
       }
 
-      if (release.year) {
-        setData.year = release.year
+      if (selectedRelease.year) {
+        setData.year = selectedRelease.year
       }
 
       if (coverImageAssetId) {
@@ -124,7 +130,7 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
     } finally {
       setImporting(false)
     }
-  }, [client, id, selectedArtist])
+  }, [client, id, selectedArtist, selectedRelease])
 
   const reset = useCallback(() => {
     setStep('artist')
@@ -132,7 +138,26 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
     setArtists([])
     setSelectedArtist(null)
     setReleases([])
+    setSelectedRelease(null)
   }, [])
+
+  const backToAlbums = useCallback(() => {
+    setStep('album')
+    setSelectedRelease(null)
+  }, [])
+
+  const getHeader = () => {
+    switch (step) {
+      case 'artist':
+        return "1. Cerca l'artista"
+      case 'album':
+        return `2. Selecciona l'àlbum de ${selectedArtist?.name}`
+      case 'confirm':
+        return "3. Confirma la importació"
+      default:
+        return ''
+    }
+  }
 
   return {
     label: 'Importar de MusicBrainz',
@@ -142,14 +167,15 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
     },
     dialog: isOpen ? {
       type: 'dialog',
-      header: step === 'artist' ? 'Cerca l\'artista' : `Àlbums de ${selectedArtist?.name}`,
+      header: getHeader(),
       onClose: () => {
         setIsOpen(false)
         reset()
       },
       content: (
         <div style={{ padding: '1rem' }}>
-          {step === 'artist' ? (
+          {/* Step 1: Search Artist */}
+          {step === 'artist' && (
             <div>
               <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
                 <input
@@ -204,7 +230,10 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
                 </div>
               )}
             </div>
-          ) : (
+          )}
+
+          {/* Step 2: Select Album */}
+          {step === 'album' && (
             <div>
               <button
                 onClick={reset}
@@ -217,7 +246,7 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
                   cursor: 'pointer',
                 }}
               >
-                ← Tornar a cercar
+                ← Tornar a cercar artista
               </button>
 
               {loading ? (
@@ -239,11 +268,9 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
                     <button
                       key={release.id}
                       type="button"
-                      onClick={() => importAlbum(release)}
-                      disabled={importing}
+                      onClick={() => selectRelease(release)}
                       style={{
-                        cursor: importing ? 'wait' : 'pointer',
-                        opacity: importing ? 0.5 : 1,
+                        cursor: 'pointer',
                         textAlign: 'center',
                         background: 'none',
                         border: '2px solid transparent',
@@ -252,9 +279,7 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
                         transition: 'border-color 0.2s',
                       }}
                       onMouseOver={(e) => {
-                        if (!importing) {
-                          e.currentTarget.style.borderColor = '#2276fc'
-                        }
+                        e.currentTarget.style.borderColor = '#2276fc'
                       }}
                       onMouseOut={(e) => {
                         e.currentTarget.style.borderColor = 'transparent'
@@ -282,6 +307,101 @@ export const importFromMusicBrainz: DocumentActionComponent = (props) => {
                   ))}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Step 3: Confirm Import */}
+          {step === 'confirm' && selectedRelease && selectedArtist && (
+            <div>
+              <button
+                onClick={backToAlbums}
+                disabled={importing}
+                style={{
+                  marginBottom: '1rem',
+                  padding: '0.25rem 0.5rem',
+                  background: 'none',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                }}
+              >
+                ← Tornar a seleccionar àlbum
+              </button>
+
+              {/* Album Preview */}
+              <div style={{
+                display: 'flex',
+                gap: '1.5rem',
+                padding: '1rem',
+                background: '#f5f5f5',
+                borderRadius: '8px',
+                marginBottom: '1.5rem',
+              }}>
+                <img
+                  src={selectedRelease.coverUrl}
+                  alt={selectedRelease.title}
+                  style={{
+                    width: '150px',
+                    height: '150px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                  }}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/placeholder-album.png'
+                  }}
+                />
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem' }}>
+                    {selectedRelease.title}
+                  </h3>
+                  <p style={{ margin: '0 0 0.25rem 0', color: '#666' }}>
+                    <strong>Artista:</strong> {selectedArtist.name}
+                  </p>
+                  {selectedRelease.year && (
+                    <p style={{ margin: '0 0 0.25rem 0', color: '#666' }}>
+                      <strong>Any:</strong> {selectedRelease.year}
+                    </p>
+                  )}
+                  <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.85rem', color: '#888' }}>
+                    S&apos;importarà: títol, artista, any, portada i enllaç MusicBrainz
+                  </p>
+                </div>
+              </div>
+
+              {/* Import Button */}
+              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={() => {
+                    setIsOpen(false)
+                    reset()
+                  }}
+                  disabled={importing}
+                  style={{
+                    padding: '0.75rem 1.5rem',
+                    background: 'none',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Cancel·lar
+                </button>
+                <button
+                  onClick={importAlbum}
+                  disabled={importing}
+                  style={{
+                    padding: '0.75rem 1.5rem',
+                    background: importing ? '#ccc' : '#2276fc',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: importing ? 'wait' : 'pointer',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {importing ? 'Importat...' : 'Importar dades'}
+                </button>
+              </div>
             </div>
           )}
         </div>
