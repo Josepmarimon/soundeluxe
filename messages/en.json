@@ -131,7 +131,8 @@
       "submitting": "Submitting...",
       "success": "Thank you! We've received your suggestion and will review it.",
       "error": "Something went wrong. Please try again.",
-      "alreadySuggested": "You have already suggested this album."
+      "alreadySuggested": "You have already suggested this album.",
+      "reviewNote": "Your suggestion will not appear immediately for voting. The Soundeluxe team will review each proposal to assess the availability of the album on vinyl or other analog formats."
     }
   },
   "profile": {

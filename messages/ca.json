@@ -131,7 +131,8 @@
       "submitting": "Enviant...",
       "success": "Gràcies! Hem rebut la teva suggerència i la revisarem.",
       "error": "Hi ha hagut un error. Torna-ho a provar.",
-      "alreadySuggested": "Ja has suggerit aquest àlbum anteriorment."
+      "alreadySuggested": "Ja has suggerit aquest àlbum anteriorment.",
+      "reviewNote": "La teva suggerència no apareixerà immediatament per a votació. L'equip de Soundeluxe revisarà cada proposta per valorar la disponibilitat del disc en vinil o altres suports analògics."
     }
   },
   "profile": {

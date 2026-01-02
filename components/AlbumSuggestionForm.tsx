@@ -201,13 +201,25 @@ export default function AlbumSuggestionForm() {
   }
 
   return (
-    <div className="bg-zinc-900/50 rounded-2xl p-6 md:p-8 border border-zinc-800">
-      <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+    <div className="bg-zinc-900/70 rounded-2xl p-6 md:p-8 border border-[#D4AF37]/30 shadow-xl shadow-black/20">
+      <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
         {t('votes.suggestion.title')}
       </h3>
-      <p className="text-zinc-400 mb-6">
+      <p className="text-zinc-400 mb-4">
         {t('votes.suggestion.subtitle')}
       </p>
+
+      {/* Note about review process */}
+      <div className="mb-6 p-4 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-xl">
+        <div className="flex items-start gap-3">
+          <svg className="w-5 h-5 text-[#D4AF37] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="text-sm text-zinc-300">
+            {t('votes.suggestion.reviewNote')}
+          </p>
+        </div>
+      </div>
 
       {/* Success message */}
       {submitSuccess && (

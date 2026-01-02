@@ -131,7 +131,8 @@
       "submitting": "Enviando...",
       "success": "¡Gracias! Hemos recibido tu sugerencia y la revisaremos.",
       "error": "Ha habido un error. Inténtalo de nuevo.",
-      "alreadySuggested": "Ya has sugerido este álbum anteriormente."
+      "alreadySuggested": "Ya has sugerido este álbum anteriormente.",
+      "reviewNote": "Tu sugerencia no aparecerá inmediatamente para votación. El equipo de Soundeluxe revisará cada propuesta para valorar la disponibilidad del disco en vinilo u otros soportes analógicos."
     }
   },
   "profile": {

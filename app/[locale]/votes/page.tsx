@@ -37,13 +37,18 @@ export default async function VotesPage() {
           <VotesRanking />
         </div>
 
-        {/* Album Suggestion Form */}
-        <div className="mb-12">
-          <AlbumSuggestionForm />
+        {/* Catalog with filters - showing vote buttons, hiding title search */}
+        <div className="mb-16">
+          <AlbumCatalog albums={albums} genres={genres} artists={artists} showVoteButton={true} hideTitleSearch={true} />
         </div>
 
-        {/* Catalog with filters - showing vote buttons, hiding title search */}
-        <AlbumCatalog albums={albums} genres={genres} artists={artists} showVoteButton={true} hideTitleSearch={true} />
+        {/* Album Suggestion Form - at the bottom with differentiated background */}
+        <div className="relative -mx-4 px-4 py-12 md:py-16 bg-gradient-to-b from-[#0a1929] via-[#112240] to-[#0a1929] border-t border-b border-[#D4AF37]/20">
+          <div className="absolute inset-0 bg-[url('/vinyl-pattern.svg')] opacity-5"></div>
+          <div className="relative max-w-3xl mx-auto">
+            <AlbumSuggestionForm />
+          </div>
+        </div>
       </div>
     </div>
   )
