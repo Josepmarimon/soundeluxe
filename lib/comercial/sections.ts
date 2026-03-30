@@ -66,7 +66,7 @@ const contextSection: SectionDefinition = {
   name: { ca: 'Context i tendències', es: 'Contexto y tendencias', en: 'Context and trends' },
   category: 'common',
   component: 'SectionCards',
-  defaultImage: '/images/comercial/session-turntable.jpg',
+  defaultImage: '/images/comercial/public1.jpg',
   defaultContent: {
     ca: {
       title: 'Context global: tendències que ho impulsen',
