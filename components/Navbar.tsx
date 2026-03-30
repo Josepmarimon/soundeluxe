@@ -141,6 +141,15 @@ export default function Navbar({ showShop = true }: NavbarProps) {
                     >
                       {t('navigation.profile')}
                     </Link>
+                    {(session.user as any)?.role === 'ADMIN' && (
+                      <Link
+                        href={`/${locale}/admin/comercial`}
+                        className="block px-4 py-2 text-sm text-zinc-300 hover:text-white hover:bg-[#1a3a5c] transition-colors"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        Comercial
+                      </Link>
+                    )}
                     <button
                       onClick={() => {
                         setUserMenuOpen(false)

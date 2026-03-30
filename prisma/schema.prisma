@@ -260,3 +260,74 @@ enum SuggestionStatus {
   REJECTED      // Rebutjat
   ADDED         // Ja afegit al catàleg
 }
+
+// ============================================
+// COMMERCIAL LINKS (Propostes comercials)
+// ============================================
+
+model CommercialLink {
+  id              String               @id @default(cuid())
+  token           String               @unique @default(uuid())
+  recipientEmail  String
+  recipientName   String
+  recipientCompany String?
+  status          CommercialLinkStatus @default(PENDING)
+  firstOpenedAt   DateTime?
+  lastOpenedAt    DateTime?
+  openCount       Int                  @default(0)
+  expiresAt       DateTime?
+  notes           String?              @db.Text
+  lang            Language             @default(CA)
+  recipientType   CommercialRecipientType @default(VENUE)
+  sections        Json?                // Array de LinkSection (ordre, visibilitat, overrides de contingut)
+  createdBy       String?              // Admin user ID
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  deletedAt       DateTime?            // Soft delete
+
+  // Relacions
+  visits          CommercialLinkVisit[]
+
+  @@index([status])
+  @@index([recipientEmail])
+  @@index([deletedAt])
+  @@map("commercial_links")
+}
+
+model CommercialLinkVisit {
+  id                  String   @id @default(cuid())
+  linkId              String
+  visitedAt           DateTime @default(now())
+  timeOnPageSeconds   Int?
+  ipAddress           String?
+  userAgent           String?  @db.Text
+  deviceType          String?  // desktop, mobile, tablet
+  browser             String?
+  os                  String?
+  country             String?
+  city                String?
+  scrollDepthPercent  Int?
+  sectionsViewed      String[] // Array de seccions visitades
+
+  // Relacions
+  link                CommercialLink @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@index([linkId])
+  @@index([visitedAt])
+  @@map("commercial_link_visits")
+}
+
+enum CommercialLinkStatus {
+  PENDING
+  SENT
+  OPENED
+  CONVERTED
+}
+
+enum CommercialRecipientType {
+  VENUE            // Espais (ex: Soho House)
+  DISC_PROVIDER    // Proveïdors de discs
+  FAN_CLUB         // Clubs de fans
+  COMPANY          // Empreses
+  RECORD_LABEL     // Discogràfiques
+}

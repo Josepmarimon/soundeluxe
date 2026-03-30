@@ -79,7 +79,7 @@ export default async function LocaleLayout({
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
             <Navbar showShop={showShop} />
-            <main>{children}</main>
+            <main className="pt-16">{children}</main>
             <FooterWrapper />
           </NextIntlClientProvider>
         </SessionProvider>
