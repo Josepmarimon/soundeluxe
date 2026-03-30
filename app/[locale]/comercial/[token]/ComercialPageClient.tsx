@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import type { ResolvedSection } from '@/lib/comercial/types'
 import type { CommercialMetrics } from '@/lib/types/commercial'
 import SectionRenderer from './sections/SectionRenderer'
+import DownloadPdfButton from './DownloadPdfButton'
 
 type Lang = 'ca' | 'es' | 'en'
 
@@ -129,39 +130,49 @@ export default function ComercialPageClient({ token, recipientName, recipientCom
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* Language selector */}
-      <div className="fixed top-4 right-4 z-50 flex gap-1 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1">
-        {(['ca', 'es', 'en'] as Lang[]).map((l) => (
-          <button
-            key={l}
-            onClick={() => switchLang(l)}
-            className={`px-2.5 py-1 rounded-full text-xs font-medium transition ${
-              lang === l ? 'bg-[#D4AF37] text-black' : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            {l.toUpperCase()}
-          </button>
-        ))}
+      {/* Top controls */}
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <DownloadPdfButton
+          recipientName={recipientName}
+          recipientCompany={recipientCompany}
+          lang={lang}
+        />
+        <div className="flex gap-1 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1">
+          {(['ca', 'es', 'en'] as Lang[]).map((l) => (
+            <button
+              key={l}
+              onClick={() => switchLang(l)}
+              className={`px-2.5 py-1 rounded-full text-xs font-medium transition ${
+                lang === l ? 'bg-[#D4AF37] text-black' : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              {l.toUpperCase()}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Dynamic sections */}
-      {resolvedSections.map((section) => (
-        <div key={section.key} data-section={section.key}>
-          <SectionRenderer
-            section={section}
-            recipientName={recipientName}
-            recipientCompany={recipientCompany}
-            lang={lang}
-            metrics={metrics}
-          />
-        </div>
-      ))}
+      {/* Proposal content (used for PDF generation) */}
+      <div id="proposal-content">
+        {/* Dynamic sections */}
+        {resolvedSections.map((section) => (
+          <div key={section.key} data-section={section.key}>
+            <SectionRenderer
+              section={section}
+              recipientName={recipientName}
+              recipientCompany={recipientCompany}
+              lang={lang}
+              metrics={metrics}
+            />
+          </div>
+        ))}
 
-      {/* Footer */}
-      <footer className="py-8 px-6 border-t border-gray-800/50 text-center">
-        <p className="text-gray-600 text-sm">{footerText}</p>
-        <p className="text-gray-700 text-xs mt-2">Sound Deluxe &copy; {new Date().getFullYear()}</p>
-      </footer>
+        {/* Footer */}
+        <footer className="py-8 px-6 border-t border-gray-800/50 text-center">
+          <p className="text-gray-600 text-sm">{footerText}</p>
+          <p className="text-gray-700 text-xs mt-2">Sound Deluxe &copy; {new Date().getFullYear()}</p>
+        </footer>
+      </div>
     </div>
   )
 }
