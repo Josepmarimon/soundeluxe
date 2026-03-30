@@ -133,7 +133,7 @@ export default function Navbar({ showShop = true }: NavbarProps) {
                   </svg>
                 </button>
                 {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-[#0a1929] border border-[#254a6e]/50 rounded-lg shadow-lg py-1 z-50">
+                  <div className="absolute right-0 mt-2 w-48 bg-[#0a1929] border border-[#254a6e]/50 rounded-lg shadow-lg py-1 z-50">
                     <Link
                       href={`/${locale}/profile`}
                       className="block px-4 py-2 text-sm text-zinc-300 hover:text-white hover:bg-[#1a3a5c] transition-colors"
@@ -142,13 +142,21 @@ export default function Navbar({ showShop = true }: NavbarProps) {
                       {t('navigation.profile')}
                     </Link>
                     {(session.user as any)?.role === 'ADMIN' && (
-                      <Link
-                        href={`/${locale}/admin/comercial`}
-                        className="block px-4 py-2 text-sm text-zinc-300 hover:text-white hover:bg-[#1a3a5c] transition-colors"
-                        onClick={() => setUserMenuOpen(false)}
-                      >
-                        Comercial
-                      </Link>
+                      <>
+                        <div className="border-t border-[#254a6e]/50 my-1" />
+                        <div className="px-4 py-1">
+                          <span className="text-[10px] uppercase tracking-wider text-[#D4AF37]/60 font-medium">Admin</span>
+                        </div>
+                        <Link
+                          href={`/${locale}/admin/comercial`}
+                          className="flex items-center gap-2 px-4 py-2 text-sm text-[#D4AF37] hover:text-white hover:bg-[#1a3a5c] transition-colors"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                          Gestió Comercial
+                        </Link>
+                        <div className="border-t border-[#254a6e]/50 my-1" />
+                      </>
                     )}
                     <button
                       onClick={() => {

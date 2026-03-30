@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { resend, FROM_EMAIL, APP_URL } from '@/lib/resend'
+import { resend, FROM_EMAIL_COMERCIAL, APP_URL } from '@/lib/resend'
 import CommercialProposal from '@/emails/CommercialProposal'
 
 export async function POST(request: NextRequest) {
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { error: emailError } = await resend.emails.send({
-      from: FROM_EMAIL,
+      from: FROM_EMAIL_COMERCIAL,
       to: link.recipientEmail,
       subject: subjects[link.lang] || subjects.CA,
       react: CommercialProposal({

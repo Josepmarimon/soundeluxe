@@ -11,6 +11,8 @@ export const resend = new Resend(apiKey)
 
 export const FROM_EMAIL = process.env.FROM_EMAIL || 'Sound Deluxe <noreply@soundeluxe.com>'
 
+export const FROM_EMAIL_COMERCIAL = process.env.FROM_EMAIL_COMERCIAL || 'Txell Castelló — Sound Deluxe <txell@soundeluxe.es>'
+
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://soundeluxe.vercel.app'
 
 // Check if Resend is properly configured

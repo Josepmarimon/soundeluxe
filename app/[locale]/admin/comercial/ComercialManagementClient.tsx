@@ -60,6 +60,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
   const [editOpen, setEditOpen] = useState(false)
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
   const [resetConfirmId, setResetConfirmId] = useState<string | null>(null)
+  const [sendConfirmId, setSendConfirmId] = useState<string | null>(null)
   const [creating, setCreating] = useState(false)
   const [editing, setEditing] = useState(false)
   const [sending, setSending] = useState(false)
@@ -219,6 +220,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
       })
       if (!res.ok) throw new Error('Error enviant email')
       toast.success('Email enviat!')
+      setSendConfirmId(null)
       fetchLinks()
     } catch (err: any) {
       toast.error(err.message)
@@ -411,7 +413,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                             </button>
                             {link.status === 'PENDING' && (
                               <button
-                                onClick={() => handleSendEmail(link.id)}
+                                onClick={() => setSendConfirmId(link.id)}
                                 disabled={sending}
                                 className="p-1.5 hover:bg-gray-700 rounded text-blue-400"
                                 title="Enviar per email"
@@ -482,7 +484,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                   <ExternalLink className="w-3.5 h-3.5" /> Obrir
                 </a>
                 {selectedLink.status === 'PENDING' && (
-                  <button onClick={() => handleSendEmail(selectedLink.id)} disabled={sending}
+                  <button onClick={() => setSendConfirmId(selectedLink.id)} disabled={sending}
                     className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 rounded-lg text-sm hover:bg-blue-500">
                     <Mail className="w-3.5 h-3.5" /> Enviar Email
                   </button>
@@ -760,6 +762,41 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
             </div>
           </div>
         )}
+
+        {/* ── Send Email Confirm ── */}
+        {sendConfirmId && (() => {
+          const sendLink = links.find(l => l.id === sendConfirmId)
+          return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center">
+              <div className="absolute inset-0 bg-black/60" onClick={() => setSendConfirmId(null)} />
+              <div className="relative bg-[#111] border border-gray-800 rounded-xl p-6 w-full max-w-sm">
+                <h3 className="text-lg font-bold mb-3 text-center">Enviar proposta comercial?</h3>
+                {sendLink && (
+                  <div className="bg-gray-900 rounded-lg p-3 mb-4 text-sm">
+                    <p className="text-gray-300"><span className="text-gray-500">Per a:</span> {sendLink.recipientName}</p>
+                    <p className="text-gray-300"><span className="text-gray-500">Email:</span> {sendLink.recipientEmail}</p>
+                    {sendLink.recipientCompany && (
+                      <p className="text-gray-300"><span className="text-gray-500">Empresa:</span> {sendLink.recipientCompany}</p>
+                    )}
+                    <p className="text-gray-500 text-xs mt-2">Des de: Txell Castelló — Sound Deluxe &lt;txell@soundeluxe.es&gt;</p>
+                  </div>
+                )}
+                <div className="flex justify-center gap-3">
+                  <button onClick={() => setSendConfirmId(null)} className="px-4 py-2 border border-gray-700 rounded-lg text-sm hover:bg-gray-800">
+                    Cancel·lar
+                  </button>
+                  <button
+                    onClick={() => handleSendEmail(sendConfirmId)}
+                    disabled={sending}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-500 disabled:opacity-50"
+                  >
+                    {sending ? 'Enviant...' : 'Enviar Email'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )
+        })()}
 
         {/* ── Reset Confirm ── */}
         {resetConfirmId && (
