@@ -7,15 +7,18 @@ import PortableTextContent from '@/components/PortableTextContent'
 
 interface SessionCardProps {
   session: SessionListItem
+  availablePlaces?: number
   showAlbumSale?: boolean
   enableFlip?: boolean
   isFlipped?: boolean
   onFlip?: () => void
 }
 
-export default function SessionCard({ session, showAlbumSale = true, enableFlip = false, isFlipped = false, onFlip }: SessionCardProps) {
+export default function SessionCard({ session, availablePlaces, showAlbumSale = true, enableFlip = false, isFlipped = false, onFlip }: SessionCardProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
+  const places = availablePlaces ?? session.totalPlaces
+  const isSoldOut = availablePlaces !== undefined && availablePlaces === 0
 
   const date = new Date(session.date)
 
@@ -57,10 +60,12 @@ export default function SessionCard({ session, showAlbumSale = true, enableFlip 
 
                 {/* Available spots badge */}
                 <div className="hidden md:block absolute top-3 left-3 z-10">
-                  <span className="inline-block px-2 py-0.5 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-[10px] font-semibold rounded-full shadow-md">
-                    {session.totalPlaces === 1
-                      ? t('sessions.onePlace')
-                      : t('sessions.placesAvailable', { count: session.totalPlaces })}
+                  <span className={`inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md ${isSoldOut ? 'bg-zinc-600 text-zinc-300' : 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'}`}>
+                    {isSoldOut
+                      ? t('booking.soldOut')
+                      : places === 1
+                        ? t('sessions.onePlace')
+                        : t('sessions.placesAvailable', { count: places })}
                   </span>
                 </div>
               </div>
@@ -172,10 +177,12 @@ export default function SessionCard({ session, showAlbumSale = true, enableFlip 
 
           {/* Available spots badge - only on desktop, over image */}
           <div className="hidden md:block absolute top-3 left-3 z-10">
-            <span className="inline-block px-2 py-0.5 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-[10px] font-semibold rounded-full shadow-md">
-              {session.totalPlaces === 1
-                ? t('sessions.onePlace')
-                : t('sessions.placesAvailable', { count: session.totalPlaces })}
+            <span className={`inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md ${isSoldOut ? 'bg-zinc-600 text-zinc-300' : 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'}`}>
+              {isSoldOut
+                ? t('booking.soldOut')
+                : places === 1
+                  ? t('sessions.onePlace')
+                  : t('sessions.placesAvailable', { count: places })}
             </span>
           </div>
         </div>
@@ -203,8 +210,8 @@ export default function SessionCard({ session, showAlbumSale = true, enableFlip 
           <span className="text-lg md:text-xl font-bold text-black">
             {session.price}€
           </span>
-          <button className="bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-md">
-            {t('sessions.book')} ({session.totalPlaces})
+          <button className={`px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs transition-all shadow-md ${isSoldOut ? 'bg-zinc-600 text-zinc-300 cursor-not-allowed' : 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028]'}`}>
+            {isSoldOut ? t('booking.soldOut') : `${t('sessions.book')} (${places})`}
           </button>
         </div>
 

@@ -7,17 +7,19 @@ import SessionCard from '@/components/SessionCard'
 
 interface SessionFiltersProps {
   sessions: SessionListItem[]
+  availability?: Record<string, number>
   showAlbumSale?: boolean
   enableFlip?: boolean
 }
 
 interface SessionCardsGridProps {
   sessions: SessionListItem[]
+  availability?: Record<string, number>
   showAlbumSale?: boolean
   enableFlip?: boolean
 }
 
-function SessionCardsGrid({ sessions, showAlbumSale = true, enableFlip = false }: SessionCardsGridProps) {
+function SessionCardsGrid({ sessions, availability, showAlbumSale = true, enableFlip = false }: SessionCardsGridProps) {
   const [flippedCard, setFlippedCard] = useState<string | null>(null)
 
   const handleCardFlip = (sessionId: string) => {
@@ -30,6 +32,7 @@ function SessionCardsGrid({ sessions, showAlbumSale = true, enableFlip = false }
         <SessionCard
           key={session._id}
           session={session}
+          availablePlaces={availability?.[session._id]}
           showAlbumSale={showAlbumSale}
           enableFlip={enableFlip}
           isFlipped={flippedCard === session._id}
@@ -40,7 +43,7 @@ function SessionCardsGrid({ sessions, showAlbumSale = true, enableFlip = false }
   )
 }
 
-export default function SessionFilters({ sessions, showAlbumSale = true, enableFlip = false }: SessionFiltersProps) {
+export default function SessionFilters({ sessions, availability, showAlbumSale = true, enableFlip = false }: SessionFiltersProps) {
   const t = useTranslations()
   const [selectedGenre, setSelectedGenre] = useState<string>('')
   const [artistSearch, setArtistSearch] = useState<string>('')
@@ -167,7 +170,7 @@ export default function SessionFilters({ sessions, showAlbumSale = true, enableF
           <p className="text-zinc-300 text-lg">{t('albums.noResults')}</p>
         </div>
       ) : (
-        <SessionCardsGrid sessions={filteredSessions} showAlbumSale={showAlbumSale} enableFlip={enableFlip} />
+        <SessionCardsGrid sessions={filteredSessions} availability={availability} showAlbumSale={showAlbumSale} enableFlip={enableFlip} />
       )}
     </div>
   )

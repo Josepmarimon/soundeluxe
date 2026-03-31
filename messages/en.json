@@ -74,16 +74,44 @@
   },
   "booking": {
     "title": "Book spot",
-    "selectPlaces": "Select spots",
+    "bookNow": "Book now",
+    "loginToBook": "Log in to book",
+    "selectPlaces": "How many spots?",
     "places": "Spots",
+    "available": "available",
     "total": "Total",
+    "vatIncluded": "VAT included",
+    "proceedToPayment": "Proceed to payment",
+    "processing": "Processing...",
+    "soldOut": "Sold out",
+    "cancellationNote": "Free cancellation up to 48h before the session.",
     "paymentMethod": "Payment method",
     "card": "Card",
     "bizum": "Bizum",
     "confirm": "Confirm booking",
     "cancel": "Cancel",
-    "success": "Booking confirmed!",
-    "error": "Error processing booking"
+    "confirmation": {
+      "title": "Booking confirmed!",
+      "subtitle": "Thank you for your booking at Sound Deluxe",
+      "emailSent": "We have sent a confirmation email to {email}",
+      "bookingRef": "Reference: {ref}",
+      "details": "Booking details",
+      "album": "Album",
+      "artist": "Artist",
+      "date": "Date & time",
+      "venue": "Venue",
+      "places": "Spots",
+      "total": "Total paid",
+      "viewBookings": "View my bookings",
+      "backToSessions": "Back to sessions",
+      "processing": "Processing your booking...",
+      "processingNote": "You will receive a confirmation email shortly"
+    },
+    "errors": {
+      "soldOut": "Sorry, not enough spots available",
+      "generic": "Something went wrong. Please try again.",
+      "notLoggedIn": "You must log in to make a booking"
+    }
   },
   "album": {
     "artist": "Artist",
@@ -319,5 +347,38 @@
     "subtitle": "Everything you need to know about our sessions and services",
     "cancellationTitle": "Cancellation and Refund Policy",
     "backToHome": "Back to home"
+  },
+  "qr": {
+    "showCode": "Show QR code",
+    "hideCode": "Hide QR code",
+    "downloadTicket": "Download ticket",
+    "entryCode": "Entry code",
+    "scanAtDoor": "Show this code at the entrance"
+  },
+  "checkin": {
+    "title": "Check-in",
+    "confirmCheckin": "Confirm entry",
+    "alreadyCheckedIn": "Checked in at {time}",
+    "checkinSuccess": "Entry registered successfully",
+    "bookingNotFound": "Booking not found",
+    "invalidBooking": "Invalid booking",
+    "showToStaff": "Show this code to staff",
+    "showToStaffNote": "Staff will scan your QR code to register your entry",
+    "places": "spots",
+    "album": "Album",
+    "artist": "Artist",
+    "date": "Date",
+    "venue": "Venue",
+    "processing": "Processing...",
+    "error": "Error registering entry"
+  },
+  "attendance": {
+    "title": "Attendance control",
+    "selectSession": "Select a session",
+    "checkedIn": "Checked in",
+    "notCheckedIn": "Pending",
+    "totalBookings": "bookings",
+    "places": "spots",
+    "noBookings": "No bookings for this session"
   }
 }

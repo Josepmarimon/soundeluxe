@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { urlForImage } from '@/lib/sanity/image'
 import { locales, type Locale } from '@/i18n'
+import BookingQRButton from '@/components/BookingQRButton'
 
 interface Vote {
   id: string
@@ -361,6 +362,11 @@ export default function ProfilePage() {
                             </p>
                           </div>
                         </div>
+
+                        {/* QR Code button for confirmed future bookings */}
+                        {booking.status === 'CONFIRMED' && new Date(booking.session.date) > new Date() && (
+                          <BookingQRButton bookingId={booking.id} locale={locale} />
+                        )}
                       </div>
                     </div>
                   </div>

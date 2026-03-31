@@ -4,12 +4,18 @@ import { upcomingSessionsQuery } from '@/lib/sanity/queries'
 import type { SessionListItem } from '@/lib/sanity/types'
 import SessionFilters from '@/components/SessionFilters'
 import SessionsCalendar from '@/components/calendar/SessionsCalendar'
+import { getBatchAvailability } from '@/lib/booking'
 
 export default async function SessionsPage() {
   const t = await getTranslations()
 
   // Fetch all upcoming sessions from Sanity
   const sessions: SessionListItem[] = await client.fetch(upcomingSessionsQuery)
+
+  // Compute real availability from database
+  const availability = sessions.length > 0
+    ? await getBatchAvailability(sessions.map((s) => ({ _id: s._id, totalPlaces: s.totalPlaces })))
+    : {}
 
   return (
     <div className="min-h-screen bg-transparent pt-16">
@@ -39,7 +45,7 @@ export default async function SessionsPage() {
             </p>
           </div>
         ) : (
-          <SessionFilters sessions={sessions} />
+          <SessionFilters sessions={sessions} availability={availability} />
         )}
       </div>
     </div>

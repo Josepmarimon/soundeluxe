@@ -7,6 +7,8 @@ import type { Session, Locale } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
 import PortableTextContent from '@/components/PortableTextContent'
 import AlbumCarousel from '@/components/AlbumCarousel'
+import BookingWidget from '@/components/BookingWidget'
+import { getAvailablePlaces } from '@/lib/booking'
 
 interface SessionPageProps {
   params: Promise<{
@@ -25,6 +27,8 @@ export default async function SessionPage({ params }: SessionPageProps) {
   if (!session) {
     notFound()
   }
+
+  const availablePlaces = await getAvailablePlaces(session._id, session.totalPlaces)
 
   const date = new Date(session.date)
 
@@ -181,8 +185,8 @@ export default async function SessionPage({ params }: SessionPageProps) {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm text-zinc-500">{t('sessions.placesAvailable', { count: session.totalPlaces })}</p>
-                      <p className="text-base font-semibold">{session.totalPlaces} places</p>
+                      <p className="text-sm text-zinc-500">{t('sessions.placesAvailable', { count: availablePlaces })}</p>
+                      <p className="text-base font-semibold">{availablePlaces} / {session.totalPlaces}</p>
                     </div>
                   </div>
 
@@ -246,12 +250,13 @@ export default async function SessionPage({ params }: SessionPageProps) {
                     <p className="text-sm text-zinc-500">{t('sessions.price', { price: '' }).replace('€', '')}</p>
                     <p className="text-5xl font-bold text-white">{session.price}€</p>
                   </div>
-                  <button className="bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-10 py-5 rounded-full font-bold text-lg hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-lg flex items-center gap-2">
-                    {t('sessions.bookNow')}
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
+                  <BookingWidget
+                    sessionId={session._id}
+                    price={session.price}
+                    totalPlaces={session.totalPlaces}
+                    availablePlaces={availablePlaces}
+                    locale={locale}
+                  />
                 </div>
 
                 {session.specialNotes && session.specialNotes[locale] && (

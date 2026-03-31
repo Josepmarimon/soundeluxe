@@ -74,16 +74,44 @@
   },
   "booking": {
     "title": "Reservar plaça",
-    "selectPlaces": "Seleccionar places",
+    "bookNow": "Reservar ara",
+    "loginToBook": "Inicia sessió per reservar",
+    "selectPlaces": "Quantes places?",
     "places": "Places",
+    "available": "disponibles",
     "total": "Total",
+    "vatIncluded": "IVA inclòs",
+    "proceedToPayment": "Procedir al pagament",
+    "processing": "Processant...",
+    "soldOut": "Esgotades",
+    "cancellationNote": "Cancel·lació gratuïta fins 48h abans de la sessió.",
     "paymentMethod": "Mètode de pagament",
     "card": "Targeta",
     "bizum": "Bizum",
     "confirm": "Confirmar reserva",
     "cancel": "Cancel·lar",
-    "success": "Reserva confirmada!",
-    "error": "Error al processar la reserva"
+    "confirmation": {
+      "title": "Reserva confirmada!",
+      "subtitle": "Gràcies per la teva reserva a Sound Deluxe",
+      "emailSent": "Hem enviat un email de confirmació a {email}",
+      "bookingRef": "Referència: {ref}",
+      "details": "Detalls de la reserva",
+      "album": "Àlbum",
+      "artist": "Artista",
+      "date": "Data i hora",
+      "venue": "Lloc",
+      "places": "Places",
+      "total": "Total pagat",
+      "viewBookings": "Veure les meves reserves",
+      "backToSessions": "Tornar a sessions",
+      "processing": "Processant la teva reserva...",
+      "processingNote": "Rebràs un email de confirmació en breus moments"
+    },
+    "errors": {
+      "soldOut": "Ho sentim, no queden prou places disponibles",
+      "generic": "Hi ha hagut un error. Torna-ho a intentar.",
+      "notLoggedIn": "Has d'iniciar sessió per fer una reserva"
+    }
   },
   "album": {
     "artist": "Artista",
@@ -319,5 +347,38 @@
     "subtitle": "Tot el que necessites saber sobre les nostres sessions i serveis",
     "cancellationTitle": "Política de cancel·lació i devolucions",
     "backToHome": "Tornar a l'inici"
+  },
+  "qr": {
+    "showCode": "Mostra el codi QR",
+    "hideCode": "Amaga el codi QR",
+    "downloadTicket": "Descarregar entrada",
+    "entryCode": "Codi d'entrada",
+    "scanAtDoor": "Mostra aquest codi a l'entrada"
+  },
+  "checkin": {
+    "title": "Check-in",
+    "confirmCheckin": "Confirmar entrada",
+    "alreadyCheckedIn": "Registrat a les {time}",
+    "checkinSuccess": "Entrada registrada correctament",
+    "bookingNotFound": "Reserva no trobada",
+    "invalidBooking": "Reserva no vàlida",
+    "showToStaff": "Mostra aquest codi al personal",
+    "showToStaffNote": "El personal escanejarà el teu codi QR per registrar la teva entrada",
+    "places": "places",
+    "album": "Àlbum",
+    "artist": "Artista",
+    "date": "Data",
+    "venue": "Lloc",
+    "processing": "Processant...",
+    "error": "Error al registrar l'entrada"
+  },
+  "attendance": {
+    "title": "Control d'assistència",
+    "selectSession": "Selecciona una sessió",
+    "checkedIn": "Registrats",
+    "notCheckedIn": "Pendents",
+    "totalBookings": "reserves",
+    "places": "places",
+    "noBookings": "No hi ha reserves per a aquesta sessió"
   }
 }

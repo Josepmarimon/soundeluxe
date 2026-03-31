@@ -5,6 +5,7 @@ import { upcomingSessionsQuery, homePageQuery, testimonialsQuery } from '@/lib/s
 import type { SessionListItem, HomePage, ExperienceFeature, Testimonial } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
 import SessionFilters from '@/components/SessionFilters'
+import { getBatchAvailability } from '@/lib/booking'
 import HeroVideo from '@/components/HeroVideo'
 import NewsletterForm from '@/components/NewsletterForm'
 import SessionsCalendar from '@/components/calendar/SessionsCalendar'
@@ -21,6 +22,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     client.fetch(homePageQuery),
     client.fetch(testimonialsQuery),
   ])
+
+  // Compute real availability
+  const availability = sessions.length > 0
+    ? await getBatchAvailability(sessions.map((s) => ({ _id: s._id, totalPlaces: s.totalPlaces })))
+    : {}
 
   // Filter features with images and map to safe type
   const featuresWithImages = (homePageData?.experienceFeatures || [])
@@ -108,7 +114,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
                 {t('sessions.allSessions')}
               </h3>
-              <SessionFilters sessions={sessions} showAlbumSale={false} enableFlip={true} />
+              <SessionFilters sessions={sessions} availability={availability} showAlbumSale={false} enableFlip={true} />
             </>
           )}
         </div>

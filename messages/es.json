@@ -74,16 +74,44 @@
   },
   "booking": {
     "title": "Reservar plaza",
-    "selectPlaces": "Seleccionar plazas",
+    "bookNow": "Reservar ahora",
+    "loginToBook": "Inicia sesión para reservar",
+    "selectPlaces": "¿Cuántas plazas?",
     "places": "Plazas",
+    "available": "disponibles",
     "total": "Total",
+    "vatIncluded": "IVA incluido",
+    "proceedToPayment": "Proceder al pago",
+    "processing": "Procesando...",
+    "soldOut": "Agotadas",
+    "cancellationNote": "Cancelación gratuita hasta 48h antes de la sesión.",
     "paymentMethod": "Método de pago",
     "card": "Tarjeta",
     "bizum": "Bizum",
     "confirm": "Confirmar reserva",
     "cancel": "Cancelar",
-    "success": "¡Reserva confirmada!",
-    "error": "Error al procesar la reserva"
+    "confirmation": {
+      "title": "¡Reserva confirmada!",
+      "subtitle": "Gracias por tu reserva en Sound Deluxe",
+      "emailSent": "Hemos enviado un email de confirmación a {email}",
+      "bookingRef": "Referencia: {ref}",
+      "details": "Detalles de la reserva",
+      "album": "Álbum",
+      "artist": "Artista",
+      "date": "Fecha y hora",
+      "venue": "Lugar",
+      "places": "Plazas",
+      "total": "Total pagado",
+      "viewBookings": "Ver mis reservas",
+      "backToSessions": "Volver a sesiones",
+      "processing": "Procesando tu reserva...",
+      "processingNote": "Recibirás un email de confirmación en breves momentos"
+    },
+    "errors": {
+      "soldOut": "Lo sentimos, no quedan suficientes plazas disponibles",
+      "generic": "Ha habido un error. Inténtalo de nuevo.",
+      "notLoggedIn": "Debes iniciar sesión para hacer una reserva"
+    }
   },
   "album": {
     "artist": "Artista",
@@ -319,5 +347,38 @@
     "subtitle": "Todo lo que necesitas saber sobre nuestras sesiones y servicios",
     "cancellationTitle": "Política de cancelación y devoluciones",
     "backToHome": "Volver al inicio"
+  },
+  "qr": {
+    "showCode": "Mostrar código QR",
+    "hideCode": "Ocultar código QR",
+    "downloadTicket": "Descargar entrada",
+    "entryCode": "Código de entrada",
+    "scanAtDoor": "Muestra este código en la entrada"
+  },
+  "checkin": {
+    "title": "Check-in",
+    "confirmCheckin": "Confirmar entrada",
+    "alreadyCheckedIn": "Registrado a las {time}",
+    "checkinSuccess": "Entrada registrada correctamente",
+    "bookingNotFound": "Reserva no encontrada",
+    "invalidBooking": "Reserva no válida",
+    "showToStaff": "Muestra este código al personal",
+    "showToStaffNote": "El personal escaneará tu código QR para registrar tu entrada",
+    "places": "plazas",
+    "album": "Álbum",
+    "artist": "Artista",
+    "date": "Fecha",
+    "venue": "Lugar",
+    "processing": "Procesando...",
+    "error": "Error al registrar la entrada"
+  },
+  "attendance": {
+    "title": "Control de asistencia",
+    "selectSession": "Selecciona una sesión",
+    "checkedIn": "Registrados",
+    "notCheckedIn": "Pendientes",
+    "totalBookings": "reservas",
+    "places": "plazas",
+    "noBookings": "No hay reservas para esta sesión"
   }
 }
