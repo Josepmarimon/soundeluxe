@@ -5,6 +5,7 @@ import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
 import { resend, FROM_EMAIL, isResendConfigured } from '@/lib/resend'
 import { generateQRDataURL } from '@/lib/qr'
+import { formatInvoiceNumber } from '@/lib/company'
 import BookingConfirmation from '@/emails/BookingConfirmation'
 import type { Session } from '@/lib/sanity/types'
 import type Stripe from 'stripe'
@@ -150,6 +151,9 @@ export async function POST(request: Request) {
               totalAmount: totalAmount.toFixed(2),
               qrDataUrl,
               bookingId: reserva.id,
+              invoiceNumber: reserva.invoiceNumber
+                ? formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
+                : undefined,
             }),
           })
         } catch (emailError) {

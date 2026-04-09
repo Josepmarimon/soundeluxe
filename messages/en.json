@@ -20,7 +20,9 @@
     "login": "Login",
     "register": "Sign up",
     "profile": "Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "scanner": "QR Scanner",
+    "attendance": "Attendance"
   },
   "hero": {
     "title": "Rediscover music like you've never heard it before",
@@ -380,5 +382,43 @@
     "totalBookings": "bookings",
     "places": "spots",
     "noBookings": "No bookings for this session"
+  },
+  "scanner": {
+    "title": "Entry Scanner",
+    "hint": "Point the camera at the entry QR code",
+    "confirmEntry": "Confirm entry",
+    "places": "spots",
+    "album": "Album",
+    "artist": "Artist",
+    "venue": "Venue",
+    "entryConfirmed": "Entry confirmed",
+    "alreadyCheckedIn": "Already checked in",
+    "bookingNotFound": "Booking not found",
+    "invalidBooking": "Invalid booking",
+    "errorGeneric": "Processing error",
+    "cameraError": "Could not access camera",
+    "scanNext": "Scan next",
+    "tryAgain": "Scan again",
+    "cancel": "Cancel"
+  },
+  "ticket": {
+    "subtitle": "High-fidelity audiophile experiences",
+    "simplifiedInvoice": "Simplified invoice",
+    "backToProfile": "Back to profile",
+    "downloadPdf": "Download PDF",
+    "generating": "Generating...",
+    "issueDate": "Issue date",
+    "reference": "Reference",
+    "dateTime": "Date & time",
+    "venue": "Venue",
+    "attendee": "Attendee",
+    "places": "Spots",
+    "concept": "Concept",
+    "amount": "Amount",
+    "sessionEntry": "Listening session entry ({places, plural, one {1 spot} other {# spots}})",
+    "vatLine": "VAT ({rate}%)",
+    "total": "Total",
+    "entryQr": "Entry QR code",
+    "entryQrNote": "Show this code at the session entrance to register your attendance"
   }
 }

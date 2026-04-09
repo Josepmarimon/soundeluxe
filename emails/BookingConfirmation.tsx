@@ -24,6 +24,7 @@ interface BookingConfirmationProps {
   totalAmount: string
   bookingId: string
   qrDataUrl?: string
+  invoiceNumber?: string
 }
 
 const translations = {
@@ -44,6 +45,8 @@ const translations = {
     qrTitle: 'El teu codi QR d\'entrada',
     qrNote: 'Mostra aquest codi a l\'entrada de la sessió',
     button: 'Veure les meves reserves',
+    downloadTicket: 'Descarregar entrada / factura',
+    invoiceNote: 'Factura simplificada',
     footer: 'Sound Deluxe - Experiències audiòfiles d\'alta fidelitat',
   },
   ES: {
@@ -63,6 +66,8 @@ const translations = {
     qrTitle: 'Tu código QR de entrada',
     qrNote: 'Muestra este código en la entrada de la sesión',
     button: 'Ver mis reservas',
+    downloadTicket: 'Descargar entrada / factura',
+    invoiceNote: 'Factura simplificada',
     footer: 'Sound Deluxe - Experiencias audiófilas de alta fidelidad',
   },
   EN: {
@@ -82,6 +87,8 @@ const translations = {
     qrTitle: 'Your entry QR code',
     qrNote: 'Show this code at the session entrance',
     button: 'View my bookings',
+    downloadTicket: 'Download ticket / invoice',
+    invoiceNote: 'Simplified invoice',
     footer: 'Sound Deluxe - High-fidelity audiophile experiences',
   },
 }
@@ -98,11 +105,12 @@ export default function BookingConfirmation({
   totalAmount,
   bookingId,
   qrDataUrl,
+  invoiceNumber,
 }: BookingConfirmationProps) {
   const t = translations[language]
-  const profileUrl = language === 'CA' ? 'https://soundeluxe.es/ca/profile'
-    : language === 'ES' ? 'https://soundeluxe.es/es/profile'
-    : 'https://soundeluxe.es/en/profile'
+  const lang = language.toLowerCase()
+  const profileUrl = `https://soundeluxe.es/${lang}/profile`
+  const ticketUrl = `https://soundeluxe.es/${lang}/ticket/${bookingId}`
 
   return (
     <Html>
@@ -156,6 +164,9 @@ export default function BookingConfirmation({
 
           <Text style={referenceText}>
             {t.reference}: {bookingId}
+            {invoiceNumber && (
+              <> · {t.invoiceNote}: {invoiceNumber}</>
+            )}
           </Text>
 
           {/* QR Code */}
@@ -174,7 +185,13 @@ export default function BookingConfirmation({
           )}
 
           <Section style={buttonSection}>
-            <Button style={button} href={profileUrl}>
+            <Button style={button} href={ticketUrl}>
+              {t.downloadTicket}
+            </Button>
+          </Section>
+
+          <Section style={secondaryButtonSection}>
+            <Button style={secondaryButton} href={profileUrl}>
               {t.button}
             </Button>
           </Section>
@@ -351,6 +368,24 @@ const cancellationText = {
 const hr = {
   borderColor: '#262626',
   margin: '24px 0',
+}
+
+const secondaryButtonSection = {
+  textAlign: 'center' as const,
+  margin: '0 0 32px',
+}
+
+const secondaryButton = {
+  backgroundColor: 'transparent',
+  borderRadius: '9999px',
+  border: '1px solid #525252',
+  color: '#d4d4d4',
+  fontSize: '14px',
+  fontWeight: 'normal' as const,
+  textDecoration: 'none',
+  textAlign: 'center' as const,
+  display: 'inline-block',
+  padding: '10px 24px',
 }
 
 const footerBrand = {

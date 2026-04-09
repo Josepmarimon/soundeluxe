@@ -1,219 +1,297 @@
-/* Tema d'alta accessibilitat per Sound Deluxe Studio */
+/* ============================================
+   Sound Deluxe Studio — Premium Theme
+   ============================================ */
 
-/* Variables CSS per control centralitzat */
+/* --- Paleta --- */
 :root {
-  --sd-gold: #D4AF37;
-  --sd-gold-light: #E8C95A;
-  --sd-bg-dark: #0D0D0D;
-  --sd-bg-panel: #1A1A1A;
-  --sd-text-primary: #FFFFFF;
-  --sd-text-secondary: #CCCCCC;
-  --sd-border: #404040;
+  --sd-gold: #C9A84C;
+  --sd-gold-soft: #D4B865;
+  --sd-gold-muted: rgba(201, 168, 76, 0.12);
+  --sd-gold-glow: rgba(201, 168, 76, 0.25);
+  --sd-bg-deep: #0A0A0A;
+  --sd-bg-surface: #111111;
+  --sd-bg-elevated: #1A1A1A;
+  --sd-text: #F5F0E8;
+  --sd-text-dim: #9E9789;
+  --sd-border: #2A2A2A;
+  --sd-border-subtle: #1E1E1E;
+  --sd-radius: 10px;
+  --sd-transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Fonts més grans a tot l'Studio */
-[data-ui="Container"],
-[data-ui="Card"],
-[data-ui="Dialog"],
-[data-ui="Menu"],
-[data-ui="MenuButton"],
-[data-ui="Text"],
-[data-ui="Label"],
-[data-ui="Heading"] {
-  font-size: 16px !important;
+/* --- Global --- */
+* {
+  transition: background-color var(--sd-transition),
+              border-color var(--sd-transition),
+              box-shadow var(--sd-transition),
+              color var(--sd-transition);
 }
 
-/* Títols i encapçalaments més grans */
+/* --- Tipografia --- */
+body, [data-ui] {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p, span, div {
+  line-height: 1.65 !important;
+}
+
 h1, h2, h3, [data-ui="Heading"] {
-  font-weight: 700 !important;
-  letter-spacing: 0.02em !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  color: var(--sd-text) !important;
 }
 
-/* Sidebar/Navegació - Fons fosc amb text clar */
-[data-ui="Navbar"],
-[data-testid="pane-header"],
-nav {
-  background-color: var(--sd-bg-dark) !important;
+/* --- Navbar superior --- */
+[data-ui="Navbar"] {
+  background: var(--sd-bg-deep) !important;
+  border-bottom: 1px solid var(--sd-border-subtle) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* --- Sidebar / Panell de llista --- */
+[data-testid="desk-tool-list-pane"] {
+  background: var(--sd-bg-surface) !important;
 }
 
 /* Elements del menú lateral */
-[data-ui="Tree"] button,
-[data-ui="MenuButton"],
-[data-testid="desk-tool-list-pane"] button {
-  font-size: 15px !important;
-  padding: 12px 16px !important;
-  min-height: 48px !important;
-  color: var(--sd-text-primary) !important;
-}
-
-/* Hover sobre elements del menú */
-[data-ui="Tree"] button:hover,
-[data-ui="MenuButton"]:hover,
-[data-testid="desk-tool-list-pane"] button:hover {
-  background-color: rgba(212, 175, 55, 0.15) !important;
-}
-
-/* Element seleccionat al menú */
-[data-ui="Tree"] button[data-selected="true"],
-[data-testid="desk-tool-list-pane"] button[data-selected="true"],
-[aria-selected="true"] {
-  background-color: rgba(212, 175, 55, 0.25) !important;
-  border-left: 4px solid var(--sd-gold) !important;
-}
-
-/* Panells i targetes */
-[data-ui="Card"] {
-  border: 1px solid var(--sd-border) !important;
+[data-testid="desk-tool-list-pane"] button,
+[data-ui="Tree"] button {
+  font-size: 14px !important;
+  padding: 10px 14px !important;
+  min-height: 42px !important;
+  color: var(--sd-text-dim) !important;
   border-radius: 8px !important;
+  margin: 2px 8px !important;
+  border: 1px solid transparent !important;
 }
 
-/* Camps de formulari */
+[data-testid="desk-tool-list-pane"] button:hover,
+[data-ui="Tree"] button:hover {
+  background: var(--sd-gold-muted) !important;
+  color: var(--sd-text) !important;
+  border-color: rgba(201, 168, 76, 0.08) !important;
+}
+
+/* Element seleccionat */
+[data-testid="desk-tool-list-pane"] button[data-selected="true"],
+[data-ui="Tree"] button[data-selected="true"],
+[aria-selected="true"] {
+  background: var(--sd-gold-muted) !important;
+  color: var(--sd-gold-soft) !important;
+  border-left: 3px solid var(--sd-gold) !important;
+  font-weight: 500 !important;
+}
+
+/* --- Targetes / Panells --- */
+[data-ui="Card"] {
+  border: 1px solid var(--sd-border-subtle) !important;
+  border-radius: var(--sd-radius) !important;
+}
+
+/* --- Camps de formulari --- */
 input,
 textarea,
 select,
 [data-ui="TextInput"],
 [data-ui="TextArea"],
 [data-ui="Select"] {
-  font-size: 16px !important;
-  padding: 12px !important;
-  border: 2px solid var(--sd-border) !important;
-  border-radius: 6px !important;
-  min-height: 48px !important;
+  font-size: 15px !important;
+  padding: 10px 14px !important;
+  border: 1px solid var(--sd-border) !important;
+  border-radius: 8px !important;
+  min-height: 42px !important;
+  background: var(--sd-bg-surface) !important;
+  color: var(--sd-text) !important;
 }
 
-/* Focus en camps de formulari */
 input:focus,
 textarea:focus,
 select:focus,
 [data-ui="TextInput"]:focus-within,
 [data-ui="TextArea"]:focus-within {
   border-color: var(--sd-gold) !important;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3) !important;
+  box-shadow: 0 0 0 3px var(--sd-gold-glow) !important;
   outline: none !important;
 }
 
-/* Etiquetes de camps */
+/* Etiquetes */
 label,
 [data-ui="Label"] {
-  font-size: 14px !important;
+  font-size: 11px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  color: var(--sd-text-secondary) !important;
-  margin-bottom: 8px !important;
+  letter-spacing: 0.08em !important;
+  color: var(--sd-text-dim) !important;
+  margin-bottom: 6px !important;
 }
 
-/* Botons */
+/* --- Botons --- */
 button,
 [data-ui="Button"] {
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  padding: 12px 20px !important;
-  min-height: 44px !important;
-  border-radius: 6px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  padding: 10px 18px !important;
+  min-height: 40px !important;
+  border-radius: 8px !important;
+  letter-spacing: 0.01em !important;
 }
 
-/* Botó primari (Publicar, Desar, etc.) */
+/* Botó primari — daurat sòlid */
 [data-ui="Button"][data-tone="primary"],
 button[data-tone="primary"] {
-  background-color: var(--sd-gold) !important;
-  color: var(--sd-bg-dark) !important;
+  background: linear-gradient(135deg, var(--sd-gold), var(--sd-gold-soft)) !important;
+  color: #0A0A0A !important;
+  border: none !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(201, 168, 76, 0.2) !important;
 }
 
 [data-ui="Button"][data-tone="primary"]:hover,
 button[data-tone="primary"]:hover {
-  background-color: var(--sd-gold-light) !important;
+  box-shadow: 0 4px 16px rgba(201, 168, 76, 0.35) !important;
+  transform: translateY(-1px);
 }
 
-/* Divisors més visibles */
-hr,
-[data-ui="Divider"] {
-  border-color: var(--sd-border) !important;
-  border-width: 2px !important;
-  margin: 16px 0 !important;
-}
-
-/* Icones més grans */
-[data-ui="Text"] svg,
-[data-sanity-icon],
-svg[data-sanity-icon] {
-  width: 24px !important;
-  height: 24px !important;
-}
-
-/* Breadcrumbs i navegació */
-[data-ui="Breadcrumbs"] {
-  font-size: 14px !important;
-}
-
-/* Capçalera del document */
-[data-testid="document-panel-header"] {
-  border-bottom: 2px solid var(--sd-border) !important;
-  padding: 16px !important;
-}
-
-/* Pestanyes */
+/* --- Pestanyes --- */
 [data-ui="Tab"],
 [role="tab"] {
-  font-size: 15px !important;
-  padding: 12px 16px !important;
-  font-weight: 600 !important;
+  font-size: 13px !important;
+  padding: 10px 16px !important;
+  font-weight: 500 !important;
+  color: var(--sd-text-dim) !important;
+  border-bottom: 2px solid transparent !important;
 }
 
 [data-ui="Tab"][aria-selected="true"],
 [role="tab"][aria-selected="true"] {
-  border-bottom: 3px solid var(--sd-gold) !important;
-  color: var(--sd-gold) !important;
+  border-bottom-color: var(--sd-gold) !important;
+  color: var(--sd-gold-soft) !important;
 }
 
-/* Alertes i missatges */
+/* --- Capçalera del document --- */
+[data-testid="document-panel-header"] {
+  border-bottom: 1px solid var(--sd-border-subtle) !important;
+  padding: 14px 16px !important;
+}
+
+[data-testid="pane-header"] {
+  background: var(--sd-bg-deep) !important;
+}
+
+/* --- Divisors --- */
+hr,
+[data-ui="Divider"] {
+  border-color: var(--sd-border-subtle) !important;
+  border-width: 1px !important;
+  margin: 12px 0 !important;
+  opacity: 0.6;
+}
+
+/* --- Llista de documents --- */
+[data-ui="ListView"] button,
+[data-testid="document-list-item"] {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--sd-border-subtle) !important;
+}
+
+[data-ui="ListView"] button:hover,
+[data-testid="document-list-item"]:hover {
+  background: var(--sd-gold-muted) !important;
+}
+
+/* --- Alertes --- */
 [data-ui="Alert"],
 [data-ui="Toast"] {
-  font-size: 15px !important;
-  padding: 16px !important;
-  border-radius: 8px !important;
-  border-width: 2px !important;
+  font-size: 14px !important;
+  padding: 14px 16px !important;
+  border-radius: var(--sd-radius) !important;
+  border-width: 1px !important;
 }
 
-/* Scroll més visible */
+/* --- Scrollbar elegant --- */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--sd-bg-panel);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--sd-border);
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--sd-gold);
 }
 
-/* Millorar el contrast del text en general */
-p, span, div {
-  line-height: 1.6 !important;
-}
-
-/* Tooltip més llegible */
+/* --- Tooltips --- */
 [data-ui="Tooltip"] {
-  font-size: 14px !important;
-  padding: 10px 14px !important;
+  font-size: 13px !important;
+  padding: 8px 12px !important;
   border-radius: 6px !important;
+  backdrop-filter: blur(8px);
 }
 
-/* Llistat de documents */
-[data-ui="ListView"] button,
-[data-testid="document-list-item"] {
-  padding: 14px 16px !important;
-  border-bottom: 1px solid var(--sd-border) !important;
+/* --- Breadcrumbs --- */
+[data-ui="Breadcrumbs"] {
+  font-size: 13px !important;
+  color: var(--sd-text-dim) !important;
 }
 
-[data-ui="ListView"] button:hover,
-[data-testid="document-list-item"]:hover {
-  background-color: rgba(212, 175, 55, 0.1) !important;
+/* --- Dialog / Modal --- */
+[data-ui="Dialog"] {
+  border-radius: 14px !important;
+  border: 1px solid var(--sd-border) !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* --- Icones — mida consistent --- */
+[data-sanity-icon],
+svg[data-sanity-icon] {
+  width: 20px !important;
+  height: 20px !important;
+  opacity: 0.85;
+}
+
+/* --- MenuButton (toolbar actions) --- */
+[data-ui="MenuButton"] {
+  font-size: 14px !important;
+  color: var(--sd-text-dim) !important;
+}
+
+[data-ui="MenuButton"]:hover {
+  color: var(--sd-text) !important;
+}
+
+/* --- Camps de data i select --- */
+[data-ui="Select"] select {
+  background: var(--sd-bg-surface) !important;
+}
+
+/* --- Animacions subtils al carregar panells --- */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+[data-testid="desk-tool-list-pane"] {
+  animation: fadeSlideIn 250ms ease-out;
+}
+
+/* --- Selection color --- */
+::selection {
+  background: var(--sd-gold-glow);
+  color: var(--sd-text);
 }

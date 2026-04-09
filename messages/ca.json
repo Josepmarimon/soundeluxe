@@ -20,7 +20,9 @@
     "login": "Accedir",
     "register": "Registrar-se",
     "profile": "Perfil",
-    "logout": "Sortir"
+    "logout": "Sortir",
+    "scanner": "Escàner QR",
+    "attendance": "Assistència"
   },
   "hero": {
     "title": "Redescobrix la música com mai l'havies sentit",
@@ -380,5 +382,43 @@
     "totalBookings": "reserves",
     "places": "places",
     "noBookings": "No hi ha reserves per a aquesta sessió"
+  },
+  "scanner": {
+    "title": "Escàner d'entrada",
+    "hint": "Apunta la càmera al codi QR de l'entrada",
+    "confirmEntry": "Confirmar entrada",
+    "places": "places",
+    "album": "Àlbum",
+    "artist": "Artista",
+    "venue": "Lloc",
+    "entryConfirmed": "Entrada confirmada",
+    "alreadyCheckedIn": "Ja registrat",
+    "bookingNotFound": "Reserva no trobada",
+    "invalidBooking": "Reserva no vàlida",
+    "errorGeneric": "Error al processar",
+    "cameraError": "No s'ha pogut accedir a la càmera",
+    "scanNext": "Escanejar següent",
+    "tryAgain": "Tornar a escanejar",
+    "cancel": "Cancel·lar"
+  },
+  "ticket": {
+    "subtitle": "Experiències audiòfiles d'alta fidelitat",
+    "simplifiedInvoice": "Factura simplificada",
+    "backToProfile": "Tornar al perfil",
+    "downloadPdf": "Descarregar PDF",
+    "generating": "Generant...",
+    "issueDate": "Data d'emissió",
+    "reference": "Referència",
+    "dateTime": "Data i hora",
+    "venue": "Lloc",
+    "attendee": "Assistent",
+    "places": "Places",
+    "concept": "Concepte",
+    "amount": "Import",
+    "sessionEntry": "Entrada sessió d'escolta ({places, plural, one {1 plaça} other {# places}})",
+    "vatLine": "IVA ({rate}%)",
+    "total": "Total",
+    "entryQr": "Codi QR d'entrada",
+    "entryQrNote": "Mostra aquest codi a l'entrada de la sessió per registrar la teva assistència"
   }
 }

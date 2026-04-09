@@ -5,100 +5,110 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title('Sound Deluxe')
     .items([
-      // === CONFIGURACIÓ ===
+      // === CONTINGUT PRINCIPAL ===
       S.listItem()
-        .title('Configuració del lloc')
-        .icon(() => '⚙️')
-        .child(
-          S.document()
-            .schemaType('homePage')
-            .documentId('homePage')
-            .title('Configuració general')
-        ),
-
-      S.listItem()
-        .title('Footer')
-        .icon(() => '📋')
-        .child(
-          S.document()
-            .schemaType('footerContent')
-            .documentId('footerContent')
-            .title('Contingut del Footer')
-        ),
-
-      S.listItem()
-        .title('Pàgines Legals')
-        .icon(() => '📜')
+        .title('Contingut')
+        .icon(() => '🎶')
         .child(
           S.list()
-            .title('Pàgines Legals')
+            .title('Contingut')
             .items([
               S.listItem()
-                .title('Política de Privacitat')
-                .icon(() => '🔒')
+                .title('Sessions')
+                .icon(() => '📅')
                 .child(
-                  S.document()
-                    .schemaType('legalPage')
-                    .documentId('legalPage-privacy')
-                    .title('Política de Privacitat')
+                  S.documentTypeList('session')
+                    .title('Sessions d\'escolta')
+                    .defaultOrdering([{field: 'date', direction: 'desc'}])
                 ),
               S.listItem()
-                .title('Termes i Condicions')
-                .icon(() => '📄')
+                .title('Àlbums')
+                .icon(() => '🎵')
                 .child(
-                  S.document()
-                    .schemaType('legalPage')
-                    .documentId('legalPage-terms')
-                    .title('Termes i Condicions')
+                  S.documentTypeList('album')
+                    .title('Col·lecció d\'àlbums')
                 ),
               S.listItem()
-                .title('Política de Cookies')
-                .icon(() => '🍪')
+                .title('Tipus de sessió')
+                .icon(() => '🎭')
                 .child(
-                  S.document()
-                    .schemaType('legalPage')
-                    .documentId('legalPage-cookies')
-                    .title('Política de Cookies')
+                  S.documentTypeList('sessionType')
+                    .title('Tipus de sessions')
+                ),
+              S.listItem()
+                .title('Sales Hi-Fi')
+                .icon(() => '🏠')
+                .child(
+                  S.documentTypeList('sala')
+                    .title('Sales d\'escolta')
                 ),
             ])
         ),
 
       S.divider(),
 
-      // === CONTINGUT PRINCIPAL ===
+      // === CONFIGURACIÓ ===
       S.listItem()
-        .title('Sessions')
-        .icon(() => '📅')
+        .title('Configuració')
+        .icon(() => '⚙️')
         .child(
-          S.documentTypeList('session')
-            .title('Sessions d\'escolta')
-            .defaultOrdering([{field: 'date', direction: 'desc'}])
-        ),
-
-      S.listItem()
-        .title('Àlbums')
-        .icon(() => '🎵')
-        .child(
-          S.documentTypeList('album')
-            .title('Col·lecció d\'àlbums')
-        ),
-
-      S.divider(),
-
-      // === CONFIGURACIÓ SECUNDÀRIA ===
-      S.listItem()
-        .title('Sales Hi-Fi')
-        .icon(() => '🏠')
-        .child(
-          S.documentTypeList('sala')
-            .title('Sales d\'escolta')
-        ),
-
-      S.listItem()
-        .title('Tipus de sessió')
-        .icon(() => '🎭')
-        .child(
-          S.documentTypeList('sessionType')
-            .title('Tipus de sessions')
+          S.list()
+            .title('Configuració')
+            .items([
+              S.listItem()
+                .title('Pàgina principal')
+                .icon(() => '🏠')
+                .child(
+                  S.document()
+                    .schemaType('homePage')
+                    .documentId('homePage')
+                    .title('Configuració general')
+                ),
+              S.listItem()
+                .title('Footer')
+                .icon(() => '📋')
+                .child(
+                  S.document()
+                    .schemaType('footerContent')
+                    .documentId('footerContent')
+                    .title('Contingut del Footer')
+                ),
+              S.listItem()
+                .title('Pàgines Legals')
+                .icon(() => '📜')
+                .child(
+                  S.list()
+                    .title('Pàgines Legals')
+                    .items([
+                      S.listItem()
+                        .title('Política de Privacitat')
+                        .icon(() => '🔒')
+                        .child(
+                          S.document()
+                            .schemaType('legalPage')
+                            .documentId('legalPage-privacy')
+                            .title('Política de Privacitat')
+                        ),
+                      S.listItem()
+                        .title('Termes i Condicions')
+                        .icon(() => '📄')
+                        .child(
+                          S.document()
+                            .schemaType('legalPage')
+                            .documentId('legalPage-terms')
+                            .title('Termes i Condicions')
+                        ),
+                      S.listItem()
+                        .title('Política de Cookies')
+                        .icon(() => '🍪')
+                        .child(
+                          S.document()
+                            .schemaType('legalPage')
+                            .documentId('legalPage-cookies')
+                            .title('Política de Cookies')
+                        ),
+                    ])
+                ),
+            ])
         ),
     ])

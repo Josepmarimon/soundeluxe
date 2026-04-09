@@ -20,7 +20,9 @@
     "login": "Acceder",
     "register": "Registrarse",
     "profile": "Perfil",
-    "logout": "Salir"
+    "logout": "Salir",
+    "scanner": "Escáner QR",
+    "attendance": "Asistencia"
   },
   "hero": {
     "title": "Redescubre la música como nunca la habías escuchado",
@@ -380,5 +382,43 @@
     "totalBookings": "reservas",
     "places": "plazas",
     "noBookings": "No hay reservas para esta sesión"
+  },
+  "scanner": {
+    "title": "Escáner de entrada",
+    "hint": "Apunta la cámara al código QR de la entrada",
+    "confirmEntry": "Confirmar entrada",
+    "places": "plazas",
+    "album": "Álbum",
+    "artist": "Artista",
+    "venue": "Lugar",
+    "entryConfirmed": "Entrada confirmada",
+    "alreadyCheckedIn": "Ya registrado",
+    "bookingNotFound": "Reserva no encontrada",
+    "invalidBooking": "Reserva no válida",
+    "errorGeneric": "Error al procesar",
+    "cameraError": "No se pudo acceder a la cámara",
+    "scanNext": "Escanear siguiente",
+    "tryAgain": "Volver a escanear",
+    "cancel": "Cancelar"
+  },
+  "ticket": {
+    "subtitle": "Experiencias audiófilas de alta fidelidad",
+    "simplifiedInvoice": "Factura simplificada",
+    "backToProfile": "Volver al perfil",
+    "downloadPdf": "Descargar PDF",
+    "generating": "Generando...",
+    "issueDate": "Fecha de emisión",
+    "reference": "Referencia",
+    "dateTime": "Fecha y hora",
+    "venue": "Lugar",
+    "attendee": "Asistente",
+    "places": "Plazas",
+    "concept": "Concepto",
+    "amount": "Importe",
+    "sessionEntry": "Entrada sesión de escucha ({places, plural, one {1 plaza} other {# plazas}})",
+    "vatLine": "IVA ({rate}%)",
+    "total": "Total",
+    "entryQr": "Código QR de entrada",
+    "entryQrNote": "Muestra este código en la entrada de la sesión para registrar tu asistencia"
   }
 }
