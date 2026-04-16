@@ -252,6 +252,20 @@ export default function TicketView({ locale, ticket }: TicketViewProps) {
 }
 
 /**
+ * Convert any CSS color (including lab, oklch, oklab) to hex using canvas.
+ * Canvas fillStyle always returns colors in #rrggbb or rgba format.
+ */
+let _colorCtx: CanvasRenderingContext2D | null = null
+function colorToHex(color: string): string {
+  if (!_colorCtx) {
+    _colorCtx = document.createElement('canvas').getContext('2d')!
+  }
+  _colorCtx.fillStyle = '#000000' // reset
+  _colorCtx.fillStyle = color
+  return _colorCtx.fillStyle
+}
+
+/**
  * Apply print-friendly styles for PDF generation.
  * The ticket is already white-background, so only minor adjustments are needed.
  */
@@ -260,6 +274,16 @@ function applyPrintStyles(el: HTMLElement) {
   el.style.transform = 'none'
   el.style.transition = 'none'
   el.style.animation = 'none'
+
+  // Convert all colors to hex — html2canvas can't parse lab(), oklch(), etc.
+  const computed = window.getComputedStyle(el)
+  const colorProps = ['color', 'backgroundColor', 'borderColor', 'borderTopColor', 'borderBottomColor', 'borderLeftColor', 'borderRightColor'] as const
+  for (const prop of colorProps) {
+    const val = computed[prop]
+    if (val && val !== 'transparent' && val !== 'rgba(0, 0, 0, 0)') {
+      el.style[prop as any] = colorToHex(val)
+    }
+  }
 
   // Remove rounded corners on main container for cleaner A4
   if (el.classList.contains('rounded-2xl') && el.parentElement?.id === 'ticket-content') {
