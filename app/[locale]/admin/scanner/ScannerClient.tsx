@@ -168,15 +168,21 @@ export default function ScannerClient({ locale }: { locale: string }) {
 
     const initScanner = async () => {
       try {
-        const { Html5Qrcode } = await import('html5-qrcode')
-        html5QrCode = new Html5Qrcode('qr-reader')
+        const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode')
+        html5QrCode = new Html5Qrcode('qr-reader', {
+          formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+          verbose: false,
+        })
         scannerRef.current = html5QrCode
 
         await html5QrCode.start(
           { facingMode: 'environment' },
           {
-            fps: 10,
-            qrbox: { width: 260, height: 260 },
+            fps: 20,
+            qrbox: (viewfinderWidth: number, viewfinderHeight: number) => {
+              const size = Math.min(viewfinderWidth, viewfinderHeight) * 0.75
+              return { width: size, height: size }
+            },
             aspectRatio: 1,
             disableFlip: false,
           },
