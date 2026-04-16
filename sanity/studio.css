@@ -19,7 +19,49 @@
   --sd-transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* --- Global --- */
+/* --- Global: forçar fons fosc a tot el Studio --- */
+html, body {
+  background: var(--sd-bg-deep) !important;
+  color: var(--sd-text) !important;
+}
+
+/* Contenidor principal i cards — tot fosc amb text clar */
+[data-ui="Card"] {
+  background-color: var(--sd-bg-deep) !important;
+  color: var(--sd-text) !important;
+  border-color: var(--sd-border-subtle) !important;
+}
+
+/* Items del sidebar (PreviewCard) — fons fosc amb text llegible */
+[data-ui="PreviewCard"] {
+  background-color: var(--sd-bg-elevated) !important;
+  color: var(--sd-text-dim) !important;
+}
+
+[data-ui="PreviewCard"]:hover {
+  background-color: var(--sd-border) !important;
+  color: var(--sd-text) !important;
+}
+
+[data-ui="PreviewCard"] span,
+[data-ui="PreviewCard"] div {
+  color: inherit !important;
+}
+
+/* Item seleccionat del sidebar */
+[role="option"][aria-selected="true"] [data-ui="PreviewCard"],
+[role="option"][data-selected="true"] [data-ui="PreviewCard"] {
+  background: linear-gradient(135deg, var(--sd-gold), var(--sd-gold-soft)) !important;
+  color: #0A0A0A !important;
+}
+
+[role="option"][aria-selected="true"] [data-ui="PreviewCard"] span,
+[role="option"][aria-selected="true"] [data-ui="PreviewCard"] div,
+[role="option"][data-selected="true"] [data-ui="PreviewCard"] span,
+[role="option"][data-selected="true"] [data-ui="PreviewCard"] div {
+  color: #0A0A0A !important;
+}
+
 * {
   transition: background-color var(--sd-transition),
               border-color var(--sd-transition),
@@ -51,44 +93,78 @@ h1, h2, h3, [data-ui="Heading"] {
   backdrop-filter: blur(12px);
 }
 
-/* --- Sidebar / Panell de llista --- */
-[data-testid="desk-tool-list-pane"] {
+/* --- Sidebar / Panells de llista --- */
+
+/* Contenidors de panells de navegació */
+[role="listbox"],
+[role="list"] {
   background: var(--sd-bg-surface) !important;
 }
 
-/* Elements del menú lateral */
+/* Items del sidebar (option > link > text) */
+[role="listbox"] [role="option"],
+[role="listbox"] [role="option"] a {
+  color: var(--sd-text-dim) !important;
+  font-size: 14px !important;
+  border-radius: 8px !important;
+}
+
+[role="listbox"] [role="option"]:hover,
+[role="listbox"] [role="option"]:hover a {
+  background: var(--sd-gold-muted) !important;
+  color: var(--sd-text) !important;
+}
+
+/* Item seleccionat */
+[role="listbox"] [role="option"][aria-selected="true"],
+[role="listbox"] [role="option"][aria-selected="true"] a,
+[role="listbox"] [role="option"][data-selected="true"],
+[role="listbox"] [role="option"][data-selected="true"] a {
+  background: linear-gradient(135deg, var(--sd-gold), var(--sd-gold-soft)) !important;
+  color: #0A0A0A !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+}
+
+/* Fallback per botons del sidebar (estructura alternativa) */
 [data-testid="desk-tool-list-pane"] button,
 [data-ui="Tree"] button {
-  font-size: 14px !important;
-  padding: 10px 14px !important;
-  min-height: 42px !important;
   color: var(--sd-text-dim) !important;
-  border-radius: 8px !important;
-  margin: 2px 8px !important;
-  border: 1px solid transparent !important;
 }
 
 [data-testid="desk-tool-list-pane"] button:hover,
 [data-ui="Tree"] button:hover {
   background: var(--sd-gold-muted) !important;
   color: var(--sd-text) !important;
-  border-color: rgba(201, 168, 76, 0.08) !important;
 }
 
-/* Element seleccionat */
-[data-testid="desk-tool-list-pane"] button[data-selected="true"],
-[data-ui="Tree"] button[data-selected="true"],
-[aria-selected="true"] {
-  background: var(--sd-gold-muted) !important;
-  color: var(--sd-gold-soft) !important;
-  border-left: 3px solid var(--sd-gold) !important;
-  font-weight: 500 !important;
+/* Títol de secció del sidebar */
+[role="listbox"] + div,
+[role="listbox"] ~ div {
+  color: var(--sd-text) !important;
 }
 
-/* --- Targetes / Panells --- */
-[data-ui="Card"] {
-  border: 1px solid var(--sd-border-subtle) !important;
-  border-radius: var(--sd-radius) !important;
+/* --- Panell del document --- */
+[data-testid="document-panel-scroller"],
+[data-testid="form-view"],
+[data-ui="PresenceOverlay"] {
+  background: var(--sd-bg-deep) !important;
+  color: var(--sd-text) !important;
+}
+
+/* Fieldsets i objectes niuats */
+fieldset,
+[data-testid="fieldset"],
+[data-testid="object-input"],
+[data-ui="Stack"] {
+  color: var(--sd-text) !important;
+}
+
+/* Descripcions dels camps */
+[data-ui="Text"][data-muted],
+[data-ui="TextSkeleton"],
+[data-testid="field-description"] {
+  color: var(--sd-text-dim) !important;
 }
 
 /* --- Camps de formulari --- */
@@ -97,7 +173,9 @@ textarea,
 select,
 [data-ui="TextInput"],
 [data-ui="TextArea"],
-[data-ui="Select"] {
+[data-ui="Select"],
+[data-ui="TextInput"] input,
+[data-ui="NumberInput"] input {
   font-size: 15px !important;
   padding: 10px 14px !important;
   border: 1px solid var(--sd-border) !important;
@@ -105,6 +183,12 @@ select,
   min-height: 42px !important;
   background: var(--sd-bg-surface) !important;
   color: var(--sd-text) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--sd-text-dim) !important;
+  opacity: 0.6 !important;
 }
 
 input:focus,
@@ -119,7 +203,8 @@ select:focus,
 
 /* Etiquetes */
 label,
-[data-ui="Label"] {
+[data-ui="Label"],
+legend {
   font-size: 11px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
@@ -128,13 +213,21 @@ label,
   margin-bottom: 6px !important;
 }
 
+/* Títols d'objectes niuats */
+fieldset legend,
+[data-testid="fieldset"] legend,
+[data-testid="object-input"] legend {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--sd-gold-soft) !important;
+  letter-spacing: 0.04em !important;
+}
+
 /* --- Botons --- */
 button,
 [data-ui="Button"] {
   font-size: 14px !important;
   font-weight: 500 !important;
-  padding: 10px 18px !important;
-  min-height: 40px !important;
   border-radius: 8px !important;
   letter-spacing: 0.01em !important;
 }
@@ -174,7 +267,6 @@ button[data-tone="primary"]:hover {
 /* --- Capçalera del document --- */
 [data-testid="document-panel-header"] {
   border-bottom: 1px solid var(--sd-border-subtle) !important;
-  padding: 14px 16px !important;
 }
 
 [data-testid="pane-header"] {
@@ -193,7 +285,6 @@ hr,
 /* --- Llista de documents --- */
 [data-ui="ListView"] button,
 [data-testid="document-list-item"] {
-  padding: 12px 16px !important;
   border-bottom: 1px solid var(--sd-border-subtle) !important;
 }
 
@@ -206,9 +297,7 @@ hr,
 [data-ui="Alert"],
 [data-ui="Toast"] {
   font-size: 14px !important;
-  padding: 14px 16px !important;
   border-radius: var(--sd-radius) !important;
-  border-width: 1px !important;
 }
 
 /* --- Scrollbar elegant --- */
@@ -233,7 +322,6 @@ hr,
 /* --- Tooltips --- */
 [data-ui="Tooltip"] {
   font-size: 13px !important;
-  padding: 8px 12px !important;
   border-radius: 6px !important;
   backdrop-filter: blur(8px);
 }
@@ -261,7 +349,6 @@ svg[data-sanity-icon] {
 
 /* --- MenuButton (toolbar actions) --- */
 [data-ui="MenuButton"] {
-  font-size: 14px !important;
   color: var(--sd-text-dim) !important;
 }
 
@@ -272,22 +359,6 @@ svg[data-sanity-icon] {
 /* --- Camps de data i select --- */
 [data-ui="Select"] select {
   background: var(--sd-bg-surface) !important;
-}
-
-/* --- Animacions subtils al carregar panells --- */
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-[data-testid="desk-tool-list-pane"] {
-  animation: fadeSlideIn 250ms ease-out;
 }
 
 /* --- Selection color --- */
