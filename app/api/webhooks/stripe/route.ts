@@ -47,21 +47,7 @@ export async function POST(request: Request) {
       ? checkoutSession.payment_intent
       : checkoutSession.payment_intent?.id
 
-    // Determine payment method (CARD or BIZUM)
-    let paymentMethod: 'CARD' | 'BIZUM' = 'CARD'
-    if (paymentIntentId) {
-      try {
-        const pi = await stripe.paymentIntents.retrieve(paymentIntentId, {
-          expand: ['payment_method'],
-        })
-        const pm = pi.payment_method
-        if (pm && typeof pm !== 'string' && (pm.type as string) === 'bizum') {
-          paymentMethod = 'BIZUM'
-        }
-      } catch {
-        // Default to CARD if we can't determine
-      }
-    }
+    const paymentMethod: 'CARD' | 'BIZUM' = 'CARD'
 
     // Fetch session data from Sanity for validation and email
     const sessionData: Session | null = await client.fetch(sessionByIdQuery, { id: sessionId })

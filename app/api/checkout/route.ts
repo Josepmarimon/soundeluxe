@@ -83,12 +83,9 @@ export async function POST(request: Request) {
     const vatLabel = locale === 'ca' ? 'IVA inclòs' : locale === 'es' ? 'IVA incluido' : 'VAT included'
 
     // Create Stripe Checkout Session
-    // Note: Bizum must be enabled in your Stripe Dashboard.
-    // Using payment_method_types with 'bizum' cast because Stripe SDK types
-    // may not include it yet, but the API supports it for Spanish accounts.
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
-      payment_method_types: ['card', 'bizum'] as any,
+      payment_method_types: ['card'],
       customer_email: userEmail,
       locale: locale === 'ca' ? 'auto' : locale as 'es' | 'en',
       line_items: [
