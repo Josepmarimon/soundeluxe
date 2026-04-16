@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
 import { generateQRDataURL } from '@/lib/qr'
-import { COMPANY, formatInvoiceNumber, calculateTaxBreakdown } from '@/lib/company'
+import { getCompanyData, formatInvoiceNumber, calculateTaxBreakdown } from '@/lib/company'
 import type { Session, Locale } from '@/lib/sanity/types'
 import TicketView from './TicketView'
 
@@ -63,9 +63,10 @@ export default async function TicketPage({ params }: TicketPageProps) {
   })
 
   const totalAmount = Number(reserva.totalAmount)
-  const taxBreakdown = calculateTaxBreakdown(totalAmount)
+  const company = await getCompanyData()
+  const taxBreakdown = await calculateTaxBreakdown(totalAmount)
   const invoiceNumber = reserva.invoiceNumber
-    ? formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
+    ? await formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
     : reserva.id.slice(0, 12).toUpperCase()
 
   const issueDate = reserva.createdAt.toLocaleDateString(dateLocaleMap[locale], {
@@ -94,7 +95,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
         vatRate: taxBreakdown.vatRate,
         vatAmount: taxBreakdown.vatAmount.toFixed(2),
         qrDataUrl,
-        company: COMPANY,
+        company,
       }}
     />
   )

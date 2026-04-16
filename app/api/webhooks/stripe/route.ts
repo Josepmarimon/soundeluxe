@@ -138,7 +138,7 @@ export async function POST(request: Request) {
               qrDataUrl,
               bookingId: reserva.id,
               invoiceNumber: reserva.invoiceNumber
-                ? formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
+                ? await formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
                 : undefined,
             }),
           })

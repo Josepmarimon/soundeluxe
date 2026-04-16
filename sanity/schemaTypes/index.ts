@@ -18,6 +18,7 @@ import faqPage from './faqPage'
 import siteSettings from './siteSettings'
 import footerContent from './footerContent'
 import legalPage from './legalPage'
+import billingConfig from './billingConfig'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -39,5 +40,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     siteSettings,
     footerContent,
     legalPage,
+    billingConfig,
   ],
 }

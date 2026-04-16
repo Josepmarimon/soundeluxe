@@ -157,7 +157,7 @@ export async function POST(
             refundAmount: refundAmount.toFixed(2) + '€',
             bookingId: reserva.id,
             invoiceNumber: reserva.invoiceNumber
-              ? formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
+              ? await formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
               : undefined,
           }),
         })

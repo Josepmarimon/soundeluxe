@@ -74,6 +74,15 @@ export const structure: StructureResolver = (S) =>
                     .title('Contingut del Footer')
                 ),
               S.listItem()
+                .title('Facturació')
+                .icon(() => '🧾')
+                .child(
+                  S.document()
+                    .schemaType('billingConfig')
+                    .documentId('billingConfig')
+                    .title('Dades de facturació')
+                ),
+              S.listItem()
                 .title('Pàgines Legals')
                 .icon(() => '📜')
                 .child(
