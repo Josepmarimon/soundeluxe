@@ -21,7 +21,11 @@ interface Release {
   coverUrl: string
 }
 
-export default function AlbumSuggestionForm() {
+interface AlbumSuggestionFormProps {
+  onActiveChange?: (active: boolean) => void
+}
+
+export default function AlbumSuggestionForm({ onActiveChange }: AlbumSuggestionFormProps = {}) {
   const t = useTranslations()
   const { data: session, status } = useSession()
 
@@ -41,11 +45,31 @@ export default function AlbumSuggestionForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [isArtistInputFocused, setIsArtistInputFocused] = useState(false)
+
+  // Notify parent about activity (for layout expansion)
+  const isActive =
+    isArtistInputFocused ||
+    artistQuery.length > 0 ||
+    selectedArtist !== null ||
+    selectedRelease !== null
+
+  useEffect(() => {
+    onActiveChange?.(isActive)
+  }, [isActive, onActiveChange])
 
   // Refs
   const artistInputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const submitButtonRef = useRef<HTMLButtonElement>(null)
+
+  // Scroll submit button into view when a release is selected
+  useEffect(() => {
+    if (selectedRelease && submitButtonRef.current) {
+      submitButtonRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [selectedRelease])
 
   // Debounced artist search
   const searchArtists = useCallback(async (query: string) => {
@@ -243,10 +267,12 @@ export default function AlbumSuggestionForm() {
               setShowArtistDropdown(true)
             }}
             onFocus={() => {
+              setIsArtistInputFocused(true)
               if (artistQuery.length >= 2 && !selectedArtist) {
                 setShowArtistDropdown(true)
               }
             }}
+            onBlur={() => setIsArtistInputFocused(false)}
             placeholder={t('votes.suggestion.artistPlaceholder')}
             className="w-full px-4 py-3 bg-card-raised text-fg placeholder:text-fg-subtle rounded-xl border border-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
           />
@@ -321,7 +347,7 @@ export default function AlbumSuggestionForm() {
               {t('votes.suggestion.noAlbums')}
             </div>
           ) : (
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-4">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-3 gap-3">
               {releases.map((release) => (
                 <button
                   key={release.id}
@@ -389,6 +415,7 @@ export default function AlbumSuggestionForm() {
 
       {/* Submit button */}
       <button
+        ref={submitButtonRef}
         onClick={handleSubmit}
         disabled={!selectedArtist || !selectedRelease || isSubmitting}
         className={`w-full py-3 px-6 rounded-xl font-medium transition-all ${

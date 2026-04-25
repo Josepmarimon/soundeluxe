@@ -40,23 +40,23 @@ interface Booking {
     _id: string
     date: string
     price: number
-    album: {
+    album?: {
       _id: string
       title: string
       artist: string
       coverImage: any
     }
-    sala: {
+    sala?: {
       _id: string
       name: any
       address: any
     }
-    sessionType: {
+    sessionType?: {
       _id: string
       key: string
       name: any
     }
-  }
+  } | null
 }
 
 interface Suggestion {
@@ -315,32 +315,36 @@ export default function ProfilePage() {
                     <div className="flex flex-col md:flex-row gap-6 p-6">
                       {/* Album Cover */}
                       <div className="flex-shrink-0">
-                        <div className="relative w-32 h-32 rounded-lg overflow-hidden">
-                          <Image
-                            src={urlForImage(booking.session.album.coverImage)?.width(128).height(128).url() || ''}
-                            alt={booking.session.album.title}
-                            fill
-                            className="object-cover"
-                          />
+                        <div className="relative w-32 h-32 rounded-lg overflow-hidden bg-surface-raised">
+                          {booking.session?.album?.coverImage && (
+                            <Image
+                              src={urlForImage(booking.session.album.coverImage)?.width(128).height(128).url() || ''}
+                              alt={booking.session.album.title}
+                              fill
+                              className="object-cover"
+                            />
+                          )}
                         </div>
                       </div>
 
                       {/* Booking Details */}
                       <div className="flex-grow">
                         <h3 className="text-xl font-bold text-fg mb-1">
-                          {booking.session.album.title}
+                          {booking.session?.album?.title ?? '—'}
                         </h3>
-                        <p className="text-fg-muted mb-3">{booking.session.album.artist}</p>
+                        <p className="text-fg-muted mb-3">{booking.session?.album?.artist ?? ''}</p>
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                           <div>
                             <span className="text-fg-subtle">{t('sessions.date')}</span>
                             <p className="text-fg font-medium">
-                              {new Date(booking.session.date).toLocaleDateString(locale, {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                              })}
+                              {booking.session?.date
+                                ? new Date(booking.session.date).toLocaleDateString(locale, {
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric',
+                                  })
+                                : '—'}
                             </p>
                           </div>
                           <div>
@@ -364,7 +368,7 @@ export default function ProfilePage() {
                         </div>
 
                         {/* QR Code button for confirmed future bookings */}
-                        {booking.status === 'CONFIRMED' && new Date(booking.session.date) > new Date() && (
+                        {booking.status === 'CONFIRMED' && booking.session?.date && new Date(booking.session.date) > new Date() && (
                           <BookingQRButton bookingId={booking.id} locale={locale} />
                         )}
                       </div>

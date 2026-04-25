@@ -78,7 +78,7 @@ export async function GET() {
         attendedAt: booking.attendedAt,
         cancelledAt: booking.cancelledAt,
         createdAt: booking.createdAt,
-        session: sessionData,
+        session: sessionData ?? null,
       }
     })
 

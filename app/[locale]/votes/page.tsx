@@ -1,9 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 import { client } from '@/lib/sanity/client'
 import { votableAlbumsQuery, genresQuery, artistsQuery } from '@/lib/sanity/queries'
-import AlbumCatalog from '@/components/AlbumCatalog'
 import VotesRanking from '@/components/VotesRanking'
-import AlbumSuggestionForm from '@/components/AlbumSuggestionForm'
+import VotesCatalogWithSuggestion from '@/components/VotesCatalogWithSuggestion'
 import type { Album } from '@/lib/sanity/types'
 
 export default async function VotesPage() {
@@ -37,18 +36,8 @@ export default async function VotesPage() {
           <VotesRanking />
         </div>
 
-        {/* Catalog with filters - showing vote buttons, hiding title search */}
-        <div className="mb-16">
-          <AlbumCatalog albums={albums} genres={genres} artists={artists} showVoteButton={true} hideTitleSearch={true} />
-        </div>
-
-        {/* Album Suggestion Form - at the bottom with differentiated background */}
-        <div className="relative -mx-4 px-4 py-12 md:py-16 border-t border-b border-primary/20">
-          <div className="absolute inset-0 bg-[url('/vinyl-pattern.svg')] opacity-5"></div>
-          <div className="relative max-w-3xl mx-auto">
-            <AlbumSuggestionForm />
-          </div>
-        </div>
+        {/* Catalog + Suggestion Form: form expands to 2x width when active */}
+        <VotesCatalogWithSuggestion albums={albums} genres={genres} artists={artists} />
       </div>
     </div>
   )
