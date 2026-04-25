@@ -113,9 +113,9 @@ export default function VotesRanking() {
     }
   }
 
-  // Split ranking into top 3 and rest
-  const topThree = ranking.slice(0, 3)
-  const restOfRanking = ranking.slice(3)
+  // Split ranking into top 5 and rest
+  const topFive = ranking.slice(0, 5)
+  const restOfRanking = ranking.slice(5)
 
   return (
     <div className="bg-bg/80 backdrop-blur-sm rounded-2xl p-6 border border-primary/20">
@@ -126,9 +126,9 @@ export default function VotesRanking() {
         {t('votes.rankingTitle')}
       </h2>
 
-      {/* Top 3 - Highlighted in a row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        {topThree.map((item) => {
+      {/* Top 5 - Highlighted in a row */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6">
+        {topFive.map((item) => {
           const imageUrl = urlForImage(item.album.coverImage)?.width(200).height(200).url()
           const medal = getMedalEmoji(item.position)
 
@@ -144,7 +144,7 @@ export default function VotesRanking() {
                   ${getMedalColor(item.position)} text-fg shadow-lg z-10
                 `}
               >
-                {medal}
+                {medal ?? item.position}
               </div>
 
               {/* Album Cover */}
