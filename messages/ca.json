@@ -116,6 +116,22 @@
       "soldOut": "Ho sentim, no queden prou places disponibles",
       "generic": "Hi ha hagut un error. Torna-ho a intentar.",
       "notLoggedIn": "Has d'iniciar sessió per fer una reserva"
+    },
+    "gift": {
+      "cta": "Regalar",
+      "title": "Regalar entrada",
+      "subtitle": "Compra l'entrada com a regal. Després del pagament rebràs la confirmació i podràs fer-la arribar al destinatari.",
+      "recipientName": "Nom del destinatari",
+      "recipientNamePlaceholder": "Ex. Anna Soler",
+      "recipientEmail": "Email del destinatari",
+      "recipientEmailPlaceholder": "ex. anna@exemple.com",
+      "message": "Missatge (opcional)",
+      "messagePlaceholder": "Escriu un missatge per al destinatari…",
+      "submit": "Procedir al pagament",
+      "errors": {
+        "missingFields": "Cal omplir el nom i l'email del destinatari.",
+        "invalidEmail": "L'email del destinatari no és vàlid."
+      }
     }
   },
   "album": {

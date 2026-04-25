@@ -23,7 +23,15 @@ export async function POST(request: Request) {
     const userId = (authSession.user as any).id
     const userEmail = authSession.user.email!
     const body = await request.json()
-    const { sessionId, numPlaces, locale = 'ca' } = body
+    const {
+      sessionId,
+      numPlaces,
+      locale = 'ca',
+      isGift = false,
+      recipientName,
+      recipientEmail,
+      giftMessage,
+    } = body
 
     if (!sessionId || !numPlaces) {
       return NextResponse.json(
@@ -37,6 +45,31 @@ export async function POST(request: Request) {
         { error: `Number of places must be between 1 and ${MAX_PLACES_PER_BOOKING}` },
         { status: 400 }
       )
+    }
+
+    let normalizedRecipientName: string | undefined
+    let normalizedRecipientEmail: string | undefined
+    let normalizedGiftMessage: string | undefined
+
+    if (isGift) {
+      normalizedRecipientName = typeof recipientName === 'string' ? recipientName.trim() : ''
+      normalizedRecipientEmail = typeof recipientEmail === 'string' ? recipientEmail.trim() : ''
+      normalizedGiftMessage = typeof giftMessage === 'string' ? giftMessage.trim().slice(0, 300) : undefined
+
+      if (!normalizedRecipientName || !normalizedRecipientEmail) {
+        return NextResponse.json(
+          { error: 'Recipient name and email are required for a gift' },
+          { status: 400 }
+        )
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(normalizedRecipientEmail)) {
+        return NextResponse.json(
+          { error: 'Invalid recipient email' },
+          { status: 400 }
+        )
+      }
     }
 
     // Fetch session from Sanity
@@ -81,6 +114,27 @@ export async function POST(request: Request) {
     })
 
     const vatLabel = locale === 'ca' ? 'IVA inclòs' : locale === 'es' ? 'IVA incluido' : 'VAT included'
+    const giftLabel = locale === 'ca' ? 'Regal' : locale === 'es' ? 'Regalo' : 'Gift'
+
+    const productName = isGift
+      ? `${giftLabel} · ${session.album.title} — ${session.album.artist}`
+      : `${session.album.title} — ${session.album.artist}`
+
+    const metadata: Record<string, string> = {
+      userId,
+      sessionId: session._id,
+      numPlaces: String(numPlaces),
+      locale,
+      totalAmount: String(totalAmount),
+      isGift: isGift ? 'true' : 'false',
+    }
+    if (isGift) {
+      metadata.recipientName = normalizedRecipientName!
+      metadata.recipientEmail = normalizedRecipientEmail!
+      if (normalizedGiftMessage) {
+        metadata.giftMessage = normalizedGiftMessage
+      }
+    }
 
     // Create Stripe Checkout Session
     const checkoutSession = await stripe.checkout.sessions.create({
@@ -93,7 +147,7 @@ export async function POST(request: Request) {
           price_data: {
             currency: 'eur',
             product_data: {
-              name: `${session.album.title} — ${session.album.artist}`,
+              name: productName,
               description: `${dateStr} · ${vatLabel}`,
             },
             unit_amount: Math.round(session.price * 100), // cents
@@ -101,13 +155,7 @@ export async function POST(request: Request) {
           quantity: numPlaces,
         },
       ],
-      metadata: {
-        userId,
-        sessionId: session._id,
-        numPlaces: String(numPlaces),
-        locale,
-        totalAmount: String(totalAmount),
-      },
+      metadata,
       success_url: `${APP_URL}/${locale}/booking/confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${APP_URL}/${locale}/sessions/${session._id}`,
       expires_at: Math.floor(Date.now() / 1000) + 30 * 60, // 30 minutes

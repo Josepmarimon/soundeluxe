@@ -63,7 +63,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           {/* Calendar */}
           {sessions.length > 0 && (
             <div className="mb-12">
-              <SessionsCalendar sessions={sessions} />
+              <SessionsCalendar sessions={sessions} availability={availability} />
             </div>
           )}
 

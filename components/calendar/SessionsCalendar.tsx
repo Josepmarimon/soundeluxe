@@ -42,10 +42,11 @@ export interface CalendarSession {
 
 interface SessionsCalendarProps {
   sessions: CalendarSession[]
+  availability?: Record<string, number>
   title?: string
 }
 
-export default function SessionsCalendar({ sessions, title }: SessionsCalendarProps) {
+export default function SessionsCalendar({ sessions, availability, title }: SessionsCalendarProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
 
@@ -198,6 +199,7 @@ export default function SessionsCalendar({ sessions, title }: SessionsCalendarPr
             >
               <SessionHighlight
                 sessions={selectedSessions}
+                availability={availability}
                 isNextSession={isNextSession}
                 selectedDate={selectedDate}
               />

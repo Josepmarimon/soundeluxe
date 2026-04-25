@@ -116,6 +116,22 @@
       "soldOut": "Sorry, not enough spots available",
       "generic": "Something went wrong. Please try again.",
       "notLoggedIn": "You must log in to make a booking"
+    },
+    "gift": {
+      "cta": "Gift",
+      "title": "Gift this ticket",
+      "subtitle": "Buy this ticket as a gift. After payment you'll get the confirmation and can pass it on to the recipient.",
+      "recipientName": "Recipient name",
+      "recipientNamePlaceholder": "e.g. Anna Soler",
+      "recipientEmail": "Recipient email",
+      "recipientEmailPlaceholder": "e.g. anna@example.com",
+      "message": "Message (optional)",
+      "messagePlaceholder": "Write a message for the recipient…",
+      "submit": "Proceed to payment",
+      "errors": {
+        "missingFields": "Recipient name and email are required.",
+        "invalidEmail": "Recipient email is invalid."
+      }
     }
   },
   "album": {

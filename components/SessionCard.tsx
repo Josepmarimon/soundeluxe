@@ -1,9 +1,12 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import type { SessionListItem, Locale } from '@/lib/sanity/types'
 import AlbumCarousel from '@/components/AlbumCarousel'
-import PortableTextContent from '@/components/PortableTextContent'
+import GiftModal from '@/components/GiftModal'
 
 interface SessionCardProps {
   session: SessionListItem
@@ -17,7 +20,60 @@ interface SessionCardProps {
 export default function SessionCard({ session, availablePlaces, showAlbumSale = true, enableFlip = false, isFlipped = false, onFlip }: SessionCardProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
+  const { status } = useSession()
+  const router = useRouter()
   const isSoldOut = availablePlaces !== undefined && availablePlaces === 0
+
+  const [numPlaces, setNumPlaces] = useState(1)
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [giftOpen, setGiftOpen] = useState(false)
+
+  const maxPlaces = Math.min(4, availablePlaces ?? 4)
+  const total = session.price * numPlaces
+
+  useEffect(() => {
+    if (!isFlipped) {
+      setNumPlaces(1)
+      setCheckoutError(null)
+      setGiftOpen(false)
+    }
+  }, [isFlipped])
+
+  const handleCheckout = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (status !== 'authenticated') {
+      router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${session._id}`)
+      return
+    }
+    setCheckoutLoading(true)
+    setCheckoutError(null)
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: session._id, numPlaces, locale }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        if (res.status === 409) {
+          setCheckoutError(t('booking.errors.soldOut'))
+          return
+        }
+        if (res.status === 401) {
+          router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${session._id}`)
+          return
+        }
+        setCheckoutError(t('booking.errors.generic'))
+        return
+      }
+      window.location.href = data.url
+    } catch {
+      setCheckoutError(t('booking.errors.generic'))
+    } finally {
+      setCheckoutLoading(false)
+    }
+  }
 
   const date = new Date(session.date)
 
@@ -94,68 +150,117 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
 
             {/* Back Side */}
             <div className="session-card-back">
-              <div className="bg-primary rounded-lg shadow-md h-full p-3 md:p-4 flex flex-col">
-                <div className="flex-shrink-0">
-                  <h3 className="text-base md:text-lg font-bold text-black mb-1 md:mb-2">
+              <div
+                className="bg-primary rounded-lg shadow-md h-full p-3 md:p-4 flex flex-col"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex-shrink-0 mb-2 md:mb-3">
+                  <h3 className="text-sm md:text-base font-bold text-black leading-tight line-clamp-2">
                     {session.album.title}
                   </h3>
-                  <p className="text-sm md:text-base text-zinc-800 mb-0.5">
+                  <p className="text-xs md:text-sm text-zinc-800 line-clamp-1">
                     {session.album.artist}
                   </p>
-                  <p className="text-xs md:text-sm text-zinc-700 mb-2 md:mb-3">
-                    {session.album.year}
-                  </p>
                 </div>
 
-                {/* Album description with scroll */}
-                {session.album.description && session.album.description[locale] && (
-                  <div className="flex-1 overflow-y-auto mb-2 md:mb-3 text-[11px] md:text-xs prose prose-sm max-w-none [&_*]:text-black">
-                    <PortableTextContent value={session.album.description[locale]} />
+                <div className="flex-shrink-0 space-y-1 md:space-y-1.5 text-[10px] md:text-[11px] mb-3">
+                  <div className="flex items-start gap-1.5">
+                    <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-black hidden md:block">{formattedDateDesktop}</span>
+                    <span className="text-black md:hidden">{formattedDateMobile}</span>
                   </div>
-                )}
-
-                <div className="flex-shrink-0">
-                  <div className="space-y-1 md:space-y-1.5 text-[11px] md:text-xs mb-2 md:mb-3">
-                    <div className="flex items-start gap-1.5">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <span className="text-black hidden md:block">{formattedDateDesktop}</span>
-                      <span className="text-black md:hidden">{formattedDateMobile}</span>
-                    </div>
-
-                    <div className="flex items-start gap-1.5">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span className="text-black">{session.sala.name[locale]}</span>
-                    </div>
-
-                    <div className="flex items-start gap-1.5">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                      </svg>
-                      <span className="text-black">{session.sessionType.name[locale]}</span>
-                    </div>
+                  <div className="flex items-start gap-1.5">
+                    <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span className="text-black line-clamp-1">{session.sala.name[locale]}</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                    <span className="text-black line-clamp-1">{session.sessionType.name[locale]}</span>
                   </div>
                 </div>
 
-                <div className="flex flex-row items-center justify-between gap-2 mt-auto">
-                  <span className="text-xl md:text-2xl font-bold text-black">
-                    {session.price}€
-                  </span>
-                  <a
-                    href={`/${locale}/sessions/${session._id}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="bg-bg text-fg px-3 md:px-4 py-1.5 md:py-2 rounded-full font-semibold text-xs md:text-sm shadow-lg inline-block hover:bg-surface-raised transition-colors"
-                  >
-                    {t('sessions.book')}
-                  </a>
+                {/* Spacer pushes checkout block to the bottom */}
+                <div className="flex-1" />
+
+                <div className="flex-shrink-0 border-t border-black/20 pt-2 md:pt-3 space-y-2 md:space-y-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setNumPlaces(Math.max(1, numPlaces - 1)) }}
+                        disabled={numPlaces <= 1 || isSoldOut}
+                        aria-label="−"
+                        className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-black text-black flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-primary transition-colors text-sm md:text-base font-bold"
+                      >
+                        −
+                      </button>
+                      <span className="text-base md:text-lg font-black text-black w-5 md:w-6 text-center">{numPlaces}</span>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setNumPlaces(Math.min(maxPlaces, numPlaces + 1)) }}
+                        disabled={numPlaces >= maxPlaces || isSoldOut}
+                        aria-label="+"
+                        className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-black text-black flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-primary transition-colors text-sm md:text-base font-bold"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <span className="text-lg md:text-xl font-black text-black">
+                      {total.toFixed(0)}<span className="text-sm md:text-base font-bold">€</span>
+                    </span>
+                  </div>
+
+                  {checkoutError && (
+                    <p className="text-red-700 text-[10px] md:text-[11px]">{checkoutError}</p>
+                  )}
+
+                  {isSoldOut ? (
+                    <div className="w-full bg-card-muted text-fg py-1.5 md:py-2 rounded-full font-semibold text-xs md:text-sm text-center">
+                      {t('booking.soldOut')}
+                    </div>
+                  ) : (
+                    <div className="flex w-full bg-bg text-fg rounded-full shadow-lg overflow-hidden divide-x divide-fg/15">
+                      <button
+                        type="button"
+                        onClick={handleCheckout}
+                        disabled={checkoutLoading}
+                        className="flex-1 py-1.5 md:py-2 px-2 font-bold text-xs md:text-sm hover:bg-surface-raised transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {checkoutLoading ? t('booking.processing') : t('booking.bookNow')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setGiftOpen(true) }}
+                        disabled={checkoutLoading}
+                        className="py-1.5 md:py-2 px-3 md:px-4 font-bold text-xs md:text-sm hover:bg-surface-raised transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                        aria-label={t('booking.gift.cta')}
+                      >
+                        <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                        </svg>
+                        <span className="hidden sm:inline">{t('booking.gift.cta')}</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
+          <GiftModal
+            open={giftOpen}
+            onClose={() => setGiftOpen(false)}
+            sessionId={session._id}
+            numPlaces={numPlaces}
+            total={total}
+            locale={locale}
+          />
       </article>
     )
   }

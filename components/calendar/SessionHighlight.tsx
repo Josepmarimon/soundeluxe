@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { parseISO, differenceInDays, differenceInHours } from 'date-fns'
 import Image from 'next/image'
 import { urlForImage } from '@/lib/sanity/image'
 import type { Locale, MultilingualText } from '@/lib/sanity/types'
 import type { Image as SanityImage } from 'sanity'
+import GiftModal from '@/components/GiftModal'
 
 interface CalendarSession {
   _id: string
@@ -33,20 +36,37 @@ interface CalendarSession {
 
 interface SessionHighlightProps {
   sessions: CalendarSession[]
+  availability?: Record<string, number>
   isNextSession: boolean
   selectedDate?: Date
 }
 
-export default function SessionHighlight({ sessions, isNextSession, selectedDate }: SessionHighlightProps) {
+export default function SessionHighlight({ sessions, availability, isNextSession, selectedDate }: SessionHighlightProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
+  const { status } = useSession()
+  const router = useRouter()
   const [selectedSessionIndex, setSelectedSessionIndex] = useState<number | null>(
     sessions.length === 1 ? 0 : null
   )
 
+  const [numPlaces, setNumPlaces] = useState(1)
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [giftOpen, setGiftOpen] = useState(false)
+
   useEffect(() => {
     setSelectedSessionIndex(sessions.length === 1 ? 0 : null)
+    setNumPlaces(1)
+    setCheckoutError(null)
+    setGiftOpen(false)
   }, [sessions])
+
+  useEffect(() => {
+    setNumPlaces(1)
+    setCheckoutError(null)
+    setGiftOpen(false)
+  }, [selectedSessionIndex])
 
   if (sessions.length === 0 || !selectedDate) {
     return (
@@ -93,6 +113,45 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
   const imageUrl = session.album.coverImage
     ? (urlForImage(session.album.coverImage)?.width(500).height(500).url() ?? '/placeholder-album.jpg')
     : '/placeholder-album.jpg'
+
+  const sessionAvailable = availability?.[session._id] ?? session.totalPlaces
+  const isSoldOut = sessionAvailable === 0
+  const maxPlaces = Math.min(4, sessionAvailable)
+  const total = session.price * numPlaces
+
+  const handleCheckout = async () => {
+    if (status !== 'authenticated') {
+      router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${session._id}`)
+      return
+    }
+    setCheckoutLoading(true)
+    setCheckoutError(null)
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: session._id, numPlaces, locale }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        if (res.status === 409) {
+          setCheckoutError(t('booking.errors.soldOut'))
+          return
+        }
+        if (res.status === 401) {
+          router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${session._id}`)
+          return
+        }
+        setCheckoutError(t('booking.errors.generic'))
+        return
+      }
+      window.location.href = data.url
+    } catch {
+      setCheckoutError(t('booking.errors.generic'))
+    } finally {
+      setCheckoutLoading(false)
+    }
+  }
 
   return (
     <div className="session-highlight-card bg-card/90 backdrop-blur-sm rounded-2xl border border-primary/30 overflow-hidden shadow-xl h-full">
@@ -146,7 +205,7 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
               {/* Session metadata - Grid layout */}
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {/* Date */}
-                <div className="flex items-center gap-2.5 text-fg">
+                <div className="flex items-center gap-2.5 text-fg col-span-2 sm:col-span-1">
                   <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
                     <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -158,8 +217,39 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
                   </div>
                 </div>
 
+                {/* Venue */}
+                {hasSelection && session.sala && (
+                  <div className="flex items-center gap-2.5 text-fg col-span-2 sm:col-span-1">
+                    <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-xs text-fg-subtle">{t('sessions.venue')}</p>
+                      <p className="text-sm font-medium">{session.sala.name[locale]}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Session Type */}
+                {hasSelection && session.sessionType && (
+                  <div className="flex items-center gap-2.5 text-fg col-span-2 sm:col-span-1">
+                    <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-xs text-fg-subtle">{t('sessions.sessionType')}</p>
+                      <p className="text-sm font-medium">{session.sessionType.name[locale]}</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Time / Session selector */}
-                <div className={`flex items-start gap-2.5 text-fg ${sessions.length > 1 ? 'col-span-2' : ''}`}>
+                <div className={`flex items-start gap-2.5 text-fg ${sessions.length > 1 ? 'col-span-2' : 'col-span-2 sm:col-span-1'}`}>
                   <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
                     <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -211,60 +301,13 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
                     )}
                   </div>
                 </div>
-
-                {/* Venue */}
-                {hasSelection && session.sala && (
-                  <div className="flex items-center gap-2.5 text-fg">
-                    <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-xs text-fg-subtle">{t('sessions.venue')}</p>
-                      <p className="text-sm font-medium">{session.sala.name[locale]}</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Session Type */}
-                {hasSelection && session.sessionType && (
-                  <div className="flex items-center gap-2.5 text-fg">
-                    <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-xs text-fg-subtle">{t('sessions.sessionType')}</p>
-                      <p className="text-sm font-medium">{session.sessionType.name[locale]}</p>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
 
-            {/* Price and CTA */}
-            <div className="flex items-center justify-between gap-4 pt-4 border-t border-outline">
-              <div>
-                <p className="text-3xl font-bold text-fg">{hasSelection ? `${session.price}€` : '—'}</p>
-              </div>
-              {hasSelection ? (
-                <a
-                  key={session._id}
-                  href={`/${locale}/sessions/${session._id}`}
-                  className="bg-primary text-on-primary px-6 py-3 rounded-full font-bold text-sm hover:bg-primary-dark transition-all shadow-lg flex items-center gap-2"
-                >
-                  {t('sessions.bookNow')}
-                  {sessions.length > 1 && (
-                    <span className="font-semibold opacity-80">· {formattedTime}</span>
-                  )}
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              ) : (
+            {/* Bottom: inline place selector + buy (or placeholder when no selection) */}
+            {!hasSelection ? (
+              <div className="flex items-center justify-between gap-4 pt-4 border-t border-outline">
+                <p className="text-3xl font-bold text-fg">—</p>
                 <button
                   type="button"
                   disabled
@@ -273,8 +316,87 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
                 >
                   {t('calendar.selectSessionFirst')}
                 </button>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="pt-4 border-t border-outline space-y-3">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1">{t('booking.selectPlaces')}</p>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setNumPlaces(Math.max(1, numPlaces - 1))}
+                        disabled={numPlaces <= 1 || isSoldOut}
+                        className="w-9 h-9 rounded-full border border-outline-strong text-fg flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-lg font-bold"
+                      >
+                        −
+                      </button>
+                      <span className="text-xl font-black text-fg w-7 text-center">{numPlaces}</span>
+                      <button
+                        type="button"
+                        onClick={() => setNumPlaces(Math.min(maxPlaces, numPlaces + 1))}
+                        disabled={numPlaces >= maxPlaces || isSoldOut}
+                        className="w-9 h-9 rounded-full border border-outline-strong text-fg flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-lg font-bold"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1">{t('booking.total')}</p>
+                    <p className="text-3xl font-black text-fg">
+                      {total.toFixed(2)}<span className="text-base font-bold text-fg-subtle">€</span>
+                    </p>
+                  </div>
+                </div>
+
+                {checkoutError && (
+                  <p className="text-red-400 text-xs">{checkoutError}</p>
+                )}
+
+                {isSoldOut ? (
+                  <div className="w-full bg-card-muted text-fg-muted px-6 py-3 rounded-full font-bold text-sm shadow-lg text-center">
+                    {t('booking.soldOut')}
+                  </div>
+                ) : (
+                  <div className="flex w-full bg-primary text-on-primary rounded-full shadow-lg overflow-hidden divide-x divide-on-primary/30">
+                    <button
+                      type="button"
+                      onClick={handleCheckout}
+                      disabled={checkoutLoading}
+                      className="flex-1 px-4 py-3 font-bold text-sm hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {checkoutLoading ? t('booking.processing') : t('booking.bookNow')}
+                      {!checkoutLoading && (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setGiftOpen(true)}
+                      disabled={checkoutLoading}
+                      className="px-4 py-3 font-bold text-sm hover:bg-primary-dark transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                      </svg>
+                      {t('booking.gift.cta')}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <GiftModal
+              open={giftOpen}
+              onClose={() => setGiftOpen(false)}
+              sessionId={session._id}
+              numPlaces={numPlaces}
+              total={total}
+              locale={locale}
+            />
           </div>
         </div>
 

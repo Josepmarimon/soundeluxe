@@ -116,6 +116,22 @@
       "soldOut": "Lo sentimos, no quedan suficientes plazas disponibles",
       "generic": "Ha habido un error. Inténtalo de nuevo.",
       "notLoggedIn": "Debes iniciar sesión para hacer una reserva"
+    },
+    "gift": {
+      "cta": "Regalar",
+      "title": "Regalar entrada",
+      "subtitle": "Compra la entrada como regalo. Tras el pago recibirás la confirmación y podrás hacérsela llegar al destinatario.",
+      "recipientName": "Nombre del destinatario",
+      "recipientNamePlaceholder": "Ej. Ana Soler",
+      "recipientEmail": "Email del destinatario",
+      "recipientEmailPlaceholder": "ej. ana@ejemplo.com",
+      "message": "Mensaje (opcional)",
+      "messagePlaceholder": "Escribe un mensaje para el destinatario…",
+      "submit": "Proceder al pago",
+      "errors": {
+        "missingFields": "Debes rellenar el nombre y el email del destinatario.",
+        "invalidEmail": "El email del destinatario no es válido."
+      }
     }
   },
   "album": {

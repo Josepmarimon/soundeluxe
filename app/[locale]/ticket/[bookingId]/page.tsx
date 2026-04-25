@@ -48,8 +48,8 @@ export default async function TicketPage({ params }: TicketPageProps) {
   let qrDataUrl: string | undefined
   try {
     qrDataUrl = await generateQRDataURL(reserva.id, locale)
-  } catch {
-    // QR generation failed, continue without it
+  } catch (qrError) {
+    console.error('Failed to generate ticket QR code:', qrError)
   }
 
   const dateLocaleMap = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' } as const

@@ -88,12 +88,12 @@ export default async function SessionPage({ params }: SessionPageProps) {
 
       </header>
 
-      {/* GRID — cover (left) aligned with booking card (right) */}
+      {/* GRID — cover (left) and booking card (right) in a row */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-6 lg:gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[380px_380px] gap-6 lg:gap-8 items-start justify-start">
           {/* LEFT — cover + links + description */}
           <div className="min-w-0">
-            <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-outline/50 max-w-[360px]">
+            <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-outline/50 max-w-[380px]">
               <AlbumCarousel
                 coverImage={session.album.coverImage}
                 additionalImages={session.album.additionalImages}
@@ -177,8 +177,8 @@ export default async function SessionPage({ params }: SessionPageProps) {
             )}
           </div>
 
-          {/* RIGHT — sticky booking card */}
-          <aside className="lg:sticky lg:top-20 lg:self-start">
+          {/* RIGHT — booking card */}
+          <aside className="w-full">
             <div className="bg-card rounded-2xl overflow-hidden border border-outline shadow-2xl">
               {/* Date */}
               <div className="p-4 border-b border-outline">
