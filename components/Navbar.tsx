@@ -48,7 +48,7 @@ export default function Navbar({ showShop = true }: NavbarProps) {
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center">
             <Image
-              src="/logo.svg"
+              src="/logo-gold.svg"
               alt="Sound Deluxe"
               width={220}
               height={60}
