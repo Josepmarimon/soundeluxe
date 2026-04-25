@@ -71,11 +71,11 @@ export default function AttendanceDashboard({ sessions, locale }: AttendanceDash
     <div>
       {/* Session selector */}
       <div className="mb-8">
-        <label className="text-sm text-zinc-400 mb-2 block">{t('selectSession')}</label>
+        <label className="text-sm text-fg-muted mb-2 block">{t('selectSession')}</label>
         <select
           value={selectedSessionId}
           onChange={(e) => setSelectedSessionId(e.target.value)}
-          className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-[#D4AF37]"
+          className="w-full bg-card-raised border border-outline text-fg rounded-xl px-4 py-3 focus:outline-none focus:border-primary"
         >
           <option value="">{t('selectSession')}...</option>
           {sessions.map((s) => {
@@ -96,7 +96,7 @@ export default function AttendanceDashboard({ sessions, locale }: AttendanceDash
 
       {loading && !data && (
         <div className="text-center py-12">
-          <svg className="animate-spin w-8 h-8 text-[#D4AF37] mx-auto" viewBox="0 0 24 24" fill="none">
+          <svg className="animate-spin w-8 h-8 text-primary mx-auto" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -106,14 +106,14 @@ export default function AttendanceDashboard({ sessions, locale }: AttendanceDash
       {data && (
         <>
           {/* Summary bar */}
-          <div className="bg-zinc-800/80 rounded-2xl p-6 border border-zinc-700 mb-6">
+          <div className="bg-card-raised/80 rounded-2xl p-6 border border-outline mb-6">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-zinc-400">{t('checkedIn')}</span>
-              <span className="text-white font-bold text-2xl">
+              <span className="text-fg-muted">{t('checkedIn')}</span>
+              <span className="text-fg font-bold text-2xl">
                 {data.summary.checkedInPlaces} / {data.summary.totalPlaces}
               </span>
             </div>
-            <div className="w-full bg-zinc-700 rounded-full h-3">
+            <div className="w-full bg-card-hover rounded-full h-3">
               <div
                 className="bg-emerald-500 h-3 rounded-full transition-all duration-500"
                 style={{
@@ -123,14 +123,14 @@ export default function AttendanceDashboard({ sessions, locale }: AttendanceDash
                 }}
               />
             </div>
-            <p className="text-zinc-500 text-sm mt-2">
+            <p className="text-fg-subtle text-sm mt-2">
               {data.summary.totalBookings} {t('totalBookings')}
             </p>
           </div>
 
           {/* Bookings list */}
           {data.bookings.length === 0 ? (
-            <p className="text-zinc-500 text-center py-8">{t('noBookings')}</p>
+            <p className="text-fg-subtle text-center py-8">{t('noBookings')}</p>
           ) : (
             <div className="space-y-3">
               {data.bookings.map((booking) => (
@@ -139,18 +139,18 @@ export default function AttendanceDashboard({ sessions, locale }: AttendanceDash
                   className={`flex items-center justify-between p-4 rounded-xl border ${
                     booking.attended
                       ? 'bg-emerald-900/20 border-emerald-800'
-                      : 'bg-zinc-800/50 border-zinc-700'
+                      : 'bg-card-raised/50 border-outline'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full ${booking.attended ? 'bg-emerald-400' : 'bg-zinc-600'}`} />
+                    <div className={`w-3 h-3 rounded-full ${booking.attended ? 'bg-emerald-400' : 'bg-card-muted'}`} />
                     <div>
-                      <p className="text-white font-medium text-sm">{booking.userName}</p>
-                      <p className="text-zinc-500 text-xs">{booking.userEmail}</p>
+                      <p className="text-fg font-medium text-sm">{booking.userName}</p>
+                      <p className="text-fg-subtle text-xs">{booking.userEmail}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="text-zinc-400 text-sm">
+                    <span className="text-fg-muted text-sm">
                       {booking.numPlaces} {t('places')}
                     </span>
                     {booking.attended ? (
@@ -158,7 +158,7 @@ export default function AttendanceDashboard({ sessions, locale }: AttendanceDash
                         {booking.attendedAt && new Date(booking.attendedAt).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     ) : (
-                      <span className="text-zinc-600 text-xs">—</span>
+                      <span className="text-fg-dim text-xs">—</span>
                     )}
                   </div>
                 </div>

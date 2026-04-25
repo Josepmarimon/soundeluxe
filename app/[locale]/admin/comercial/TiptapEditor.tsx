@@ -27,7 +27,7 @@ export default function TiptapEditor({ content, onChange }: Props) {
   if (!editor) return null
 
   const btnClass = (active: boolean) =>
-    `p-1.5 rounded ${active ? 'bg-[#D4AF37]/20 text-[#D4AF37]' : 'text-gray-400 hover:text-white hover:bg-gray-700'}`
+    `p-1.5 rounded ${active ? 'bg-primary/20 text-primary' : 'text-gray-400 hover:text-fg hover:bg-gray-700'}`
 
   return (
     <div className="border border-gray-700 rounded-lg overflow-hidden bg-gray-900">
@@ -49,10 +49,10 @@ export default function TiptapEditor({ content, onChange }: Props) {
           <ListOrdered className="w-3.5 h-3.5" />
         </button>
         <div className="w-px h-4 bg-gray-600 mx-1" />
-        <button type="button" onClick={() => editor.chain().focus().undo().run()} className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-700 rounded">
+        <button type="button" onClick={() => editor.chain().focus().undo().run()} className="p-1.5 text-gray-400 hover:text-fg hover:bg-gray-700 rounded">
           <Undo className="w-3.5 h-3.5" />
         </button>
-        <button type="button" onClick={() => editor.chain().focus().redo().run()} className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-700 rounded">
+        <button type="button" onClick={() => editor.chain().focus().redo().run()} className="p-1.5 text-gray-400 hover:text-fg hover:bg-gray-700 rounded">
           <Redo className="w-3.5 h-3.5" />
         </button>
       </div>

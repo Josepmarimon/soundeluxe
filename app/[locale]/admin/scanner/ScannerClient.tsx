@@ -213,19 +213,19 @@ export default function ScannerClient({ locale }: { locale: string }) {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="min-h-screen bg-[#0a1929] flex flex-col" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+    <div className="min-h-screen bg-bg flex flex-col" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       {/* Compact header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-[#0a1929]/95 backdrop-blur-sm border-b border-[#254a6e]/30" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+      <div className="fixed top-0 left-0 right-0 z-50 bg-bg/95 backdrop-blur-sm border-b border-border/30" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="px-4 py-3 flex items-center justify-between">
           <Link
             href={`/${locale}/admin/attendance`}
-            className="text-zinc-400 hover:text-white transition-colors p-1"
+            className="text-fg-muted hover:text-fg transition-colors p-1"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </Link>
-          <h1 className="text-white font-bold text-lg">{t('title')}</h1>
+          <h1 className="text-fg font-bold text-lg">{t('title')}</h1>
           <div className="w-8" /> {/* spacer for centering */}
         </div>
       </div>
@@ -244,12 +244,12 @@ export default function ScannerClient({ locale }: { locale: string }) {
           {scanState === 'scanning' && cameraReady && (
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
               <div className="w-[260px] h-[260px] relative">
-                <div className="absolute -top-0.5 -left-0.5 w-12 h-12 border-t-[3px] border-l-[3px] border-[#D4AF37] rounded-tl-xl" />
-                <div className="absolute -top-0.5 -right-0.5 w-12 h-12 border-t-[3px] border-r-[3px] border-[#D4AF37] rounded-tr-xl" />
-                <div className="absolute -bottom-0.5 -left-0.5 w-12 h-12 border-b-[3px] border-l-[3px] border-[#D4AF37] rounded-bl-xl" />
-                <div className="absolute -bottom-0.5 -right-0.5 w-12 h-12 border-b-[3px] border-r-[3px] border-[#D4AF37] rounded-br-xl" />
+                <div className="absolute -top-0.5 -left-0.5 w-12 h-12 border-t-[3px] border-l-[3px] border-primary rounded-tl-xl" />
+                <div className="absolute -top-0.5 -right-0.5 w-12 h-12 border-t-[3px] border-r-[3px] border-primary rounded-tr-xl" />
+                <div className="absolute -bottom-0.5 -left-0.5 w-12 h-12 border-b-[3px] border-l-[3px] border-primary rounded-bl-xl" />
+                <div className="absolute -bottom-0.5 -right-0.5 w-12 h-12 border-b-[3px] border-r-[3px] border-primary rounded-br-xl" />
                 {/* Animated scan line */}
-                <div className="absolute left-6 right-6 h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37]/80 to-transparent animate-scan" />
+                <div className="absolute left-6 right-6 h-0.5 bg-primary/80 animate-scan" />
               </div>
             </div>
           )}
@@ -258,7 +258,7 @@ export default function ScannerClient({ locale }: { locale: string }) {
           {scanState === 'loading' && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-2xl backdrop-blur-sm">
               <div className="flex flex-col items-center gap-3">
-                <svg className="animate-spin w-10 h-10 text-[#D4AF37]" viewBox="0 0 24 24" fill="none">
+                <svg className="animate-spin w-10 h-10 text-primary" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
@@ -269,7 +269,7 @@ export default function ScannerClient({ locale }: { locale: string }) {
 
         {/* Scanning hint */}
         {scanState === 'scanning' && (
-          <p className="text-zinc-500 text-sm mt-4 text-center">{t('hint')}</p>
+          <p className="text-fg-subtle text-sm mt-4 text-center">{t('hint')}</p>
         )}
 
         {/* === RESULT CARDS === */}
@@ -277,41 +277,41 @@ export default function ScannerClient({ locale }: { locale: string }) {
         {/* Booking found — awaiting confirmation */}
         {booking && scanState === 'found' && (
           <div className="w-full max-w-sm mt-6 animate-in">
-            <div className="bg-zinc-800/90 backdrop-blur-sm rounded-2xl p-5 border border-zinc-700 shadow-xl">
+            <div className="bg-card-raised/90 backdrop-blur-sm rounded-2xl p-5 border border-outline shadow-xl">
               {/* Guest row */}
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-11 h-11 rounded-full bg-[#D4AF37]/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-white font-semibold truncate">{booking.userName}</p>
-                  <p className="text-zinc-400 text-xs truncate">{booking.userEmail}</p>
+                  <p className="text-fg font-semibold truncate">{booking.userName}</p>
+                  <p className="text-fg-muted text-xs truncate">{booking.userEmail}</p>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <span className="text-[#D4AF37] font-bold text-2xl">{booking.numPlaces}</span>
-                  <p className="text-zinc-500 text-xs">{t('places')}</p>
+                  <span className="text-primary font-bold text-2xl">{booking.numPlaces}</span>
+                  <p className="text-fg-subtle text-xs">{t('places')}</p>
                 </div>
               </div>
 
               {/* Session details */}
               {booking.album && (
-                <div className="space-y-1.5 text-sm mb-5 bg-zinc-900/50 rounded-xl p-3">
+                <div className="space-y-1.5 text-sm mb-5 bg-card/50 rounded-xl p-3">
                   <div className="flex justify-between gap-4">
-                    <span className="text-zinc-500 flex-shrink-0">{t('album')}</span>
-                    <span className="text-white font-medium text-right truncate">{booking.album}</span>
+                    <span className="text-fg-subtle flex-shrink-0">{t('album')}</span>
+                    <span className="text-fg font-medium text-right truncate">{booking.album}</span>
                   </div>
                   {booking.artist && (
                     <div className="flex justify-between gap-4">
-                      <span className="text-zinc-500 flex-shrink-0">{t('artist')}</span>
-                      <span className="text-zinc-300 text-right truncate">{booking.artist}</span>
+                      <span className="text-fg-subtle flex-shrink-0">{t('artist')}</span>
+                      <span className="text-fg text-right truncate">{booking.artist}</span>
                     </div>
                   )}
                   {booking.venue && (
                     <div className="flex justify-between gap-4">
-                      <span className="text-zinc-500 flex-shrink-0">{t('venue')}</span>
-                      <span className="text-zinc-300 text-right truncate">{booking.venue}</span>
+                      <span className="text-fg-subtle flex-shrink-0">{t('venue')}</span>
+                      <span className="text-fg text-right truncate">{booking.venue}</span>
                     </div>
                   )}
                 </div>
@@ -320,7 +320,7 @@ export default function ScannerClient({ locale }: { locale: string }) {
               {/* Big confirm button */}
               <button
                 onClick={handleCheckin}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white py-4 rounded-2xl font-bold text-lg transition-colors flex items-center justify-center gap-3 active:scale-[0.98]"
+                className="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-fg py-4 rounded-2xl font-bold text-lg transition-colors flex items-center justify-center gap-3 active:scale-[0.98]"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -330,7 +330,7 @@ export default function ScannerClient({ locale }: { locale: string }) {
 
               <button
                 onClick={resetScanner}
-                className="w-full text-zinc-500 hover:text-zinc-300 text-sm mt-3 py-2 transition-colors"
+                className="w-full text-fg-subtle hover:text-fg text-sm mt-3 py-2 transition-colors"
               >
                 {t('cancel')}
               </button>
@@ -348,12 +348,12 @@ export default function ScannerClient({ locale }: { locale: string }) {
                 </svg>
               </div>
               <p className="text-emerald-300 font-bold text-xl">{t('entryConfirmed')}</p>
-              <p className="text-zinc-400 text-sm mt-1">
+              <p className="text-fg-muted text-sm mt-1">
                 {booking.userName} · {booking.numPlaces} {t('places')}
               </p>
               <button
                 onClick={resetScanner}
-                className="mt-5 px-8 py-2.5 bg-zinc-800 border border-zinc-600 text-white rounded-full text-sm font-medium hover:bg-zinc-700 transition-colors"
+                className="mt-5 px-8 py-2.5 bg-card-raised border border-outline-strong text-fg rounded-full text-sm font-medium hover:bg-card-hover transition-colors"
               >
                 {t('scanNext')}
               </button>
@@ -371,17 +371,17 @@ export default function ScannerClient({ locale }: { locale: string }) {
                 </svg>
               </div>
               <p className="text-amber-300 font-bold text-lg">{t('alreadyCheckedIn')}</p>
-              <p className="text-zinc-400 text-sm mt-1">
+              <p className="text-fg-muted text-sm mt-1">
                 {booking.userName} · {booking.numPlaces} {t('places')}
               </p>
               {booking.attendedAt && (
-                <p className="text-zinc-500 text-xs mt-1">
+                <p className="text-fg-subtle text-xs mt-1">
                   {new Date(booking.attendedAt).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
                 </p>
               )}
               <button
                 onClick={resetScanner}
-                className="mt-5 px-8 py-2.5 bg-zinc-800 border border-zinc-600 text-white rounded-full text-sm font-medium hover:bg-zinc-700 transition-colors"
+                className="mt-5 px-8 py-2.5 bg-card-raised border border-outline-strong text-fg rounded-full text-sm font-medium hover:bg-card-hover transition-colors"
               >
                 {t('scanNext')}
               </button>
@@ -401,7 +401,7 @@ export default function ScannerClient({ locale }: { locale: string }) {
               <p className="text-red-300 font-bold text-lg">{error}</p>
               <button
                 onClick={resetScanner}
-                className="mt-5 px-8 py-2.5 bg-zinc-800 border border-zinc-600 text-white rounded-full text-sm font-medium hover:bg-zinc-700 transition-colors"
+                className="mt-5 px-8 py-2.5 bg-card-raised border border-outline-strong text-fg rounded-full text-sm font-medium hover:bg-card-hover transition-colors"
               >
                 {t('tryAgain')}
               </button>

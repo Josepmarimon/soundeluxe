@@ -28,14 +28,14 @@ export default async function AlbumsPage() {
   const artists = artistsData?.artists || []
 
   return (
-    <div className="min-h-screen bg-transparent pt-16">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-fg mb-4">
             {t('albums.title')}
           </h1>
-          <p className="text-xl text-zinc-400">
+          <p className="text-xl text-fg-muted">
             {t('albums.subtitle')}
           </p>
         </div>

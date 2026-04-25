@@ -89,7 +89,7 @@ export default function DownloadPdfButton({ recipientName, recipientCompany, lan
     <button
       onClick={handleDownload}
       disabled={generating}
-      className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-xs font-medium text-white hover:bg-white/20 transition disabled:opacity-50"
+      className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-xs font-medium text-fg hover:bg-white/20 transition disabled:opacity-50"
     >
       <Download className="w-3.5 h-3.5" />
       {generating ? l.generating : l.download}
@@ -148,7 +148,7 @@ function applyPrintStyles(el: HTMLElement) {
     if (classes.includes('bg-gray-900') || classes.includes('bg-gray-800')) {
       el.style.backgroundColor = '#f7f7f7'
     }
-    if (classes.includes('bg-[#D4AF37]/10') || classes.includes('bg-[#D4AF37]/20')) {
+    if (classes.includes('bg-primary/10') || classes.includes('bg-primary/20')) {
       el.style.backgroundColor = '#fef9e7'
     }
     // Hero section: keep image but lighten overlay

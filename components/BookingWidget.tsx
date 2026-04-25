@@ -80,8 +80,8 @@ export default function BookingWidget({
   // Sold out state
   if (isSoldOut) {
     return (
-      <div className="flex items-center gap-3">
-        <span className="text-zinc-400 font-semibold text-lg border border-zinc-600 rounded-full px-8 py-4">
+      <div className="w-full">
+        <span className="w-full flex items-center justify-center text-fg-muted font-semibold text-base border border-outline-strong rounded-full py-4">
           {t('soldOut')}
         </span>
       </div>
@@ -93,11 +93,11 @@ export default function BookingWidget({
     return (
       <button
         onClick={handleBookClick}
-        className="bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-10 py-5 rounded-full font-bold text-lg hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-lg flex items-center gap-2"
+        className="w-full bg-primary text-on-primary py-3 rounded-full font-bold text-sm hover:bg-primary-hover transition-all shadow-lg flex items-center justify-center gap-1.5 group"
       >
         {isLoggedIn ? t('bookNow') : t('loginToBook')}
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
         </svg>
       </button>
     )
@@ -106,56 +106,48 @@ export default function BookingWidget({
   // Expanded state - place selector + checkout
   return (
     <div className="w-full">
-      <div className="bg-zinc-800/80 rounded-2xl p-6 border border-zinc-700 space-y-5">
+      <div className="space-y-3">
         {/* Place selector */}
         <div>
-          <label className="text-sm text-zinc-400 mb-2 block">{t('selectPlaces')}</label>
-          <div className="flex items-center gap-4">
+          <label className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1.5 block">{t('selectPlaces')}</label>
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setNumPlaces(Math.max(1, numPlaces - 1))}
               disabled={numPlaces <= 1}
-              className="w-10 h-10 rounded-full border border-zinc-600 text-white flex items-center justify-center hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-8 h-8 rounded-full border border-outline-strong text-fg flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
             >
               -
             </button>
-            <span className="text-2xl font-bold text-white w-8 text-center">{numPlaces}</span>
+            <span className="text-lg font-bold text-fg w-6 text-center">{numPlaces}</span>
             <button
               onClick={() => setNumPlaces(Math.min(maxPlaces, numPlaces + 1))}
               disabled={numPlaces >= maxPlaces}
-              className="w-10 h-10 rounded-full border border-zinc-600 text-white flex items-center justify-center hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-8 h-8 rounded-full border border-outline-strong text-fg flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
             >
               +
             </button>
-            <span className="text-sm text-zinc-500">
+            <span className="text-[11px] text-fg-subtle ml-auto">
               {availablePlaces} {t('available')}
             </span>
           </div>
         </div>
 
         {/* Total */}
-        <div className="flex items-baseline justify-between pt-3 border-t border-zinc-700">
-          <span className="text-zinc-400">{t('total')}</span>
-          <div className="text-right">
-            <span className="text-3xl font-bold text-white">{total.toFixed(2)}€</span>
-            <p className="text-xs text-zinc-500 mt-1">{t('vatIncluded')}</p>
-          </div>
+        <div className="flex items-baseline justify-between pt-2.5 border-t border-outline">
+          <span className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold">{t('total')}</span>
+          <span className="text-2xl font-black text-fg">{total.toFixed(2)}<span className="text-base text-fg-subtle font-bold">€</span></span>
         </div>
-
-        {/* Cancellation note */}
-        <p className="text-xs text-zinc-500 italic">
-          {t('cancellationNote')}
-        </p>
 
         {/* Error message */}
         {error && (
-          <p className="text-red-400 text-sm">{error}</p>
+          <p className="text-red-400 text-xs">{error}</p>
         )}
 
         {/* Checkout button */}
         <button
           onClick={handleCheckout}
           disabled={loading}
-          className="w-full bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black py-4 rounded-full font-bold text-lg hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full bg-primary text-on-primary py-3 rounded-full font-bold text-sm hover:bg-primary-hover transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
         >
           {loading ? (
             <>
@@ -168,7 +160,7 @@ export default function BookingWidget({
           ) : (
             <>
               {t('proceedToPayment')}
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </>

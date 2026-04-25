@@ -274,19 +274,19 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#D4AF37]" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-fg">
       <div className="max-w-7xl mx-auto py-6 px-4 md:px-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Link href="/admin" className="text-gray-400 hover:text-white">
+              <Link href="/admin" className="text-gray-400 hover:text-fg">
                 <ArrowLeft className="w-4 h-4" />
               </Link>
               <h1 className="text-2xl font-bold">Gestió Comercial</h1>
@@ -302,7 +302,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
             </button>
             <button
               onClick={() => { setForm(emptyForm); setCreateOpen(true) }}
-              className="flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-black font-medium rounded-lg hover:bg-[#c4a030] transition"
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary font-medium rounded-lg hover:bg-[#c4a030] transition"
             >
               <Plus className="w-4 h-4" /> Nou Enllaç
             </button>
@@ -338,13 +338,13 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
               placeholder="Cercar per nom, email, empresa..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-[#D4AF37]"
+              className="w-full pl-10 pr-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-primary"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#D4AF37]"
+            className="bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
           >
             <option value="all">Tots</option>
             <option value="PENDING">Pendents</option>
@@ -456,7 +456,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
           <div className="fixed inset-0 z-50 flex justify-end">
             <div className="absolute inset-0 bg-black/60" onClick={() => setDetailsOpen(false)} />
             <div className="relative w-full max-w-lg bg-[#111] border-l border-gray-800 overflow-y-auto p-6">
-              <button onClick={() => setDetailsOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">&times;</button>
+              <button onClick={() => setDetailsOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-fg text-xl">&times;</button>
 
               <h2 className="text-xl font-bold mb-1">{selectedLink.recipientName}</h2>
               <p className="text-gray-400 text-sm mb-4">{selectedLink.recipientEmail}</p>
@@ -583,7 +583,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                     <span key={step}>
                       {i > 0 && <span className="inline-block w-6 h-px bg-gray-600 mx-0.5" />}
                       <span className={`inline-flex w-7 h-7 rounded-full items-center justify-center text-xs font-bold ${
-                        formStep === step ? 'bg-[#D4AF37] text-black' : formStep > step ? 'bg-gray-600 text-gray-300' : 'bg-gray-700 text-gray-400'
+                        formStep === step ? 'bg-primary text-on-primary' : formStep > step ? 'bg-gray-600 text-gray-300' : 'bg-gray-700 text-gray-400'
                       }`}>{step}</span>
                     </span>
                   ))}
@@ -608,7 +608,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                       <input
                         value={form.recipientName}
                         onChange={(e) => setForm({ ...form, recipientName: e.target.value })}
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
                         placeholder="Nom del contacte"
                       />
                     </div>
@@ -618,7 +618,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                         type="email"
                         value={form.recipientEmail}
                         onChange={(e) => setForm({ ...form, recipientEmail: e.target.value })}
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
                         placeholder="email@empresa.com"
                       />
                     </div>
@@ -630,7 +630,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                       <input
                         value={form.recipientCompany || ''}
                         onChange={(e) => setForm({ ...form, recipientCompany: e.target.value })}
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
                         placeholder="Nom de l'empresa"
                       />
                     </div>
@@ -640,7 +640,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                         type="date"
                         value={form.expiresAt || ''}
                         onChange={(e) => setForm({ ...form, expiresAt: e.target.value })}
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
                       />
                     </div>
                   </div>
@@ -651,7 +651,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                       <select
                         value={form.lang || 'CA'}
                         onChange={(e) => setForm({ ...form, lang: e.target.value as 'CA' | 'ES' | 'EN' })}
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
                       >
                         <option value="CA">Català</option>
                         <option value="ES">Castellà</option>
@@ -663,7 +663,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                       <textarea
                         value={form.notes || ''}
                         onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
                         rows={2}
                         placeholder="Notes privades..."
                       />
@@ -716,7 +716,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                         }
                         setFormStep(2)
                       }}
-                      className="px-4 py-2 bg-[#D4AF37] text-black font-medium rounded-lg text-sm hover:bg-[#c4a030]"
+                      className="px-4 py-2 bg-primary text-on-primary font-medium rounded-lg text-sm hover:bg-[#c4a030]"
                     >
                       Seccions →
                     </button>
@@ -724,7 +724,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                   {formStep === 2 && (
                     <button
                       onClick={() => setFormStep(3)}
-                      className="px-4 py-2 bg-[#D4AF37] text-black font-medium rounded-lg text-sm hover:bg-[#c4a030]"
+                      className="px-4 py-2 bg-primary text-on-primary font-medium rounded-lg text-sm hover:bg-[#c4a030]"
                     >
                       Preview →
                     </button>
@@ -733,7 +733,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                     <button
                       onClick={editOpen ? handleEdit : handleCreate}
                       disabled={creating || editing}
-                      className="px-4 py-2 bg-[#D4AF37] text-black font-medium rounded-lg text-sm hover:bg-[#c4a030] disabled:opacity-50"
+                      className="px-4 py-2 bg-primary text-on-primary font-medium rounded-lg text-sm hover:bg-[#c4a030] disabled:opacity-50"
                     >
                       {creating || editing ? 'Guardant...' : editOpen ? 'Guardar' : 'Crear'}
                     </button>
@@ -755,7 +755,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                 <button onClick={() => setDeleteConfirmId(null)} className="px-4 py-2 border border-gray-700 rounded-lg text-sm hover:bg-gray-800">
                   Cancel·lar
                 </button>
-                <button onClick={() => handleDelete(deleteConfirmId)} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-500">
+                <button onClick={() => handleDelete(deleteConfirmId)} className="px-4 py-2 bg-red-600 text-fg rounded-lg text-sm hover:bg-red-500">
                   Eliminar
                 </button>
               </div>
@@ -788,7 +788,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                   <button
                     onClick={() => handleSendEmail(sendConfirmId)}
                     disabled={sending}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-500 disabled:opacity-50"
+                    className="px-4 py-2 bg-blue-600 text-fg rounded-lg text-sm hover:bg-blue-500 disabled:opacity-50"
                   >
                     {sending ? 'Enviant...' : 'Enviar Email'}
                   </button>
@@ -809,7 +809,7 @@ export default function ComercialManagementClient({ currentUserId }: Props) {
                 <button onClick={() => setResetConfirmId(null)} className="px-4 py-2 border border-gray-700 rounded-lg text-sm hover:bg-gray-800">
                   Cancel·lar
                 </button>
-                <button onClick={() => handleResetStats(resetConfirmId)} className="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm hover:bg-amber-500">
+                <button onClick={() => handleResetStats(resetConfirmId)} className="px-4 py-2 bg-amber-600 text-fg rounded-lg text-sm hover:bg-amber-500">
                   Resetejar
                 </button>
               </div>

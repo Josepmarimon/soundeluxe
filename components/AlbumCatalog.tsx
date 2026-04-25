@@ -61,7 +61,7 @@ export default function AlbumCatalog({ albums, genres, artists, showVoteButton =
               placeholder={t('albums.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-6 py-3 bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
+              className="w-full px-6 py-3 bg-surface-alt text-black placeholder:text-fg-dim rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black transition-colors"
             />
           </div>
         )}
@@ -75,8 +75,8 @@ export default function AlbumCatalog({ albums, genres, artists, showVoteButton =
                 onClick={() => setGenresOpen(!genresOpen)}
                 className={`w-full px-6 py-3 rounded-full font-medium shadow-md transition-all flex items-center justify-between ${
                   selectedGenre
-                    ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
-                    : 'bg-[#F5F1E8] text-black hover:bg-[#EDE8DC]'
+                    ? 'bg-primary text-on-primary'
+                    : 'bg-surface-alt text-black hover:bg-surface-alt-hover'
                 }`}
               >
                 <span>{selectedGenre ? getGenreName(selectedGenre) : t('albums.allGenres')}</span>
@@ -92,13 +92,13 @@ export default function AlbumCatalog({ albums, genres, artists, showVoteButton =
 
               {/* Genre Dropdown Menu */}
               {genresOpen && (
-                <div className="absolute z-10 w-full mt-2 bg-[#F5F1E8] rounded-2xl shadow-xl overflow-hidden">
+                <div className="absolute z-10 w-full mt-2 bg-surface-alt rounded-2xl shadow-xl overflow-hidden">
                   <button
                     onClick={() => {
                       setSelectedGenre('')
                       setGenresOpen(false)
                     }}
-                    className="w-full px-6 py-3 text-left text-black hover:bg-[#EDE8DC] transition-colors font-medium"
+                    className="w-full px-6 py-3 text-left text-black hover:bg-surface-alt-hover transition-colors font-medium"
                   >
                     {t('albums.allGenres')}
                   </button>
@@ -109,7 +109,7 @@ export default function AlbumCatalog({ albums, genres, artists, showVoteButton =
                         setSelectedGenre(genre)
                         setGenresOpen(false)
                       }}
-                      className="w-full px-6 py-3 text-left text-black hover:bg-[#EDE8DC] transition-colors font-medium"
+                      className="w-full px-6 py-3 text-left text-black hover:bg-surface-alt-hover transition-colors font-medium"
                     >
                       {getGenreName(genre)}
                     </button>
@@ -127,12 +127,12 @@ export default function AlbumCatalog({ albums, genres, artists, showVoteButton =
                 placeholder={t('albums.searchArtist')}
                 value={artistSearch}
                 onChange={(e) => setArtistSearch(e.target.value)}
-                className="w-full px-6 py-3 bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
+                className="w-full px-6 py-3 bg-surface-alt text-black placeholder:text-fg-dim rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black transition-colors"
               />
               {artistSearch && (
                 <button
                   onClick={() => setArtistSearch('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-black transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-fg-dim hover:text-black transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -145,7 +145,7 @@ export default function AlbumCatalog({ albums, genres, artists, showVoteButton =
 
         {/* Results count */}
         {(selectedGenre || artistSearch || searchQuery) && (
-          <div className="text-zinc-400 text-sm text-center mt-4">
+          <div className="text-fg-muted text-sm text-center mt-4">
             {filteredAlbums.length === albums.length
               ? t('albums.showingAll', { count: albums.length })
               : t('albums.showingFiltered', {
@@ -159,7 +159,7 @@ export default function AlbumCatalog({ albums, genres, artists, showVoteButton =
       {/* Albums Grid */}
       {filteredAlbums.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-zinc-400 text-lg">{t('albums.noResults')}</p>
+          <p className="text-fg-muted text-lg">{t('albums.noResults')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

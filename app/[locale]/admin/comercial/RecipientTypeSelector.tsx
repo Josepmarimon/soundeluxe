@@ -29,12 +29,12 @@ export default function RecipientTypeSelector({ value, onChange, lang }: Props) 
             onClick={() => onChange(type)}
             className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
               selected
-                ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
+                ? 'border-primary bg-primary/10 text-primary'
                 : 'border-gray-700 hover:border-gray-600 text-gray-400 hover:text-gray-200'
             }`}
           >
             <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-              selected ? 'bg-[#D4AF37]/20' : 'bg-gray-800'
+              selected ? 'bg-primary/20' : 'bg-gray-800'
             }`}>
               {getIcon(template.icon)}
             </div>

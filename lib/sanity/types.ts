@@ -75,6 +75,7 @@ export interface Session {
   date: string
   price: number
   totalPlaces: number
+  durationMinutes?: number
   vinylInfo?: MultilingualText
   specialNotes?: MultilingualText
   album: Album
@@ -88,6 +89,7 @@ export interface SessionListItem {
   date: string
   price: number
   totalPlaces: number
+  durationMinutes?: number
   album: {
     _id: string
     title: string

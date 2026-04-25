@@ -84,6 +84,14 @@ export default defineType({
       description: 'Nombre total de places disponibles',
       group: 'details',
     }),
+    defineField({
+      name: 'durationMinutes',
+      title: 'Durada (minuts)',
+      type: 'number',
+      validation: (Rule) => Rule.min(0).max(600),
+      description: 'Durada aproximada de la sessió en minuts',
+      group: 'details',
+    }),
 
     // === TRADUCCIONS ===
     defineField({

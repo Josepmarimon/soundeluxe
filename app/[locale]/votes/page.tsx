@@ -20,14 +20,14 @@ export default async function VotesPage() {
   const artists = artistsData?.artists || []
 
   return (
-    <div className="min-h-screen bg-transparent pt-16">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-fg mb-4">
             {t('votes.title')}
           </h1>
-          <p className="text-xl text-zinc-400">
+          <p className="text-xl text-fg-muted">
             {t('votes.subtitle')}
           </p>
         </div>
@@ -43,7 +43,7 @@ export default async function VotesPage() {
         </div>
 
         {/* Album Suggestion Form - at the bottom with differentiated background */}
-        <div className="relative -mx-4 px-4 py-12 md:py-16 bg-gradient-to-b from-[#0a1929] via-[#112240] to-[#0a1929] border-t border-b border-[#D4AF37]/20">
+        <div className="relative -mx-4 px-4 py-12 md:py-16 border-t border-b border-primary/20">
           <div className="absolute inset-0 bg-[url('/vinyl-pattern.svg')] opacity-5"></div>
           <div className="relative max-w-3xl mx-auto">
             <AlbumSuggestionForm />

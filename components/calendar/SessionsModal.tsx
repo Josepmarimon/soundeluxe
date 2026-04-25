@@ -91,20 +91,20 @@ export default function SessionsModal({ isOpen, onClose, date, sessions }: Sessi
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
       <div
         ref={modalRef}
-        className="w-full max-w-lg bg-[#0a1929] border border-[#254a6e]/50 rounded-2xl shadow-2xl overflow-hidden"
+        className="w-full max-w-lg bg-bg border border-border/50 rounded-2xl shadow-2xl overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#254a6e]/30 bg-gradient-to-r from-[#D4AF37]/10 to-transparent">
+        <div className="px-6 py-4 border-b border-border/30">
           <div className="flex items-center justify-between">
-            <h2 id="modal-title" className="text-xl font-bold text-[#F5F1E8] capitalize">
+            <h2 id="modal-title" className="text-xl font-bold text-surface-alt capitalize">
               {formattedDate}
             </h2>
             <button
               onClick={onClose}
-              className="p-2 text-zinc-400 hover:text-white hover:bg-[#254a6e]/30 rounded-full transition-colors"
+              className="p-2 text-fg-muted hover:text-fg hover:bg-border/30 rounded-full transition-colors"
               aria-label={t('common.close')}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,7 +112,7 @@ export default function SessionsModal({ isOpen, onClose, date, sessions }: Sessi
               </svg>
             </button>
           </div>
-          <p className="mt-1 text-sm text-zinc-400">
+          <p className="mt-1 text-sm text-fg-muted">
             {sessions.length === 1
               ? t('calendar.oneSession')
               : t('calendar.sessionsCount', { count: sessions.length })}
@@ -132,11 +132,11 @@ export default function SessionsModal({ isOpen, onClose, date, sessions }: Sessi
               <Link
                 key={session._id}
                 href={`/${locale}/sessions/${session._id}`}
-                className="flex gap-4 p-3 bg-[#102a43]/50 rounded-xl border border-[#254a6e]/30 hover:border-[#D4AF37]/50 hover:bg-[#102a43] transition-all group"
+                className="flex gap-4 p-3 bg-surface/50 rounded-xl border border-border/30 hover:border-primary/50 hover:bg-surface transition-all group"
                 onClick={onClose}
               >
                 {/* Album Cover */}
-                <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-[#1a3a5c] relative">
+                <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-surface-raised relative">
                   {coverUrl ? (
                     <Image
                       src={coverUrl}
@@ -153,22 +153,22 @@ export default function SessionsModal({ isOpen, onClose, date, sessions }: Sessi
 
                 {/* Session Info */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-white group-hover:text-[#D4AF37] transition-colors truncate">
+                  <h3 className="font-bold text-fg group-hover:text-primary transition-colors truncate">
                     {session.album.title}
                   </h3>
-                  <p className="text-sm text-zinc-400 truncate">
+                  <p className="text-sm text-fg-muted truncate">
                     {session.album.artist}
                   </p>
                   <div className="mt-2 flex items-center gap-3 text-xs">
-                    <span className="text-[#D4AF37] font-medium">
+                    <span className="text-primary font-medium">
                       {sessionTime}
                     </span>
                     {session.sessionType && (
-                      <span className="px-2 py-0.5 bg-[#1a3a5c] rounded-full text-zinc-300">
+                      <span className="px-2 py-0.5 bg-surface-raised rounded-full text-fg">
                         {session.sessionType.name[locale]}
                       </span>
                     )}
-                    <span className="font-bold text-white">
+                    <span className="font-bold text-fg">
                       {session.price}EUR
                     </span>
                   </div>
@@ -179,10 +179,10 @@ export default function SessionsModal({ isOpen, onClose, date, sessions }: Sessi
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-[#254a6e]/30 bg-[#0a1929]">
+        <div className="px-6 py-3 border-t border-border/30 bg-bg">
           <button
             onClick={onClose}
-            className="w-full py-2 text-sm text-zinc-400 hover:text-white transition-colors"
+            className="w-full py-2 text-sm text-fg-muted hover:text-fg transition-colors"
           >
             {t('calendar.close')}
           </button>

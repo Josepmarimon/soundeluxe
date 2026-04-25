@@ -52,7 +52,7 @@ export default function FAQAccordion({ faqs, locale }: FAQAccordionProps) {
     <div className="space-y-8">
       {sortedCategories.map((category) => (
         <div key={category}>
-          <h3 className="text-lg font-semibold text-[#D4AF37] mb-4">
+          <h3 className="text-lg font-semibold text-primary mb-4">
             {categoryLabels[category]?.[locale] || category}
           </h3>
           <div className="space-y-3">
@@ -61,17 +61,17 @@ export default function FAQAccordion({ faqs, locale }: FAQAccordionProps) {
               return (
                 <div
                   key={faq._key}
-                  className="border border-zinc-800 rounded-lg overflow-hidden bg-zinc-900/30"
+                  className="border border-outline-subtle rounded-lg overflow-hidden bg-card/30"
                 >
                   <button
                     onClick={() => toggleItem(faq._key)}
-                    className="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-zinc-800/50 transition-colors"
+                    className="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-card-raised/50 transition-colors"
                   >
-                    <span className="font-medium text-white">
+                    <span className="font-medium text-fg">
                       {faq.question?.[locale]}
                     </span>
                     <ChevronDown
-                      className={`w-5 h-5 text-zinc-400 flex-shrink-0 transition-transform duration-200 ${
+                      className={`w-5 h-5 text-fg-muted flex-shrink-0 transition-transform duration-200 ${
                         isOpen ? 'rotate-180' : ''
                       }`}
                     />
@@ -81,7 +81,7 @@ export default function FAQAccordion({ faqs, locale }: FAQAccordionProps) {
                       isOpen ? 'max-h-96' : 'max-h-0'
                     }`}
                   >
-                    <div className="px-6 pb-4 text-zinc-300 leading-relaxed">
+                    <div className="px-6 pb-4 text-fg leading-relaxed">
                       {faq.answer?.[locale]}
                     </div>
                   </div>

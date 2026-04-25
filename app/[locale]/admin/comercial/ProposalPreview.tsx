@@ -46,7 +46,7 @@ export default function ProposalPreview({ recipientType, recipientName, recipien
         style={{ maxHeight: '60vh', transformOrigin: 'top left' }}
       >
         <div className="transform scale-[0.45] origin-top-left" style={{ width: '222%' }}>
-          <div className="min-h-screen bg-[#0a0a0a] text-white">
+          <div className="min-h-screen bg-[#0a0a0a] text-fg">
             {resolvedSections.map((section) => (
               <div key={section.key}>
                 <SectionRenderer

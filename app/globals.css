@@ -5,34 +5,122 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* Velvet blue theme - using !important to override Tailwind defaults */
+/* Color tokens — referenced by utilities (bg-primary, text-fg, etc.) and
+   directly via var(--color-primary) in inline styles or plain CSS.
+   Night mode is the default. Day mode overrides below via [data-theme="day"]. */
+@theme {
+  /* Brand */
+  --color-primary: #D4AF37;
+  --color-primary-light: #F4E5AD;
+  --color-primary-hover: #E5D59D;
+  --color-primary-dark: #C5A028;
+  --color-on-primary: #000000;
+
+  /* Page backgrounds */
+  --color-bg: #0a1929;
+  --color-surface: #102a43;
+  --color-surface-raised: #1a3a5c;
+  --color-border: #254a6e;
+  --color-surface-alt: #F5F1E8;
+  --color-surface-alt-hover: #EDE8DC;
+  --color-on-surface-alt: #0a1929;
+
+  /* Foreground / text */
+  --color-fg: #ffffff;
+  --color-fg-muted: #a1a1aa;
+  --color-fg-subtle: #71717a;
+  --color-fg-dim: #52525b;
+
+  /* Cards inside the page */
+  --color-card: #18181b;
+  --color-card-raised: #27272a;
+  --color-card-hover: #3f3f46;
+  --color-card-muted: #52525b;
+
+  /* Outlines */
+  --color-outline: #3f3f46;
+  --color-outline-strong: #52525b;
+  --color-outline-subtle: #27272a;
+
+  /* Header bar */
+  --color-header-bg: #0a1929;
+}
+
+/* Day theme — swap brand + surface + text tokens; utilities flip automatically. */
+[data-theme="day"] {
+  --color-primary: #0066ff;
+  --color-primary-light: #FFD700;
+  --color-primary-hover: #3385ff;
+  --color-primary-dark: #0052cc;
+  --color-on-primary: #ffffff;
+
+  --color-bg: #ffffff;
+  --color-surface: #f8f9fa;
+  --color-surface-raised: #eef2f7;
+  --color-border: #cbd5e1;
+  --color-surface-alt: #fffef5;
+  --color-surface-alt-hover: #fff9cc;
+  --color-on-surface-alt: #0f172a;
+
+  --color-fg: #0f172a;
+  --color-fg-muted: #475569;
+  --color-fg-subtle: #64748b;
+  --color-fg-dim: #94a3b8;
+
+  --color-card: #ffffff;
+  --color-card-raised: #f8fafc;
+  --color-card-hover: #f1f5f9;
+  --color-card-muted: #e2e8f0;
+
+  --color-outline: #e2e8f0;
+  --color-outline-strong: #cbd5e1;
+  --color-outline-subtle: #f1f5f9;
+
+  --color-header-bg: #FFD700;
+}
+
 html, body {
-  background:
-    /* Fractal noise texture - organic, varied grain */
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='velvet'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.12' numOctaves='3' seed='15' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23velvet)' opacity='0.06'/%3E%3C/svg%3E"),
-    /* Radial vignette for depth */
-    radial-gradient(ellipse at center, #102a43 0%, #0a1929 100%) !important;
-  background-attachment: fixed !important;
-  background-color: #0a1929 !important;
-  color: #ededed;
+  background-color: var(--color-bg) !important;
+  color: var(--color-fg);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Logo swap: animated in night, static in day */
+.logo-static { display: none; }
+[data-theme="day"] .logo-animated { display: none; }
+[data-theme="day"] .logo-static { display: block; }
+
+/* Hero title: white in day theme (over dark overlay); night uses default text-fg */
+[data-theme="day"] .hero-title { color: #ffffff; }
+
+/* Session highlight card: yellow bg in day only */
+[data-theme="day"] .session-highlight-card {
+  background-color: var(--color-primary-light) !important;
+}
+
+/* Session selector pills inside the card: white in day only */
+[data-theme="day"] .session-highlight-card .session-pill {
+  background-color: #ffffff !important;
+}
+[data-theme="day"] .session-highlight-card .session-pill[aria-pressed="true"] .session-pill-time {
+  color: var(--color-primary) !important;
 }
 
 /* Utility classes for velvet backgrounds */
 .bg-velvet {
-  background-color: #102a43 !important;
+  background-color: var(--color-surface) !important;
 }
 
 .bg-velvet-dark {
-  background-color: #0a1929 !important;
+  background-color: var(--color-bg) !important;
 }
 
 .bg-velvet-light {
-  background-color: #1a3a5c !important;
+  background-color: var(--color-surface-raised) !important;
 }
 
 .bg-velvet-card {
-  background-color: rgba(16, 42, 67, 0.8) !important;
+  background-color: color-mix(in srgb, var(--color-surface) 80%, transparent) !important;
   backdrop-filter: blur(8px);
 }
 

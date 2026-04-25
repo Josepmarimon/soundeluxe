@@ -112,7 +112,7 @@ export default function VoteButton({
   if (checkingVote) {
     return (
       <div className="flex items-center gap-2">
-        <div className="animate-pulse bg-[#1a3a5c] h-10 w-32 rounded-full" />
+        <div className="animate-pulse bg-surface-raised h-10 w-32 rounded-full" />
       </div>
     )
   }
@@ -128,8 +128,8 @@ export default function VoteButton({
           flex items-center gap-1.5
           ${
             hasVoted
-              ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028]'
-              : 'bg-[#0a1929] text-white hover:bg-[#1a3a5c] border border-[#D4AF37]/30'
+              ? 'bg-primary text-on-primary hover:bg-primary-dark'
+              : 'bg-bg text-fg hover:bg-surface-raised border border-primary/30'
           }
         `}
       >
@@ -151,11 +151,11 @@ export default function VoteButton({
       </button>
 
       {showCount && (
-        <div className="flex items-center gap-1 px-2.5 py-1.5 bg-[#D4AF37]/20 rounded-full border border-[#D4AF37]/30">
-          <svg className="w-3.5 h-3.5 text-[#D4AF37]" fill="currentColor" viewBox="0 0 24 24">
+        <div className="flex items-center gap-1 px-2.5 py-1.5 bg-primary/20 rounded-full border border-primary/30">
+          <svg className="w-3.5 h-3.5 text-primary" fill="currentColor" viewBox="0 0 24 24">
             <path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/>
           </svg>
-          <span className="text-[#D4AF37] font-bold text-sm">{voteCount}</span>
+          <span className="text-primary font-bold text-sm">{voteCount}</span>
         </div>
       )}
     </div>

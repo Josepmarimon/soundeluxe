@@ -76,13 +76,13 @@ export default function NewsletterForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={t('placeholder')}
-          className="flex-1 px-6 py-4 bg-white/10 border border-zinc-700 rounded-full text-white placeholder-zinc-400 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all"
+          className="flex-1 px-6 py-4 bg-white/10 border border-outline rounded-full text-fg placeholder-zinc-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
           disabled={status === 'loading'}
         />
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="px-8 py-4 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black rounded-full font-semibold hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          className="px-8 py-4 bg-primary text-on-primary rounded-full font-semibold hover:bg-primary-dark transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
         >
           {status === 'loading' ? t('subscribing') : t('subscribe')}
         </button>
@@ -95,14 +95,14 @@ export default function NewsletterForm() {
           id="newsletter-consent"
           checked={consent}
           onChange={(e) => setConsent(e.target.checked)}
-          className="mt-1 w-4 h-4 rounded border-zinc-600 bg-white/10 text-[#D4AF37] focus:ring-[#D4AF37] focus:ring-offset-0"
+          className="mt-1 w-4 h-4 rounded border-outline-strong bg-white/10 text-primary focus:ring-primary focus:ring-offset-0"
           disabled={status === 'loading'}
         />
-        <label htmlFor="newsletter-consent" className="text-sm text-zinc-400">
+        <label htmlFor="newsletter-consent" className="text-sm text-fg-muted">
           {t('privacyConsent')}{' '}
           <Link
             href={`/${locale}/privacy`}
-            className="text-[#D4AF37] hover:text-[#F4E5AD] underline"
+            className="text-primary hover:text-primary-light underline"
           >
             {t('privacyLink')}
           </Link>

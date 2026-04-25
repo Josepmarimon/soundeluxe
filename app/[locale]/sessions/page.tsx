@@ -18,14 +18,14 @@ export default async function SessionsPage() {
     : {}
 
   return (
-    <div className="min-h-screen bg-transparent pt-16">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-fg mb-4">
             {t('sessions.title')}
           </h1>
-          <p className="text-xl text-zinc-400">
+          <p className="text-xl text-fg-muted">
             {t('common.tagline')}
           </p>
         </div>
@@ -40,7 +40,7 @@ export default async function SessionsPage() {
         {/* Sessions with Filters */}
         {sessions.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-zinc-400 text-lg">
+            <p className="text-fg-muted text-lg">
               {t('sessions.noSessions')}
             </p>
           </div>

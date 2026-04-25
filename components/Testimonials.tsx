@@ -17,7 +17,7 @@ function StarRating({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((star) => (
         <svg
           key={star}
-          className={`w-4 h-4 ${star <= rating ? 'text-[#D4AF37]' : 'text-zinc-600'}`}
+          className={`w-4 h-4 ${star <= rating ? 'text-primary' : 'text-fg-dim'}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -41,11 +41,11 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
     : testimonial.sessionText
 
   return (
-    <div className="bg-[#F5F1E8] rounded-2xl p-6 flex flex-col h-full">
+    <div className="bg-surface-alt rounded-2xl p-6 flex flex-col h-full">
       {/* Header with photo and info */}
       <div className="flex items-center gap-4 mb-4">
         {/* Photo or initials */}
-        <div className="w-14 h-14 rounded-full overflow-hidden bg-gradient-to-br from-[#D4AF37] to-[#F4E5AD] flex items-center justify-center flex-shrink-0">
+        <div className="w-14 h-14 rounded-full overflow-hidden bg-primary flex items-center justify-center flex-shrink-0">
           {photoUrl ? (
             <Image
               src={photoUrl}
@@ -55,7 +55,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
               className="w-full h-full object-cover"
             />
           ) : (
-            <span className="text-[#0a1929] font-bold text-lg">
+            <span className="text-bg font-bold text-lg">
               {testimonial.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
             </span>
           )}
@@ -63,8 +63,8 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
 
         {/* Name and profession */}
         <div className="flex-1 min-w-0">
-          <h4 className="font-bold text-[#0a1929] truncate">{testimonial.name}</h4>
-          <p className="text-sm text-zinc-600 truncate">{testimonial.profession}</p>
+          <h4 className="font-bold text-bg truncate">{testimonial.name}</h4>
+          <p className="text-sm text-fg-dim truncate">{testimonial.profession}</p>
         </div>
       </div>
 
@@ -74,15 +74,15 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
       </div>
 
       {/* Quote */}
-      <blockquote className="text-[#0a1929] text-sm leading-relaxed flex-1 mb-4">
+      <blockquote className="text-bg text-sm leading-relaxed flex-1 mb-4">
         "{quote}"
       </blockquote>
 
       {/* Session info */}
       {sessionInfo && (
-        <div className="pt-4 border-t border-[#D4AF37]/20">
-          <p className="text-xs text-zinc-500">
-            <span className="text-[#D4AF37]">♫</span> {sessionInfo}
+        <div className="pt-4 border-t border-primary/20">
+          <p className="text-xs text-fg-subtle">
+            <span className="text-primary">♫</span> {sessionInfo}
           </p>
         </div>
       )}
@@ -100,11 +100,11 @@ export default function Testimonials({ testimonials, title, subtitle }: Testimon
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-fg mb-4">
             {title || t('testimonials.title')}
           </h2>
           {subtitle && (
-            <p className="text-xl text-zinc-400">{subtitle}</p>
+            <p className="text-xl text-fg-muted">{subtitle}</p>
           )}
         </div>
 

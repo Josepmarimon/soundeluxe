@@ -26,15 +26,15 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
   // Non-staff users see a message to show the QR to staff
   if (userRole !== 'ADMIN' && userRole !== 'EDITOR') {
     return (
-      <div className="min-h-screen bg-[#0a1929] pt-24 pb-16">
+      <div className="min-h-screen bg-bg pt-24 pb-16">
         <div className="max-w-md mx-auto px-4 text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#D4AF37]/20 mb-6">
-            <svg className="w-10 h-10 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 mb-6">
+            <svg className="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-4">{t('checkin.showToStaff')}</h1>
-          <p className="text-zinc-400">{t('checkin.showToStaffNote')}</p>
+          <h1 className="text-2xl font-bold text-fg mb-4">{t('checkin.showToStaff')}</h1>
+          <p className="text-fg-muted">{t('checkin.showToStaffNote')}</p>
         </div>
       </div>
     )
@@ -48,7 +48,7 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
 
   if (!reserva) {
     return (
-      <div className="min-h-screen bg-[#0a1929] pt-24 pb-16">
+      <div className="min-h-screen bg-bg pt-24 pb-16">
         <div className="max-w-md mx-auto px-4 text-center">
           <h1 className="text-2xl font-bold text-red-400">{t('checkin.bookingNotFound')}</h1>
         </div>
@@ -58,10 +58,10 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
 
   if (reserva.status !== 'CONFIRMED') {
     return (
-      <div className="min-h-screen bg-[#0a1929] pt-24 pb-16">
+      <div className="min-h-screen bg-bg pt-24 pb-16">
         <div className="max-w-md mx-auto px-4 text-center">
           <h1 className="text-2xl font-bold text-red-400">{t('checkin.invalidBooking')}</h1>
-          <p className="text-zinc-400 mt-2">Status: {reserva.status}</p>
+          <p className="text-fg-muted mt-2">Status: {reserva.status}</p>
         </div>
       </div>
     )
@@ -82,22 +82,22 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
     : ''
 
   return (
-    <div className="min-h-screen bg-[#0a1929] pt-24 pb-16">
+    <div className="min-h-screen bg-bg pt-24 pb-16">
       <div className="max-w-md mx-auto px-4">
-        <h1 className="text-2xl font-bold text-white mb-8 text-center">{t('checkin.title')}</h1>
+        <h1 className="text-2xl font-bold text-fg mb-8 text-center">{t('checkin.title')}</h1>
 
         {/* Booking details */}
-        <div className="bg-zinc-800/80 rounded-2xl p-6 border border-zinc-700 mb-6">
+        <div className="bg-card-raised/80 rounded-2xl p-6 border border-outline mb-6">
           {/* Guest info */}
           <div className="flex items-center gap-4 mb-5">
-            <div className="w-12 h-12 rounded-full bg-[#D4AF37]/20 flex items-center justify-center">
-              <svg className="w-6 h-6 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
             <div>
-              <p className="text-white font-semibold text-lg">{userName}</p>
-              <p className="text-zinc-400 text-sm">{reserva.user.email}</p>
+              <p className="text-fg font-semibold text-lg">{userName}</p>
+              <p className="text-fg-muted text-sm">{reserva.user.email}</p>
             </div>
           </div>
 
@@ -105,24 +105,24 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
           {sessionData && (
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-zinc-500">{t('checkin.album')}</span>
-                <span className="text-white font-medium">{sessionData.album.title}</span>
+                <span className="text-fg-subtle">{t('checkin.album')}</span>
+                <span className="text-fg font-medium">{sessionData.album.title}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-500">{t('checkin.artist')}</span>
-                <span className="text-zinc-300">{sessionData.album.artist}</span>
+                <span className="text-fg-subtle">{t('checkin.artist')}</span>
+                <span className="text-fg">{sessionData.album.artist}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-500">{t('checkin.date')}</span>
-                <span className="text-zinc-300 text-right text-xs">{sessionDate}</span>
+                <span className="text-fg-subtle">{t('checkin.date')}</span>
+                <span className="text-fg text-right text-xs">{sessionDate}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-500">{t('checkin.venue')}</span>
-                <span className="text-zinc-300">{sessionData.sala.name[locale] || sessionData.sala.name.ca}</span>
+                <span className="text-fg-subtle">{t('checkin.venue')}</span>
+                <span className="text-fg">{sessionData.sala.name[locale] || sessionData.sala.name.ca}</span>
               </div>
-              <div className="border-t border-zinc-700 pt-3 flex justify-between">
-                <span className="text-zinc-400 font-semibold">{t('checkin.places')}</span>
-                <span className="text-[#D4AF37] font-bold text-lg">{reserva.numPlaces}</span>
+              <div className="border-t border-outline pt-3 flex justify-between">
+                <span className="text-fg-muted font-semibold">{t('checkin.places')}</span>
+                <span className="text-primary font-bold text-lg">{reserva.numPlaces}</span>
               </div>
             </div>
           )}

@@ -30,7 +30,7 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
   }
 
   return (
-    <article className="group bg-[#F5F1E8] rounded-lg overflow-hidden hover:bg-[#EDE8DC] transition-colors shadow-md flex flex-col h-full">
+    <article className="group bg-surface-alt rounded-lg overflow-hidden hover:bg-surface-alt-hover transition-colors shadow-md flex flex-col h-full">
       {/* Album Cover Carousel */}
       <div className="relative aspect-square overflow-hidden">
         <AlbumCarousel
@@ -46,14 +46,14 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
         {/* Genre Badge - hidden in voting mode */}
         {!showVoteButton && (
           <div className="mb-2">
-            <span className="inline-block px-3 py-1 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black text-xs font-medium rounded-full shadow-md">
+            <span className="inline-block px-3 py-1 bg-primary text-on-primary text-xs font-medium rounded-full shadow-md">
               {getGenreName(album.genre)}
             </span>
           </div>
         )}
 
         {/* Album Title & Artist */}
-        <h3 className="text-lg font-bold text-black mb-0.5 group-hover:text-[#D4AF37] transition-colors line-clamp-2">
+        <h3 className="text-lg font-bold text-black mb-0.5 group-hover:text-primary transition-colors line-clamp-2">
           {album.title}
         </h3>
         <p className="text-zinc-700 text-sm">{album.artist}, {album.year}</p>
@@ -69,11 +69,11 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
                 {album.salePrice.toFixed(2)} €
               </div>
               {album.inStock ? (
-                <button className="px-6 py-2 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black font-semibold rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all">
+                <button className="px-6 py-2 bg-primary text-on-primary font-semibold rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all">
                   {t('albums.buyNow')}
                 </button>
               ) : (
-                <span className="text-sm text-zinc-500 italic">
+                <span className="text-sm text-fg-subtle italic">
                   {t('albums.outOfStock')}
                 </span>
               )}
@@ -96,7 +96,7 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
                 href={album.links.spotify}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-600 hover:text-[#1DB954] transition-colors"
+                className="text-fg-dim hover:text-[#1DB954] transition-colors"
                 title="Spotify"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -109,7 +109,7 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
                 href={album.links.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-600 hover:text-[#FF0000] transition-colors"
+                className="text-fg-dim hover:text-[#FF0000] transition-colors"
                 title="YouTube"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -122,7 +122,7 @@ export default function AlbumCard({ album, showVoteButton = false }: AlbumCardPr
                 href={album.links.appleMusic}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-600 hover:text-[#FA243C] transition-colors"
+                className="text-fg-dim hover:text-[#FA243C] transition-colors"
                 title="Apple Music"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

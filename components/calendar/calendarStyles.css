@@ -1,12 +1,12 @@
 /* Custom DayPicker theme for Sound Deluxe */
 .rdp-root {
-  --rdp-accent-color: #D4AF37;
-  --rdp-accent-background-color: rgba(212, 175, 55, 0.2);
+  --rdp-accent-color: var(--color-primary);
+  --rdp-accent-background-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
 
-  background: #F5F1E8;
+  background: var(--color-surface-alt);
   border-radius: 12px;
   padding: 16px;
-  border: 1px solid #D4AF37;
+  border: 1px solid var(--color-primary);
   font-family: inherit;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
@@ -20,7 +20,7 @@
 }
 
 .rdp-caption_label {
-  color: #0a1929;
+  color: var(--color-on-surface-alt);
   font-weight: 600;
   font-size: 1.125rem;
   text-transform: capitalize;
@@ -34,7 +34,7 @@
 
 .rdp-button_previous,
 .rdp-button_next {
-  color: #D4AF37;
+  color: var(--color-primary);
   width: 32px;
   height: 32px;
   display: flex;
@@ -46,12 +46,12 @@
 
 .rdp-button_previous:hover,
 .rdp-button_next:hover {
-  background: rgba(212, 175, 55, 0.3);
+  background: color-mix(in srgb, var(--color-primary) 30%, transparent);
 }
 
 /* Weekday headers */
 .rdp-weekday {
-  color: #D4AF37;
+  color: var(--color-primary);
   font-weight: 500;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -78,42 +78,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0a1929;
+  color: var(--color-on-surface-alt);
   border-radius: 8px;
   cursor: pointer;
   position: relative;
 }
 
 .rdp-day_button:hover {
-  background: rgba(212, 175, 55, 0.2);
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
 }
 
 /* Selected day */
 .rdp-selected .rdp-day_button {
-  background: linear-gradient(135deg, #D4AF37 0%, #F4E5AD 50%, #D4AF37 100%);
-  color: #0a1929;
+  background: var(--color-primary);
+  color: var(--color-on-surface-alt);
   font-weight: 600;
 }
 
 /* Today */
 .rdp-today .rdp-day_button {
-  border: 2px solid #D4AF37;
+  border: 2px solid var(--color-primary);
 }
 
 /* Outside days (other months) */
 .rdp-outside .rdp-day_button {
-  color: rgba(10, 25, 41, 0.3);
+  color: color-mix(in srgb, var(--color-on-surface-alt) 30%, transparent);
 }
 
 /* Days with sessions - background highlight */
 .rdp-day.has-sessions .rdp-day_button {
-  background: rgba(212, 175, 55, 0.25);
+  background: color-mix(in srgb, var(--color-primary) 25%, transparent);
   font-weight: 600;
-  color: #0a1929;
+  color: var(--color-on-surface-alt);
 }
 
 .rdp-day.has-sessions .rdp-day_button:hover {
-  background: rgba(212, 175, 55, 0.4);
+  background: color-mix(in srgb, var(--color-primary) 40%, transparent);
 }
 
 /* Days with sessions indicator dot */
@@ -125,23 +125,23 @@
   transform: translateX(-50%);
   width: 8px;
   height: 8px;
-  background: linear-gradient(135deg, #D4AF37, #F4E5AD);
+  background: var(--color-primary);
   border-radius: 50%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* When selected, adjust styles */
 .rdp-day.has-sessions.rdp-selected .rdp-day_button {
-  background: linear-gradient(135deg, #D4AF37 0%, #F4E5AD 50%, #D4AF37 100%);
+  background: var(--color-primary);
 }
 
 .rdp-day.has-sessions.rdp-selected .rdp-day_button::after {
-  background: #0a1929;
+  background: var(--color-on-surface-alt);
 }
 
 /* Disabled days */
 .rdp-disabled .rdp-day_button {
-  color: rgba(10, 25, 41, 0.2);
+  color: color-mix(in srgb, var(--color-on-surface-alt) 20%, transparent);
   cursor: not-allowed;
 }
 

@@ -46,7 +46,7 @@ export default function Footer({ footerData }: FooterProps) {
                          footerData?.contactInfo?.address?.[locale]
 
   return (
-    <footer className="bg-[#0a1929] border-t border-[#254a6e]/30">
+    <footer className="bg-bg border-t border-border/30">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -55,11 +55,11 @@ export default function Footer({ footerData }: FooterProps) {
               <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                 <span className="text-black font-bold text-lg">SD</span>
               </div>
-              <span className="text-white font-bold text-xl">
+              <span className="text-fg font-bold text-xl">
                 {t('common.soundDeluxe')}
               </span>
             </div>
-            <p className="text-zinc-300 max-w-md">
+            <p className="text-fg max-w-md">
               {description}
             </p>
 
@@ -69,7 +69,7 @@ export default function Footer({ footerData }: FooterProps) {
                 {footerData?.contactInfo?.phone && (
                   <a
                     href={`tel:${footerData.contactInfo.phone.replace(/\s/g, '')}`}
-                    className="block text-zinc-300 hover:text-white transition-colors"
+                    className="block text-fg hover:text-fg transition-colors"
                   >
                     {footerData.contactInfo.phone}
                   </a>
@@ -77,13 +77,13 @@ export default function Footer({ footerData }: FooterProps) {
                 {footerData?.contactInfo?.email && (
                   <a
                     href={`mailto:${footerData.contactInfo.email}`}
-                    className="block text-zinc-300 hover:text-white transition-colors"
+                    className="block text-fg hover:text-fg transition-colors"
                   >
                     {footerData.contactInfo.email}
                   </a>
                 )}
                 {footerData?.contactInfo?.address?.[locale] && (
-                  <p className="text-zinc-400 text-sm">
+                  <p className="text-fg-muted text-sm">
                     {footerData.contactInfo.address[locale]}
                   </p>
                 )}
@@ -93,14 +93,14 @@ export default function Footer({ footerData }: FooterProps) {
 
           {/* Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">
+            <h3 className="text-fg font-semibold mb-4">
               {linksTitle}
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href={`/${locale}`}
-                  className="text-zinc-300 hover:text-white transition-colors"
+                  className="text-fg hover:text-fg transition-colors"
                 >
                   {t('navigation.home')}
                 </Link>
@@ -108,7 +108,7 @@ export default function Footer({ footerData }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/sessions`}
-                  className="text-zinc-300 hover:text-white transition-colors"
+                  className="text-fg hover:text-fg transition-colors"
                 >
                   {t('navigation.sessions')}
                 </Link>
@@ -116,7 +116,7 @@ export default function Footer({ footerData }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/about`}
-                  className="text-zinc-300 hover:text-white transition-colors"
+                  className="text-fg hover:text-fg transition-colors"
                 >
                   {t('navigation.about')}
                 </Link>
@@ -124,7 +124,7 @@ export default function Footer({ footerData }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/contact`}
-                  className="text-zinc-300 hover:text-white transition-colors"
+                  className="text-fg hover:text-fg transition-colors"
                 >
                   {t('navigation.contact')}
                 </Link>
@@ -134,14 +134,14 @@ export default function Footer({ footerData }: FooterProps) {
 
           {/* Legal */}
           <div>
-            <h3 className="text-white font-semibold mb-4">
+            <h3 className="text-fg font-semibold mb-4">
               {legalTitle}
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href={`/${locale}/privacy`}
-                  className="text-zinc-300 hover:text-white transition-colors"
+                  className="text-fg hover:text-fg transition-colors"
                 >
                   {t('footer.privacy')}
                 </Link>
@@ -149,7 +149,7 @@ export default function Footer({ footerData }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/terms`}
-                  className="text-zinc-300 hover:text-white transition-colors"
+                  className="text-fg hover:text-fg transition-colors"
                 >
                   {t('footer.terms')}
                 </Link>
@@ -157,7 +157,7 @@ export default function Footer({ footerData }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/cookies`}
-                  className="text-zinc-300 hover:text-white transition-colors"
+                  className="text-fg hover:text-fg transition-colors"
                 >
                   {t('footer.cookies')}
                 </Link>
@@ -165,7 +165,7 @@ export default function Footer({ footerData }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/faq`}
-                  className="text-zinc-300 hover:text-white transition-colors"
+                  className="text-fg hover:text-fg transition-colors"
                 >
                   {t('footer.faq')}
                 </Link>
@@ -175,9 +175,9 @@ export default function Footer({ footerData }: FooterProps) {
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-[#254a6e]/30">
+        <div className="mt-12 pt-8 border-t border-border/30">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-zinc-400 text-sm">
+            <p className="text-fg-muted text-sm">
               {copyright}
             </p>
             <div className="flex items-center gap-6">
@@ -189,8 +189,8 @@ export default function Footer({ footerData }: FooterProps) {
                     onClick={() => changeLocale(loc)}
                     className={`px-2 py-1 text-xs font-medium transition-colors rounded ${
                       locale === loc
-                        ? 'text-[#D4AF37]'
-                        : 'text-zinc-400 hover:text-white'
+                        ? 'text-primary'
+                        : 'text-fg-muted hover:text-fg'
                     }`}
                   >
                     {loc.toUpperCase()}
@@ -206,7 +206,7 @@ export default function Footer({ footerData }: FooterProps) {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-zinc-300 hover:text-white transition-colors"
+                      className="text-fg hover:text-fg transition-colors"
                     >
                       {link.name}
                     </a>

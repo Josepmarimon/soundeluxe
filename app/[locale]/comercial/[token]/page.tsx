@@ -53,12 +53,12 @@ export default async function ComercialPage({ params, searchParams }: Props) {
   // Check expiration
   if (link.expiresAt && new Date(link.expiresAt) < new Date()) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 to-black">
+      <div className="min-h-screen flex items-center justify-center bg-black">
         <div className="text-center p-8 max-w-md">
-          <h1 className="text-2xl font-bold text-white mb-4">{t('expiredTitle', lang)}</h1>
+          <h1 className="text-2xl font-bold text-fg mb-4">{t('expiredTitle', lang)}</h1>
           <p className="text-gray-400">
             {t('expiredText', lang)}{' '}
-            <a href="mailto:info@soundeluxe.es" className="text-[#D4AF37] hover:text-[#c4a030]">
+            <a href="mailto:info@soundeluxe.es" className="text-primary hover:text-[#c4a030]">
               info@soundeluxe.es
             </a>
             {' '}{t('expiredRequestNew', lang)}

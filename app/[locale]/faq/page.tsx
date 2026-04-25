@@ -23,9 +23,9 @@ export default async function FAQPageRoute({ params }: { params: Promise<{ local
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
         <header className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{title}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-fg mb-4">{title}</h1>
           {subtitle && (
-            <p className="text-xl text-zinc-400 max-w-2xl mx-auto">{subtitle}</p>
+            <p className="text-xl text-fg-muted max-w-2xl mx-auto">{subtitle}</p>
           )}
         </header>
 
@@ -39,7 +39,7 @@ export default async function FAQPageRoute({ params }: { params: Promise<{ local
         {/* Cancellation Policy */}
         {pageConfig?.cancellationPolicy?.[typedLocale] && (
           <section className="mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 pb-2 border-b border-zinc-700">
+            <h2 className="text-2xl md:text-3xl font-bold text-fg mb-6 pb-2 border-b border-outline">
               {pageConfig.cancellationTitle?.[typedLocale] || t('cancellationTitle')}
             </h2>
             <div className="prose prose-invert prose-zinc max-w-none">
@@ -53,7 +53,7 @@ export default async function FAQPageRoute({ params }: { params: Promise<{ local
           <>
             {pageConfig.additionalPolicies.map((policy) => (
               <section key={policy._key} className="mb-12">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 pb-2 border-b border-zinc-700">
+                <h2 className="text-2xl md:text-3xl font-bold text-fg mb-6 pb-2 border-b border-outline">
                   {policy.sectionTitle?.[typedLocale]}
                 </h2>
                 {policy.content?.[typedLocale] && (
@@ -68,11 +68,11 @@ export default async function FAQPageRoute({ params }: { params: Promise<{ local
 
         {/* Contact Info */}
         {pageConfig?.contactInfo?.[typedLocale] && (
-          <section className="mt-12 p-6 bg-zinc-900/50 rounded-lg border border-zinc-800">
-            <p className="text-zinc-300">{pageConfig.contactInfo[typedLocale]}</p>
+          <section className="mt-12 p-6 bg-card/50 rounded-lg border border-outline-subtle">
+            <p className="text-fg">{pageConfig.contactInfo[typedLocale]}</p>
             <a
               href="mailto:info@soundeluxe.com"
-              className="inline-block mt-2 text-[#D4AF37] hover:text-[#F4E5AD] transition-colors font-medium"
+              className="inline-block mt-2 text-primary hover:text-primary-light transition-colors font-medium"
             >
               info@soundeluxe.com
             </a>
@@ -80,10 +80,10 @@ export default async function FAQPageRoute({ params }: { params: Promise<{ local
         )}
 
         {/* Back link */}
-        <div className="mt-12 pt-8 border-t border-zinc-800">
+        <div className="mt-12 pt-8 border-t border-outline-subtle">
           <Link
             href="/"
-            className="text-zinc-400 hover:text-white transition-colors"
+            className="text-fg-muted hover:text-fg transition-colors"
           >
             &larr; {t('backToHome')}
           </Link>

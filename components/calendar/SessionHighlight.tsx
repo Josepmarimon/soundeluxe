@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { parseISO, differenceInDays, differenceInHours } from 'date-fns'
 import Image from 'next/image'
@@ -12,6 +13,7 @@ interface CalendarSession {
   date: string
   price: number
   totalPlaces: number
+  durationMinutes?: number
   album: {
     _id: string
     title: string
@@ -38,17 +40,18 @@ interface SessionHighlightProps {
 export default function SessionHighlight({ sessions, isNextSession, selectedDate }: SessionHighlightProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
+  const [selectedSessionIndex, setSelectedSessionIndex] = useState(0)
 
   if (sessions.length === 0 || !selectedDate) {
     return (
-      <div className="bg-zinc-900/50 backdrop-blur-sm rounded-2xl border border-zinc-800 p-8 h-full flex items-center justify-center">
-        <p className="text-zinc-500 text-center">{t('calendar.selectDate')}</p>
+      <div className="bg-card/50 backdrop-blur-sm rounded-2xl border border-outline-subtle p-8 h-full flex items-center justify-center">
+        <p className="text-fg-subtle text-center">{t('calendar.selectDate')}</p>
       </div>
     )
   }
 
-  // Use first session for main display
-  const session = sessions[0]
+  const safeIndex = Math.min(selectedSessionIndex, sessions.length - 1)
+  const session = sessions[safeIndex]
   const sessionDate = parseISO(session.date)
   const now = new Date()
   const daysUntil = differenceInDays(sessionDate, now)
@@ -84,9 +87,9 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
     : '/placeholder-album.jpg'
 
   return (
-    <div className="bg-gradient-to-br from-zinc-900/90 to-zinc-800/90 backdrop-blur-sm rounded-2xl border border-[#D4AF37]/30 overflow-hidden shadow-xl h-full">
+    <div className="session-highlight-card bg-card/90 backdrop-blur-sm rounded-2xl border border-primary/30 overflow-hidden shadow-xl h-full">
       {/* Header badge */}
-      <div className="bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] px-4 py-2.5">
+      <div className="bg-primary px-4 py-2.5">
         <div className="flex items-center justify-between">
           <span className="text-black font-bold text-sm uppercase tracking-wide">
             {isNextSession ? t('sessions.upcomingSession') : t('calendar.sessionsOnDate')}
@@ -118,14 +121,6 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
                 sizes="(max-width: 768px) 100vw, 300px"
               />
 
-              {/* Places badge */}
-              <div className="absolute top-3 right-3">
-                <span className="inline-block px-3 py-1.5 bg-black/80 backdrop-blur-sm text-white text-xs font-semibold rounded-full">
-                  {session.totalPlaces === 1
-                    ? t('sessions.onePlace')
-                    : t('sessions.placesAvailable', { count: session.totalPlaces })}
-                </span>
-              </div>
             </div>
           </div>
 
@@ -133,52 +128,93 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
           <div className="flex-1 flex flex-col justify-between">
             {/* Album info */}
             <div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 line-clamp-2">
+              <h3 className="text-2xl md:text-3xl font-bold text-fg mb-2 line-clamp-2">
                 {session.album.title}
               </h3>
-              <p className="text-xl text-[#D4AF37] font-medium mb-4">
+              <p className="text-xl text-primary font-medium mb-4">
                 {session.album.artist}
               </p>
 
               {/* Session metadata - Grid layout */}
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {/* Date */}
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-4 h-4 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex items-center gap-2.5 text-fg">
+                  <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500">{t('sessions.date')}</p>
+                    <p className="text-xs text-fg-subtle">{t('sessions.date')}</p>
                     <p className="text-sm font-medium capitalize">{formattedDate}</p>
                   </div>
                 </div>
 
-                {/* Time */}
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-4 h-4 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* Time / Session selector */}
+                <div className={`flex items-start gap-2.5 text-fg ${sessions.length > 1 ? 'col-span-2' : ''}`}>
+                  <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <div>
-                    <p className="text-xs text-zinc-500">{t('nextSession.time')}</p>
-                    <p className="text-sm font-medium">{formattedTime}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs text-fg-subtle">
+                      {sessions.length > 1 ? t('calendar.pickSession') : t('nextSession.time')}
+                    </p>
+                    {sessions.length > 1 ? (
+                      <div className="flex flex-wrap gap-1.5 mt-1.5">
+                        {sessions.map((s, idx) => {
+                          const sTime = parseISO(s.date).toLocaleTimeString(locale, {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })
+                          const isActive = idx === safeIndex
+                          return (
+                            <button
+                              key={s._id}
+                              type="button"
+                              onClick={() => setSelectedSessionIndex(idx)}
+                              aria-pressed={isActive}
+                              className={`session-pill flex flex-col items-start px-3 py-1 rounded-lg border transition-all ${
+                                isActive
+                                  ? 'border-primary bg-primary/15'
+                                  : 'border-outline hover:bg-card-hover/50'
+                              }`}
+                            >
+                              <span className={`session-pill-time text-sm font-bold leading-tight ${isActive ? 'text-primary' : 'text-fg'}`}>
+                                {sTime}
+                              </span>
+                              <span className="text-[10px] text-fg-muted leading-tight">
+                                {s.durationMinutes ? `${s.durationMinutes} min · ` : ''}
+                                {t('sessions.placesShort', { count: s.totalPlaces })}
+                              </span>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <>
+                        <p className="text-sm font-medium">{formattedTime}</p>
+                        <p className="text-xs text-fg-muted">
+                          {session.durationMinutes ? `${session.durationMinutes} min · ` : ''}
+                          {t('sessions.placesShort', { count: session.totalPlaces })}
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
 
                 {/* Venue */}
                 {session.sala && (
-                  <div className="flex items-center gap-2.5 text-zinc-300">
-                    <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2.5 text-fg">
+                    <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-500">{t('sessions.venue')}</p>
+                      <p className="text-xs text-fg-subtle">{t('sessions.venue')}</p>
                       <p className="text-sm font-medium">{session.sala.name[locale]}</p>
                     </div>
                   </div>
@@ -186,14 +222,14 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
 
                 {/* Session Type */}
                 {session.sessionType && (
-                  <div className="flex items-center gap-2.5 text-zinc-300">
-                    <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2.5 text-fg">
+                    <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-500">{t('sessions.sessionType')}</p>
+                      <p className="text-xs text-fg-subtle">{t('sessions.sessionType')}</p>
                       <p className="text-sm font-medium">{session.sessionType.name[locale]}</p>
                     </div>
                   </div>
@@ -202,16 +238,20 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
             </div>
 
             {/* Price and CTA */}
-            <div className="flex items-center justify-between gap-4 pt-4 border-t border-zinc-700">
+            <div className="flex items-center justify-between gap-4 pt-4 border-t border-outline">
               <div>
-                <p className="text-xs text-zinc-500">{t('nextSession.priceFrom')}</p>
-                <p className="text-3xl font-bold text-white">{session.price}€</p>
+                <p className="text-xs text-fg-subtle">{t('nextSession.priceFrom')}</p>
+                <p className="text-3xl font-bold text-fg">{session.price}€</p>
               </div>
               <a
+                key={session._id}
                 href={`/${locale}/sessions/${session._id}`}
-                className="bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-6 py-3 rounded-full font-bold text-sm hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-lg flex items-center gap-2"
+                className="bg-primary text-on-primary px-6 py-3 rounded-full font-bold text-sm hover:bg-primary-dark transition-all shadow-lg flex items-center gap-2"
               >
                 {t('sessions.bookNow')}
+                {sessions.length > 1 && (
+                  <span className="font-semibold opacity-80">· {formattedTime}</span>
+                )}
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -220,45 +260,6 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
           </div>
         </div>
 
-        {/* Additional sessions on the same date */}
-        {sessions.length > 1 && (
-          <div className="mt-6 pt-5 border-t border-zinc-700">
-            <p className="text-sm text-zinc-400 mb-3">{t('calendar.moreSessions')}</p>
-            <div className="flex gap-3 overflow-x-auto pb-2">
-              {sessions.slice(1).map((s) => {
-                const sImageUrl = s.album.coverImage
-                  ? (urlForImage(s.album.coverImage)?.width(100).height(100).url() ?? '/placeholder-album.jpg')
-                  : '/placeholder-album.jpg'
-                const sTime = parseISO(s.date).toLocaleTimeString(locale, {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })
-
-                return (
-                  <a
-                    key={s._id}
-                    href={`/${locale}/sessions/${s._id}`}
-                    className="flex-shrink-0 flex items-center gap-3 bg-zinc-800/50 rounded-lg p-2 hover:bg-zinc-700/50 transition-colors"
-                  >
-                    <div className="relative w-12 h-12 rounded overflow-hidden">
-                      <Image
-                        src={sImageUrl}
-                        alt={s.album.title}
-                        fill
-                        className="object-cover"
-                        sizes="48px"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-white truncate max-w-[120px]">{s.album.title}</p>
-                      <p className="text-xs text-zinc-400">{sTime} · {s.price}€</p>
-                    </div>
-                  </a>
-                )
-              })}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )

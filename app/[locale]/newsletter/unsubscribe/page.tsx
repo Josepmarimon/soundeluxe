@@ -54,10 +54,10 @@ export default async function NewsletterUnsubscribePage({ searchParams }: Props)
             <div className="mb-6 flex justify-center">
               <CheckCircle className="w-20 h-20 text-green-500" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-4">
+            <h1 className="text-3xl font-bold text-fg mb-4">
               {t('unsubscribeTitle')}
             </h1>
-            <p className="text-zinc-300 mb-8">
+            <p className="text-fg mb-8">
               {result.alreadyUnsubscribed ? t('alreadyUnsubscribed') : t('unsubscribeMessage')}
             </p>
           </>
@@ -66,10 +66,10 @@ export default async function NewsletterUnsubscribePage({ searchParams }: Props)
             <div className="mb-6 flex justify-center">
               <XCircle className="w-20 h-20 text-red-500" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-4">
+            <h1 className="text-3xl font-bold text-fg mb-4">
               {t('confirmError')}
             </h1>
-            <p className="text-zinc-300 mb-8">
+            <p className="text-fg mb-8">
               {t('confirmError')}
             </p>
           </>
@@ -79,7 +79,7 @@ export default async function NewsletterUnsubscribePage({ searchParams }: Props)
           {result.success && (
             <Link
               href="/"
-              className="inline-block text-[#D4AF37] hover:text-[#F4E5AD] transition-colors mr-4"
+              className="inline-block text-primary hover:text-primary-light transition-colors mr-4"
             >
               {t('unsubscribeResubscribe')}
             </Link>
@@ -87,7 +87,7 @@ export default async function NewsletterUnsubscribePage({ searchParams }: Props)
 
           <Link
             href="/"
-            className="inline-block bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-8 py-3 rounded-full font-semibold hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all"
+            className="inline-block bg-primary text-on-primary px-8 py-3 rounded-full font-semibold hover:bg-primary-dark transition-all"
           >
             {t('backHome')}
           </Link>

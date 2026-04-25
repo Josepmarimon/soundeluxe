@@ -34,10 +34,11 @@
     "allSessions": "All sessions",
     "upcomingSession": "Next session",
     "noSessions": "No sessions scheduled",
-    "bookNow": "Book now",
+    "bookNow": "Buy",
     "book": "Reserve",
     "soldOut": "Sold out",
     "placesAvailable": "{count} spots available",
+    "placesShort": "{count} spots",
     "onePlace": "1 spot available",
     "price": "€{price}",
     "date": "Date",
@@ -76,7 +77,7 @@
   },
   "booking": {
     "title": "Book spot",
-    "bookNow": "Book now",
+    "bookNow": "Buy",
     "loginToBook": "Log in to book",
     "selectPlaces": "How many spots?",
     "places": "Spots",
@@ -324,7 +325,8 @@
     "close": "Close",
     "selectDate": "Select a date with sessions",
     "sessionsOnDate": "Sessions on this date",
-    "moreSessions": "More sessions this day"
+    "moreSessions": "More sessions this day",
+    "pickSession": "Pick which session to buy"
   },
   "nextSession": {
     "inDays": "In {days} days",

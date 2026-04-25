@@ -40,7 +40,7 @@ export default function VoteCount({ albumId, compact = false }: VoteCountProps) 
 
   if (compact) {
     return (
-      <div className="flex items-center gap-1.5 text-zinc-600">
+      <div className="flex items-center gap-1.5 text-fg-dim">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -61,7 +61,7 @@ export default function VoteCount({ albumId, compact = false }: VoteCountProps) 
   }
 
   return (
-    <div className="flex items-center gap-2 text-zinc-300">
+    <div className="flex items-center gap-2 text-fg">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

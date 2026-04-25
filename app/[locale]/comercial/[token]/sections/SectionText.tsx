@@ -41,14 +41,14 @@ export default function SectionText({ content, image }: Props) {
                   className="w-full h-64 md:h-80 object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 rounded-2xl bg-black/40 pointer-events-none" />
               <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/5 pointer-events-none" />
             </motion.div>
           )}
 
           <motion.div
             variants={fadeInUp}
-            className="text-gray-400 text-lg text-center max-w-2xl mx-auto leading-relaxed prose prose-invert prose-lg prose-p:text-gray-400 prose-strong:text-white prose-em:text-gray-300"
+            className="text-gray-400 text-lg text-center max-w-2xl mx-auto leading-relaxed prose prose-invert prose-lg prose-p:text-gray-400 prose-strong:text-fg prose-em:text-gray-300"
             dangerouslySetInnerHTML={{ __html: content.body }}
           />
         </motion.div>

@@ -15,14 +15,14 @@ export default async function SalasPage() {
   const salas: Sala[] = await client.fetch(salasQuery)
 
   return (
-    <div className="min-h-screen bg-transparent pt-16">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-fg mb-4">
             {t('salas.title')}
           </h1>
-          <p className="text-xl text-zinc-400">
+          <p className="text-xl text-fg-muted">
             {t('salas.subtitle')}
           </p>
         </div>
@@ -30,7 +30,7 @@ export default async function SalasPage() {
         {/* Salas Grid */}
         {salas.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-zinc-400 text-lg">
+            <p className="text-fg-muted text-lg">
               No hi ha sales disponibles
             </p>
           </div>
@@ -45,7 +45,7 @@ export default async function SalasPage() {
                 <Link
                   key={sala._id}
                   href={`/${locale}/salas/${sala._id}`}
-                  className="group bg-[#0a1929]/80 rounded-xl overflow-hidden border border-[#254a6e]/30 hover:border-[#D4AF37]/50 transition-all duration-300"
+                  className="group bg-bg/80 rounded-xl overflow-hidden border border-border/30 hover:border-primary/50 transition-all duration-300"
                 >
                   {/* Photo */}
                   <div className="aspect-video relative overflow-hidden">
@@ -57,25 +57,25 @@ export default async function SalasPage() {
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full bg-[#1a3a5c] flex items-center justify-center">
-                        <span className="text-zinc-500 text-6xl">🎧</span>
+                      <div className="w-full h-full bg-surface-raised flex items-center justify-center">
+                        <span className="text-fg-subtle text-6xl">🎧</span>
                       </div>
                     )}
                   </div>
 
                   {/* Content */}
                   <div className="p-6">
-                    <h2 className="text-xl font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">
+                    <h2 className="text-xl font-bold text-fg mb-2 group-hover:text-primary transition-colors">
                       {sala.name[locale]}
                     </h2>
-                    <p className="text-zinc-400 mb-4">
+                    <p className="text-fg-muted mb-4">
                       {sala.address.city}
                     </p>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-zinc-500">
+                      <span className="text-sm text-fg-subtle">
                         {t('salas.capacity')}: {sala.capacity} {t('salas.places')}
                       </span>
-                      <span className="text-[#D4AF37] text-sm font-medium group-hover:translate-x-1 transition-transform">
+                      <span className="text-primary text-sm font-medium group-hover:translate-x-1 transition-transform">
                         {t('salas.viewDetails')} →
                       </span>
                     </div>

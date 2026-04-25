@@ -21,12 +21,12 @@ export default async function LegalPageContent({
     return (
       <div className="min-h-screen bg-transparent pt-24 pb-16">
         <div className="max-w-3xl mx-auto px-4">
-          <h1 className="text-4xl font-bold text-white mb-4">{fallbackTitle}</h1>
-          <p className="text-zinc-400">Contingut no disponible.</p>
-          <div className="mt-12 pt-8 border-t border-zinc-800">
+          <h1 className="text-4xl font-bold text-fg mb-4">{fallbackTitle}</h1>
+          <p className="text-fg-muted">Contingut no disponible.</p>
+          <div className="mt-12 pt-8 border-t border-outline-subtle">
             <Link
               href={`/${locale}`}
-              className="text-zinc-400 hover:text-white transition-colors"
+              className="text-fg-muted hover:text-fg transition-colors"
             >
               &larr; {t('backToHome')}
             </Link>
@@ -51,10 +51,10 @@ export default async function LegalPageContent({
   return (
     <div className="min-h-screen bg-transparent pt-24 pb-16">
       <div className="max-w-3xl mx-auto px-4">
-        <h1 className="text-4xl font-bold text-white mb-4">{title}</h1>
+        <h1 className="text-4xl font-bold text-fg mb-4">{title}</h1>
 
         {formattedDate && (
-          <p className="text-zinc-400 text-sm mb-8">
+          <p className="text-fg-muted text-sm mb-8">
             {t('lastUpdated')}: {formattedDate}
           </p>
         )}
@@ -62,14 +62,14 @@ export default async function LegalPageContent({
         <div className="prose prose-invert prose-zinc max-w-none">
           {/* Introduction */}
           {intro && (
-            <p className="text-zinc-300 text-lg mb-8">{intro}</p>
+            <p className="text-fg text-lg mb-8">{intro}</p>
           )}
 
           {/* Sections */}
           {page.sections?.map((section) => (
             <section key={section._key} className="mb-8">
               {section.title?.[locale] && (
-                <h2 className="text-2xl font-semibold text-white mb-4">
+                <h2 className="text-2xl font-semibold text-fg mb-4">
                   {section.title[locale]}
                 </h2>
               )}
@@ -82,13 +82,13 @@ export default async function LegalPageContent({
           {/* Contact */}
           {page.contactEmail && (
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-white mb-4">
+              <h2 className="text-2xl font-semibold text-fg mb-4">
                 {t('contact')}
               </h2>
-              <p className="text-zinc-300 mb-2">{t('contactDescription')}</p>
+              <p className="text-fg mb-2">{t('contactDescription')}</p>
               <a
                 href={`mailto:${page.contactEmail}`}
-                className="text-[#D4AF37] hover:text-[#F4E5AD] transition-colors"
+                className="text-primary hover:text-primary-light transition-colors"
               >
                 {page.contactEmail}
               </a>
@@ -97,10 +97,10 @@ export default async function LegalPageContent({
         </div>
 
         {/* Back link */}
-        <div className="mt-12 pt-8 border-t border-zinc-800">
+        <div className="mt-12 pt-8 border-t border-outline-subtle">
           <Link
             href={`/${locale}`}
-            className="text-zinc-400 hover:text-white transition-colors"
+            className="text-fg-muted hover:text-fg transition-colors"
           >
             &larr; {t('backToHome')}
           </Link>

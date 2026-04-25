@@ -62,19 +62,19 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const pageContent = content[locale]
 
   return (
-    <div className="min-h-screen bg-transparent pt-16">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-6xl font-bold text-white mb-8">
+        <h1 className="text-4xl md:text-6xl font-bold text-fg mb-8">
           {pageContent.title}
         </h1>
 
-        <div className="space-y-12 text-zinc-300">
+        <div className="space-y-12 text-fg">
           <p className="text-xl leading-relaxed">
             {pageContent.intro}
           </p>
 
           <section>
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-3xl font-bold text-fg mb-4">
               {pageContent.mission}
             </h2>
             <p className="text-lg leading-relaxed">
@@ -83,7 +83,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
           </section>
 
           <section>
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-3xl font-bold text-fg mb-4">
               {pageContent.experience}
             </h2>
             <p className="text-lg leading-relaxed">
@@ -92,20 +92,20 @@ export default async function AboutPage({ params }: AboutPageProps) {
           </section>
 
           <section>
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-3xl font-bold text-fg mb-4">
               {pageContent.values}
             </h2>
             <ul className="space-y-3">
               {pageContent.valuesList.map((value, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <span className="text-white">•</span>
+                  <span className="text-fg">•</span>
                   <span className="text-lg">{value}</span>
                 </li>
               ))}
             </ul>
           </section>
 
-          <section className="bg-[#F5F1E8] p-8 rounded-lg mt-12 shadow-lg">
+          <section className="bg-surface-alt p-8 rounded-lg mt-12 shadow-lg">
             <h2 className="text-2xl font-bold text-black mb-4">
               {locale === 'ca'
                 ? 'Vine a viure l\'experiència'
@@ -122,7 +122,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
             </p>
             <a
               href={`/${locale}/sessions`}
-              className="inline-block bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-8 py-3 rounded-full font-semibold hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all shadow-md"
+              className="inline-block bg-primary text-on-primary px-8 py-3 rounded-full font-semibold hover:bg-primary-dark transition-all shadow-md"
             >
               {t('navigation.sessions')}
             </a>

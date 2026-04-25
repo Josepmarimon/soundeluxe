@@ -30,7 +30,7 @@ export default function SectionCommunity({ content, image }: Props) {
   const items = content.items || []
 
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-[#0a0a0a] to-[#111]">
+    <section className="py-24 px-6 bg-[#0a0a0a]">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial="hidden"
@@ -59,7 +59,7 @@ export default function SectionCommunity({ content, image }: Props) {
 
             <motion.div
               variants={fadeInUp}
-              className={`text-gray-400 text-lg leading-relaxed prose prose-invert prose-lg prose-p:text-gray-400 prose-strong:text-white ${image ? 'md:w-2/3' : 'text-center max-w-3xl mx-auto'}`}
+              className={`text-gray-400 text-lg leading-relaxed prose prose-invert prose-lg prose-p:text-gray-400 prose-strong:text-fg ${image ? 'md:w-2/3' : 'text-center max-w-3xl mx-auto'}`}
               dangerouslySetInnerHTML={{ __html: content.body }}
             />
           </div>
@@ -70,9 +70,9 @@ export default function SectionCommunity({ content, image }: Props) {
                 <motion.div
                   key={item.title}
                   variants={fadeInUp}
-                  className="flex gap-4 p-5 rounded-xl border border-gray-800 bg-gray-900/30 hover:border-[#D4AF37]/20 transition-colors"
+                  className="flex gap-4 p-5 rounded-xl border border-gray-800 bg-gray-900/30 hover:border-primary/20 transition-colors"
                 >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#D4AF37]/10 text-[#D4AF37] flex items-center justify-center">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
                     {getIcon(item.icon)}
                   </div>
                   <div>

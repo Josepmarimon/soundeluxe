@@ -111,13 +111,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-transparent pt-16 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-transparent flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">
+          <h1 className="text-4xl font-bold text-fg mb-2">
             {t('navigation.login')}
           </h1>
-          <p className="text-zinc-400">
+          <p className="text-fg-muted">
             {locale === 'ca'
               ? 'Accedeix al teu compte'
               : locale === 'es'
@@ -141,7 +141,7 @@ export default function LoginPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-white mb-2">
+              <label htmlFor="email" className="block text-fg mb-2">
                 {t('footer.email')}
               </label>
               <input
@@ -149,14 +149,14 @@ export default function LoginPage() {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-[#1a3a5c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                className="w-full px-4 py-3 bg-surface-raised text-fg rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
                 disabled={isLoading}
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-white mb-2">
+              <label htmlFor="password" className="block text-fg mb-2">
                 {locale === 'ca'
                   ? 'Contrasenya'
                   : locale === 'es'
@@ -169,14 +169,14 @@ export default function LoginPage() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 pr-12 bg-[#1a3a5c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                  className="w-full px-4 py-3 pr-12 bg-surface-raised text-fg rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                   disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-fg-muted hover:text-fg transition-colors"
                   tabIndex={-1}
                 >
                   {showPassword ? (
@@ -209,7 +209,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-zinc-400 text-sm">
+            <p className="text-fg-muted text-sm">
               {locale === 'ca'
                 ? 'No tens compte?'
                 : locale === 'es'
@@ -217,7 +217,7 @@ export default function LoginPage() {
                   : "Don't have an account?"}{' '}
               <Link
                 href={`/${locale}/register`}
-                className="text-white hover:underline"
+                className="text-fg hover:underline"
               >
                 {t('navigation.register')}
               </Link>

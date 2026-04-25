@@ -51,7 +51,7 @@ function ImageModal({
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-white/80 hover:text-white z-10 p-2"
+        className="absolute top-4 right-4 text-fg/80 hover:text-fg z-10 p-2"
         aria-label="Close"
       >
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,7 +63,7 @@ function ImageModal({
       {hasPrev && (
         <button
           onClick={(e) => { e.stopPropagation(); onPrev() }}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10 p-2"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-fg/80 hover:text-fg z-10 p-2"
           aria-label="Previous"
         >
           <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,7 +74,7 @@ function ImageModal({
       {hasNext && (
         <button
           onClick={(e) => { e.stopPropagation(); onNext() }}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-10 p-2"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-fg/80 hover:text-fg z-10 p-2"
           aria-label="Next"
         >
           <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,10 +96,10 @@ function ImageModal({
           />
         )}
         {caption && (
-          <p className="text-white/80 text-center mt-4 text-lg">{caption}</p>
+          <p className="text-fg/80 text-center mt-4 text-lg">{caption}</p>
         )}
         {image.session && (
-          <p className="text-[#D4AF37] text-center mt-2 text-sm">
+          <p className="text-primary text-center mt-2 text-sm">
             {image.session.album.title} — {image.session.album.artist}
           </p>
         )}
@@ -127,13 +127,13 @@ function GalleryCard({ image, onClick }: { image: GalleryImage; onClick: () => v
       )}
 
       {/* Overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="absolute bottom-0 left-0 right-0 p-4">
           {caption && (
-            <p className="text-white text-sm font-medium line-clamp-2">{caption}</p>
+            <p className="text-fg text-sm font-medium line-clamp-2">{caption}</p>
           )}
           {image.category && (
-            <span className="inline-block mt-2 px-2 py-1 bg-[#D4AF37]/20 text-[#D4AF37] text-xs rounded-full">
+            <span className="inline-block mt-2 px-2 py-1 bg-primary/20 text-primary text-xs rounded-full">
               {image.category.name[locale] || image.category.name.ca}
             </span>
           )}
@@ -143,7 +143,7 @@ function GalleryCard({ image, onClick }: { image: GalleryImage; onClick: () => v
       {/* Featured badge */}
       {image.featured && (
         <div className="absolute top-3 right-3">
-          <svg className="w-5 h-5 text-[#D4AF37]" fill="currentColor" viewBox="0 0 20 20">
+          <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
           </svg>
         </div>
@@ -189,14 +189,14 @@ export default function Gallery({
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-fg mb-4">
             {title || t('gallery.title')}
           </h2>
           {subtitle && (
-            <p className="text-xl text-zinc-400 mb-2">{subtitle}</p>
+            <p className="text-xl text-fg-muted mb-2">{subtitle}</p>
           )}
           {hashtag && (
-            <p className="text-[#D4AF37] font-medium">{hashtag}</p>
+            <p className="text-primary font-medium">{hashtag}</p>
           )}
         </div>
 
@@ -207,8 +207,8 @@ export default function Gallery({
               onClick={() => setSelectedCategory(null)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 selectedCategory === null
-                  ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
-                  : 'bg-[#1a3a5c]/50 text-zinc-300 hover:bg-[#1a3a5c] hover:text-white border border-[#254a6e]/40'
+                  ? 'bg-primary text-on-primary'
+                  : 'bg-surface-raised/50 text-fg hover:bg-surface-raised hover:text-fg border border-border/40'
               }`}
             >
               {t('gallery.all')}
@@ -219,8 +219,8 @@ export default function Gallery({
                 onClick={() => setSelectedCategory(category.slug)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   selectedCategory === category.slug
-                    ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
-                    : 'bg-[#1a3a5c]/50 text-zinc-300 hover:bg-[#1a3a5c] hover:text-white border border-[#254a6e]/40'
+                    ? 'bg-primary text-on-primary'
+                    : 'bg-surface-raised/50 text-fg hover:bg-surface-raised hover:text-fg border border-border/40'
                 }`}
               >
                 {category.name[locale] || category.name.ca}
@@ -243,7 +243,7 @@ export default function Gallery({
         {/* CTA */}
         {ctaText && (
           <div className="text-center mt-12">
-            <p className="text-zinc-400">{ctaText}</p>
+            <p className="text-fg-muted">{ctaText}</p>
           </div>
         )}
 

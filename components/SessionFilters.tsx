@@ -104,8 +104,8 @@ export default function SessionFilters({ sessions, availability, showAlbumSale =
                   onClick={() => setSelectedGenre('')}
                   className={`px-6 py-2.5 text-base rounded-full font-medium shadow-md transition-all ${
                     !selectedGenre
-                      ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
-                      : 'bg-[#F5F1E8] text-black hover:bg-[#EDE8DC]'
+                      ? 'bg-primary text-on-primary'
+                      : 'bg-surface-alt text-black hover:bg-surface-alt-hover'
                   }`}
                 >
                   {t('albums.allGenres')}
@@ -116,8 +116,8 @@ export default function SessionFilters({ sessions, availability, showAlbumSale =
                     onClick={() => setSelectedGenre(genre)}
                     className={`px-6 py-2.5 text-base rounded-full font-medium shadow-md transition-all ${
                       selectedGenre === genre
-                        ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'
-                        : 'bg-[#F5F1E8] text-black hover:bg-[#EDE8DC]'
+                        ? 'bg-primary text-on-primary'
+                        : 'bg-surface-alt text-black hover:bg-surface-alt-hover'
                     }`}
                   >
                     {getGenreName(genre)}
@@ -134,12 +134,12 @@ export default function SessionFilters({ sessions, availability, showAlbumSale =
                   placeholder={t('albums.searchArtist')}
                   value={artistSearch}
                   onChange={(e) => setArtistSearch(e.target.value)}
-                  className="w-full px-6 py-2.5 text-base bg-[#F5F1E8] text-black placeholder:text-zinc-600 rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-black transition-colors"
+                  className="w-full px-6 py-2.5 text-base bg-surface-alt text-black placeholder:text-fg-dim rounded-full font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black transition-colors"
                 />
                 {artistSearch && (
                   <button
                     onClick={() => setArtistSearch('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-black transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-fg-dim hover:text-black transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -152,7 +152,7 @@ export default function SessionFilters({ sessions, availability, showAlbumSale =
 
           {/* Results count */}
           {(selectedGenre || artistSearch) && (
-            <div className="text-zinc-400 text-sm text-center mt-4">
+            <div className="text-fg-muted text-sm text-center mt-4">
               {filteredSessions.length === sessions.length
                 ? t('albums.showingAll', { count: sessions.length })
                 : t('albums.showingFiltered', {
@@ -167,7 +167,7 @@ export default function SessionFilters({ sessions, availability, showAlbumSale =
       {/* Sessions Grid */}
       {filteredSessions.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-zinc-300 text-lg">{t('albums.noResults')}</p>
+          <p className="text-fg text-lg">{t('albums.noResults')}</p>
         </div>
       ) : (
         <SessionCardsGrid sessions={filteredSessions} availability={availability} showAlbumSale={showAlbumSale} enableFlip={enableFlip} />

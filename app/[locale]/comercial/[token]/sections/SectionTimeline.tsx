@@ -60,7 +60,7 @@ export default function SectionTimeline({ content }: Props) {
           className="relative"
         >
           {/* Timeline line */}
-          <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-[#D4AF37] via-[#D4AF37]/50 to-transparent" />
+          <div className="absolute left-6 top-0 bottom-0 w-px bg-primary" />
 
           {items.map((item, i) => (
             <motion.div
@@ -69,13 +69,13 @@ export default function SectionTimeline({ content }: Props) {
               className="relative pl-16 pb-12 last:pb-0"
             >
               {/* Timeline dot */}
-              <div className="absolute left-4 top-1 w-5 h-5 rounded-full border-2 border-[#D4AF37] bg-[#0a0a0a] flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-[#D4AF37]" />
+              <div className="absolute left-4 top-1 w-5 h-5 rounded-full border-2 border-primary bg-[#0a0a0a] flex items-center justify-center">
+                <div className="w-2 h-2 rounded-full bg-primary" />
               </div>
 
               <div className="p-6 rounded-2xl border border-gray-800 bg-gray-900/30">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-[#D4AF37]">{getIcon(item.icon)}</span>
+                  <span className="text-primary">{getIcon(item.icon)}</span>
                   <h3 className="text-lg font-bold">{item.title}</h3>
                 </div>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>

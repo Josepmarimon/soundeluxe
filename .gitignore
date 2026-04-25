@@ -44,3 +44,12 @@ next-env.d.ts
 
 /app/generated/prisma
 gallery-images/
+
+# Sanity build artifacts
+/dist/
+
+# Claude Code local config
+/.claude/
+
+# Material comercial (gestionat fora del repo)
+/docs/material_comercial/

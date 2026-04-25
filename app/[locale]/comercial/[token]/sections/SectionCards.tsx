@@ -31,7 +31,7 @@ export default function SectionCards({ content, image }: Props) {
   const cols = items.length <= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'
 
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-[#0a0a0a] to-[#111]">
+    <section className="py-24 px-6 bg-[#0a0a0a]">
       <div className="max-w-5xl mx-auto">
         <motion.h2
           initial="hidden"
@@ -69,7 +69,7 @@ export default function SectionCards({ content, image }: Props) {
                 className="w-full h-56 md:h-72 object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-[#111]/70 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 rounded-2xl bg-black/40 pointer-events-none" />
             <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/5 pointer-events-none" />
           </motion.div>
         )}
@@ -85,11 +85,11 @@ export default function SectionCards({ content, image }: Props) {
             <motion.div
               key={item.title}
               variants={fadeInUp}
-              className={`${items.length <= 3 ? 'text-center p-8' : 'flex gap-5 p-6'} rounded-2xl border border-gray-800 bg-gray-900/30 hover:border-[#D4AF37]/30 transition-colors`}
+              className={`${items.length <= 3 ? 'text-center p-8' : 'flex gap-5 p-6'} rounded-2xl border border-gray-800 bg-gray-900/30 hover:border-primary/30 transition-colors`}
             >
               {items.length <= 3 ? (
                 <>
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D4AF37]/10 text-[#D4AF37] mb-6">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-6">
                     {getIcon(item.icon)}
                   </div>
                   <h3 className="text-xl font-bold mb-3">{item.title}</h3>
@@ -97,7 +97,7 @@ export default function SectionCards({ content, image }: Props) {
                 </>
               ) : (
                 <>
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#D4AF37]/10 text-[#D4AF37] flex items-center justify-center">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
                     {getIcon(item.icon)}
                   </div>
                   <div>

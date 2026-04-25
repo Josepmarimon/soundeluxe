@@ -29,9 +29,9 @@ export default async function AttendancePage({ params }: AttendancePageProps) {
   const sessions = await client.fetch(upcomingSessionsQuery)
 
   return (
-    <div className="min-h-screen bg-[#0a1929] pt-24 pb-16">
+    <div className="min-h-screen bg-bg pt-24 pb-16">
       <div className="max-w-2xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-white mb-8">{t('attendance.title')}</h1>
+        <h1 className="text-3xl font-bold text-fg mb-8">{t('attendance.title')}</h1>
         <AttendanceDashboard sessions={sessions} locale={locale} />
       </div>
     </div>

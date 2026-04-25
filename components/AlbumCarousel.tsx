@@ -79,7 +79,7 @@ export default function AlbumCarousel({
           {/* Navigation arrows */}
           <button
             onClick={goToPrevious}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-fg p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
             aria-label="Previous image"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
@@ -88,7 +88,7 @@ export default function AlbumCarousel({
           </button>
           <button
             onClick={goToNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-fg p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
             aria-label="Next image"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
@@ -108,7 +108,7 @@ export default function AlbumCarousel({
                 onClick={() => goToSlide(actualIndex)}
                 className={`aspect-square rounded-md overflow-hidden border-2 transition-all ${
                   currentIndex === actualIndex
-                    ? 'border-[#D4AF37] ring-2 ring-[#D4AF37]/50'
+                    ? 'border-primary ring-2 ring-primary/50'
                     : 'border-transparent hover:border-zinc-500'
                 }`}
               >
@@ -145,7 +145,7 @@ export default function AlbumCarousel({
       {/* Previous Button */}
       <button
         onClick={goToPrevious}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-fg p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
         aria-label="Previous image"
       >
         <svg
@@ -163,7 +163,7 @@ export default function AlbumCarousel({
       {/* Next Button */}
       <button
         onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-fg p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
         aria-label="Next image"
       >
         <svg
@@ -195,7 +195,7 @@ export default function AlbumCarousel({
       </div>
 
       {/* Image Counter */}
-      <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+      <div className="absolute top-4 right-4 bg-black/50 text-fg px-3 py-1 rounded-full text-sm">
         {currentIndex + 1} / {allImages.length}
       </div>
     </div>

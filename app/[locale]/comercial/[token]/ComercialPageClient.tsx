@@ -129,7 +129,7 @@ export default function ComercialPageClient({ token, recipientName, recipientCom
       : 'This proposal is confidential and personalized.'
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-fg">
       {/* Top controls */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
         <DownloadPdfButton
@@ -143,7 +143,7 @@ export default function ComercialPageClient({ token, recipientName, recipientCom
               key={l}
               onClick={() => switchLang(l)}
               className={`px-2.5 py-1 rounded-full text-xs font-medium transition ${
-                lang === l ? 'bg-[#D4AF37] text-black' : 'text-gray-400 hover:text-white'
+                lang === l ? 'bg-primary text-on-primary' : 'text-gray-400 hover:text-fg'
               }`}
             >
               {l.toUpperCase()}

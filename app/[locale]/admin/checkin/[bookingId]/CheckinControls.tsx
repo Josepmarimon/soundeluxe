@@ -74,7 +74,7 @@ export default function CheckinControls({
         <p className="text-emerald-300 font-semibold text-lg mb-1">
           {t('alreadyCheckedIn', { time })}
         </p>
-        <p className="text-zinc-400 text-sm">
+        <p className="text-fg-muted text-sm">
           {userName} · {numPlaces} {t('places')}
         </p>
       </div>
@@ -90,7 +90,7 @@ export default function CheckinControls({
       <button
         onClick={handleCheckin}
         disabled={loading}
-        className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-2xl font-bold text-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+        className="w-full bg-emerald-600 hover:bg-emerald-500 text-fg py-4 rounded-2xl font-bold text-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
       >
         {loading ? (
           <>

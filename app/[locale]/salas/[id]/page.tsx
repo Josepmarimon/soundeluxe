@@ -65,12 +65,12 @@ export default async function SalaPage({ params }: SalaPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-transparent pt-16">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Back button */}
         <Link
           href={`/${locale}/salas`}
-          className="inline-flex items-center text-zinc-300 hover:text-white mb-8 transition-colors text-base md:text-sm"
+          className="inline-flex items-center text-fg hover:text-fg mb-8 transition-colors text-base md:text-sm"
         >
           ← {t('salas.backToList')}
         </Link>
@@ -114,28 +114,28 @@ export default async function SalaPage({ params }: SalaPageProps) {
                 )}
               </div>
             ) : (
-              <div className="aspect-video bg-[#1a3a5c] rounded-xl flex items-center justify-center">
-                <span className="text-zinc-500 text-8xl">🎧</span>
+              <div className="aspect-video bg-surface-raised rounded-xl flex items-center justify-center">
+                <span className="text-fg-subtle text-8xl">🎧</span>
               </div>
             )}
           </div>
 
           {/* Sala Info */}
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-fg mb-6">
               {sala.name[locale]}
             </h1>
 
             <div className="space-y-6">
               {/* Address */}
               <div>
-                <h3 className="text-sm font-medium text-zinc-400 mb-2">
+                <h3 className="text-sm font-medium text-fg-muted mb-2">
                   {t('venue.address')}
                 </h3>
-                <p className="text-white text-lg">
+                <p className="text-fg text-lg">
                   {sala.address.street}
                 </p>
-                <p className="text-zinc-300">
+                <p className="text-fg">
                   {sala.address.postalCode} {sala.address.city}, {sala.address.country}
                 </p>
                 {sala.address.googleMapsUrl && (
@@ -143,7 +143,7 @@ export default async function SalaPage({ params }: SalaPageProps) {
                     href={sala.address.googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-2 text-[#D4AF37] hover:underline"
+                    className="inline-flex items-center gap-2 mt-2 text-primary hover:underline"
                   >
                     📍 {t('venue.viewOnMap')}
                   </a>
@@ -152,10 +152,10 @@ export default async function SalaPage({ params }: SalaPageProps) {
 
               {/* Capacity */}
               <div>
-                <h3 className="text-sm font-medium text-zinc-400 mb-2">
+                <h3 className="text-sm font-medium text-fg-muted mb-2">
                   {t('venue.capacity')}
                 </h3>
-                <p className="text-white text-lg">
+                <p className="text-fg text-lg">
                   {sala.capacity} {t('salas.places')}
                 </p>
               </div>
@@ -163,10 +163,10 @@ export default async function SalaPage({ params }: SalaPageProps) {
               {/* Accessibility */}
               {sala.accessibility?.[locale] && (
                 <div>
-                  <h3 className="text-sm font-medium text-zinc-400 mb-2">
+                  <h3 className="text-sm font-medium text-fg-muted mb-2">
                     {t('venue.accessibility')}
                   </h3>
-                  <p className="text-zinc-300">
+                  <p className="text-fg">
                     {sala.accessibility[locale]}
                   </p>
                 </div>
@@ -175,10 +175,10 @@ export default async function SalaPage({ params }: SalaPageProps) {
               {/* Schedule */}
               {sala.schedule?.[locale] && (
                 <div>
-                  <h3 className="text-sm font-medium text-zinc-400 mb-2">
+                  <h3 className="text-sm font-medium text-fg-muted mb-2">
                     {t('venue.schedule')}
                   </h3>
-                  <p className="text-zinc-300 whitespace-pre-line">
+                  <p className="text-fg whitespace-pre-line">
                     {sala.schedule[locale]}
                   </p>
                 </div>
@@ -198,11 +198,11 @@ export default async function SalaPage({ params }: SalaPageProps) {
         <div className="space-y-12">
           {/* Future Sessions */}
           <section>
-            <h2 className="text-2xl font-bold text-white mb-6">
+            <h2 className="text-2xl font-bold text-fg mb-6">
               {t('salas.futureSessions')}
             </h2>
             {futureSessions.length === 0 ? (
-              <p className="text-zinc-400 py-8 text-center bg-[#0a1929]/50 rounded-xl border border-[#254a6e]/30">
+              <p className="text-fg-muted py-8 text-center bg-bg/50 rounded-xl border border-border/30">
                 {t('salas.noFutureSessions')}
               </p>
             ) : (
@@ -222,11 +222,11 @@ export default async function SalaPage({ params }: SalaPageProps) {
 
           {/* Past Sessions */}
           <section>
-            <h2 className="text-2xl font-bold text-white mb-6">
+            <h2 className="text-2xl font-bold text-fg mb-6">
               {t('salas.pastSessions')}
             </h2>
             {pastSessions.length === 0 ? (
-              <p className="text-zinc-400 py-8 text-center bg-[#0a1929]/50 rounded-xl border border-[#254a6e]/30">
+              <p className="text-fg-muted py-8 text-center bg-bg/50 rounded-xl border border-border/30">
                 {t('salas.noPastSessions')}
               </p>
             ) : (
@@ -267,7 +267,7 @@ function SessionCard({
   return (
     <Link
       href={`/${locale}/sessions/${session._id}`}
-      className={`group bg-[#0a1929]/80 rounded-xl overflow-hidden border border-[#254a6e]/30 hover:border-[#D4AF37]/50 transition-all duration-300 ${
+      className={`group bg-bg/80 rounded-xl overflow-hidden border border-border/30 hover:border-primary/50 transition-all duration-300 ${
         isPast ? 'opacity-70 hover:opacity-100' : ''
       }`}
     >
@@ -282,7 +282,7 @@ function SessionCard({
               className="object-cover"
             />
           ) : (
-            <div className="w-full h-full bg-[#1a3a5c] flex items-center justify-center">
+            <div className="w-full h-full bg-surface-raised flex items-center justify-center">
               <span className="text-2xl">💿</span>
             </div>
           )}
@@ -290,20 +290,20 @@ function SessionCard({
 
         {/* Session Info */}
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-white truncate group-hover:text-[#D4AF37] transition-colors">
+          <h3 className="font-bold text-fg truncate group-hover:text-primary transition-colors">
             {session.album.title}
           </h3>
-          <p className="text-zinc-400 text-sm truncate">
+          <p className="text-fg-muted text-sm truncate">
             {session.album.artist}
           </p>
-          <p className="text-zinc-500 text-sm mt-2">
+          <p className="text-fg-subtle text-sm mt-2">
             {formatDate(session.date)}
           </p>
           <div className="flex items-center justify-between mt-2">
-            <span className="text-xs px-2 py-1 bg-[#1a3a5c] rounded-full text-zinc-300">
+            <span className="text-xs px-2 py-1 bg-surface-raised rounded-full text-fg">
               {session.sessionType.name[locale]}
             </span>
-            <span className="text-[#D4AF37] font-bold">
+            <span className="text-primary font-bold">
               {session.price}€
             </span>
           </div>

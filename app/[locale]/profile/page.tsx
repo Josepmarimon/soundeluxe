@@ -219,8 +219,8 @@ export default function ProfilePage() {
 
   if (status === 'loading' || isLoading) {
     return (
-      <div className="min-h-screen bg-transparent pt-16 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#D4AF37]"></div>
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     )
   }
@@ -230,32 +230,32 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-transparent pt-16">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-fg mb-4">
             {t('profile.title')}
           </h1>
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] flex items-center justify-center text-black font-bold text-2xl">
+            <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-2xl">
               {session.user.name?.charAt(0).toUpperCase()}
             </div>
             <div>
-              <p className="text-2xl font-semibold text-white">{session.user.name}</p>
-              <p className="text-zinc-400">{session.user.email}</p>
+              <p className="text-2xl font-semibold text-fg">{session.user.name}</p>
+              <p className="text-fg-muted">{session.user.email}</p>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 md:gap-4 mb-8 border-b border-[#254a6e]">
+        <div className="flex flex-wrap gap-2 md:gap-4 mb-8 border-b border-border">
           <button
             onClick={() => setActiveTab('bookings')}
             className={`pb-4 px-4 md:px-6 font-semibold transition-colors text-sm md:text-base ${
               activeTab === 'bookings'
-                ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
-                : 'text-zinc-400 hover:text-white'
+                ? 'text-primary border-b-2 border-primary'
+                : 'text-fg-muted hover:text-fg'
             }`}
           >
             {t('profile.myBookings')} ({bookings.length})
@@ -264,8 +264,8 @@ export default function ProfilePage() {
             onClick={() => setActiveTab('votes')}
             className={`pb-4 px-4 md:px-6 font-semibold transition-colors text-sm md:text-base ${
               activeTab === 'votes'
-                ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
-                : 'text-zinc-400 hover:text-white'
+                ? 'text-primary border-b-2 border-primary'
+                : 'text-fg-muted hover:text-fg'
             }`}
           >
             {t('profile.myVotes')} ({votes.length})
@@ -274,8 +274,8 @@ export default function ProfilePage() {
             onClick={() => setActiveTab('suggestions')}
             className={`pb-4 px-4 md:px-6 font-semibold transition-colors text-sm md:text-base ${
               activeTab === 'suggestions'
-                ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
-                : 'text-zinc-400 hover:text-white'
+                ? 'text-primary border-b-2 border-primary'
+                : 'text-fg-muted hover:text-fg'
             }`}
           >
             {t('profile.mySuggestions')} ({suggestions.length})
@@ -284,8 +284,8 @@ export default function ProfilePage() {
             onClick={() => setActiveTab('preferences')}
             className={`pb-4 px-4 md:px-6 font-semibold transition-colors text-sm md:text-base ${
               activeTab === 'preferences'
-                ? 'text-[#D4AF37] border-b-2 border-[#D4AF37]'
-                : 'text-zinc-400 hover:text-white'
+                ? 'text-primary border-b-2 border-primary'
+                : 'text-fg-muted hover:text-fg'
             }`}
           >
             {t('profilePreferences.communicationTitle')}
@@ -297,10 +297,10 @@ export default function ProfilePage() {
           <div>
             {bookings.length === 0 ? (
               <div className="text-center py-20">
-                <p className="text-zinc-400 text-lg mb-6">{t('profile.noBookings')}</p>
+                <p className="text-fg-muted text-lg mb-6">{t('profile.noBookings')}</p>
                 <a
                   href={`/${locale}/sessions`}
-                  className="inline-block px-8 py-3 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black font-semibold rounded-full hover:shadow-lg transition-shadow"
+                  className="inline-block px-8 py-3 bg-primary text-on-primary font-semibold rounded-full hover:shadow-lg transition-shadow"
                 >
                   {t('profile.browseSessions')}
                 </a>
@@ -310,7 +310,7 @@ export default function ProfilePage() {
                 {bookings.map((booking) => (
                   <div
                     key={booking.id}
-                    className="bg-velvet-card rounded-lg overflow-hidden hover:bg-[#1a3a5c]/60 transition-colors"
+                    className="bg-velvet-card rounded-lg overflow-hidden hover:bg-surface-raised/60 transition-colors"
                   >
                     <div className="flex flex-col md:flex-row gap-6 p-6">
                       {/* Album Cover */}
@@ -327,15 +327,15 @@ export default function ProfilePage() {
 
                       {/* Booking Details */}
                       <div className="flex-grow">
-                        <h3 className="text-xl font-bold text-white mb-1">
+                        <h3 className="text-xl font-bold text-fg mb-1">
                           {booking.session.album.title}
                         </h3>
-                        <p className="text-zinc-400 mb-3">{booking.session.album.artist}</p>
+                        <p className="text-fg-muted mb-3">{booking.session.album.artist}</p>
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                           <div>
-                            <span className="text-zinc-500">{t('sessions.date')}</span>
-                            <p className="text-white font-medium">
+                            <span className="text-fg-subtle">{t('sessions.date')}</span>
+                            <p className="text-fg font-medium">
                               {new Date(booking.session.date).toLocaleDateString(locale, {
                                 day: 'numeric',
                                 month: 'short',
@@ -344,15 +344,15 @@ export default function ProfilePage() {
                             </p>
                           </div>
                           <div>
-                            <span className="text-zinc-500">{t('booking.places')}</span>
-                            <p className="text-white font-medium">{booking.numPlaces}</p>
+                            <span className="text-fg-subtle">{t('booking.places')}</span>
+                            <p className="text-fg font-medium">{booking.numPlaces}</p>
                           </div>
                           <div>
-                            <span className="text-zinc-500">{t('booking.total')}</span>
-                            <p className="text-white font-medium">€{booking.totalAmount}</p>
+                            <span className="text-fg-subtle">{t('booking.total')}</span>
+                            <p className="text-fg font-medium">€{booking.totalAmount}</p>
                           </div>
                           <div>
-                            <span className="text-zinc-500">{t('profile.status')}</span>
+                            <span className="text-fg-subtle">{t('profile.status')}</span>
                             <p className={`font-medium ${
                               booking.status === 'CONFIRMED' ? 'text-green-500' :
                               booking.status === 'CANCELLED' ? 'text-red-500' :
@@ -380,10 +380,10 @@ export default function ProfilePage() {
           <div>
             {votes.length === 0 ? (
               <div className="text-center py-20">
-                <p className="text-zinc-400 text-lg mb-6">{t('profile.noVotes')}</p>
+                <p className="text-fg-muted text-lg mb-6">{t('profile.noVotes')}</p>
                 <a
                   href={`/${locale}/votes`}
-                  className="inline-block px-8 py-3 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black font-semibold rounded-full hover:shadow-lg transition-shadow"
+                  className="inline-block px-8 py-3 bg-primary text-on-primary font-semibold rounded-full hover:shadow-lg transition-shadow"
                 >
                   {t('profile.voteForAlbums')}
                 </a>
@@ -393,7 +393,7 @@ export default function ProfilePage() {
                 {votes.map((vote) => (
                   <div
                     key={vote.id}
-                    className="bg-[#F5F1E8] rounded-lg overflow-hidden hover:bg-[#EDE8DC] transition-colors group relative"
+                    className="bg-surface-alt rounded-lg overflow-hidden hover:bg-surface-alt-hover transition-colors group relative"
                   >
                     {/* Album Cover */}
                     <div className="relative aspect-square overflow-hidden">
@@ -411,7 +411,7 @@ export default function ProfilePage() {
                         {vote.album.title}
                       </h3>
                       <p className="text-zinc-700 mb-2">{vote.album.artist}</p>
-                      <div className="flex items-center gap-3 text-sm text-zinc-600 mb-4">
+                      <div className="flex items-center gap-3 text-sm text-fg-dim mb-4">
                         <span>{vote.album.year}</span>
                         {vote.album.duration && (
                           <>
@@ -424,7 +424,7 @@ export default function ProfilePage() {
                       {/* Remove Vote Button */}
                       <button
                         onClick={() => handleRemoveVote(vote.albumId)}
-                        className="w-full px-4 py-2 bg-[#0a1929] text-white hover:bg-[#1a3a5c] rounded-full font-medium transition-colors text-sm"
+                        className="w-full px-4 py-2 bg-bg text-fg hover:bg-surface-raised rounded-full font-medium transition-colors text-sm"
                       >
                         {t('profile.removeVote')}
                       </button>
@@ -440,10 +440,10 @@ export default function ProfilePage() {
           <div>
             {suggestions.length === 0 ? (
               <div className="text-center py-20">
-                <p className="text-zinc-400 text-lg mb-6">{t('profile.noSuggestions')}</p>
+                <p className="text-fg-muted text-lg mb-6">{t('profile.noSuggestions')}</p>
                 <a
                   href={`/${locale}/votes`}
-                  className="inline-block px-8 py-3 bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black font-semibold rounded-full hover:shadow-lg transition-shadow"
+                  className="inline-block px-8 py-3 bg-primary text-on-primary font-semibold rounded-full hover:shadow-lg transition-shadow"
                 >
                   {t('profile.suggestAlbum')}
                 </a>
@@ -458,7 +458,7 @@ export default function ProfilePage() {
                     <div className="flex flex-col md:flex-row gap-6 p-6">
                       {/* Album Cover */}
                       <div className="flex-shrink-0">
-                        <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-zinc-800">
+                        <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-card-raised">
                           {suggestion.coverUrl ? (
                             <Image
                               src={suggestion.coverUrl}
@@ -469,7 +469,7 @@ export default function ProfilePage() {
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                              <svg className="w-8 h-8 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-8 h-8 text-fg-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                               </svg>
                             </div>
@@ -481,10 +481,10 @@ export default function ProfilePage() {
                       <div className="flex-grow">
                         <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
                           <div>
-                            <h3 className="text-xl font-bold text-white">
+                            <h3 className="text-xl font-bold text-fg">
                               {suggestion.albumTitle}
                             </h3>
-                            <p className="text-zinc-400">
+                            <p className="text-fg-muted">
                               {suggestion.artistName} {suggestion.year && `· ${suggestion.year}`}
                             </p>
                           </div>
@@ -498,7 +498,7 @@ export default function ProfilePage() {
                           </span>
                         </div>
 
-                        <p className="text-xs text-zinc-500 mb-3">
+                        <p className="text-xs text-fg-subtle mb-3">
                           {t('profile.suggestedOn', {
                             date: new Date(suggestion.createdAt).toLocaleDateString(locale, {
                               day: 'numeric',
@@ -510,15 +510,15 @@ export default function ProfilePage() {
 
                         {/* Admin Response */}
                         {suggestion.adminResponse && (
-                          <div className="mt-4 p-4 bg-zinc-800/50 rounded-lg border-l-4 border-[#D4AF37]">
-                            <p className="text-sm text-zinc-300 font-medium mb-1">
+                          <div className="mt-4 p-4 bg-card-raised/50 rounded-lg border-l-4 border-primary">
+                            <p className="text-sm text-fg font-medium mb-1">
                               {t('profile.adminResponse')}
                             </p>
-                            <p className="text-zinc-400 text-sm whitespace-pre-wrap">
+                            <p className="text-fg-muted text-sm whitespace-pre-wrap">
                               {suggestion.adminResponse}
                             </p>
                             {suggestion.respondedAt && (
-                              <p className="text-xs text-zinc-500 mt-2">
+                              <p className="text-xs text-fg-subtle mt-2">
                                 {new Date(suggestion.respondedAt).toLocaleDateString(locale, {
                                   day: 'numeric',
                                   month: 'long',
@@ -541,7 +541,7 @@ export default function ProfilePage() {
           <div className="max-w-xl space-y-6">
             {/* Language selector */}
             <div className="bg-velvet-card rounded-lg p-6">
-              <h3 className="text-xl font-bold text-white mb-6">
+              <h3 className="text-xl font-bold text-fg mb-6">
                 {t('profilePreferences.languageTitle')}
               </h3>
 
@@ -552,8 +552,8 @@ export default function ProfilePage() {
                     onClick={() => changeLocale(loc)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                       locale === loc
-                        ? 'bg-[#D4AF37] text-black'
-                        : 'bg-[#1a3a5c] text-zinc-300 hover:text-white hover:bg-[#254a6e]'
+                        ? 'bg-primary text-on-primary'
+                        : 'bg-surface-raised text-fg hover:text-fg hover:bg-border'
                     }`}
                   >
                     {localeNames[loc]}
@@ -564,16 +564,16 @@ export default function ProfilePage() {
 
             {/* Newsletter preferences */}
             <div className="bg-velvet-card rounded-lg p-6">
-              <h3 className="text-xl font-bold text-white mb-6">
+              <h3 className="text-xl font-bold text-fg mb-6">
                 {t('profilePreferences.communicationTitle')}
               </h3>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white font-medium">
+                  <p className="text-fg font-medium">
                     {t('profilePreferences.newsletterLabel')}
                   </p>
-                  <p className="text-sm text-zinc-400 mt-1">
+                  <p className="text-sm text-fg-muted mt-1">
                     {newsletterSubscribed
                       ? t('profilePreferences.newsletterEnabled')
                       : t('profilePreferences.newsletterDisabled')}
@@ -584,7 +584,7 @@ export default function ProfilePage() {
                   onClick={handleNewsletterToggle}
                   disabled={savingPreferences}
                   className={`relative w-14 h-8 rounded-full transition-colors ${
-                    newsletterSubscribed ? 'bg-[#D4AF37]' : 'bg-zinc-600'
+                    newsletterSubscribed ? 'bg-primary' : 'bg-card-muted'
                   } ${savingPreferences ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   <span
@@ -602,7 +602,7 @@ export default function ProfilePage() {
               )}
 
               {savingPreferences && (
-                <p className="mt-4 text-sm text-zinc-400">
+                <p className="mt-4 text-sm text-fg-muted">
                   {t('profilePreferences.saving')}
                 </p>
               )}
@@ -610,16 +610,16 @@ export default function ProfilePage() {
 
             {/* Privacy preferences */}
             <div className="bg-velvet-card rounded-lg p-6">
-              <h3 className="text-xl font-bold text-white mb-6">
+              <h3 className="text-xl font-bold text-fg mb-6">
                 {t('profilePreferences.privacyTitle')}
               </h3>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white font-medium">
+                  <p className="text-fg font-medium">
                     {t('profilePreferences.showInPublicListsLabel')}
                   </p>
-                  <p className="text-sm text-zinc-400 mt-1">
+                  <p className="text-sm text-fg-muted mt-1">
                     {showInPublicLists
                       ? t('profilePreferences.showInPublicListsEnabled')
                       : t('profilePreferences.showInPublicListsDisabled')}
@@ -630,7 +630,7 @@ export default function ProfilePage() {
                   onClick={handlePrivacyToggle}
                   disabled={savingPrivacy}
                   className={`relative w-14 h-8 rounded-full transition-colors ${
-                    showInPublicLists ? 'bg-[#D4AF37]' : 'bg-zinc-600'
+                    showInPublicLists ? 'bg-primary' : 'bg-card-muted'
                   } ${savingPrivacy ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   <span
@@ -648,7 +648,7 @@ export default function ProfilePage() {
               )}
 
               {savingPrivacy && (
-                <p className="mt-4 text-sm text-zinc-400">
+                <p className="mt-4 text-sm text-fg-muted">
                   {t('profilePreferences.saving')}
                 </p>
               )}

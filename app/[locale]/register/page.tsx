@@ -81,7 +81,7 @@ export default function RegisterPage() {
   // Success state - show email verification message
   if (success) {
     return (
-      <div className="min-h-screen bg-transparent pt-16 flex items-center justify-center px-4 py-12">
+      <div className="min-h-screen bg-transparent flex items-center justify-center px-4 py-12">
         <div className="max-w-md w-full">
           <div className="bg-velvet-card rounded-lg p-8 text-center">
             <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -89,21 +89,21 @@ export default function RegisterPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-white mb-4">
+            <h1 className="text-2xl font-bold text-fg mb-4">
               {locale === 'ca'
                 ? 'Comprova el teu email'
                 : locale === 'es'
                   ? 'Revisa tu email'
                   : 'Check your email'}
             </h1>
-            <p className="text-zinc-400 mb-6">
+            <p className="text-fg-muted mb-6">
               {locale === 'ca'
                 ? `Hem enviat un email de verificació a ${email}. Clica l'enllaç per activar el teu compte.`
                 : locale === 'es'
                   ? `Hemos enviado un email de verificación a ${email}. Haz clic en el enlace para activar tu cuenta.`
                   : `We've sent a verification email to ${email}. Click the link to activate your account.`}
             </p>
-            <p className="text-zinc-500 text-sm">
+            <p className="text-fg-subtle text-sm">
               {locale === 'ca'
                 ? 'No el trobes? Comprova la carpeta de spam.'
                 : locale === 'es'
@@ -117,13 +117,13 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-transparent pt-16 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-transparent flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">
+          <h1 className="text-4xl font-bold text-fg mb-2">
             {t('navigation.register')}
           </h1>
-          <p className="text-zinc-400">
+          <p className="text-fg-muted">
             {locale === 'ca'
               ? 'Crea el teu compte'
               : locale === 'es'
@@ -141,7 +141,7 @@ export default function RegisterPage() {
             )}
 
             <div>
-              <label htmlFor="name" className="block text-white mb-2">
+              <label htmlFor="name" className="block text-fg mb-2">
                 {locale === 'ca' ? 'Nom' : locale === 'es' ? 'Nombre' : 'Name'}
               </label>
               <input
@@ -149,14 +149,14 @@ export default function RegisterPage() {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 bg-[#1a3a5c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                className="w-full px-4 py-3 bg-surface-raised text-fg rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
                 disabled={isLoading}
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-white mb-2">
+              <label htmlFor="email" className="block text-fg mb-2">
                 {t('footer.email')}
               </label>
               <input
@@ -164,14 +164,14 @@ export default function RegisterPage() {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-[#1a3a5c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                className="w-full px-4 py-3 bg-surface-raised text-fg rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 required
                 disabled={isLoading}
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-white mb-2">
+              <label htmlFor="password" className="block text-fg mb-2">
                 {locale === 'ca'
                   ? 'Contrasenya'
                   : locale === 'es'
@@ -184,7 +184,7 @@ export default function RegisterPage() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 pr-12 bg-[#1a3a5c] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                  className="w-full px-4 py-3 pr-12 bg-surface-raised text-fg rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   required
                   disabled={isLoading}
                   minLength={8}
@@ -192,7 +192,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-fg-muted hover:text-fg transition-colors"
                   tabIndex={-1}
                 >
                   {showPassword ? (
@@ -225,7 +225,7 @@ export default function RegisterPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-zinc-400 text-sm">
+            <p className="text-fg-muted text-sm">
               {locale === 'ca'
                 ? 'Ja tens compte?'
                 : locale === 'es'
@@ -233,7 +233,7 @@ export default function RegisterPage() {
                   : 'Already have an account?'}{' '}
               <Link
                 href={`/${locale}/login`}
-                className="text-white hover:underline"
+                className="text-fg hover:underline"
               >
                 {t('navigation.login')}
               </Link>

@@ -48,7 +48,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
         <div className={`session-card-inner ${isFlipped ? 'session-card-flipped' : ''}`}>
           {/* Front Side */}
           <div className="session-card-front">
-            <div className="bg-[#F5F1E8] rounded-lg overflow-hidden shadow-md h-full flex flex-col">
+            <div className="bg-surface-alt rounded-lg overflow-hidden shadow-md h-full flex flex-col">
               {/* Album Cover Carousel */}
               <div className="relative aspect-square overflow-hidden">
                 <AlbumCarousel
@@ -60,7 +60,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
 
                 {/* Available spots badge */}
                 <div className="hidden md:block absolute top-3 left-3 z-10">
-                  <span className={`inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md ${isSoldOut ? 'bg-zinc-600 text-zinc-300' : 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'}`}>
+                  <span className={`inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md ${isSoldOut ? 'bg-card-muted text-fg' : 'bg-primary text-on-primary'}`}>
                     {isSoldOut
                       ? t('booking.soldOut')
                       : places === 1
@@ -97,7 +97,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
 
             {/* Back Side */}
             <div className="session-card-back">
-              <div className="bg-gradient-to-br from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] rounded-lg shadow-md h-full p-3 md:p-4 flex flex-col">
+              <div className="bg-primary rounded-lg shadow-md h-full p-3 md:p-4 flex flex-col">
                 <div className="flex-shrink-0">
                   <h3 className="text-base md:text-lg font-bold text-black mb-1 md:mb-2">
                     {session.album.title}
@@ -151,7 +151,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
                   <a
                     href={`/${locale}/sessions/${session._id}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="bg-[#0a1929] text-white px-3 md:px-4 py-1.5 md:py-2 rounded-full font-semibold text-xs md:text-sm shadow-lg inline-block hover:bg-[#1a3a5c] transition-colors"
+                    className="bg-bg text-fg px-3 md:px-4 py-1.5 md:py-2 rounded-full font-semibold text-xs md:text-sm shadow-lg inline-block hover:bg-surface-raised transition-colors"
                   >
                     {t('sessions.book')}
                   </a>
@@ -164,7 +164,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
   }
 
   return (
-    <article className="group bg-[#F5F1E8] rounded-lg overflow-hidden hover:bg-[#EDE8DC] transition-colors shadow-md">
+    <article className="group bg-surface-alt rounded-lg overflow-hidden hover:bg-surface-alt-hover transition-colors shadow-md">
       <a href={`/${locale}/sessions/${session._id}`}>
         {/* Album Cover Carousel */}
         <div className="relative aspect-square overflow-hidden">
@@ -177,7 +177,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
 
           {/* Available spots badge - only on desktop, over image */}
           <div className="hidden md:block absolute top-3 left-3 z-10">
-            <span className={`inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md ${isSoldOut ? 'bg-zinc-600 text-zinc-300' : 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black'}`}>
+            <span className={`inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md ${isSoldOut ? 'bg-card-muted text-fg' : 'bg-primary text-on-primary'}`}>
               {isSoldOut
                 ? t('booking.soldOut')
                 : places === 1
@@ -210,7 +210,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
           <span className="text-lg md:text-xl font-bold text-black">
             {session.price}€
           </span>
-          <button className={`px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs transition-all shadow-md ${isSoldOut ? 'bg-zinc-600 text-zinc-300 cursor-not-allowed' : 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028]'}`}>
+          <button className={`px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs transition-all shadow-md ${isSoldOut ? 'bg-card-muted text-fg cursor-not-allowed' : 'bg-primary text-on-primary hover:bg-primary-dark'}`}>
             {isSoldOut ? t('booking.soldOut') : `${t('sessions.book')} (${places})`}
           </button>
         </div>
@@ -220,14 +220,14 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
           <div className="border-t border-zinc-300 pt-2">
             <div className="flex flex-row items-center justify-between gap-1.5">
               <div className="flex flex-col">
-                <span className="text-[10px] md:text-xs text-zinc-600">
+                <span className="text-[10px] md:text-xs text-fg-dim">
                   {t('sessions.discPrice')}
                 </span>
                 <span className="text-base md:text-lg font-bold text-black">
                   {session.album.salePrice}€
                 </span>
               </div>
-              <button className="bg-[#0a1929] text-white px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs hover:bg-[#1a3a5c] transition-all shadow-md">
+              <button className="bg-bg text-fg px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs hover:bg-surface-raised transition-all shadow-md">
                 {t('sessions.buyDisc')}
               </button>
             </div>

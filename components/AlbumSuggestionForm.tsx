@@ -201,11 +201,11 @@ export default function AlbumSuggestionForm() {
   }
 
   return (
-    <div className="bg-zinc-900/70 rounded-2xl p-6 md:p-8 border border-[#D4AF37]/30 shadow-xl shadow-black/20">
-      <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+    <div className="bg-card/70 rounded-2xl p-6 md:p-8 border border-primary/30 shadow-xl shadow-black/20">
+      <h3 className="text-2xl md:text-3xl font-bold text-fg mb-2">
         {t('votes.suggestion.title')}
       </h3>
-      <p className="text-zinc-400 mb-6">
+      <p className="text-fg-muted mb-6">
         {t('votes.suggestion.subtitle')}
       </p>
 
@@ -225,7 +225,7 @@ export default function AlbumSuggestionForm() {
 
       {/* Step 1: Artist search */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-zinc-300 mb-2">
+        <label className="block text-sm font-medium text-fg mb-2">
           {t('votes.suggestion.artistLabel')}
         </label>
         <div className="relative" ref={dropdownRef}>
@@ -248,14 +248,14 @@ export default function AlbumSuggestionForm() {
               }
             }}
             placeholder={t('votes.suggestion.artistPlaceholder')}
-            className="w-full px-4 py-3 bg-zinc-800 text-white placeholder:text-zinc-500 rounded-xl border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent transition-colors"
+            className="w-full px-4 py-3 bg-card-raised text-fg placeholder:text-fg-subtle rounded-xl border border-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
           />
 
           {/* Clear button */}
           {selectedArtist && (
             <button
               onClick={handleClearArtist}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-fg-muted hover:text-fg transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -266,7 +266,7 @@ export default function AlbumSuggestionForm() {
           {/* Loading indicator */}
           {loadingArtists && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
-              <svg className="w-5 h-5 animate-spin text-[#D4AF37]" fill="none" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 animate-spin text-primary" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
@@ -275,22 +275,22 @@ export default function AlbumSuggestionForm() {
 
           {/* Artist dropdown */}
           {showArtistDropdown && artists.length > 0 && !selectedArtist && (
-            <div className="absolute z-20 w-full mt-2 bg-zinc-800 rounded-xl shadow-xl border border-zinc-700 overflow-hidden max-h-60 overflow-y-auto">
+            <div className="absolute z-20 w-full mt-2 bg-card-raised rounded-xl shadow-xl border border-outline overflow-hidden max-h-60 overflow-y-auto">
               {artists.map((artist) => (
                 <button
                   key={artist.id}
                   onClick={() => handleSelectArtist(artist)}
-                  className="w-full px-4 py-3 text-left hover:bg-zinc-700 transition-colors flex items-center gap-3"
+                  className="w-full px-4 py-3 text-left hover:bg-card-hover transition-colors flex items-center gap-3"
                 >
-                  <div className="w-10 h-10 bg-zinc-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 bg-card-muted rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
                   <div>
-                    <div className="text-white font-medium">{artist.name}</div>
+                    <div className="text-fg font-medium">{artist.name}</div>
                     {(artist.disambiguation || artist.country) && (
-                      <div className="text-sm text-zinc-400">
+                      <div className="text-sm text-fg-muted">
                         {[artist.disambiguation, artist.country].filter(Boolean).join(' · ')}
                       </div>
                     )}
@@ -305,19 +305,19 @@ export default function AlbumSuggestionForm() {
       {/* Step 2: Album selection */}
       {selectedArtist && (
         <div className="mb-6">
-          <label className="block text-sm font-medium text-zinc-300 mb-2">
+          <label className="block text-sm font-medium text-fg mb-2">
             {t('votes.suggestion.albumLabel')}
           </label>
 
           {loadingReleases ? (
             <div className="flex items-center justify-center py-12">
-              <svg className="w-8 h-8 animate-spin text-[#D4AF37]" fill="none" viewBox="0 0 24 24">
+              <svg className="w-8 h-8 animate-spin text-primary" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
             </div>
           ) : releases.length === 0 ? (
-            <div className="text-center py-8 text-zinc-400">
+            <div className="text-center py-8 text-fg-muted">
               {t('votes.suggestion.noAlbums')}
             </div>
           ) : (
@@ -328,8 +328,8 @@ export default function AlbumSuggestionForm() {
                   onClick={() => handleSelectRelease(release)}
                   className={`group relative aspect-square rounded-lg overflow-hidden transition-all ${
                     selectedRelease?.id === release.id
-                      ? 'ring-4 ring-[#D4AF37] ring-offset-2 ring-offset-zinc-900 scale-105'
-                      : 'hover:ring-2 hover:ring-zinc-500 hover:ring-offset-1 hover:ring-offset-zinc-900'
+                      ? 'ring-4 ring-primary ring-offset-2 ring-offset-zinc-900 scale-105'
+                      : 'hover:ring-2 hover:ring-fg-subtle hover:ring-offset-1 hover:ring-offset-zinc-900'
                   }`}
                 >
                   <Image
@@ -345,15 +345,15 @@ export default function AlbumSuggestionForm() {
                     unoptimized
                   />
                   {/* Overlay with title and year */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2">
-                    <div className="text-white text-xs font-medium line-clamp-2">{release.title}</div>
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2">
+                    <div className="text-fg text-xs font-medium line-clamp-2">{release.title}</div>
                     {release.year && (
-                      <div className="text-zinc-400 text-xs">{release.year}</div>
+                      <div className="text-fg-muted text-xs">{release.year}</div>
                     )}
                   </div>
                   {/* Selected indicator */}
                   {selectedRelease?.id === release.id && (
-                    <div className="absolute top-2 right-2 w-6 h-6 bg-[#D4AF37] rounded-full flex items-center justify-center">
+                    <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
                       <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
@@ -368,7 +368,7 @@ export default function AlbumSuggestionForm() {
 
       {/* Selected album preview */}
       {selectedRelease && (
-        <div className="mb-6 p-4 bg-zinc-800/50 rounded-xl border border-zinc-700 flex items-center gap-4">
+        <div className="mb-6 p-4 bg-card-raised/50 rounded-xl border border-outline flex items-center gap-4">
           <div className="w-16 h-16 relative rounded-lg overflow-hidden flex-shrink-0">
             <Image
               src={selectedRelease.coverUrl}
@@ -379,8 +379,8 @@ export default function AlbumSuggestionForm() {
             />
           </div>
           <div>
-            <div className="text-white font-medium">{selectedRelease.title}</div>
-            <div className="text-zinc-400 text-sm">
+            <div className="text-fg font-medium">{selectedRelease.title}</div>
+            <div className="text-fg-muted text-sm">
               {selectedArtist?.name} {selectedRelease.year && `· ${selectedRelease.year}`}
             </div>
           </div>
@@ -393,8 +393,8 @@ export default function AlbumSuggestionForm() {
         disabled={!selectedArtist || !selectedRelease || isSubmitting}
         className={`w-full py-3 px-6 rounded-xl font-medium transition-all ${
           selectedArtist && selectedRelease && !isSubmitting
-            ? 'bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black hover:shadow-lg hover:shadow-[#D4AF37]/20'
-            : 'bg-zinc-700 text-zinc-400 cursor-not-allowed'
+            ? 'bg-primary text-on-primary hover:shadow-lg hover:shadow-primary/20'
+            : 'bg-card-hover text-fg-muted cursor-not-allowed'
         }`}
       >
         {isSubmitting ? (

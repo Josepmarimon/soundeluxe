@@ -79,14 +79,14 @@ export default function BookingConfirmationPoller({
   if (loading) {
     return (
       <div className="text-center py-16">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D4AF37]/20 mb-6">
-          <svg className="animate-spin w-8 h-8 text-[#D4AF37]" viewBox="0 0 24 24" fill="none">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-6">
+          <svg className="animate-spin w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">{t('processing')}</h2>
-        <p className="text-zinc-400">{t('processingNote')}</p>
+        <h2 className="text-2xl font-bold text-fg mb-2">{t('processing')}</h2>
+        <p className="text-fg-muted">{t('processingNote')}</p>
       </div>
     )
   }
@@ -95,19 +95,19 @@ export default function BookingConfirmationPoller({
   if (!booking) {
     return (
       <div className="text-center py-16">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D4AF37]/20 mb-6">
-          <svg className="w-8 h-8 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-6">
+          <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">{t('title')}</h2>
-        <p className="text-zinc-400 mb-8">{t('processingNote')}</p>
-        <p className="text-zinc-500 text-sm mb-8">
+        <h2 className="text-2xl font-bold text-fg mb-2">{t('title')}</h2>
+        <p className="text-fg-muted mb-8">{t('processingNote')}</p>
+        <p className="text-fg-subtle text-sm mb-8">
           {t('emailSent', { email: userEmail })}
         </p>
         <Link
           href={`/${locale}/profile`}
-          className="inline-block bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-8 py-3 rounded-full font-bold hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all"
+          className="inline-block bg-primary text-on-primary px-8 py-3 rounded-full font-bold hover:bg-primary-dark transition-all"
         >
           {t('viewBookings')}
         </Link>
@@ -133,66 +133,66 @@ export default function BookingConfirmationPoller({
   return (
     <div className="text-center py-12">
       {/* Success icon */}
-      <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#D4AF37]/20 mb-6">
-        <svg className="w-10 h-10 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 mb-6">
+        <svg className="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
       </div>
 
-      <h2 className="text-3xl font-bold text-white mb-2">{t('title')}</h2>
-      <p className="text-zinc-400 mb-8">{t('subtitle')}</p>
+      <h2 className="text-3xl font-bold text-fg mb-2">{t('title')}</h2>
+      <p className="text-fg-muted mb-8">{t('subtitle')}</p>
 
       {/* Booking details card */}
-      <div className="bg-zinc-800/80 rounded-2xl p-6 border border-zinc-700 text-left max-w-md mx-auto mb-8">
-        <h3 className="text-lg font-semibold text-white mb-4">{t('details')}</h3>
+      <div className="bg-card-raised/80 rounded-2xl p-6 border border-outline text-left max-w-md mx-auto mb-8">
+        <h3 className="text-lg font-semibold text-fg mb-4">{t('details')}</h3>
 
         <div className="space-y-3">
           {booking.session?.album && (
             <>
               <div className="flex justify-between">
-                <span className="text-zinc-500">{t('album')}</span>
-                <span className="text-white font-medium">{booking.session.album.title}</span>
+                <span className="text-fg-subtle">{t('album')}</span>
+                <span className="text-fg font-medium">{booking.session.album.title}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-500">{t('artist')}</span>
-                <span className="text-zinc-300">{booking.session.album.artist}</span>
+                <span className="text-fg-subtle">{t('artist')}</span>
+                <span className="text-fg">{booking.session.album.artist}</span>
               </div>
             </>
           )}
 
           {sessionDate && (
             <div className="flex justify-between">
-              <span className="text-zinc-500">{t('date')}</span>
-              <span className="text-zinc-300 text-right text-sm">{sessionDate}</span>
+              <span className="text-fg-subtle">{t('date')}</span>
+              <span className="text-fg text-right text-sm">{sessionDate}</span>
             </div>
           )}
 
           {booking.session?.sala && (
             <div className="flex justify-between">
-              <span className="text-zinc-500">{t('venue')}</span>
-              <span className="text-zinc-300">{booking.session.sala.name[locale] || booking.session.sala.name.ca}</span>
+              <span className="text-fg-subtle">{t('venue')}</span>
+              <span className="text-fg">{booking.session.sala.name[locale] || booking.session.sala.name.ca}</span>
             </div>
           )}
 
           <div className="flex justify-between">
-            <span className="text-zinc-500">{t('places')}</span>
-            <span className="text-zinc-300">{booking.numPlaces}</span>
+            <span className="text-fg-subtle">{t('places')}</span>
+            <span className="text-fg">{booking.numPlaces}</span>
           </div>
 
-          <div className="border-t border-zinc-700 pt-3 flex justify-between">
-            <span className="text-zinc-400 font-semibold">{t('total')}</span>
-            <span className="text-[#D4AF37] font-bold text-lg">{booking.totalAmount}€</span>
+          <div className="border-t border-outline pt-3 flex justify-between">
+            <span className="text-fg-muted font-semibold">{t('total')}</span>
+            <span className="text-primary font-bold text-lg">{booking.totalAmount}€</span>
           </div>
         </div>
       </div>
 
       {/* Reference */}
-      <p className="text-zinc-600 text-xs font-mono mb-2">
+      <p className="text-fg-dim text-xs font-mono mb-2">
         {t('bookingRef', { ref: booking.id })}
       </p>
 
       {/* Email notification */}
-      <p className="text-zinc-500 text-sm mb-8">
+      <p className="text-fg-subtle text-sm mb-8">
         {t('emailSent', { email: userEmail })}
       </p>
 
@@ -200,13 +200,13 @@ export default function BookingConfirmationPoller({
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Link
           href={`/${locale}/profile`}
-          className="inline-block bg-gradient-to-r from-[#D4AF37] via-[#F4E5AD] to-[#D4AF37] text-black px-8 py-3 rounded-full font-bold hover:from-[#C5A028] hover:via-[#E5D59D] hover:to-[#C5A028] transition-all"
+          className="inline-block bg-primary text-on-primary px-8 py-3 rounded-full font-bold hover:bg-primary-dark transition-all"
         >
           {t('viewBookings')}
         </Link>
         <Link
           href={`/${locale}/sessions`}
-          className="inline-block border border-zinc-600 text-zinc-300 px-8 py-3 rounded-full font-medium hover:border-zinc-400 hover:text-white transition-all"
+          className="inline-block border border-outline-strong text-fg px-8 py-3 rounded-full font-medium hover:border-zinc-400 hover:text-fg transition-all"
         >
           {t('backToSessions')}
         </Link>

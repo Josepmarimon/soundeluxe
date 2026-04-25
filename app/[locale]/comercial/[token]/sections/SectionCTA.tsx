@@ -37,20 +37,20 @@ export default function SectionCTA({ content, lang }: Props) {
           </motion.h2>
           <motion.div
             variants={fadeInUp}
-            className="text-gray-400 text-lg mb-10 prose prose-invert prose-lg prose-p:text-gray-400 prose-strong:text-white mx-auto"
+            className="text-gray-400 text-lg mb-10 prose prose-invert prose-lg prose-p:text-gray-400 prose-strong:text-fg mx-auto"
             dangerouslySetInnerHTML={{ __html: content.body }}
           />
           <motion.div variants={fadeInUp}>
             <a
               href="mailto:info@soundeluxe.es"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#D4AF37] text-black font-bold rounded-full text-lg hover:bg-[#c4a030] transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary font-bold rounded-full text-lg hover:bg-[#c4a030] transition-colors"
             >
               <Mail className="w-5 h-5" />
               {buttonLabel}
             </a>
             <p className="text-gray-500 text-sm mt-4">
               {emailLabel}{' '}
-              <a href="mailto:info@soundeluxe.es" className="text-[#D4AF37]">info@soundeluxe.es</a>
+              <a href="mailto:info@soundeluxe.es" className="text-primary">info@soundeluxe.es</a>
             </p>
           </motion.div>
         </motion.div>

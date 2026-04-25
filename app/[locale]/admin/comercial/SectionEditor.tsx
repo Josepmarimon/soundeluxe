@@ -78,7 +78,7 @@ export default function SectionEditor({ sections, onChange, recipientType, lang 
                   type="button"
                   onClick={() => moveSection(index, -1)}
                   disabled={index === 0}
-                  className="p-0.5 text-gray-500 hover:text-white disabled:opacity-20"
+                  className="p-0.5 text-gray-500 hover:text-fg disabled:opacity-20"
                 >
                   <ArrowUp className="w-3 h-3" />
                 </button>
@@ -86,7 +86,7 @@ export default function SectionEditor({ sections, onChange, recipientType, lang 
                   type="button"
                   onClick={() => moveSection(index, 1)}
                   disabled={index === sections.length - 1}
-                  className="p-0.5 text-gray-500 hover:text-white disabled:opacity-20"
+                  className="p-0.5 text-gray-500 hover:text-fg disabled:opacity-20"
                 >
                   <ArrowDown className="w-3 h-3" />
                 </button>
@@ -96,7 +96,7 @@ export default function SectionEditor({ sections, onChange, recipientType, lang 
               <button
                 type="button"
                 onClick={() => toggleVisibility(section.key)}
-                className={`p-1 rounded ${section.visible ? 'text-[#D4AF37]' : 'text-gray-600'}`}
+                className={`p-1 rounded ${section.visible ? 'text-primary' : 'text-gray-600'}`}
               >
                 {section.visible ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
               </button>
@@ -133,7 +133,7 @@ export default function SectionEditor({ sections, onChange, recipientType, lang 
                     type="text"
                     value={currentTitle}
                     onChange={(e) => updateSectionContent(section.key, 'title', e.target.value)}
-                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div>

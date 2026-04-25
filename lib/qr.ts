@@ -12,7 +12,7 @@ export async function generateQRDataURL(
     width: 300,
     margin: 2,
     color: {
-      dark: '#0a1929',
+      dark: 'var(--color-bg)',
       light: '#FFFFFF',
     },
     errorCorrectionLevel: 'M',

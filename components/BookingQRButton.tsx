@@ -44,7 +44,7 @@ export default function BookingQRButton({ bookingId, locale }: BookingQRButtonPr
         <button
           onClick={handleShowQR}
           disabled={loading}
-          className="inline-flex items-center gap-2 text-[#D4AF37] hover:text-[#F4E5AD] text-sm font-medium transition-colors"
+          className="inline-flex items-center gap-2 text-primary hover:text-primary-light text-sm font-medium transition-colors"
         >
           {loading ? (
             <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -61,7 +61,7 @@ export default function BookingQRButton({ bookingId, locale }: BookingQRButtonPr
 
         <Link
           href={`/${locale}/ticket/${bookingId}`}
-          className="inline-flex items-center gap-2 text-zinc-400 hover:text-white text-sm font-medium transition-colors"
+          className="inline-flex items-center gap-2 text-fg-muted hover:text-fg text-sm font-medium transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -73,7 +73,7 @@ export default function BookingQRButton({ bookingId, locale }: BookingQRButtonPr
       {showQR && qrUrl && (
         <div className="mt-3 bg-white rounded-xl p-4 inline-block">
           <img src={qrUrl} alt="QR Code" className="w-48 h-48" />
-          <p className="text-zinc-600 text-xs text-center mt-2">{t('scanAtDoor')}</p>
+          <p className="text-fg-dim text-xs text-center mt-2">{t('scanAtDoor')}</p>
         </div>
       )}
     </div>

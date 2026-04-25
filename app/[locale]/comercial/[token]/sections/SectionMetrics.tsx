@@ -72,7 +72,7 @@ export default function SectionMetrics({ content, metrics, lang }: Props) {
               variants={fadeInUp}
               className="text-center p-6 rounded-2xl border border-gray-800 bg-gray-900/30"
             >
-              <div className="text-[#D4AF37] mb-3 flex justify-center">{stat.icon}</div>
+              <div className="text-primary mb-3 flex justify-center">{stat.icon}</div>
               <div className="text-3xl font-bold mb-1">{stat.value}</div>
               <div className="text-sm text-gray-400">{stat.label}</div>
             </motion.div>

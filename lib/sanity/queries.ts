@@ -7,6 +7,7 @@ export const sessionsQuery = groq`
     date,
     price,
     totalPlaces,
+    durationMinutes,
     vinylInfo,
     specialNotes,
     album->{
@@ -50,6 +51,7 @@ export const upcomingSessionsQuery = groq`
     date,
     price,
     totalPlaces,
+    durationMinutes,
     vinylInfo,
     specialNotes,
     album->{
@@ -84,6 +86,7 @@ export const sessionByIdQuery = groq`
     date,
     price,
     totalPlaces,
+    durationMinutes,
     vinylInfo,
     specialNotes,
     album->{
@@ -191,6 +194,7 @@ export const sessionsBySalaQuery = groq`
     date,
     price,
     totalPlaces,
+    durationMinutes,
     album->{
       _id,
       title,

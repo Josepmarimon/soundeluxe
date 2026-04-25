@@ -22,6 +22,7 @@ export interface CalendarSession {
   date: string
   price: number
   totalPlaces: number
+  durationMinutes?: number
   album: {
     _id: string
     title: string
@@ -147,14 +148,14 @@ export default function SessionsCalendar({ sessions, title }: SessionsCalendarPr
   return (
     <div className="space-y-6">
       {title && (
-        <h3 className="text-xl font-semibold text-white">{title}</h3>
+        <h3 className="text-xl font-semibold text-fg">{title}</h3>
       )}
 
       {/* Layout: Calendar 1/3 + Session Highlight 2/3 */}
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch">
         {/* Calendar section - 1/3 */}
         <div className="w-full lg:w-1/3 flex flex-col">
-          <div className="bg-zinc-900/50 backdrop-blur-sm rounded-2xl border border-zinc-800 p-4 flex flex-col items-center">
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl border border-outline-subtle p-4 flex flex-col items-center">
             <DayPicker
               mode="single"
               selected={selectedDate}
@@ -167,13 +168,13 @@ export default function SessionsCalendar({ sessions, title }: SessionsCalendarPr
             />
 
             {/* Legend */}
-            <div className="flex items-center justify-center gap-4 text-xs text-zinc-400 mt-4 pt-4 border-t border-zinc-800 w-full">
+            <div className="flex items-center justify-center gap-4 text-xs text-fg-muted mt-4 pt-4 border-t border-outline-subtle w-full">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F4E5AD]" />
+                <div className="w-2 h-2 rounded-full bg-primary" />
                 <span>{t('calendar.hasSession')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-[#D4AF37] rounded" />
+                <div className="w-4 h-4 border-2 border-primary rounded" />
                 <span>{t('calendar.today')}</span>
               </div>
             </div>

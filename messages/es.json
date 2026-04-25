@@ -34,10 +34,11 @@
     "allSessions": "Todas las sesiones",
     "upcomingSession": "Próxima sesión",
     "noSessions": "No hay sesiones programadas",
-    "bookNow": "Reservar ahora",
+    "bookNow": "Comprar",
     "book": "Reserva",
     "soldOut": "Agotado",
     "placesAvailable": "{count} plazas disponibles",
+    "placesShort": "{count} plazas",
     "onePlace": "1 plaza disponible",
     "price": "{price}€",
     "date": "Fecha",
@@ -76,7 +77,7 @@
   },
   "booking": {
     "title": "Reservar plaza",
-    "bookNow": "Reservar ahora",
+    "bookNow": "Comprar",
     "loginToBook": "Inicia sesión para reservar",
     "selectPlaces": "¿Cuántas plazas?",
     "places": "Plazas",
@@ -324,7 +325,8 @@
     "close": "Cerrar",
     "selectDate": "Selecciona una fecha con sesiones",
     "sessionsOnDate": "Sesiones del día",
-    "moreSessions": "Más sesiones este día"
+    "moreSessions": "Más sesiones este día",
+    "pickSession": "Elige qué sesión quieres comprar"
   },
   "nextSession": {
     "inDays": "En {days} días",

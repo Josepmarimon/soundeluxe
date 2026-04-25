@@ -37,8 +37,6 @@ export default function SectionHero({ content, recipientName, recipientCompany, 
         />
       )}
       <div className="absolute inset-0 bg-black/70" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0a0a0a]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(212,175,55,0.1),transparent_60%)]" />
 
       <motion.div
         className="relative z-10 text-center px-6 max-w-3xl"
@@ -47,7 +45,7 @@ export default function SectionHero({ content, recipientName, recipientCompany, 
         variants={staggerContainer}
       >
         <motion.div variants={fadeInUp} className="mb-6">
-          <span className="inline-block px-4 py-1.5 border border-[#D4AF37]/30 rounded-full text-[#D4AF37] text-sm tracking-widest uppercase backdrop-blur-sm">
+          <span className="inline-block px-4 py-1.5 border border-primary/30 rounded-full text-primary text-sm tracking-widest uppercase backdrop-blur-sm">
             {proposalLabel}
           </span>
         </motion.div>
@@ -58,7 +56,7 @@ export default function SectionHero({ content, recipientName, recipientCompany, 
 
         <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-gray-200 mb-2 drop-shadow">
           {greeting}{' '}
-          <span className="text-[#D4AF37] font-semibold">{recipientName}</span>
+          <span className="text-primary font-semibold">{recipientName}</span>
           {recipientCompany && (
             <span className="text-gray-300"> {from} {recipientCompany}</span>
           )}
@@ -71,7 +69,7 @@ export default function SectionHero({ content, recipientName, recipientCompany, 
         />
 
         <motion.div variants={fadeInUp} className="mt-12">
-          <ChevronDown className="w-6 h-6 text-[#D4AF37] mx-auto animate-bounce" />
+          <ChevronDown className="w-6 h-6 text-primary mx-auto animate-bounce" />
         </motion.div>
       </motion.div>
     </section>
