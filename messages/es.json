@@ -36,7 +36,7 @@
     "allSessions": "Todas las sesiones",
     "upcomingSession": "Próxima sesión",
     "noSessions": "No hay sesiones programadas",
-    "bookNow": "Comprar",
+    "bookNow": "Comprar entrada",
     "book": "Reserva",
     "soldOut": "Agotado",
     "placesAvailable": "{count} plazas disponibles",
@@ -79,7 +79,7 @@
   },
   "booking": {
     "title": "Reservar plaza",
-    "bookNow": "Comprar",
+    "bookNow": "Comprar entrada",
     "loginToBook": "Inicia sesión para reservar",
     "selectPlaces": "¿Cuántas plazas?",
     "places": "Plazas",

@@ -37,12 +37,6 @@ export default async function SessionPage({ params }: SessionPageProps) {
   const year = date.toLocaleDateString(locale, { year: 'numeric' })
   const time = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
 
-  const availabilityPct = session.totalPlaces > 0
-    ? Math.round((availablePlaces / session.totalPlaces) * 100)
-    : 0
-  const isLowAvailability = availabilityPct < 30 && availablePlaces > 0
-  const isCritical = availabilityPct < 10 && availablePlaces > 0
-
   return (
     <div className="min-h-screen bg-transparent">
       {/* Top: back link */}
@@ -92,11 +86,6 @@ export default async function SessionPage({ params }: SessionPageProps) {
           </p>
         )}
 
-        {session.sessionType.description && session.sessionType.description[locale] && (
-          <p className="mt-3 text-sm text-fg-subtle max-w-2xl leading-relaxed">
-            {session.sessionType.description[locale]}
-          </p>
-        )}
       </header>
 
       {/* GRID — cover (left) aligned with booking card (right) */}
@@ -104,7 +93,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-6 lg:gap-8 items-start">
           {/* LEFT — cover + links + description */}
           <div className="min-w-0">
-            <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-outline/50 max-w-[520px]">
+            <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-outline/50 max-w-[360px]">
               <AlbumCarousel
                 coverImage={session.album.coverImage}
                 additionalImages={session.album.additionalImages}
@@ -180,6 +169,12 @@ export default async function SessionPage({ params }: SessionPageProps) {
                 <PortableTextContent value={session.album.description[locale]} />
               </div>
             )}
+
+            {session.sessionType.description && session.sessionType.description[locale] && (
+              <p className="mt-5 max-w-2xl text-sm text-fg-subtle leading-relaxed">
+                {session.sessionType.description[locale]}
+              </p>
+            )}
           </div>
 
           {/* RIGHT — sticky booking card */}
@@ -233,33 +228,6 @@ export default async function SessionPage({ params }: SessionPageProps) {
                     {t('venue.capacity')} {session.sala.capacity}
                   </p>
                 )}
-              </div>
-
-              {/* Availability */}
-              <div className="p-4 border-b border-outline">
-                <div className="flex items-center justify-between mb-1.5">
-                  <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold">
-                    {t('booking.available')}
-                  </p>
-                  <p className={`text-[11px] font-bold ${
-                    isCritical ? 'text-red-400' : isLowAvailability ? 'text-primary' : 'text-fg'
-                  }`}>
-                    {availablePlaces} / {session.totalPlaces}
-                    {isLowAvailability && (
-                      <span className="ml-1.5">
-                        {isCritical ? '· ¡Últimas!' : '· ¡Pocas!'}
-                      </span>
-                    )}
-                  </p>
-                </div>
-                <div className="h-1 bg-card-raised rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all ${
-                      isCritical ? 'bg-red-400' : 'bg-primary'
-                    }`}
-                    style={{ width: `${availabilityPct}%` }}
-                  />
-                </div>
               </div>
 
               {/* Price + CTA */}

@@ -126,9 +126,6 @@ export default function BookingWidget({
             >
               +
             </button>
-            <span className="text-[11px] text-fg-subtle ml-auto">
-              {availablePlaces} {t('available')}
-            </span>
           </div>
         </div>
 

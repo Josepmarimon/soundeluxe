@@ -36,7 +36,7 @@
     "allSessions": "All sessions",
     "upcomingSession": "Next session",
     "noSessions": "No sessions scheduled",
-    "bookNow": "Buy",
+    "bookNow": "Buy ticket",
     "book": "Reserve",
     "soldOut": "Sold out",
     "placesAvailable": "{count} spots available",
@@ -79,7 +79,7 @@
   },
   "booking": {
     "title": "Book spot",
-    "bookNow": "Buy",
+    "bookNow": "Buy ticket",
     "loginToBook": "Log in to book",
     "selectPlaces": "How many spots?",
     "places": "Spots",

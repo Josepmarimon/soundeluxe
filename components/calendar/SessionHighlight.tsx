@@ -192,10 +192,11 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
                               <span className={`session-pill-time text-sm font-bold leading-tight ${isActive ? 'text-primary' : 'text-fg'}`}>
                                 {sTime}
                               </span>
-                              <span className="text-[10px] text-fg-muted leading-tight">
-                                {s.durationMinutes ? `${s.durationMinutes} min · ` : ''}
-                                {t('sessions.placesShort', { count: s.totalPlaces })}
-                              </span>
+                              {s.durationMinutes ? (
+                                <span className="text-[10px] text-fg-muted leading-tight">
+                                  {s.durationMinutes} min
+                                </span>
+                              ) : null}
                             </button>
                           )
                         })}
@@ -203,10 +204,9 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
                     ) : (
                       <>
                         <p className="text-sm font-medium">{formattedTime}</p>
-                        <p className="text-xs text-fg-muted">
-                          {session.durationMinutes ? `${session.durationMinutes} min · ` : ''}
-                          {t('sessions.placesShort', { count: session.totalPlaces })}
-                        </p>
+                        {session.durationMinutes ? (
+                          <p className="text-xs text-fg-muted">{session.durationMinutes} min</p>
+                        ) : null}
                       </>
                     )}
                   </div>
@@ -248,7 +248,6 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
             {/* Price and CTA */}
             <div className="flex items-center justify-between gap-4 pt-4 border-t border-outline">
               <div>
-                <p className="text-xs text-fg-subtle">{t('nextSession.priceFrom')}</p>
                 <p className="text-3xl font-bold text-fg">{hasSelection ? `${session.price}€` : '—'}</p>
               </div>
               {hasSelection ? (

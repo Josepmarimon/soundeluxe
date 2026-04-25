@@ -17,7 +17,6 @@ interface SessionCardProps {
 export default function SessionCard({ session, availablePlaces, showAlbumSale = true, enableFlip = false, isFlipped = false, onFlip }: SessionCardProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
-  const places = availablePlaces ?? session.totalPlaces
   const isSoldOut = availablePlaces !== undefined && availablePlaces === 0
 
   const date = new Date(session.date)
@@ -58,16 +57,14 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
                   artist={session.album.artist}
                 />
 
-                {/* Available spots badge */}
-                <div className="hidden md:block absolute top-3 left-3 z-10">
-                  <span className={`inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md ${isSoldOut ? 'bg-card-muted text-fg' : 'bg-primary text-on-primary'}`}>
-                    {isSoldOut
-                      ? t('booking.soldOut')
-                      : places === 1
-                        ? t('sessions.onePlace')
-                        : t('sessions.placesAvailable', { count: places })}
-                  </span>
-                </div>
+                {/* Sold-out badge (no available-places info shown) */}
+                {isSoldOut && (
+                  <div className="hidden md:block absolute top-3 left-3 z-10">
+                    <span className="inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md bg-card-muted text-fg">
+                      {t('booking.soldOut')}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Session Info */}
@@ -175,16 +172,14 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
             artist={session.album.artist}
           />
 
-          {/* Available spots badge - only on desktop, over image */}
-          <div className="hidden md:block absolute top-3 left-3 z-10">
-            <span className={`inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md ${isSoldOut ? 'bg-card-muted text-fg' : 'bg-primary text-on-primary'}`}>
-              {isSoldOut
-                ? t('booking.soldOut')
-                : places === 1
-                  ? t('sessions.onePlace')
-                  : t('sessions.placesAvailable', { count: places })}
-            </span>
-          </div>
+          {/* Sold-out badge (no available-places info shown) */}
+          {isSoldOut && (
+            <div className="hidden md:block absolute top-3 left-3 z-10">
+              <span className="inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full shadow-md bg-card-muted text-fg">
+                {t('booking.soldOut')}
+              </span>
+            </div>
+          )}
         </div>
       </a>
 
@@ -211,7 +206,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
             {session.price}€
           </span>
           <button className={`px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs transition-all shadow-md ${isSoldOut ? 'bg-card-muted text-fg cursor-not-allowed' : 'bg-primary text-on-primary hover:bg-primary-dark'}`}>
-            {isSoldOut ? t('booking.soldOut') : `${t('sessions.book')} (${places})`}
+            {isSoldOut ? t('booking.soldOut') : t('sessions.book')}
           </button>
         </div>
 

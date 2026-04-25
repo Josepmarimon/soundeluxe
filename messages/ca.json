@@ -36,7 +36,7 @@
     "allSessions": "Totes les sessions",
     "upcomingSession": "Propera sessió",
     "noSessions": "No hi ha sessions programades",
-    "bookNow": "Comprar",
+    "bookNow": "Comprar entrada",
     "book": "Reserva",
     "soldOut": "Esgotat",
     "placesAvailable": "{count} places disponibles",
@@ -79,7 +79,7 @@
   },
   "booking": {
     "title": "Reservar plaça",
-    "bookNow": "Comprar",
+    "bookNow": "Comprar entrada",
     "loginToBook": "Inicia sessió per reservar",
     "selectPlaces": "Quantes places?",
     "places": "Places",
