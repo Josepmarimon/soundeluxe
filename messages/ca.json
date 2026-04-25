@@ -148,6 +148,13 @@
       "electronic": "Electrònica"
     }
   },
+  "loginPrompt": {
+    "voteTitle": "Vota gratis",
+    "voteMessage": "Per votar necessites un compte. Registra't gratuïtament i tria els teus àlbums favorits.",
+    "registerFree": "Registrar-se gratis",
+    "alreadyHaveAccount": "Ja tinc compte",
+    "close": "Tancar"
+  },
   "votes": {
     "title": "Vota els teus àlbums favorits",
     "subtitle": "Ajuda'ns a decidir quins àlbums programar en futures sessions",

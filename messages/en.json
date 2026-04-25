@@ -148,6 +148,13 @@
       "electronic": "Electronic"
     }
   },
+  "loginPrompt": {
+    "voteTitle": "Vote for free",
+    "voteMessage": "You need an account to vote. Sign up for free and pick your favorite albums.",
+    "registerFree": "Sign up for free",
+    "alreadyHaveAccount": "I already have an account",
+    "close": "Close"
+  },
   "votes": {
     "title": "Vote for your favorite albums",
     "subtitle": "Help us decide which albums to schedule for future sessions",

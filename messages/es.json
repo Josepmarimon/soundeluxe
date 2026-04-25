@@ -148,6 +148,13 @@
       "electronic": "Electrónica"
     }
   },
+  "loginPrompt": {
+    "voteTitle": "Vota gratis",
+    "voteMessage": "Para votar necesitas una cuenta. Regístrate gratuitamente y elige tus álbumes favoritos.",
+    "registerFree": "Registrarse gratis",
+    "alreadyHaveAccount": "Ya tengo cuenta",
+    "close": "Cerrar"
+  },
   "votes": {
     "title": "Vota tus álbumes favoritos",
     "subtitle": "Ayúdanos a decidir qué álbumes programar en futuras sesiones",
