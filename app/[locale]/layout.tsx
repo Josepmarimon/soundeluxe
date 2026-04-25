@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
-import { Geist, Geist_Mono, DM_Serif_Display } from 'next/font/google'
+import { Geist, Geist_Mono, DM_Serif_Display, Barlow } from 'next/font/google'
 import '../globals.css'
 import { locales } from '@/i18n'
 import Navbar from '@/components/Navbar'
@@ -25,6 +25,14 @@ const dmSerifDisplay = DM_Serif_Display({
   variable: '--font-heading',
   subsets: ['latin'],
   weight: '400',
+  style: ['normal', 'italic'],
+  display: 'swap',
+})
+
+const barlow = Barlow({
+  variable: '--font-barlow',
+  subsets: ['latin'],
+  weight: '900',
   style: ['normal', 'italic'],
   display: 'swap',
 })
@@ -90,7 +98,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifDisplay.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifDisplay.variable} ${barlow.variable} antialiased`}
       >
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>

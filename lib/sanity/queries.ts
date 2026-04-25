@@ -123,6 +123,16 @@ export const sessionByIdQuery = groq`
   }
 `
 
+// Get album covers only (lightweight, for hero carousel and similar)
+export const albumCoversQuery = groq`
+  *[_type == "album" && defined(coverImage)] | order(year desc) {
+    _id,
+    title,
+    artist,
+    coverImage
+  }
+`
+
 // Get all albums
 export const albumsQuery = groq`
   *[_type == "album"] | order(year desc) {

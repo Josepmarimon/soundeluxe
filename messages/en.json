@@ -27,10 +27,12 @@
   "hero": {
     "title": "Rediscover music like you've never heard it before",
     "subtitle": "Exclusive high-fidelity listening sessions for true audiophiles",
-    "cta": "Explore sessions"
+    "cta": "Explore sessions",
+    "voteCta": "Vote for your favorite album"
   },
   "sessions": {
     "title": "Upcoming sessions",
+    "scheduleTitle": "Schedule",
     "allSessions": "All sessions",
     "upcomingSession": "Next session",
     "noSessions": "No sessions scheduled",

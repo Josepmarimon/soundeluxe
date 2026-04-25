@@ -27,10 +27,12 @@
   "hero": {
     "title": "Redescubre la música como nunca la habías escuchado",
     "subtitle": "Sesiones exclusivas de escucha en alta fidelidad para auténticos audiófilos",
-    "cta": "Explorar sesiones"
+    "cta": "Explorar sesiones",
+    "voteCta": "Vota tu disco preferido"
   },
   "sessions": {
     "title": "Próximas sesiones",
+    "scheduleTitle": "Programación",
     "allSessions": "Todas las sesiones",
     "upcomingSession": "Próxima sesión",
     "noSessions": "No hay sesiones programadas",

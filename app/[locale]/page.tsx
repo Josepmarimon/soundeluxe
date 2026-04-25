@@ -1,13 +1,12 @@
 import { getTranslations } from 'next-intl/server'
-import Image from 'next/image'
 import { client } from '@/lib/sanity/client'
-import { upcomingSessionsQuery, homePageQuery, testimonialsQuery } from '@/lib/sanity/queries'
+import { upcomingSessionsQuery, homePageQuery, testimonialsQuery, albumCoversQuery } from '@/lib/sanity/queries'
 import type { SessionListItem, HomePage, ExperienceFeature, Testimonial } from '@/lib/sanity/types'
+import type { Image as SanityImage } from 'sanity'
 import { urlForImage } from '@/lib/sanity/image'
 import SessionFilters from '@/components/SessionFilters'
 import { getBatchAvailability } from '@/lib/booking'
-import HeroVideo from '@/components/HeroVideo'
-import TypewriterText from '@/components/TypewriterText'
+import HeroAlbumsCarousel from '@/components/HeroAlbumsCarousel'
 import NewsletterForm from '@/components/NewsletterForm'
 import SessionsCalendar from '@/components/calendar/SessionsCalendar'
 import Testimonials from '@/components/Testimonials'
@@ -17,11 +16,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const typedLocale = locale as 'ca' | 'es' | 'en'
 
-  // Fetch upcoming sessions, home page config, and testimonials from Sanity
-  const [sessions, homePageData, testimonials]: [SessionListItem[], HomePage | null, Testimonial[]] = await Promise.all([
+  // Fetch upcoming sessions, home page config, testimonials and album covers from Sanity
+  const [sessions, homePageData, testimonials, albumCovers]: [
+    SessionListItem[],
+    HomePage | null,
+    Testimonial[],
+    Array<{ _id: string; title: string; artist: string; coverImage: SanityImage }>,
+  ] = await Promise.all([
     client.fetch(upcomingSessionsQuery),
     client.fetch(homePageQuery),
     client.fetch(testimonialsQuery),
+    client.fetch(albumCoversQuery),
   ])
 
   // Compute real availability
@@ -41,56 +46,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <div className="min-h-screen bg-transparent">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
-        {/* Background Image/Video */}
-        {homePageData?.heroBackgroundType === 'image' && homePageData?.heroBackgroundImage && (
-          <>
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: `url(${urlForImage(homePageData.heroBackgroundImage)?.width(1920).url()})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-            <div className="absolute inset-0 bg-black/60 z-10" />
-          </>
-        )}
-
-        {homePageData?.heroBackgroundType === 'video' && homePageData?.heroBackgroundVideo?.asset?.url && (
-          <>
-            <HeroVideo videoUrl={homePageData.heroBackgroundVideo.asset.url} />
-            <div className="absolute inset-0 bg-black/50 z-10" />
-          </>
-        )}
-
-        {/* Content */}
-        <div className="max-w-4xl mx-auto relative z-20 -translate-y-16 md:-translate-y-24">
-          {/* Logo */}
-          <div className="mb-4 flex justify-center">
-            <Image
-              src="/logo-yellow.svg"
-              alt="Sound Deluxe"
-              width={440}
-              height={120}
-              className="h-10 md:h-14 w-auto"
-              priority
-            />
-          </div>
-          <h1 className="hero-title italic text-4xl md:text-6xl text-fg tracking-tight">
-            <TypewriterText
-              text={homePageData?.heroTitle?.[typedLocale] || t('hero.title')}
-              speedMs={70}
-            />
-          </h1>
+      <section className="relative w-full">
+        {/* Carrusel de portades de discos */}
+        <div className="relative h-[35vh] w-full">
+          <HeroAlbumsCarousel albums={albumCovers} />
         </div>
       </section>
 
       {/* Sessions Section */}
-      <section id="sessions" className="py-20 px-4">
+      <section id="sessions" className="pt-2 pb-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-fg mb-12 text-center">
-            {t('sessions.title')}
+          <h2 className="text-4xl md:text-5xl font-bold text-fg mb-4 text-left lg:pl-[calc(33.333%+2rem)]">
+            {t('sessions.scheduleTitle')}
           </h2>
 
           {/* Calendar */}

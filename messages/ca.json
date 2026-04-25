@@ -27,10 +27,12 @@
   "hero": {
     "title": "Redescobrix la música com mai l'havies sentit",
     "subtitle": "Sessions exclusives d'escolta en alta fidelitat per a autèntics audiòfils",
-    "cta": "Explorar sessions"
+    "cta": "Explorar sessions",
+    "voteCta": "Vota el teu disc preferit"
   },
   "sessions": {
     "title": "Properes sessions",
+    "scheduleTitle": "Programació",
     "allSessions": "Totes les sessions",
     "upcomingSession": "Propera sessió",
     "noSessions": "No hi ha sessions programades",
