@@ -11,9 +11,10 @@ interface AlbumCatalogProps {
   artists: string[]
   showVoteButton?: boolean
   hideTitleSearch?: boolean
+  hideArtistSearch?: boolean
 }
 
-export default function AlbumCatalog({ albums, genres, artists, showVoteButton = false, hideTitleSearch = false }: AlbumCatalogProps) {
+export default function AlbumCatalog({ albums, genres, artists, showVoteButton = false, hideTitleSearch = false, hideArtistSearch = false }: AlbumCatalogProps) {
   const t = useTranslations()
   const [selectedGenre, setSelectedGenre] = useState<string>('')
   const [artistSearch, setArtistSearch] = useState<string>('')
@@ -120,7 +121,7 @@ export default function AlbumCatalog({ albums, genres, artists, showVoteButton =
           )}
 
           {/* Artist Search */}
-          {artists.length > 0 && (
+          {!hideArtistSearch && artists.length > 0 && (
             <div className="relative flex-1">
               <input
                 type="text"

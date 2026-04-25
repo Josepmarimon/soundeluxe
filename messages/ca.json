@@ -133,7 +133,7 @@
   "albums": {
     "title": "Botiga de vinils clàssics",
     "subtitle": "Descobreix la nostra col·lecció de vinils icònics",
-    "searchPlaceholder": "Cerca per títol...",
+    "searchPlaceholder": "Cerca per títol o artista...",
     "searchArtist": "Cerca artista...",
     "allGenres": "Tots els gèneres",
     "allArtists": "Tots els artistes",
@@ -175,7 +175,9 @@
       "submitting": "Afegint...",
       "success": "L'àlbum s'ha afegit correctament! Ja pots votar-lo.",
       "error": "Hi ha hagut un error. Torna-ho a provar.",
-      "alreadySuggested": "Aquest àlbum ja existeix al catàleg."
+      "alreadySuggested": "Aquest àlbum ja existeix al catàleg.",
+      "alreadyExistsAndVoted": "Aquest àlbum ja existia al catàleg. Hem comptat el teu vot per a aquest disc.",
+      "alreadyExistsAlreadyVoted": "Aquest àlbum ja existia al catàleg i ja l'havies votat."
     }
   },
   "profile": {

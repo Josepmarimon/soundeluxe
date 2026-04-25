@@ -43,7 +43,7 @@ export default function AlbumSuggestionForm({ onActiveChange }: AlbumSuggestionF
 
   // Form state
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitResult, setSubmitResult] = useState<'new' | 'just-voted' | 'already-voted' | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isArtistInputFocused, setIsArtistInputFocused] = useState(false)
 
@@ -191,21 +191,22 @@ export default function AlbumSuggestionForm({ onActiveChange }: AlbumSuggestionF
       })
 
       if (response.ok) {
-        setSubmitSuccess(true)
+        const data = await response.json()
+        if (data.alreadyExists) {
+          setSubmitResult(data.alreadyVoted ? 'already-voted' : 'just-voted')
+        } else {
+          setSubmitResult('new')
+        }
         setSelectedArtist(null)
         setArtistQuery('')
         setReleases([])
         setSelectedRelease(null)
 
-        // Hide success message after 5 seconds
-        setTimeout(() => setSubmitSuccess(false), 5000)
+        // Hide message after 6 seconds
+        setTimeout(() => setSubmitResult(null), 6000)
       } else {
         const data = await response.json()
-        if (response.status === 409) {
-          setSubmitError(t('votes.suggestion.alreadySuggested'))
-        } else {
-          setSubmitError(data.error || t('votes.suggestion.error'))
-        }
+        setSubmitError(data.error || t('votes.suggestion.error'))
       }
     } catch (error) {
       console.error('Error submitting suggestion:', error)
@@ -233,10 +234,12 @@ export default function AlbumSuggestionForm({ onActiveChange }: AlbumSuggestionF
         {t('votes.suggestion.subtitle')}
       </p>
 
-      {/* Success message */}
-      {submitSuccess && (
+      {/* Result message */}
+      {submitResult && (
         <div className="mb-6 p-4 bg-green-900/30 border border-green-700 rounded-xl text-green-400">
-          {t('votes.suggestion.success')}
+          {submitResult === 'new' && t('votes.suggestion.success')}
+          {submitResult === 'just-voted' && t('votes.suggestion.alreadyExistsAndVoted')}
+          {submitResult === 'already-voted' && t('votes.suggestion.alreadyExistsAlreadyVoted')}
         </div>
       )}
 

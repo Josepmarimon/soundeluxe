@@ -26,7 +26,7 @@ export default function VotesCatalogWithSuggestion({ albums, genres, artists }: 
           genres={genres}
           artists={artists}
           showVoteButton={true}
-          hideTitleSearch={true}
+          hideArtistSearch={true}
         />
       </div>
       <aside className="min-w-0">

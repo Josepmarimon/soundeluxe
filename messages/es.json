@@ -133,7 +133,7 @@
   "albums": {
     "title": "Tienda de vinilos clásicos",
     "subtitle": "Descubre nuestra colección de vinilos icónicos",
-    "searchPlaceholder": "Buscar por título...",
+    "searchPlaceholder": "Buscar por título o artista...",
     "searchArtist": "Buscar artista...",
     "allGenres": "Todos los géneros",
     "allArtists": "Todos los artistas",
@@ -175,7 +175,9 @@
       "submitting": "Añadiendo...",
       "success": "¡El álbum se ha añadido correctamente! Ya puedes votarlo.",
       "error": "Ha habido un error. Inténtalo de nuevo.",
-      "alreadySuggested": "Este álbum ya existe en el catálogo."
+      "alreadySuggested": "Este álbum ya existe en el catálogo.",
+      "alreadyExistsAndVoted": "Este álbum ya existía en el catálogo. Hemos contabilizado tu voto para este disco.",
+      "alreadyExistsAlreadyVoted": "Este álbum ya existía en el catálogo y ya lo habías votado."
     }
   },
   "profile": {

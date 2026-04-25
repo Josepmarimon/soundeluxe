@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { writeClient } from '@/lib/sanity/writeClient'
 import { client } from '@/lib/sanity/client'
+import { prisma } from '@/lib/prisma'
 import { groq } from 'next-sanity'
 
 // POST - Create an album directly from user suggestion
@@ -25,17 +26,34 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const userId = (session.user as any).id
+
     // Check if album already exists in Sanity
-    const existingAlbum = await client.fetch(
-      groq`*[_type == "album" && lower(title) == lower($title) && lower(artist) == lower($artist)][0]`,
+    const existingAlbum = await client.fetch<{ _id: string; title: string; artist: string } | null>(
+      groq`*[_type == "album" && lower(title) == lower($title) && lower(artist) == lower($artist)][0]{ _id, title, artist }`,
       { title: albumTitle.trim(), artist: artistName.trim() }
     )
 
     if (existingAlbum) {
-      return NextResponse.json(
-        { error: 'This album already exists in the catalog' },
-        { status: 409 }
-      )
+      // Album already exists — register a vote for this user (if not already voted)
+      let alreadyVoted = false
+      try {
+        await prisma.votacion.create({
+          data: { userId, albumId: existingAlbum._id },
+        })
+      } catch (voteError: any) {
+        if (voteError.code === 'P2002') {
+          alreadyVoted = true
+        } else {
+          throw voteError
+        }
+      }
+
+      return NextResponse.json({
+        alreadyExists: true,
+        alreadyVoted,
+        album: existingAlbum,
+      })
     }
 
     // Upload cover image from URL if provided
