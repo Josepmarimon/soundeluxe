@@ -11,9 +11,10 @@ import ThemeToggle from '@/components/ThemeToggle'
 
 interface NavbarProps {
   showShop?: boolean
+  showGallery?: boolean
 }
 
-export default function Navbar({ showShop = true }: NavbarProps) {
+export default function Navbar({ showShop = true, showGallery = false }: NavbarProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
   const pathname = usePathname()
@@ -93,12 +94,14 @@ export default function Navbar({ showShop = true }: NavbarProps) {
             >
               {t('navigation.salas')}
             </Link>
-            <Link
-              href={`/${locale}/gallery`}
-              className="text-fg hover:text-fg transition-colors"
-            >
-              {t('navigation.gallery')}
-            </Link>
+            {showGallery && (
+              <Link
+                href={`/${locale}/gallery`}
+                className="text-fg hover:text-fg transition-colors"
+              >
+                {t('navigation.gallery')}
+              </Link>
+            )}
           </div>
 
           {/* Language Selector & Auth */}

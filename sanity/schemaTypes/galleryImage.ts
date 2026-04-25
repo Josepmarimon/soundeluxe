@@ -15,10 +15,26 @@ export default defineType({
       name: 'image',
       title: 'Imatge',
       type: 'image',
+      description: 'Puja una imatge o, alternativament, omple "Enllaç d\'Instagram". Cal almenys una de les dues.',
       options: {
         hotspot: true,
       },
-      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'instagramUrl',
+      title: 'Enllaç d\'Instagram',
+      type: 'url',
+      description: 'URL del post d\'Instagram (https://www.instagram.com/p/...). Si està informat, en clicar la targeta s\'obrirà Instagram.',
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ['http', 'https'],
+        }).custom((value, context) => {
+          const image = (context.document as { image?: unknown })?.image
+          if (!value && !image) {
+            return 'Cal pujar una imatge o afegir un enllaç d\'Instagram'
+          }
+          return true
+        }),
     }),
     defineField({
       name: 'caption',

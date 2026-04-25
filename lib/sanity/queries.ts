@@ -258,7 +258,8 @@ export const votableAlbumsQuery = groq`
 // Get site settings (lightweight query for navigation, etc.)
 export const siteSettingsQuery = groq`
   *[_type == "homePage"][0] {
-    showShop
+    showShop,
+    showGallery
   }
 `
 
@@ -339,6 +340,7 @@ export const galleryImagesQuery = groq`
   *[_type == "galleryImage"] | order(featured desc, order asc, date desc) {
     _id,
     image,
+    instagramUrl,
     caption,
     featured,
     date,

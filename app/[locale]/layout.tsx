@@ -74,10 +74,11 @@ export default async function LocaleLayout({
   // Fetch site settings and messages in parallel
   const [messages, siteSettings] = await Promise.all([
     getMessages(),
-    client.fetch<{ showShop?: boolean }>(siteSettingsQuery),
+    client.fetch<{ showShop?: boolean; showGallery?: boolean }>(siteSettingsQuery),
   ])
 
   const showShop = siteSettings?.showShop ?? true
+  const showGallery = siteSettings?.showGallery ?? false
 
   return (
     <html lang={locale}>
@@ -93,7 +94,7 @@ export default async function LocaleLayout({
       >
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
-            <Navbar showShop={showShop} />
+            <Navbar showShop={showShop} showGallery={showGallery} />
             <main className="pt-16">{children}</main>
             <FooterWrapper />
           </NextIntlClientProvider>

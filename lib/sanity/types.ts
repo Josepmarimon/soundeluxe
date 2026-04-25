@@ -166,7 +166,8 @@ export interface GalleryCategory {
 // Gallery Image
 export interface GalleryImage {
   _id: string
-  image: Image
+  image?: Image
+  instagramUrl?: string
   caption?: MultilingualText
   featured: boolean
   date?: string

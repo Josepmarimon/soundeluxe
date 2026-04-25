@@ -27,6 +27,14 @@ export default defineType({
       initialValue: true,
       group: 'siteSettings',
     },
+    {
+      name: 'showGallery',
+      type: 'boolean',
+      title: 'Mostrar secció Galeria',
+      description: 'Activa o desactiva la secció de galeria. Mantén-la desactivada fins que tinguis prou material gràfic d\'Instagram.',
+      initialValue: false,
+      group: 'siteSettings',
+    },
     // Hero Section
     {
       name: 'heroTitle',
