@@ -85,6 +85,13 @@ html, body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* DM Serif Display for titles */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading), Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
 /* Logo swap: animated in night, static in day */
 .logo-static { display: none; }
 [data-theme="day"] .logo-animated { display: none; }
@@ -92,6 +99,23 @@ html, body {
 
 /* Hero title: white in day theme (over dark overlay); night uses default text-fg */
 [data-theme="day"] .hero-title { color: #ffffff; }
+
+/* Typewriter letter-by-letter reveal */
+.typewriter-char {
+  opacity: 0;
+  animation: typewriter-fade-in 0.45s ease-out forwards;
+}
+@keyframes typewriter-fade-in {
+  from { opacity: 0; filter: blur(4px); }
+  to { opacity: 1; filter: blur(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-char {
+    animation: none;
+    opacity: 1;
+    filter: none;
+  }
+}
 
 /* Session highlight card: yellow bg in day only */
 [data-theme="day"] .session-highlight-card {

@@ -7,6 +7,7 @@ import { urlForImage } from '@/lib/sanity/image'
 import SessionFilters from '@/components/SessionFilters'
 import { getBatchAvailability } from '@/lib/booking'
 import HeroVideo from '@/components/HeroVideo'
+import TypewriterText from '@/components/TypewriterText'
 import NewsletterForm from '@/components/NewsletterForm'
 import SessionsCalendar from '@/components/calendar/SessionsCalendar'
 import Testimonials from '@/components/Testimonials'
@@ -64,28 +65,23 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         )}
 
         {/* Content */}
-        <div className="max-w-4xl mx-auto relative z-20">
+        <div className="max-w-4xl mx-auto relative z-20 -translate-y-16 md:-translate-y-24">
           {/* Logo */}
-          <div className="mb-8 flex justify-center">
-            <Image
-              src="/logo.svg"
-              alt="Sound Deluxe"
-              width={440}
-              height={120}
-              className="logo-animated h-20 md:h-28 w-auto"
-              priority
-            />
+          <div className="mb-4 flex justify-center">
             <Image
               src="/logo-yellow.svg"
               alt="Sound Deluxe"
               width={440}
               height={120}
-              className="logo-static h-20 md:h-28 w-auto"
+              className="h-10 md:h-14 w-auto"
               priority
             />
           </div>
-          <h1 className="hero-title text-5xl md:text-7xl font-bold text-fg tracking-tight">
-            {homePageData?.heroTitle?.[typedLocale] || t('hero.title')}
+          <h1 className="hero-title italic text-4xl md:text-6xl text-fg tracking-tight">
+            <TypewriterText
+              text={homePageData?.heroTitle?.[typedLocale] || t('hero.title')}
+              speedMs={70}
+            />
           </h1>
         </div>
       </section>
