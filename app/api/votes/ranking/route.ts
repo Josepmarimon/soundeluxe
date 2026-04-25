@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ ranking: [] }, { status: 200 })
     }
 
-    // Get album details from Sanity
+    // Get album details from Sanity (bypass CDN so newly created albums appear instantly)
     const albumIds = voteCounts.map((v) => v.albumId)
     const albumsQuery = groq`
       *[_type == "album" && _id in $albumIds] {
@@ -39,7 +39,9 @@ export async function GET(request: NextRequest) {
         coverImage
       }
     `
-    const albums = await client.fetch(albumsQuery, { albumIds })
+    const albums = await client
+      .withConfig({ useCdn: false })
+      .fetch(albumsQuery, { albumIds }, { cache: 'no-store' })
 
     // Combine vote counts with album details
     const ranking = voteCounts.map((vote, index) => {

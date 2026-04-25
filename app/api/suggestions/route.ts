@@ -93,6 +93,17 @@ export async function POST(request: NextRequest) {
       } : undefined,
     })
 
+    // Register the suggester's vote so the album appears in the public ranking
+    try {
+      await prisma.votacion.create({
+        data: { userId, albumId: album._id },
+      })
+    } catch (voteError: any) {
+      if (voteError.code !== 'P2002') {
+        throw voteError
+      }
+    }
+
     return NextResponse.json({ success: true, album }, { status: 201 })
   } catch (error) {
     console.error('Error creating album:', error)

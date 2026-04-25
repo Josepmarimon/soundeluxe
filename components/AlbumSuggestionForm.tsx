@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { emitVoteEvent } from '@/hooks/useVoteEvents'
 
 interface Artist {
   id: string
@@ -194,8 +195,14 @@ export default function AlbumSuggestionForm({ onActiveChange }: AlbumSuggestionF
         const data = await response.json()
         if (data.alreadyExists) {
           setSubmitResult(data.alreadyVoted ? 'already-voted' : 'just-voted')
+          if (!data.alreadyVoted && data.album?._id) {
+            emitVoteEvent(data.album._id, 'vote')
+          }
         } else {
           setSubmitResult('new')
+          if (data.album?._id) {
+            emitVoteEvent(data.album._id, 'vote')
+          }
         }
         setSelectedArtist(null)
         setArtistQuery('')
