@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { parseISO, differenceInDays, differenceInHours } from 'date-fns'
 import Image from 'next/image'
@@ -40,7 +40,13 @@ interface SessionHighlightProps {
 export default function SessionHighlight({ sessions, isNextSession, selectedDate }: SessionHighlightProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
-  const [selectedSessionIndex, setSelectedSessionIndex] = useState(0)
+  const [selectedSessionIndex, setSelectedSessionIndex] = useState<number | null>(
+    sessions.length === 1 ? 0 : null
+  )
+
+  useEffect(() => {
+    setSelectedSessionIndex(sessions.length === 1 ? 0 : null)
+  }, [sessions])
 
   if (sessions.length === 0 || !selectedDate) {
     return (
@@ -50,7 +56,9 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
     )
   }
 
-  const safeIndex = Math.min(selectedSessionIndex, sessions.length - 1)
+  const hasSelection = selectedSessionIndex !== null
+  const safeIndex =
+    selectedSessionIndex !== null ? Math.min(selectedSessionIndex, sessions.length - 1) : 0
   const session = sessions[safeIndex]
   const sessionDate = parseISO(session.date)
   const now = new Date()
@@ -168,7 +176,7 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
                             hour: '2-digit',
                             minute: '2-digit',
                           })
-                          const isActive = idx === safeIndex
+                          const isActive = hasSelection && idx === safeIndex
                           return (
                             <button
                               key={s._id}
@@ -205,7 +213,7 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
                 </div>
 
                 {/* Venue */}
-                {session.sala && (
+                {hasSelection && session.sala && (
                   <div className="flex items-center gap-2.5 text-fg">
                     <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
                       <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -221,7 +229,7 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
                 )}
 
                 {/* Session Type */}
-                {session.sessionType && (
+                {hasSelection && session.sessionType && (
                   <div className="flex items-center gap-2.5 text-fg">
                     <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
                       <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,21 +249,32 @@ export default function SessionHighlight({ sessions, isNextSession, selectedDate
             <div className="flex items-center justify-between gap-4 pt-4 border-t border-outline">
               <div>
                 <p className="text-xs text-fg-subtle">{t('nextSession.priceFrom')}</p>
-                <p className="text-3xl font-bold text-fg">{session.price}€</p>
+                <p className="text-3xl font-bold text-fg">{hasSelection ? `${session.price}€` : '—'}</p>
               </div>
-              <a
-                key={session._id}
-                href={`/${locale}/sessions/${session._id}`}
-                className="bg-primary text-on-primary px-6 py-3 rounded-full font-bold text-sm hover:bg-primary-dark transition-all shadow-lg flex items-center gap-2"
-              >
-                {t('sessions.bookNow')}
-                {sessions.length > 1 && (
-                  <span className="font-semibold opacity-80">· {formattedTime}</span>
-                )}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
+              {hasSelection ? (
+                <a
+                  key={session._id}
+                  href={`/${locale}/sessions/${session._id}`}
+                  className="bg-primary text-on-primary px-6 py-3 rounded-full font-bold text-sm hover:bg-primary-dark transition-all shadow-lg flex items-center gap-2"
+                >
+                  {t('sessions.bookNow')}
+                  {sessions.length > 1 && (
+                    <span className="font-semibold opacity-80">· {formattedTime}</span>
+                  )}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  aria-disabled="true"
+                  className="bg-card-muted text-fg-muted px-6 py-3 rounded-full font-bold text-sm shadow-lg flex items-center gap-2 cursor-not-allowed opacity-70"
+                >
+                  {t('calendar.selectSessionFirst')}
+                </button>
+              )}
             </div>
           </div>
         </div>

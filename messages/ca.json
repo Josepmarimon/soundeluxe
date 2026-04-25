@@ -326,7 +326,8 @@
     "selectDate": "Selecciona una data amb sessions",
     "sessionsOnDate": "Sessions del dia",
     "moreSessions": "Més sessions aquest dia",
-    "pickSession": "Tria quina sessió vols comprar"
+    "pickSession": "Tria quina sessió vols comprar",
+    "selectSessionFirst": "Selecciona una sessió"
   },
   "nextSession": {
     "inDays": "En {days} dies",

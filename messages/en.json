@@ -326,7 +326,8 @@
     "selectDate": "Select a date with sessions",
     "sessionsOnDate": "Sessions on this date",
     "moreSessions": "More sessions this day",
-    "pickSession": "Pick which session to buy"
+    "pickSession": "Pick which session to buy",
+    "selectSessionFirst": "Select a session"
   },
   "nextSession": {
     "inDays": "In {days} days",
