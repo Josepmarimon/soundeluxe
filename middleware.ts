@@ -10,6 +10,9 @@ export default createMiddleware({
 
   // Don't redirect if the path already includes a locale
   localePrefix: 'as-needed',
+
+  // Detect locale from the browser's Accept-Language header
+  localeDetection: true,
 })
 
 export const config = {
