@@ -26,6 +26,17 @@ interface CalendarSession {
   sala?: {
     _id: string
     name: MultilingualText
+    address?: {
+      street: string
+      city: string
+      postalCode?: string
+      country?: string
+      googleMapsUrl?: string
+      coordinates?: {
+        lat: number
+        lng: number
+      }
+    }
   }
   sessionType?: {
     _id: string
@@ -46,9 +57,7 @@ export default function SessionHighlight({ sessions, availability, isNextSession
   const locale = useLocale() as Locale
   const { status } = useSession()
   const router = useRouter()
-  const [selectedSessionIndex, setSelectedSessionIndex] = useState<number | null>(
-    sessions.length === 1 ? 0 : null
-  )
+  const [selectedSessionIndex, setSelectedSessionIndex] = useState<number | null>(null)
 
   const [numPlaces, setNumPlaces] = useState(1)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
@@ -56,11 +65,17 @@ export default function SessionHighlight({ sessions, availability, isNextSession
   const [giftOpen, setGiftOpen] = useState(false)
 
   useEffect(() => {
-    setSelectedSessionIndex(sessions.length === 1 ? 0 : null)
+    if (sessions.length === 0) {
+      setSelectedSessionIndex(null)
+    } else if (isNextSession && sessions.length > 1) {
+      setSelectedSessionIndex(null)
+    } else {
+      setSelectedSessionIndex(0)
+    }
     setNumPlaces(1)
     setCheckoutError(null)
     setGiftOpen(false)
-  }, [sessions])
+  }, [sessions, isNextSession])
 
   useEffect(() => {
     setNumPlaces(1)
@@ -76,10 +91,9 @@ export default function SessionHighlight({ sessions, availability, isNextSession
     )
   }
 
-  const hasSelection = selectedSessionIndex !== null
-  const safeIndex =
-    selectedSessionIndex !== null ? Math.min(selectedSessionIndex, sessions.length - 1) : 0
+  const safeIndex = Math.min(Math.max(selectedSessionIndex ?? 0, 0), sessions.length - 1)
   const session = sessions[safeIndex]
+  const hasSelection = selectedSessionIndex !== null
   const sessionDate = parseISO(session.date)
   const now = new Date()
   const daysUntil = differenceInDays(sessionDate, now)
@@ -187,7 +201,6 @@ export default function SessionHighlight({ sessions, availability, isNextSession
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 300px"
               />
-
             </div>
           </div>
 
@@ -218,23 +231,48 @@ export default function SessionHighlight({ sessions, availability, isNextSession
                 </div>
 
                 {/* Venue */}
-                {hasSelection && session.sala && (
-                  <div className="flex items-center gap-2.5 text-fg col-span-2 sm:col-span-1">
-                    <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
+                {session.sala && (() => {
+                  const street = session.sala.address?.street
+                  const city = session.sala.address?.city
+                  const coords = session.sala.address?.coordinates
+                  const mapsUrl = session.sala.address?.googleMapsUrl
+                  const query = coords
+                    ? `${coords.lat},${coords.lng}`
+                    : [street, city].filter(Boolean).join(', ')
+                  const venueHref =
+                    mapsUrl ||
+                    (query ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}` : null)
+                  const venueName = session.sala.name[locale]
+
+                  return (
+                    <div className="flex items-center gap-2.5 text-fg col-span-2 sm:col-span-1">
+                      <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
+                        <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs text-fg-subtle">{t('sessions.venue')}</p>
+                        {venueHref ? (
+                          <a
+                            href={venueHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-medium text-primary hover:underline line-clamp-1"
+                          >
+                            {venueName}
+                          </a>
+                        ) : (
+                          <p className="text-sm font-medium">{venueName}</p>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs text-fg-subtle">{t('sessions.venue')}</p>
-                      <p className="text-sm font-medium">{session.sala.name[locale]}</p>
-                    </div>
-                  </div>
-                )}
+                  )
+                })()}
 
                 {/* Session Type */}
-                {hasSelection && session.sessionType && (
+                {session.sessionType && (
                   <div className="flex items-center gap-2.5 text-fg col-span-2 sm:col-span-1">
                     <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
                       <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -266,7 +304,7 @@ export default function SessionHighlight({ sessions, availability, isNextSession
                             hour: '2-digit',
                             minute: '2-digit',
                           })
-                          const isActive = hasSelection && idx === safeIndex
+                          const isActive = idx === selectedSessionIndex
                           return (
                             <button
                               key={s._id}
@@ -304,90 +342,82 @@ export default function SessionHighlight({ sessions, availability, isNextSession
               </div>
             </div>
 
-            {/* Bottom: inline place selector + buy (or placeholder when no selection) */}
-            {!hasSelection ? (
-              <div className="flex items-center justify-between gap-4 pt-4 border-t border-outline">
-                <p className="text-3xl font-bold text-fg">—</p>
-                <button
-                  type="button"
-                  disabled
-                  aria-disabled="true"
-                  className="bg-card-muted text-fg-muted px-6 py-3 rounded-full font-bold text-sm shadow-lg flex items-center gap-2 cursor-not-allowed opacity-70"
-                >
-                  {t('calendar.selectSessionFirst')}
-                </button>
-              </div>
-            ) : (
-              <div className="pt-4 border-t border-outline space-y-3">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1">{t('booking.selectPlaces')}</p>
-                    <div className="flex items-center gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setNumPlaces(Math.max(1, numPlaces - 1))}
-                        disabled={numPlaces <= 1 || isSoldOut}
-                        className="w-9 h-9 rounded-full border border-outline-strong text-fg flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-lg font-bold"
-                      >
-                        −
-                      </button>
-                      <span className="text-xl font-black text-fg w-7 text-center">{numPlaces}</span>
-                      <button
-                        type="button"
-                        onClick={() => setNumPlaces(Math.min(maxPlaces, numPlaces + 1))}
-                        disabled={numPlaces >= maxPlaces || isSoldOut}
-                        className="w-9 h-9 rounded-full border border-outline-strong text-fg flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-lg font-bold"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1">{t('booking.total')}</p>
-                    <p className="text-3xl font-black text-fg">
-                      {total.toFixed(2)}<span className="text-base font-bold text-fg-subtle">€</span>
-                    </p>
+            {/* Bottom: place selector + total + buy/gift */}
+            <div className="pt-4 border-t border-outline space-y-3">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1">{t('booking.selectPlaces')}</p>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setNumPlaces(Math.max(1, numPlaces - 1))}
+                      disabled={numPlaces <= 1 || isSoldOut}
+                      className="w-9 h-9 rounded-full border border-outline-strong text-fg flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-lg font-bold"
+                    >
+                      −
+                    </button>
+                    <span className="text-xl font-black text-fg w-7 text-center">{numPlaces}</span>
+                    <button
+                      type="button"
+                      onClick={() => setNumPlaces(Math.min(maxPlaces, numPlaces + 1))}
+                      disabled={numPlaces >= maxPlaces || isSoldOut}
+                      className="w-9 h-9 rounded-full border border-outline-strong text-fg flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-lg font-bold"
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
-
-                {checkoutError && (
-                  <p className="text-red-400 text-xs">{checkoutError}</p>
-                )}
-
-                {isSoldOut ? (
-                  <div className="w-full bg-card-muted text-fg-muted px-6 py-3 rounded-full font-bold text-sm shadow-lg text-center">
-                    {t('booking.soldOut')}
-                  </div>
-                ) : (
-                  <div className="flex w-full bg-primary text-on-primary rounded-full shadow-lg overflow-hidden divide-x divide-on-primary/30">
-                    <button
-                      type="button"
-                      onClick={handleCheckout}
-                      disabled={checkoutLoading}
-                      className="flex-1 px-4 py-3 font-bold text-sm hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {checkoutLoading ? t('booking.processing') : t('booking.bookNow')}
-                      {!checkoutLoading && (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      )}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setGiftOpen(true)}
-                      disabled={checkoutLoading}
-                      className="px-4 py-3 font-bold text-sm hover:bg-primary-dark transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                      </svg>
-                      {t('booking.gift.cta')}
-                    </button>
-                  </div>
-                )}
+                <div className="text-right">
+                  <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1">{t('booking.total')}</p>
+                  <p className="text-3xl font-black text-fg">
+                    {total.toFixed(2)}<span className="text-base font-bold text-fg-subtle">€</span>
+                  </p>
+                </div>
               </div>
-            )}
+
+              {checkoutError && (
+                <p className="text-red-400 text-xs">{checkoutError}</p>
+              )}
+
+              {!hasSelection && (
+                <p className="text-xs text-fg-subtle text-center">
+                  {t('calendar.selectSessionFirst')}
+                </p>
+              )}
+
+              {isSoldOut ? (
+                <div className="w-full bg-card-muted text-fg-muted px-6 py-3 rounded-full font-bold text-sm shadow-lg text-center">
+                  {t('booking.soldOut')}
+                </div>
+              ) : (
+                <div className="flex w-full bg-primary text-on-primary rounded-full shadow-lg overflow-hidden divide-x divide-on-primary/30">
+                  <button
+                    type="button"
+                    onClick={handleCheckout}
+                    disabled={checkoutLoading || !hasSelection}
+                    className="flex-1 px-4 py-3 font-bold text-sm hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {checkoutLoading ? t('booking.processing') : t('booking.bookNow')}
+                    {!checkoutLoading && (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGiftOpen(true)}
+                    disabled={checkoutLoading || !hasSelection}
+                    className="px-4 py-3 font-bold text-sm hover:bg-primary-dark transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                    </svg>
+                    {t('booking.gift.cta')}
+                  </button>
+                </div>
+              )}
+            </div>
 
             <GiftModal
               open={giftOpen}

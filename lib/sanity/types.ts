@@ -105,6 +105,17 @@ export interface SessionListItem {
   sala: {
     _id: string
     name: MultilingualText
+    address?: {
+      street: string
+      city: string
+      postalCode?: string
+      country?: string
+      googleMapsUrl?: string
+      coordinates?: {
+        lat: number
+        lng: number
+      }
+    }
   }
   sessionType: {
     _id: string
