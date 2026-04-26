@@ -111,7 +111,8 @@ export default function GiftReceived({
 }: GiftReceivedProps) {
   const t = translations[language]
   const lang = language.toLowerCase()
-  const ticketUrl = `https://soundeluxe.es/${lang}/ticket/${bookingId}`
+  const appOrigin = process.env.NEXT_PUBLIC_APP_URL || 'https://www.soundeluxe.es'
+  const ticketUrl = `${appOrigin}/${lang}/ticket/${bookingId}`
 
   return (
     <Html>
@@ -120,7 +121,12 @@ export default function GiftReceived({
       <Body style={main}>
         <Container style={container}>
           <Section style={logoSection}>
-            <Text style={logoText}>SOUND DELUXE</Text>
+            <Img
+              src={`${appOrigin}/logo-gold.svg`}
+              alt="Sound Deluxe"
+              height="40"
+              style={logoImage}
+            />
           </Section>
 
           <Heading style={heading}>{t.title}</Heading>
@@ -214,6 +220,7 @@ const logoText = {
   letterSpacing: '4px',
   margin: '0',
 }
+const logoImage = { margin: '0 auto', height: '40px', width: 'auto' as const }
 const heading = {
   color: '#ffffff',
   fontSize: '28px',

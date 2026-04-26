@@ -429,7 +429,9 @@
     "error": "Error al registrar la entrada",
     "placeOf": "Plaza {current}/{total}",
     "validate": "Validar",
-    "viewAllPlaces": "Ver las {count} plazas del grupo"
+    "viewAllPlaces": "Ver las {count} plazas del grupo",
+    "scanNext": "Escanear siguiente",
+    "cancel": "Cancelar"
   },
   "attendance": {
     "title": "Control de asistencia",

@@ -429,7 +429,9 @@
     "error": "Error registering entry",
     "placeOf": "Spot {current}/{total}",
     "validate": "Validate",
-    "viewAllPlaces": "View all {count} group spots"
+    "viewAllPlaces": "View all {count} group spots",
+    "scanNext": "Scan next",
+    "cancel": "Cancel"
   },
   "attendance": {
     "title": "Attendance control",

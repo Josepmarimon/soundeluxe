@@ -141,8 +141,9 @@ export default function BookingConfirmation({
 }: BookingConfirmationProps) {
   const t = translations[language]
   const lang = language.toLowerCase()
-  const profileUrl = `https://soundeluxe.es/${lang}/profile`
-  const ticketUrl = `https://soundeluxe.es/${lang}/ticket/${bookingId}`
+  const appOrigin = process.env.NEXT_PUBLIC_APP_URL || 'https://www.soundeluxe.es'
+  const profileUrl = `${appOrigin}/${lang}/profile`
+  const ticketUrl = `${appOrigin}/${lang}/ticket/${bookingId}`
   const showQrs = !isGiftPurchaser && qrPlaces && qrPlaces.length > 0
   const showTicketButton = !isGiftPurchaser
 
@@ -154,7 +155,12 @@ export default function BookingConfirmation({
         <Container style={container}>
           {/* Logo */}
           <Section style={logoSection}>
-            <Text style={logoText}>SOUND DELUXE</Text>
+            <Img
+              src={`${appOrigin}/logo-gold.svg`}
+              alt="Sound Deluxe"
+              height="40"
+              style={logoImage}
+            />
           </Section>
 
           <Heading style={heading}>{t.title}</Heading>
@@ -289,6 +295,12 @@ const logoText = {
   color: '#D4AF37',
   letterSpacing: '4px',
   margin: '0',
+}
+
+const logoImage = {
+  margin: '0 auto',
+  height: '40px',
+  width: 'auto' as const,
 }
 
 const heading = {

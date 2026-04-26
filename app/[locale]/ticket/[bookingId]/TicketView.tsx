@@ -167,12 +167,16 @@ export default function TicketView({ locale, ticket }: TicketViewProps) {
       <div id="ticket-content" className="max-w-2xl mx-auto px-4">
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
 
-          {/* Header - branded dark stripe */}
+          {/* Header - branded stripe with logo */}
           <div className="px-5 sm:px-8 py-5 sm:py-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
-                <h1 className="text-primary text-xl sm:text-2xl font-bold tracking-wider">SOUND DELUXE</h1>
-                <p className="text-fg-muted text-xs mt-0.5 tracking-wide">{t('subtitle')}</p>
+                <img
+                  src="/logo-black.svg"
+                  alt="Sound Deluxe"
+                  className="h-10 w-auto mb-1"
+                />
+                <p className="text-fg-muted text-xs tracking-wide">{t('subtitle')}</p>
               </div>
               <div className="sm:text-right">
                 <p className="text-primary font-bold text-sm">{t('simplifiedInvoice')}</p>

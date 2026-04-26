@@ -429,7 +429,9 @@
     "error": "Error al registrar l'entrada",
     "placeOf": "Plaça {current}/{total}",
     "validate": "Validar",
-    "viewAllPlaces": "Veure les {count} places del grup"
+    "viewAllPlaces": "Veure les {count} places del grup",
+    "scanNext": "Escanejar següent",
+    "cancel": "Cancel·lar"
   },
   "attendance": {
     "title": "Control d'assistència",
