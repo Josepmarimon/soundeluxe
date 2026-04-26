@@ -29,8 +29,7 @@
     "subtitle": "Sesiones exclusivas de escucha en alta fidelidad para auténticos audiófilos",
     "cta": "Explorar sesiones",
     "voteCta": "Vota tu disco preferido",
-    "loveDisc": "¡Este disco me encanta! Me gustaría escucharlo",
-    "loveDiscSubject": "Me gustaría escuchar {album} - {artist}"
+    "loveDisc": "Quiero Votar"
   },
   "sessions": {
     "title": "Próximas sesiones",

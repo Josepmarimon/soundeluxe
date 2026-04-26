@@ -121,7 +121,11 @@ export default function RegisterPage() {
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-fg mb-2">
-            {t('navigation.register')}
+            {locale === 'ca'
+              ? "Registra't gratis"
+              : locale === 'es'
+                ? 'Regístrate gratis'
+                : 'Sign up for free'}
           </h1>
           <p className="text-fg-muted">
             {locale === 'ca'

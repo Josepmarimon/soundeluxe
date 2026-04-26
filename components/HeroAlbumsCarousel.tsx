@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import type { Image as SanityImage } from 'sanity'
+import type { Locale } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
 
 interface AlbumCover {
@@ -21,6 +22,7 @@ const BASE_PX_PER_SECOND = 30
 
 export default function HeroAlbumsCarousel({ albums }: HeroAlbumsCarouselProps) {
   const t = useTranslations('hero')
+  const locale = useLocale() as Locale
   const trackRef = useRef<HTMLDivElement>(null)
   const positionRef = useRef(0)
   const velocityRef = useRef(BASE_PX_PER_SECOND)
@@ -96,11 +98,6 @@ export default function HeroAlbumsCarousel({ albums }: HeroAlbumsCarouselProps) 
           if (!url) return null
           const key = `${album._id}-${index}`
           const isFlipped = hoveredKey === key
-          const subject = t('loveDiscSubject', {
-            album: album.title,
-            artist: album.artist,
-          })
-          const mailto = `mailto:info@sounddeluxe.com?subject=${encodeURIComponent(subject)}`
           return (
             <div
               key={key}
@@ -129,7 +126,7 @@ export default function HeroAlbumsCarousel({ albums }: HeroAlbumsCarouselProps) 
                     </p>
                   </div>
                   <a
-                    href={mailto}
+                    href={`/${locale}/register`}
                     className="bg-primary text-on-primary text-[11px] md:text-xs font-bold rounded-full px-3 py-2 hover:bg-primary-dark transition-colors leading-snug"
                   >
                     {t('loveDisc')}
