@@ -4,7 +4,6 @@ import { prisma } from '@/lib/prisma'
 import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
 import { resend, FROM_EMAIL, APP_URL, isResendConfigured } from '@/lib/resend'
-import { generateQRDataURL } from '@/lib/qr'
 import { formatInvoiceNumber } from '@/lib/company'
 import BookingConfirmation from '@/emails/BookingConfirmation'
 import GiftReceived from '@/emails/GiftReceived'
@@ -128,13 +127,8 @@ export async function POST(request: Request) {
         const venueName = sessionData.sala.name[venueLocale] || sessionData.sala.name.ca
         const venueAddress = `${sessionData.sala.address.street}, ${sessionData.sala.address.city}`
 
-        // Genera QR del booking
-        let qrDataUrl: string | undefined
-        try {
-          qrDataUrl = await generateQRDataURL(reserva.id, venueLocale)
-        } catch (qrError) {
-          console.error('Failed to generate QR code:', qrError)
-        }
+        // URL pública del QR (els clients de correu no carreguen data:URLs).
+        const qrDataUrl = `${APP_URL}/api/booking/${reserva.id}/qr-image?locale=${venueLocale}`
 
         const invoiceNumberFormatted = reserva.invoiceNumber
           ? await formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
