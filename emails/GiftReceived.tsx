@@ -122,7 +122,7 @@ export default function GiftReceived({
         <Container style={container}>
           <Section style={logoSection}>
             <Img
-              src={`${appOrigin}/logo-gold.svg`}
+              src={`${appOrigin}/logo-gold.png`}
               alt="Sound Deluxe"
               height="40"
               style={logoImage}
