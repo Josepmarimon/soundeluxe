@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import type { SessionListItem, Locale } from '@/lib/sanity/types'
 import AlbumCarousel from '@/components/AlbumCarousel'
 import GiftModal from '@/components/GiftModal'
+import GuestCheckoutModal from '@/components/GuestCheckoutModal'
 
 interface SessionCardProps {
   session: SessionListItem
@@ -28,6 +29,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [giftOpen, setGiftOpen] = useState(false)
+  const [guestOpen, setGuestOpen] = useState(false)
 
   const maxPlaces = Math.min(4, availablePlaces ?? 4)
   const total = session.price * numPlaces
@@ -37,13 +39,15 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
       setNumPlaces(1)
       setCheckoutError(null)
       setGiftOpen(false)
+      setGuestOpen(false)
     }
   }, [isFlipped])
 
   const handleCheckout = async (e: React.MouseEvent) => {
     e.stopPropagation()
     if (status !== 'authenticated') {
-      router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${session._id}`)
+      // Obre modal de guest checkout (lazy registration)
+      setGuestOpen(true)
       return
     }
     setCheckoutLoading(true)
@@ -256,6 +260,14 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
           <GiftModal
             open={giftOpen}
             onClose={() => setGiftOpen(false)}
+            sessionId={session._id}
+            numPlaces={numPlaces}
+            total={total}
+            locale={locale}
+          />
+          <GuestCheckoutModal
+            open={guestOpen}
+            onClose={() => setGuestOpen(false)}
             sessionId={session._id}
             numPlaces={numPlaces}
             total={total}

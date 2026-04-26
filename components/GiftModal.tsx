@@ -21,18 +21,26 @@ export default function GiftModal({ open, onClose, sessionId, numPlaces, total, 
   const { status } = useSession()
   const router = useRouter()
 
+  const isLoggedIn = status === 'authenticated'
+
   const [recipientName, setRecipientName] = useState('')
   const [recipientEmail, setRecipientEmail] = useState('')
   const [giftMessage, setGiftMessage] = useState('')
+  const [buyerName, setBuyerName] = useState('')
+  const [buyerEmail, setBuyerEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [accountExists, setAccountExists] = useState(false)
 
   useEffect(() => {
     if (!open) {
       setRecipientName('')
       setRecipientEmail('')
       setGiftMessage('')
+      setBuyerName('')
+      setBuyerEmail('')
       setError(null)
+      setAccountExists(false)
       setLoading(false)
     }
   }, [open])
@@ -53,12 +61,22 @@ export default function GiftModal({ open, onClose, sessionId, numPlaces, total, 
 
   if (!open) return null
 
+  const goToLoginWithEmail = () => {
+    const callback = `/${locale}/sessions/${sessionId}`
+    const params = new URLSearchParams({ callbackUrl: callback })
+    if (buyerEmail.trim()) params.set('email', buyerEmail.trim().toLowerCase())
+    router.push(`/${locale}/login?${params.toString()}`)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    setAccountExists(false)
 
     const name = recipientName.trim()
-    const email = recipientEmail.trim()
+    const email = recipientEmail.trim().toLowerCase()
+    const buyerNameTrimmed = buyerName.trim()
+    const buyerEmailTrimmed = buyerEmail.trim().toLowerCase()
 
     if (!name || !email) {
       setError(t('gift.errors.missingFields'))
@@ -69,36 +87,57 @@ export default function GiftModal({ open, onClose, sessionId, numPlaces, total, 
       return
     }
 
-    if (status !== 'authenticated') {
-      router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${sessionId}`)
-      return
+    if (!isLoggedIn) {
+      if (!buyerNameTrimmed || !buyerEmailTrimmed) {
+        setError(t('gift.errors.missingBuyerFields'))
+        return
+      }
+      if (!EMAIL_RE.test(buyerEmailTrimmed)) {
+        setError(t('gift.errors.invalidBuyerEmail'))
+        return
+      }
+      if (buyerEmailTrimmed === email) {
+        setError(t('errors.selfGift'))
+        return
+      }
     }
 
     setLoading(true)
     try {
+      const payload: Record<string, unknown> = {
+        sessionId,
+        numPlaces,
+        locale,
+        isGift: true,
+        recipientName: name,
+        recipientEmail: email,
+        giftMessage: giftMessage.trim() || undefined,
+      }
+      if (!isLoggedIn) {
+        payload.guestEmail = buyerEmailTrimmed
+        payload.guestName = buyerNameTrimmed
+      }
+
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sessionId,
-          numPlaces,
-          locale,
-          isGift: true,
-          recipientName: name,
-          recipientEmail: email,
-          giftMessage: giftMessage.trim() || undefined,
-        }),
+        body: JSON.stringify(payload),
       })
 
       const data = await res.json()
 
       if (!res.ok) {
+        if (res.status === 409 && data?.code === 'ACCOUNT_EXISTS') {
+          setAccountExists(true)
+          setError(t('errors.accountExists'))
+          return
+        }
         if (res.status === 409) {
           setError(t('errors.soldOut'))
           return
         }
-        if (res.status === 401) {
-          router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${sessionId}`)
+        if (res.status === 400 && data?.code === 'GIFT_SELF') {
+          setError(t('errors.selfGift'))
           return
         }
         setError(t('errors.generic'))
@@ -121,7 +160,7 @@ export default function GiftModal({ open, onClose, sessionId, numPlaces, total, 
       aria-modal="true"
     >
       <div
-        className="w-full max-w-md bg-card rounded-2xl shadow-2xl border border-outline-subtle overflow-hidden"
+        className="w-full max-w-md bg-card rounded-2xl shadow-2xl border border-outline-subtle overflow-hidden max-h-[92vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-5 md:p-6">
@@ -143,6 +182,61 @@ export default function GiftModal({ open, onClose, sessionId, numPlaces, total, 
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3">
+            {/* Buyer fields - only when not logged in */}
+            {!isLoggedIn && (
+              <div className="space-y-2 pb-3 border-b border-outline">
+                <p className="text-xs font-bold text-fg-subtle uppercase tracking-wider">
+                  {t('gift.buyerSection')}
+                </p>
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1 block">
+                    {t('gift.buyerName')}
+                  </label>
+                  <input
+                    type="text"
+                    value={buyerName}
+                    onChange={(e) => setBuyerName(e.target.value)}
+                    placeholder={t('gift.buyerNamePlaceholder')}
+                    required
+                    maxLength={120}
+                    autoComplete="name"
+                    className="w-full px-3 py-2.5 rounded-lg bg-surface-alt text-black placeholder:text-fg-dim focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1 block">
+                    {t('gift.buyerEmail')}
+                  </label>
+                  <input
+                    type="email"
+                    value={buyerEmail}
+                    onChange={(e) => setBuyerEmail(e.target.value)}
+                    placeholder={t('gift.buyerEmailPlaceholder')}
+                    required
+                    maxLength={200}
+                    autoComplete="email"
+                    className="w-full px-3 py-2.5 rounded-lg bg-surface-alt text-black placeholder:text-fg-dim focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <p className="text-[11px] text-fg-subtle">
+                  {t('guest.loginHint')}{' '}
+                  <button
+                    type="button"
+                    onClick={goToLoginWithEmail}
+                    className="text-fg underline hover:text-primary"
+                  >
+                    {t('guest.loginInstead')}
+                  </button>
+                </p>
+              </div>
+            )}
+
+            {!isLoggedIn && (
+              <p className="text-xs font-bold text-fg-subtle uppercase tracking-wider pt-1">
+                {t('gift.recipientSection')}
+              </p>
+            )}
+
             <div>
               <label className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1 block">
                 {t('gift.recipientName')}
@@ -194,7 +288,20 @@ export default function GiftModal({ open, onClose, sessionId, numPlaces, total, 
               </span>
             </div>
 
-            {error && <p className="text-red-400 text-xs">{error}</p>}
+            {error && (
+              <div className="space-y-1">
+                <p className="text-red-400 text-xs">{error}</p>
+                {accountExists && (
+                  <button
+                    type="button"
+                    onClick={goToLoginWithEmail}
+                    className="text-fg underline text-xs hover:text-primary"
+                  >
+                    {t('guest.loginInstead')}
+                  </button>
+                )}
+              </div>
+            )}
 
             <div className="flex items-center gap-2 pt-1">
               <button

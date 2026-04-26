@@ -1,27 +1,30 @@
 import { NextResponse } from 'next/server'
+import crypto from 'crypto'
 import { auth } from '@/lib/auth'
 import { stripe } from '@/lib/stripe'
 import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
 import { getAvailablePlaces } from '@/lib/booking'
+import { prisma } from '@/lib/prisma'
 import type { Session } from '@/lib/sanity/types'
 import { APP_URL } from '@/lib/resend'
 
 const MAX_PLACES_PER_BOOKING = 4
+const PASSWORD_SETUP_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000 // 7 dies
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const localeToLanguage = (locale: string): 'CA' | 'ES' | 'EN' =>
+  locale === 'es' ? 'ES' : locale === 'en' ? 'EN' : 'CA'
+
+const generatePasswordSetupToken = () => ({
+  passwordSetupToken: crypto.randomBytes(32).toString('hex'),
+  passwordSetupTokenExpiry: new Date(Date.now() + PASSWORD_SETUP_TOKEN_TTL_MS),
+})
 
 export async function POST(request: Request) {
   try {
     const authSession = await auth()
-
-    if (!authSession?.user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
-    const userId = (authSession.user as any).id
-    const userEmail = authSession.user.email!
     const body = await request.json()
     const {
       sessionId,
@@ -31,6 +34,8 @@ export async function POST(request: Request) {
       recipientName,
       recipientEmail,
       giftMessage,
+      guestEmail,
+      guestName,
     } = body
 
     if (!sessionId || !numPlaces) {
@@ -47,13 +52,83 @@ export async function POST(request: Request) {
       )
     }
 
+    // Resoldre comprador: usuari autenticat o guest checkout (lazy registration)
+    let userId: string
+    let userEmail: string
+    let isLazyUser = false
+
+    if (authSession?.user) {
+      userId = (authSession.user as any).id
+      userEmail = authSession.user.email!
+    } else {
+      const normalizedEmail =
+        typeof guestEmail === 'string' ? guestEmail.trim().toLowerCase() : ''
+      const normalizedName = typeof guestName === 'string' ? guestName.trim() : ''
+
+      if (!normalizedEmail || !normalizedName) {
+        return NextResponse.json(
+          { error: 'Email and name are required for guest checkout', code: 'GUEST_FIELDS_REQUIRED' },
+          { status: 400 }
+        )
+      }
+      if (!EMAIL_REGEX.test(normalizedEmail)) {
+        return NextResponse.json(
+          { error: 'Invalid email format', code: 'INVALID_EMAIL' },
+          { status: 400 }
+        )
+      }
+
+      const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } })
+
+      if (existing && existing.password) {
+        // Compte registrat ja existeix → forçar login
+        return NextResponse.json(
+          {
+            error: 'An account with this email already exists. Please sign in.',
+            code: 'ACCOUNT_EXISTS',
+          },
+          { status: 409 }
+        )
+      }
+
+      const tokenData = generatePasswordSetupToken()
+
+      if (existing) {
+        // Lazy user previ → regenerar token i actualitzar nom
+        const updated = await prisma.user.update({
+          where: { id: existing.id },
+          data: {
+            name: normalizedName,
+            ...tokenData,
+          },
+        })
+        userId = updated.id
+        userEmail = updated.email
+      } else {
+        const created = await prisma.user.create({
+          data: {
+            email: normalizedEmail,
+            name: normalizedName,
+            password: null,
+            emailVerified: null,
+            language: localeToLanguage(locale),
+            role: 'REGISTERED',
+            ...tokenData,
+          },
+        })
+        userId = created.id
+        userEmail = created.email
+      }
+      isLazyUser = true
+    }
+
     let normalizedRecipientName: string | undefined
     let normalizedRecipientEmail: string | undefined
     let normalizedGiftMessage: string | undefined
 
     if (isGift) {
       normalizedRecipientName = typeof recipientName === 'string' ? recipientName.trim() : ''
-      normalizedRecipientEmail = typeof recipientEmail === 'string' ? recipientEmail.trim() : ''
+      normalizedRecipientEmail = typeof recipientEmail === 'string' ? recipientEmail.trim().toLowerCase() : ''
       normalizedGiftMessage = typeof giftMessage === 'string' ? giftMessage.trim().slice(0, 300) : undefined
 
       if (!normalizedRecipientName || !normalizedRecipientEmail) {
@@ -63,10 +138,16 @@ export async function POST(request: Request) {
         )
       }
 
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailRegex.test(normalizedRecipientEmail)) {
+      if (!EMAIL_REGEX.test(normalizedRecipientEmail)) {
         return NextResponse.json(
           { error: 'Invalid recipient email' },
+          { status: 400 }
+        )
+      }
+
+      if (normalizedRecipientEmail === userEmail.toLowerCase()) {
+        return NextResponse.json(
+          { error: 'Recipient email must differ from buyer email', code: 'GIFT_SELF' },
           { status: 400 }
         )
       }
@@ -127,6 +208,7 @@ export async function POST(request: Request) {
       locale,
       totalAmount: String(totalAmount),
       isGift: isGift ? 'true' : 'false',
+      isLazyUser: isLazyUser ? 'true' : 'false',
     }
     if (isGift) {
       metadata.recipientName = normalizedRecipientName!

@@ -18,7 +18,7 @@ model User {
   id            String    @id @default(cuid())
   email         String    @unique
   name          String
-  password      String    // hash bcrypt
+  password      String?   // hash bcrypt — null = guest user pendent d'establir contrasenya
   role          UserRole  @default(REGISTERED)
   language      Language  @default(CA)  // detectat al registre
   photoUrl      String?
@@ -31,6 +31,10 @@ model User {
   // Verificació d'email
   verifyToken       String?   @unique  // Token per verificar email
   verifyTokenExpiry DateTime?          // Expiració del token (24h)
+
+  // Magic link per establir contrasenya (lazy registration via guest checkout)
+  passwordSetupToken       String?   @unique
+  passwordSetupTokenExpiry DateTime?
 
   // Newsletter (GDPR compliant)
   newsletterSubscribed  Boolean   @default(false)

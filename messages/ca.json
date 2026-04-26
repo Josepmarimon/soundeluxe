@@ -115,12 +115,34 @@
     "errors": {
       "soldOut": "Ho sentim, no queden prou places disponibles",
       "generic": "Hi ha hagut un error. Torna-ho a intentar.",
-      "notLoggedIn": "Has d'iniciar sessió per fer una reserva"
+      "notLoggedIn": "Has d'iniciar sessió per fer una reserva",
+      "accountExists": "Aquest email ja té compte. Inicia sessió per continuar.",
+      "selfGift": "L'email del destinatari ha de ser diferent del teu"
+    },
+    "guest": {
+      "title": "Les teves dades",
+      "subtitle": "T'enviarem l'entrada per email",
+      "nameLabel": "Nom",
+      "namePlaceholder": "El teu nom",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tucorreu@exemple.com",
+      "loginInstead": "Inicia sessió",
+      "loginHint": "Ja tens compte?",
+      "errors": {
+        "missingFields": "Cal omplir el teu nom i email",
+        "invalidEmail": "L'email no és vàlid"
+      }
     },
     "gift": {
       "cta": "Regalar",
       "title": "Regalar entrada",
-      "subtitle": "Compra l'entrada com a regal. Després del pagament rebràs la confirmació i podràs fer-la arribar al destinatari.",
+      "subtitle": "Compra l'entrada com a regal. El destinatari rebrà el QR per email.",
+      "buyerSection": "Les teves dades",
+      "buyerName": "El teu nom",
+      "buyerNamePlaceholder": "Ex. Joan Pi",
+      "buyerEmail": "El teu email",
+      "buyerEmailPlaceholder": "tucorreu@exemple.com",
+      "recipientSection": "Dades del destinatari",
       "recipientName": "Nom del destinatari",
       "recipientNamePlaceholder": "Ex. Anna Soler",
       "recipientEmail": "Email del destinatari",
@@ -130,7 +152,9 @@
       "submit": "Procedir al pagament",
       "errors": {
         "missingFields": "Cal omplir el nom i l'email del destinatari.",
-        "invalidEmail": "L'email del destinatari no és vàlid."
+        "invalidEmail": "L'email del destinatari no és vàlid.",
+        "missingBuyerFields": "Cal omplir el teu nom i email.",
+        "invalidBuyerEmail": "El teu email no és vàlid."
       }
     }
   },

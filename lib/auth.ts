@@ -26,6 +26,12 @@ export const authConfig: NextAuthConfig = {
           return null
         }
 
+        // Lazy users (creats via guest checkout sense contrasenya) no poden
+        // fer login amb credentials fins que estableixin contrasenya via magic link.
+        if (!user.password) {
+          throw new Error('NO_PASSWORD_SET')
+        }
+
         const passwordMatch = await bcrypt.compare(
           credentials.password as string,
           user.password

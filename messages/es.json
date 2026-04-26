@@ -115,12 +115,34 @@
     "errors": {
       "soldOut": "Lo sentimos, no quedan suficientes plazas disponibles",
       "generic": "Ha habido un error. Inténtalo de nuevo.",
-      "notLoggedIn": "Debes iniciar sesión para hacer una reserva"
+      "notLoggedIn": "Debes iniciar sesión para hacer una reserva",
+      "accountExists": "Este email ya tiene cuenta. Inicia sesión para continuar.",
+      "selfGift": "El email del destinatario debe ser distinto al tuyo"
+    },
+    "guest": {
+      "title": "Tus datos",
+      "subtitle": "Te enviaremos la entrada por email",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tucorreo@ejemplo.com",
+      "loginInstead": "Inicia sesión",
+      "loginHint": "¿Ya tienes cuenta?",
+      "errors": {
+        "missingFields": "Debes rellenar tu nombre y email",
+        "invalidEmail": "El email no es válido"
+      }
     },
     "gift": {
       "cta": "Regalar",
       "title": "Regalar entrada",
-      "subtitle": "Compra la entrada como regalo. Tras el pago recibirás la confirmación y podrás hacérsela llegar al destinatario.",
+      "subtitle": "Compra la entrada como regalo. El destinatario recibirá el QR por email.",
+      "buyerSection": "Tus datos",
+      "buyerName": "Tu nombre",
+      "buyerNamePlaceholder": "Ej. Juan Pérez",
+      "buyerEmail": "Tu email",
+      "buyerEmailPlaceholder": "tucorreo@ejemplo.com",
+      "recipientSection": "Datos del destinatario",
       "recipientName": "Nombre del destinatario",
       "recipientNamePlaceholder": "Ej. Ana Soler",
       "recipientEmail": "Email del destinatario",
@@ -130,7 +152,9 @@
       "submit": "Proceder al pago",
       "errors": {
         "missingFields": "Debes rellenar el nombre y el email del destinatario.",
-        "invalidEmail": "El email del destinatario no es válido."
+        "invalidEmail": "El email del destinatario no es válido.",
+        "missingBuyerFields": "Debes rellenar tu nombre y email.",
+        "invalidBuyerEmail": "Tu email no es válido."
       }
     }
   },

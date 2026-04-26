@@ -115,12 +115,34 @@
     "errors": {
       "soldOut": "Sorry, not enough spots available",
       "generic": "Something went wrong. Please try again.",
-      "notLoggedIn": "You must log in to make a booking"
+      "notLoggedIn": "You must log in to make a booking",
+      "accountExists": "An account with this email already exists. Please sign in to continue.",
+      "selfGift": "Recipient email must be different from yours"
+    },
+    "guest": {
+      "title": "Your details",
+      "subtitle": "We'll send the ticket to your email",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "loginInstead": "Sign in",
+      "loginHint": "Already have an account?",
+      "errors": {
+        "missingFields": "Your name and email are required",
+        "invalidEmail": "Email is invalid"
+      }
     },
     "gift": {
       "cta": "Gift",
       "title": "Gift this ticket",
-      "subtitle": "Buy this ticket as a gift. After payment you'll get the confirmation and can pass it on to the recipient.",
+      "subtitle": "Buy this ticket as a gift. The recipient will receive the QR by email.",
+      "buyerSection": "Your details",
+      "buyerName": "Your name",
+      "buyerNamePlaceholder": "e.g. John Smith",
+      "buyerEmail": "Your email",
+      "buyerEmailPlaceholder": "you@example.com",
+      "recipientSection": "Recipient details",
       "recipientName": "Recipient name",
       "recipientNamePlaceholder": "e.g. Anna Soler",
       "recipientEmail": "Recipient email",
@@ -130,7 +152,9 @@
       "submit": "Proceed to payment",
       "errors": {
         "missingFields": "Recipient name and email are required.",
-        "invalidEmail": "Recipient email is invalid."
+        "invalidEmail": "Recipient email is invalid.",
+        "missingBuyerFields": "Your name and email are required.",
+        "invalidBuyerEmail": "Your email is invalid."
       }
     }
   },

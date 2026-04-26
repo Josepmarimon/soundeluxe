@@ -3,10 +3,11 @@ import { stripe } from '@/lib/stripe'
 import { prisma } from '@/lib/prisma'
 import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
-import { resend, FROM_EMAIL, isResendConfigured } from '@/lib/resend'
+import { resend, FROM_EMAIL, APP_URL, isResendConfigured } from '@/lib/resend'
 import { generateQRDataURL } from '@/lib/qr'
 import { formatInvoiceNumber } from '@/lib/company'
 import BookingConfirmation from '@/emails/BookingConfirmation'
+import GiftReceived from '@/emails/GiftReceived'
 import type { Session } from '@/lib/sanity/types'
 import type Stripe from 'stripe'
 
@@ -36,7 +37,16 @@ export async function POST(request: Request) {
   if (event.type === 'checkout.session.completed') {
     const checkoutSession = event.data.object as Stripe.Checkout.Session
 
-    const { userId, sessionId, numPlaces, locale } = checkoutSession.metadata || {}
+    const {
+      userId,
+      sessionId,
+      numPlaces,
+      locale,
+      isGift,
+      recipientName,
+      recipientEmail,
+      giftMessage,
+    } = checkoutSession.metadata || {}
 
     if (!userId || !sessionId || !numPlaces) {
       console.error('Missing metadata in checkout session:', checkoutSession.id)
@@ -59,6 +69,7 @@ export async function POST(request: Request) {
 
     const numPlacesInt = parseInt(numPlaces)
     const totalAmount = (checkoutSession.amount_total || 0) / 100
+    const isGiftBooking = isGift === 'true'
 
     try {
       // Create reserva in a transaction with availability check
@@ -88,13 +99,18 @@ export async function POST(request: Request) {
         })
       })
 
-      // Fetch user for email
+      // Fetch user for email + lazy detection
       const user = await prisma.user.findUnique({
         where: { id: userId },
-        select: { email: true, name: true, language: true },
+        select: {
+          email: true,
+          name: true,
+          language: true,
+          password: true,
+          passwordSetupToken: true,
+        },
       })
 
-      // Send confirmation email
       if (user?.email && isResendConfigured) {
         const sessionDate = new Date(sessionData.date)
         const emailLocale = (locale?.toUpperCase() || user.language || 'CA') as 'CA' | 'ES' | 'EN'
@@ -109,8 +125,10 @@ export async function POST(request: Request) {
         })
 
         const venueLocale = emailLocale.toLowerCase() as 'ca' | 'es' | 'en'
+        const venueName = sessionData.sala.name[venueLocale] || sessionData.sala.name.ca
+        const venueAddress = `${sessionData.sala.address.street}, ${sessionData.sala.address.city}`
 
-        // Generate QR code for the booking
+        // Genera QR del booking
         let qrDataUrl: string | undefined
         try {
           qrDataUrl = await generateQRDataURL(reserva.id, venueLocale)
@@ -118,6 +136,46 @@ export async function POST(request: Request) {
           console.error('Failed to generate QR code:', qrError)
         }
 
+        const invoiceNumberFormatted = reserva.invoiceNumber
+          ? await formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
+          : undefined
+
+        const passwordSetupUrl = (!user.password && user.passwordSetupToken)
+          ? `${APP_URL}/${venueLocale}/set-password?token=${user.passwordSetupToken}`
+          : undefined
+
+        // 1. Email al destinatari del regal (amb QR)
+        if (isGiftBooking && recipientEmail && recipientName) {
+          try {
+            await resend.emails.send({
+              from: FROM_EMAIL,
+              to: recipientEmail,
+              subject: emailLocale === 'CA' ? 'Tens un regal - Sound Deluxe'
+                : emailLocale === 'ES' ? 'Tienes un regalo - Sound Deluxe'
+                : 'You\'ve received a gift - Sound Deluxe',
+              react: GiftReceived({
+                recipientName,
+                buyerName: user.name || user.email,
+                language: emailLocale,
+                albumTitle: sessionData.album.title,
+                albumArtist: sessionData.album.artist,
+                sessionDate: dateStr,
+                venueName,
+                venueAddress,
+                numPlaces: numPlacesInt,
+                bookingId: reserva.id,
+                qrDataUrl,
+                giftMessage: giftMessage || undefined,
+              }),
+            })
+          } catch (emailError) {
+            console.error('Failed to send gift email to recipient:', emailError)
+          }
+        }
+
+        // 2. Email al comprador
+        // - Si és regal: confirmació SENSE QR (el QR ha anat al destinatari)
+        // - Si no: confirmació amb QR
         try {
           await resend.emails.send({
             from: FROM_EMAIL,
@@ -131,15 +189,16 @@ export async function POST(request: Request) {
               albumTitle: sessionData.album.title,
               albumArtist: sessionData.album.artist,
               sessionDate: dateStr,
-              venueName: sessionData.sala.name[venueLocale] || sessionData.sala.name.ca,
-              venueAddress: `${sessionData.sala.address.street}, ${sessionData.sala.address.city}`,
+              venueName,
+              venueAddress,
               numPlaces: numPlacesInt,
               totalAmount: totalAmount.toFixed(2),
-              qrDataUrl,
+              qrDataUrl: isGiftBooking ? undefined : qrDataUrl,
               bookingId: reserva.id,
-              invoiceNumber: reserva.invoiceNumber
-                ? await formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
-                : undefined,
+              invoiceNumber: invoiceNumberFormatted,
+              isGiftPurchaser: isGiftBooking,
+              recipientName: isGiftBooking ? recipientName : undefined,
+              passwordSetupUrl,
             }),
           })
         } catch (emailError) {

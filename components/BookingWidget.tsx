@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import GuestCheckoutForm from './GuestCheckoutForm'
 
 interface BookingWidgetProps {
   sessionId: string
@@ -13,6 +14,8 @@ interface BookingWidgetProps {
   locale: string
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export default function BookingWidget({
   sessionId,
   price,
@@ -20,7 +23,7 @@ export default function BookingWidget({
   availablePlaces,
   locale,
 }: BookingWidgetProps) {
-  const { data: authSession, status } = useSession()
+  const { status } = useSession()
   const router = useRouter()
   const t = useTranslations('booking')
 
@@ -28,6 +31,10 @@ export default function BookingWidget({
   const [numPlaces, setNumPlaces] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [accountExists, setAccountExists] = useState(false)
+
+  const [guestEmail, setGuestEmail] = useState('')
+  const [guestName, setGuestName] = useState('')
 
   const isLoggedIn = status === 'authenticated'
   const isSoldOut = availablePlaces === 0
@@ -35,46 +42,73 @@ export default function BookingWidget({
   const total = price * numPlaces
 
   const handleBookClick = () => {
-    if (!isLoggedIn) {
-      router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${sessionId}`)
-      return
-    }
     setExpanded(true)
   }
 
   const handleCheckout = async () => {
-    setLoading(true)
     setError(null)
+    setAccountExists(false)
 
+    if (!isLoggedIn) {
+      const trimmedEmail = guestEmail.trim().toLowerCase()
+      const trimmedName = guestName.trim()
+      if (!trimmedEmail || !trimmedName) {
+        setError(t('guest.errors.missingFields'))
+        return
+      }
+      if (!EMAIL_RE.test(trimmedEmail)) {
+        setError(t('guest.errors.invalidEmail'))
+        return
+      }
+    }
+
+    setLoading(true)
     try {
+      const payload: Record<string, unknown> = {
+        sessionId,
+        numPlaces,
+        locale,
+      }
+      if (!isLoggedIn) {
+        payload.guestEmail = guestEmail.trim().toLowerCase()
+        payload.guestName = guestName.trim()
+      }
+
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, numPlaces, locale }),
+        body: JSON.stringify(payload),
       })
 
       const data = await res.json()
 
       if (!res.ok) {
-        if (res.status === 409) {
-          setError(t('errors.soldOut'))
+        if (res.status === 409 && data?.code === 'ACCOUNT_EXISTS') {
+          setAccountExists(true)
+          setError(t('errors.accountExists'))
           return
         }
-        if (res.status === 401) {
-          router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${sessionId}`)
+        if (res.status === 409) {
+          setError(t('errors.soldOut'))
           return
         }
         setError(t('errors.generic'))
         return
       }
 
-      // Redirect to Stripe Checkout
       window.location.href = data.url
     } catch {
       setError(t('errors.generic'))
     } finally {
       setLoading(false)
     }
+  }
+
+  const goToLoginWithEmail = () => {
+    const callback = `/${locale}/sessions/${sessionId}`
+    const params = new URLSearchParams({ callbackUrl: callback })
+    if (guestEmail.trim()) params.set('email', guestEmail.trim().toLowerCase())
+    router.push(`/${locale}/login?${params.toString()}`)
   }
 
   // Sold out state
@@ -95,7 +129,7 @@ export default function BookingWidget({
         onClick={handleBookClick}
         className="w-full bg-primary text-on-primary py-3 rounded-full font-bold text-sm hover:bg-primary-hover transition-all shadow-lg flex items-center justify-center gap-1.5 group"
       >
-        {isLoggedIn ? t('bookNow') : t('loginToBook')}
+        {t('bookNow')}
         <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
         </svg>
@@ -107,6 +141,30 @@ export default function BookingWidget({
   return (
     <div className="w-full">
       <div className="space-y-3">
+        {/* Guest fields when not logged in */}
+        {!isLoggedIn && (
+          <div className="space-y-2">
+            <p className="text-xs text-fg-muted">{t('guest.subtitle')}</p>
+            <GuestCheckoutForm
+              email={guestEmail}
+              name={guestName}
+              onEmailChange={setGuestEmail}
+              onNameChange={setGuestName}
+              disabled={loading}
+            />
+            <p className="text-[11px] text-fg-subtle">
+              {t('guest.loginHint')}{' '}
+              <button
+                type="button"
+                onClick={goToLoginWithEmail}
+                className="text-fg underline hover:text-primary"
+              >
+                {t('guest.loginInstead')}
+              </button>
+            </p>
+          </div>
+        )}
+
         {/* Place selector */}
         <div>
           <label className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1.5 block">{t('selectPlaces')}</label>
@@ -137,7 +195,18 @@ export default function BookingWidget({
 
         {/* Error message */}
         {error && (
-          <p className="text-red-400 text-xs">{error}</p>
+          <div className="space-y-2">
+            <p className="text-red-400 text-xs">{error}</p>
+            {accountExists && (
+              <button
+                type="button"
+                onClick={goToLoginWithEmail}
+                className="text-fg underline text-xs hover:text-primary"
+              >
+                {t('guest.loginInstead')}
+              </button>
+            )}
+          </div>
         )}
 
         {/* Checkout button */}

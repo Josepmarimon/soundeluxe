@@ -25,6 +25,11 @@ interface BookingConfirmationProps {
   bookingId: string
   qrDataUrl?: string
   invoiceNumber?: string
+  // Si és true, oculta el QR i mostra missatge "has regalat aquesta entrada"
+  isGiftPurchaser?: boolean
+  recipientName?: string
+  // Si present, afegeix CTA per establir contrasenya (lazy registration)
+  passwordSetupUrl?: string
 }
 
 const translations = {
@@ -33,6 +38,8 @@ const translations = {
     title: 'Reserva confirmada!',
     greeting: (name: string) => `Hola ${name}!`,
     message: 'La teva reserva ha estat confirmada correctament. Aquí tens els detalls:',
+    giftMessage: (recipient: string) =>
+      `Has regalat aquesta entrada a ${recipient}. Rebrà el seu propi correu amb el codi QR.`,
     album: 'Àlbum',
     artist: 'Artista',
     date: 'Data i hora',
@@ -48,12 +55,17 @@ const translations = {
     downloadTicket: 'Descarregar entrada / factura',
     invoiceNote: 'Factura simplificada',
     footer: 'Sound Deluxe - Experiències audiòfiles d\'alta fidelitat',
+    setPasswordTitle: 'Crea una contrasenya',
+    setPasswordBody: 'Has comprat com a convidat. Crea una contrasenya per accedir a totes les teves entrades des del teu perfil.',
+    setPasswordCta: 'Crear contrasenya',
   },
   ES: {
     preview: 'Tu reserva en Sound Deluxe ha sido confirmada',
     title: '¡Reserva confirmada!',
     greeting: (name: string) => `¡Hola ${name}!`,
     message: 'Tu reserva ha sido confirmada correctamente. Aquí tienes los detalles:',
+    giftMessage: (recipient: string) =>
+      `Has regalado esta entrada a ${recipient}. Recibirá su propio correo con el código QR.`,
     album: 'Álbum',
     artist: 'Artista',
     date: 'Fecha y hora',
@@ -69,12 +81,17 @@ const translations = {
     downloadTicket: 'Descargar entrada / factura',
     invoiceNote: 'Factura simplificada',
     footer: 'Sound Deluxe - Experiencias audiófilas de alta fidelidad',
+    setPasswordTitle: 'Crea una contraseña',
+    setPasswordBody: 'Has comprado como invitado. Crea una contraseña para acceder a todas tus entradas desde tu perfil.',
+    setPasswordCta: 'Crear contraseña',
   },
   EN: {
     preview: 'Your Sound Deluxe booking has been confirmed',
     title: 'Booking confirmed!',
     greeting: (name: string) => `Hello ${name}!`,
     message: 'Your booking has been confirmed successfully. Here are the details:',
+    giftMessage: (recipient: string) =>
+      `You have gifted this ticket to ${recipient}. They will receive their own email with the QR code.`,
     album: 'Album',
     artist: 'Artist',
     date: 'Date & time',
@@ -90,6 +107,9 @@ const translations = {
     downloadTicket: 'Download ticket / invoice',
     invoiceNote: 'Simplified invoice',
     footer: 'Sound Deluxe - High-fidelity audiophile experiences',
+    setPasswordTitle: 'Create a password',
+    setPasswordBody: 'You purchased as a guest. Create a password to access all your tickets from your profile.',
+    setPasswordCta: 'Create password',
   },
 }
 
@@ -106,11 +126,16 @@ export default function BookingConfirmation({
   bookingId,
   qrDataUrl,
   invoiceNumber,
+  isGiftPurchaser = false,
+  recipientName,
+  passwordSetupUrl,
 }: BookingConfirmationProps) {
   const t = translations[language]
   const lang = language.toLowerCase()
   const profileUrl = `https://soundeluxe.es/${lang}/profile`
   const ticketUrl = `https://soundeluxe.es/${lang}/ticket/${bookingId}`
+  const showQr = !isGiftPurchaser && qrDataUrl
+  const showTicketButton = !isGiftPurchaser
 
   return (
     <Html>
@@ -128,6 +153,12 @@ export default function BookingConfirmation({
           <Text style={paragraph}>{t.greeting(name)}</Text>
 
           <Text style={paragraph}>{t.message}</Text>
+
+          {isGiftPurchaser && recipientName && (
+            <Section style={giftNoticeBox}>
+              <Text style={giftNoticeText}>{t.giftMessage(recipientName)}</Text>
+            </Section>
+          )}
 
           {/* Booking details card */}
           <Section style={detailsCard}>
@@ -170,7 +201,7 @@ export default function BookingConfirmation({
           </Text>
 
           {/* QR Code */}
-          {qrDataUrl && (
+          {showQr && (
             <Section style={qrSection}>
               <Text style={qrTitle}>{t.qrTitle}</Text>
               <Img
@@ -184,17 +215,29 @@ export default function BookingConfirmation({
             </Section>
           )}
 
-          <Section style={buttonSection}>
-            <Button style={button} href={ticketUrl}>
-              {t.downloadTicket}
-            </Button>
-          </Section>
+          {showTicketButton && (
+            <Section style={buttonSection}>
+              <Button style={button} href={ticketUrl}>
+                {t.downloadTicket}
+              </Button>
+            </Section>
+          )}
 
           <Section style={secondaryButtonSection}>
             <Button style={secondaryButton} href={profileUrl}>
               {t.button}
             </Button>
           </Section>
+
+          {passwordSetupUrl && (
+            <Section style={setPasswordSection}>
+              <Text style={setPasswordTitle}>{t.setPasswordTitle}</Text>
+              <Text style={setPasswordBody}>{t.setPasswordBody}</Text>
+              <Button style={button} href={passwordSetupUrl}>
+                {t.setPasswordCta}
+              </Button>
+            </Section>
+          )}
 
           <Text style={cancellationText}>{t.cancellation}</Text>
 
@@ -393,4 +436,43 @@ const footerBrand = {
   fontSize: '12px',
   textAlign: 'center' as const,
   margin: '16px 0 0',
+}
+
+const giftNoticeBox = {
+  backgroundColor: '#1a1a1a',
+  border: '1px solid #D4AF37',
+  borderRadius: '12px',
+  padding: '16px 20px',
+  margin: '0 0 16px',
+}
+
+const giftNoticeText = {
+  color: '#D4AF37',
+  fontSize: '14px',
+  lineHeight: '22px',
+  margin: '0',
+  textAlign: 'center' as const,
+}
+
+const setPasswordSection = {
+  backgroundColor: '#1a1a1a',
+  borderRadius: '12px',
+  border: '1px solid #262626',
+  padding: '24px',
+  margin: '24px 0',
+  textAlign: 'center' as const,
+}
+
+const setPasswordTitle = {
+  color: '#ffffff',
+  fontSize: '18px',
+  fontWeight: 'bold' as const,
+  margin: '0 0 8px',
+}
+
+const setPasswordBody = {
+  color: '#a3a3a3',
+  fontSize: '14px',
+  lineHeight: '22px',
+  margin: '0 0 16px',
 }

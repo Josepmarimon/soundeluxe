@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import type { Locale } from '@/lib/sanity/types'
 
-export default function LoginPage() {
+function LoginInner() {
   const t = useTranslations()
   const locale = useLocale() as Locale
   const router = useRouter()
@@ -18,6 +18,15 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showGuestSetup, setShowGuestSetup] = useState(false)
+  const [linkSent, setLinkSent] = useState(false)
+  const [linkSending, setLinkSending] = useState(false)
+
+  // Prefill email if provided via query (?email=...)
+  useEffect(() => {
+    const queryEmail = searchParams.get('email')
+    if (queryEmail) setEmail(queryEmail)
+  }, [searchParams])
 
   // Handle URL parameters for verification status
   useEffect(() => {
@@ -65,6 +74,7 @@ export default function LoginPage() {
     e.preventDefault()
     setError('')
     setSuccess('')
+    setShowGuestSetup(false)
     setIsLoading(true)
 
     try {
@@ -75,7 +85,6 @@ export default function LoginPage() {
       })
 
       if (result?.error) {
-        // Check if it's an email not verified error
         if (result.error.includes('EMAIL_NOT_VERIFIED')) {
           setError(
             locale === 'ca'
@@ -83,6 +92,15 @@ export default function LoginPage() {
               : locale === 'es'
                 ? 'Debes verificar tu email antes de iniciar sesión. Revisa tu bandeja de entrada.'
                 : 'You must verify your email before signing in. Check your inbox.'
+          )
+        } else if (result.error.includes('NO_PASSWORD_SET')) {
+          setShowGuestSetup(true)
+          setError(
+            locale === 'ca'
+              ? 'Aquest email pertany a un compte de convidat. Crea una contrasenya per accedir-hi.'
+              : locale === 'es'
+                ? 'Este email pertenece a una cuenta de invitado. Crea una contraseña para acceder.'
+                : 'This email belongs to a guest account. Create a password to access it.'
           )
         } else {
           setError(
@@ -94,10 +112,11 @@ export default function LoginPage() {
           )
         }
       } else {
-        router.push(`/${locale}/profile`)
+        const callbackUrl = searchParams.get('callbackUrl') || `/${locale}/profile`
+        router.push(callbackUrl)
         router.refresh()
       }
-    } catch (error) {
+    } catch {
       setError(
         locale === 'ca'
           ? 'Error al iniciar sessió'
@@ -107,6 +126,24 @@ export default function LoginPage() {
       )
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleSendSetupLink = async () => {
+    if (!email.trim()) return
+    setLinkSending(true)
+    try {
+      await fetch('/api/auth/request-password-setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), locale }),
+      })
+      setLinkSent(true)
+    } catch {
+      // Silenci: l'endpoint sempre retorna 200 igualment
+      setLinkSent(true)
+    } finally {
+      setLinkSending(false)
     }
   }
 
@@ -137,6 +174,44 @@ export default function LoginPage() {
             {error && (
               <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg text-sm">
                 {error}
+              </div>
+            )}
+
+            {showGuestSetup && (
+              <div className="bg-primary/10 border border-primary text-fg px-4 py-3 rounded-lg text-sm space-y-2">
+                <p>
+                  {linkSent
+                    ? locale === 'ca'
+                      ? 'Enllaç enviat. Comprova el teu correu per crear la contrasenya.'
+                      : locale === 'es'
+                        ? 'Enlace enviado. Revisa tu correo para crear la contraseña.'
+                        : 'Link sent. Check your inbox to create your password.'
+                    : locale === 'ca'
+                      ? 'T\'enviarem un enllaç per crear la teva contrasenya.'
+                      : locale === 'es'
+                        ? 'Te enviaremos un enlace para crear tu contraseña.'
+                        : 'We\'ll send you a link to create your password.'}
+                </p>
+                {!linkSent && (
+                  <button
+                    type="button"
+                    onClick={handleSendSetupLink}
+                    disabled={linkSending || !email.trim()}
+                    className="text-fg underline disabled:opacity-50"
+                  >
+                    {linkSending
+                      ? locale === 'ca'
+                        ? 'Enviant...'
+                        : locale === 'es'
+                          ? 'Enviando...'
+                          : 'Sending...'
+                      : locale === 'ca'
+                        ? 'Enviar enllaç'
+                        : locale === 'es'
+                          ? 'Enviar enlace'
+                          : 'Send link'}
+                  </button>
+                )}
               </div>
             )}
 
@@ -226,5 +301,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginInner />
+    </Suspense>
   )
 }
