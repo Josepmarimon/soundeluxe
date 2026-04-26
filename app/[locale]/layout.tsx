@@ -8,6 +8,7 @@ import { locales } from '@/i18n'
 import Navbar from '@/components/Navbar'
 import FooterWrapper from '@/components/FooterWrapper'
 import SessionProvider from '@/components/SessionProvider'
+import RegisterModalProvider from '@/components/RegisterModalProvider'
 import { client } from '@/lib/sanity/client'
 import { siteSettingsQuery } from '@/lib/sanity/queries'
 
@@ -102,9 +103,11 @@ export default async function LocaleLayout({
       >
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
-            <Navbar showShop={showShop} showGallery={showGallery} />
-            <main className="pt-16">{children}</main>
-            <FooterWrapper />
+            <RegisterModalProvider>
+              <Navbar showShop={showShop} showGallery={showGallery} />
+              <main className="pt-16">{children}</main>
+              <FooterWrapper />
+            </RegisterModalProvider>
           </NextIntlClientProvider>
         </SessionProvider>
       </body>

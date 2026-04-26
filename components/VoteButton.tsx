@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { emitVoteEvent } from '@/hooks/useVoteEvents'
+import { useRegisterModal } from '@/components/RegisterModalProvider'
 
 interface VoteButtonProps {
   albumId: string
@@ -21,6 +22,7 @@ export default function VoteButton({
   const t = useTranslations('album')
   const tPrompt = useTranslations('loginPrompt')
   const locale = useLocale()
+  const { open: openRegister } = useRegisterModal()
 
   const [hasVoted, setHasVoted] = useState(false)
   const [voteCount, setVoteCount] = useState(initialVoteCount)
@@ -214,12 +216,16 @@ export default function VoteButton({
             </p>
 
             <div className="flex flex-col gap-2 w-full">
-              <Link
-                href={`/${locale}/register`}
+              <button
+                type="button"
+                onClick={() => {
+                  setShowLoginPrompt(false)
+                  openRegister()
+                }}
                 className="bg-primary text-on-primary px-5 py-2.5 rounded-full font-bold text-sm hover:bg-primary-dark transition-all shadow-md text-center"
               >
                 {tPrompt('registerFree')}
-              </Link>
+              </button>
               <Link
                 href={`/${locale}/login`}
                 className="text-primary px-5 py-2 rounded-full font-medium text-sm hover:bg-card-hover transition-all text-center"

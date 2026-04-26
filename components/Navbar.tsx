@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
 import { locales, type Locale } from '@/i18n'
 import ThemeToggle from '@/components/ThemeToggle'
+import { useRegisterModal } from '@/components/RegisterModalProvider'
 
 interface NavbarProps {
   showShop?: boolean
@@ -19,6 +20,7 @@ export default function Navbar({ showShop = true, showGallery = false }: NavbarP
   const locale = useLocale() as Locale
   const pathname = usePathname()
   const { data: session, status } = useSession()
+  const { open: openRegister } = useRegisterModal()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userMenuRef = useRef<HTMLDivElement>(null)
 
@@ -209,12 +211,13 @@ export default function Navbar({ showShop = true, showGallery = false }: NavbarP
                 >
                   {t('navigation.login')}
                 </Link>
-                <Link
-                  href={`/${locale}/register`}
+                <button
+                  type="button"
+                  onClick={openRegister}
                   className="bg-primary text-on-primary px-4 py-2 rounded-full font-semibold hover:bg-primary-dark transition-all shadow-md text-sm"
                 >
                   {t('navigation.register')}
-                </Link>
+                </button>
               </>
             )}
           </div>

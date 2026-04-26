@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { useLocale, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import type { Image as SanityImage } from 'sanity'
-import type { Locale } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
+import { useRegisterModal } from '@/components/RegisterModalProvider'
 
 interface AlbumCover {
   _id: string
@@ -22,7 +22,7 @@ const BASE_PX_PER_SECOND = 30
 
 export default function HeroAlbumsCarousel({ albums }: HeroAlbumsCarouselProps) {
   const t = useTranslations('hero')
-  const locale = useLocale() as Locale
+  const { open: openRegister } = useRegisterModal()
   const trackRef = useRef<HTMLDivElement>(null)
   const positionRef = useRef(0)
   const velocityRef = useRef(BASE_PX_PER_SECOND)
@@ -125,12 +125,13 @@ export default function HeroAlbumsCarousel({ albums }: HeroAlbumsCarouselProps) 
                       {album.title}
                     </p>
                   </div>
-                  <a
-                    href={`/${locale}/register`}
+                  <button
+                    type="button"
+                    onClick={openRegister}
                     className="bg-primary text-on-primary text-[11px] md:text-xs font-bold rounded-full px-3 py-2 hover:bg-primary-dark transition-colors leading-snug"
                   >
                     {t('loveDisc')}
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
