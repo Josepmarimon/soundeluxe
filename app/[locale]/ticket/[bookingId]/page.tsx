@@ -16,12 +16,8 @@ export default async function TicketPage({ params }: TicketPageProps) {
   const { locale, bookingId } = await params
 
   const authSession = await auth()
-  if (!authSession?.user) {
-    redirect(`/${locale}/login`)
-  }
-
-  const userId = (authSession.user as any).id
-  const userRole = (authSession.user as any).role
+  const userId = authSession?.user ? (authSession.user as any).id : null
+  const userRole = authSession?.user ? (authSession.user as any).role : null
 
   const reserva = await prisma.reserva.findUnique({
     where: { id: bookingId },
@@ -30,13 +26,20 @@ export default async function TicketPage({ params }: TicketPageProps) {
 
   if (!reserva) notFound()
 
-  // Only the booking owner or admin/editor can view
-  if (reserva.userId !== userId && userRole !== 'ADMIN' && userRole !== 'EDITOR') {
+  // Si està autenticat però no és el propietari (i no és admin/editor) → bloquejar.
+  // Si NO està autenticat → permetre (cas guest checkout: el booking ID és secret).
+  if (
+    authSession?.user &&
+    reserva.userId !== userId &&
+    userRole !== 'ADMIN' &&
+    userRole !== 'EDITOR'
+  ) {
     redirect(`/${locale}`)
   }
 
   if (reserva.status !== 'CONFIRMED') {
-    redirect(`/${locale}/profile`)
+    if (authSession?.user) redirect(`/${locale}/profile`)
+    redirect(`/${locale}/sessions`)
   }
 
   // Fetch session data from Sanity

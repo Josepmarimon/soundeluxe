@@ -1,6 +1,4 @@
-import { getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
-import { auth } from '@/lib/auth'
 import BookingConfirmationPoller from '@/components/BookingConfirmationPoller'
 import type { Locale } from '@/lib/sanity/types'
 
@@ -15,13 +13,6 @@ export default async function BookingConfirmationPage({
 }: ConfirmationPageProps) {
   const { locale } = await params
   const { session_id } = await searchParams
-  const t = await getTranslations()
-
-  const authSession = await auth()
-
-  if (!authSession?.user) {
-    redirect(`/${locale}/login`)
-  }
 
   if (!session_id) {
     redirect(`/${locale}/sessions`)
@@ -33,7 +24,6 @@ export default async function BookingConfirmationPage({
         <BookingConfirmationPoller
           stripeSessionId={session_id}
           locale={locale}
-          userEmail={authSession.user.email!}
         />
       </div>
     </div>

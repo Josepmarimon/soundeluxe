@@ -30,31 +30,34 @@ interface BookingData {
 interface BookingConfirmationPollerProps {
   stripeSessionId: string
   locale: string
-  userEmail: string
 }
 
 export default function BookingConfirmationPoller({
   stripeSessionId,
   locale,
-  userEmail,
 }: BookingConfirmationPollerProps) {
   const t = useTranslations('booking.confirmation')
   const [booking, setBooking] = useState<BookingData | null>(null)
+  const [buyerEmail, setBuyerEmail] = useState<string | null>(null)
+  const [passwordSetupToken, setPasswordSetupToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let attempts = 0
     const maxAttempts = 15 // 30 seconds total
+    let cancelled = false
 
     const poll = async () => {
       try {
-        const res = await fetch('/api/user/bookings')
+        const res = await fetch(
+          `/api/booking/by-checkout?session_id=${encodeURIComponent(stripeSessionId)}`
+        )
         if (res.ok) {
           const data = await res.json()
-          // Find the most recent booking (the one just created)
-          const latest = data.bookings?.[0]
-          if (latest && latest.status === 'CONFIRMED') {
-            setBooking(latest)
+          if (data.booking && !cancelled) {
+            setBooking(data.booking)
+            setBuyerEmail(data.buyerEmail || null)
+            setPasswordSetupToken(data.passwordSetupToken || null)
             setLoading(false)
             return
           }
@@ -65,14 +68,18 @@ export default function BookingConfirmationPoller({
 
       attempts++
       if (attempts >= maxAttempts) {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
         return
       }
 
-      setTimeout(poll, 2000)
+      if (!cancelled) setTimeout(poll, 2000)
     }
 
     poll()
+
+    return () => {
+      cancelled = true
+    }
   }, [stripeSessionId])
 
   // Loading/polling state
@@ -102,15 +109,11 @@ export default function BookingConfirmationPoller({
         </div>
         <h2 className="text-2xl font-bold text-fg mb-2">{t('title')}</h2>
         <p className="text-fg-muted mb-8">{t('processingNote')}</p>
-        <p className="text-fg-subtle text-sm mb-8">
-          {t('emailSent', { email: userEmail })}
-        </p>
-        <Link
-          href={`/${locale}/profile`}
-          className="inline-block bg-primary text-on-primary px-8 py-3 rounded-full font-bold hover:bg-primary-dark transition-all"
-        >
-          {t('viewBookings')}
-        </Link>
+        {buyerEmail && (
+          <p className="text-fg-subtle text-sm mb-8">
+            {t('emailSent', { email: buyerEmail })}
+          </p>
+        )}
       </div>
     )
   }
@@ -129,6 +132,16 @@ export default function BookingConfirmationPoller({
         }
       )
     : ''
+
+  const setPasswordCta =
+    locale === 'ca'
+      ? 'Crea una contrasenya per accedir a les teves entrades'
+      : locale === 'es'
+      ? 'Crea una contraseña para acceder a tus entradas'
+      : 'Create a password to access your tickets'
+
+  const setPasswordButton =
+    locale === 'ca' ? 'Crear contrasenya' : locale === 'es' ? 'Crear contraseña' : 'Create password'
 
   return (
     <div className="text-center py-12">
@@ -170,7 +183,9 @@ export default function BookingConfirmationPoller({
           {booking.session?.sala && (
             <div className="flex justify-between">
               <span className="text-fg-subtle">{t('venue')}</span>
-              <span className="text-fg">{booking.session.sala.name[locale] || booking.session.sala.name.ca}</span>
+              <span className="text-fg">
+                {booking.session.sala.name[locale] || booking.session.sala.name.ca}
+              </span>
             </div>
           )}
 
@@ -192,17 +207,36 @@ export default function BookingConfirmationPoller({
       </p>
 
       {/* Email notification */}
-      <p className="text-fg-subtle text-sm mb-8">
-        {t('emailSent', { email: userEmail })}
-      </p>
+      {buyerEmail && (
+        <p className="text-fg-subtle text-sm mb-8">
+          {t('emailSent', { email: buyerEmail })}
+        </p>
+      )}
+
+      {/* CTA per crear contrasenya si és comprador convidat */}
+      {passwordSetupToken && (
+        <div className="max-w-md mx-auto mb-8 bg-primary/10 border border-primary rounded-2xl p-6">
+          <p className="text-fg mb-4">{setPasswordCta}</p>
+          <Link
+            href={`/${locale}/set-password?token=${passwordSetupToken}`}
+            className="inline-block bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold hover:bg-primary-dark transition-all"
+          >
+            {setPasswordButton}
+          </Link>
+        </div>
+      )}
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Link
-          href={`/${locale}/profile`}
+          href={`/${locale}/ticket/${booking.id}`}
           className="inline-block bg-primary text-on-primary px-8 py-3 rounded-full font-bold hover:bg-primary-dark transition-all"
         >
-          {t('viewBookings')}
+          {locale === 'ca'
+            ? 'Veure entrada'
+            : locale === 'es'
+            ? 'Ver entrada'
+            : 'View ticket'}
         </Link>
         <Link
           href={`/${locale}/sessions`}
