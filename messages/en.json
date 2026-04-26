@@ -28,7 +28,9 @@
     "title": "Rediscover music like you've never heard it before",
     "subtitle": "Exclusive high-fidelity listening sessions for true audiophiles",
     "cta": "Explore sessions",
-    "voteCta": "Vote for your favorite album"
+    "voteCta": "Vote for your favorite album",
+    "loveDisc": "I love this disc! I'd like to listen to it",
+    "loveDiscSubject": "I'd like to listen to {album} - {artist}"
   },
   "sessions": {
     "title": "Upcoming sessions",

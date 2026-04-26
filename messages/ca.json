@@ -28,7 +28,9 @@
     "title": "Redescobrix la música com mai l'havies sentit",
     "subtitle": "Sessions exclusives d'escolta en alta fidelitat per a autèntics audiòfils",
     "cta": "Explorar sessions",
-    "voteCta": "Vota el teu disc preferit"
+    "voteCta": "Vota el teu disc preferit",
+    "loveDisc": "Aquest disc m'encanta! M'agradaria escoltar-lo",
+    "loveDiscSubject": "M'agradaria escoltar {album} - {artist}"
   },
   "sessions": {
     "title": "Properes sessions",
