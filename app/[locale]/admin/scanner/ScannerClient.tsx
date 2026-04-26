@@ -39,14 +39,20 @@ export default function ScannerClient({ locale }: { locale: string }) {
   const resetTimerRef = useRef<NodeJS.Timeout | null>(null)
   const processingRef = useRef(false)
 
-  const extractBookingId = useCallback((text: string): string | null => {
-    // Match URLs like /admin/checkin/{bookingId} or /checkin/{bookingId}
-    const urlMatch = text.match(/\/checkin\/([a-zA-Z0-9_-]+)/)
-    if (urlMatch) return urlMatch[1]
-    // Also accept raw booking IDs (cuid format)
-    if (/^c[a-z0-9]{20,30}$/.test(text)) return text
-    return null
-  }, [])
+  const extractScanTarget = useCallback(
+    (text: string): { type: 'place'; id: string } | { type: 'booking'; id: string } | null => {
+      // /admin/checkin/place/{placeId} → place QR (nou)
+      const placeMatch = text.match(/\/checkin\/place\/([a-zA-Z0-9_-]+)/)
+      if (placeMatch) return { type: 'place', id: placeMatch[1] }
+      // /admin/checkin/{bookingId} → booking QR (legacy)
+      const bookingMatch = text.match(/\/checkin\/(?!place\/)([a-zA-Z0-9_-]+)/)
+      if (bookingMatch) return { type: 'booking', id: bookingMatch[1] }
+      // Raw booking ID (cuid)
+      if (/^c[a-z0-9]{20,30}$/.test(text)) return { type: 'booking', id: text }
+      return null
+    },
+    []
+  )
 
   const fetchBookingDetails = useCallback(async (bookingId: string): Promise<BookingDetails | null> => {
     try {
@@ -123,19 +129,26 @@ export default function ScannerClient({ locale }: { locale: string }) {
     // Guard: don't process if already handling a scan
     if (processingRef.current) return
 
-    const bookingId = extractBookingId(decodedText)
-    if (!bookingId || bookingId === lastScannedRef.current) return
+    const target = extractScanTarget(decodedText)
+    if (!target) return
+    if (target.id === lastScannedRef.current) return
 
     // Lock processing
     processingRef.current = true
-    lastScannedRef.current = bookingId
+    lastScannedRef.current = target.id
     setScanState('loading')
     pauseScanning()
 
     // Vibrate feedback on detection
     if (navigator.vibrate) navigator.vibrate(50)
 
-    const details = await fetchBookingDetails(bookingId)
+    // QR per plaça → naveguem a la pàgina dedicada (té el seu propi flux)
+    if (target.type === 'place') {
+      window.location.href = `/${locale}/admin/checkin/place/${target.id}`
+      return
+    }
+
+    const details = await fetchBookingDetails(target.id)
 
     if (!details) {
       setScanState('error')
@@ -160,7 +173,7 @@ export default function ScannerClient({ locale }: { locale: string }) {
       setScanState('found')
       // Don't auto-reset on found — wait for staff action
     }
-  }, [extractBookingId, fetchBookingDetails, t, scheduleAutoReset, pauseScanning])
+  }, [extractScanTarget, fetchBookingDetails, t, scheduleAutoReset, pauseScanning, locale])
 
   // Initialize scanner
   useEffect(() => {

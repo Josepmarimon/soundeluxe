@@ -5,25 +5,25 @@ import { prisma } from '@/lib/prisma'
 import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
 import type { Session, Locale } from '@/lib/sanity/types'
-import CheckinControls from './CheckinControls'
+import PlaceCheckinControls from './PlaceCheckinControls'
 
-interface CheckinPageProps {
-  params: Promise<{ locale: Locale; bookingId: string }>
+interface PageProps {
+  params: Promise<{ locale: Locale; placeId: string }>
 }
 
-export default async function CheckinPage({ params }: CheckinPageProps) {
-  const { locale, bookingId } = await params
+export default async function PlaceCheckinPage({ params }: PageProps) {
+  const { locale, placeId } = await params
   const t = await getTranslations()
 
   const authSession = await auth()
 
   if (!authSession?.user) {
-    redirect(`/${locale}/login`)
+    redirect(`/${locale}/login?callbackUrl=/${locale}/admin/checkin/place/${placeId}`)
   }
 
   const userRole = (authSession.user as any).role
 
-  // Non-staff users see a message to show the QR to staff
+  // Si no és staff, mostra un missatge per fer-li ensenyar el QR al staff
   if (userRole !== 'ADMIN' && userRole !== 'EDITOR') {
     return (
       <div className="min-h-screen bg-bg pt-24 pb-16">
@@ -40,16 +40,19 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
     )
   }
 
-  // Fetch booking
-  const reserva = await prisma.reserva.findUnique({
-    where: { id: bookingId },
+  const place = await prisma.reservaPlace.findUnique({
+    where: { id: placeId },
     include: {
-      user: { select: { name: true, email: true } },
-      places: { orderBy: { placeNumber: 'asc' } },
+      reserva: {
+        include: {
+          user: { select: { name: true, email: true } },
+          places: { select: { id: true, attended: true } },
+        },
+      },
     },
   })
 
-  if (!reserva) {
+  if (!place) {
     return (
       <div className="min-h-screen bg-bg pt-24 pb-16">
         <div className="max-w-md mx-auto px-4 text-center">
@@ -59,39 +62,48 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
     )
   }
 
-  if (reserva.status !== 'CONFIRMED') {
+  if (place.reserva.status !== 'CONFIRMED') {
     return (
       <div className="min-h-screen bg-bg pt-24 pb-16">
         <div className="max-w-md mx-auto px-4 text-center">
           <h1 className="text-2xl font-bold text-red-400">{t('checkin.invalidBooking')}</h1>
-          <p className="text-fg-muted mt-2">Status: {reserva.status}</p>
+          <p className="text-fg-muted mt-2">Status: {place.reserva.status}</p>
         </div>
       </div>
     )
   }
 
-  // Fetch session data from Sanity
-  const sessionData: Session | null = await client.fetch(sessionByIdQuery, { id: reserva.sessionId })
+  const sessionData: Session | null = await client.fetch(sessionByIdQuery, {
+    id: place.reserva.sessionId,
+  })
 
-  const userName = reserva.user.name || reserva.user.email
+  const userName = place.reserva.user.name || place.reserva.user.email
   const sessionDate = sessionData
-    ? new Date(sessionData.date).toLocaleDateString(locale === 'ca' ? 'ca-ES' : locale === 'es' ? 'es-ES' : 'en-GB', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        hour: '2-digit',
-        minute: '2-digit',
-      })
+    ? new Date(sessionData.date).toLocaleDateString(
+        locale === 'ca' ? 'ca-ES' : locale === 'es' ? 'es-ES' : 'en-GB',
+        {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          hour: '2-digit',
+          minute: '2-digit',
+        }
+      )
     : ''
+
+  const attendedCount = place.reserva.places.filter((p) => p.attended).length
 
   return (
     <div className="min-h-screen bg-bg pt-24 pb-16">
       <div className="max-w-md mx-auto px-4">
-        <h1 className="text-2xl font-bold text-fg mb-8 text-center">{t('checkin.title')}</h1>
+        <h1 className="text-2xl font-bold text-fg mb-2 text-center">
+          {t('checkin.placeOf', { current: place.placeNumber, total: place.reserva.numPlaces })}
+        </h1>
+        <p className="text-fg-muted text-sm text-center mb-6">
+          {attendedCount} / {place.reserva.numPlaces} {t('checkin.places')}
+        </p>
 
-        {/* Booking details */}
         <div className="bg-card-raised/80 rounded-2xl p-6 border border-outline mb-6">
-          {/* Guest info */}
           <div className="flex items-center gap-4 mb-5">
             <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
               <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,11 +112,10 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
             </div>
             <div>
               <p className="text-fg font-semibold text-lg">{userName}</p>
-              <p className="text-fg-muted text-sm">{reserva.user.email}</p>
+              <p className="text-fg-muted text-sm">{place.reserva.user.email}</p>
             </div>
           </div>
 
-          {/* Session details */}
           {sessionData && (
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
@@ -123,27 +134,18 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
                 <span className="text-fg-subtle">{t('checkin.venue')}</span>
                 <span className="text-fg">{sessionData.sala.name[locale] || sessionData.sala.name.ca}</span>
               </div>
-              <div className="border-t border-outline pt-3 flex justify-between">
-                <span className="text-fg-muted font-semibold">{t('checkin.places')}</span>
-                <span className="text-primary font-bold text-lg">{reserva.numPlaces}</span>
-              </div>
             </div>
           )}
         </div>
 
-        {/* Check-in controls */}
-        <CheckinControls
-          bookingId={reserva.id}
-          attended={reserva.attended}
-          attendedAt={reserva.attendedAt?.toISOString() || null}
-          userName={userName!}
-          numPlaces={reserva.numPlaces}
-          places={reserva.places.map((p) => ({
-            id: p.id,
-            placeNumber: p.placeNumber,
-            attended: p.attended,
-            attendedAt: p.attendedAt?.toISOString() || null,
-          }))}
+        <PlaceCheckinControls
+          placeId={place.id}
+          placeNumber={place.placeNumber}
+          numPlaces={place.reserva.numPlaces}
+          bookingId={place.reservaId}
+          locale={locale}
+          attended={place.attended}
+          attendedAt={place.attendedAt?.toISOString() || null}
         />
       </div>
     </div>

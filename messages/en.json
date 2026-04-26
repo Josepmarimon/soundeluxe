@@ -426,7 +426,10 @@
     "date": "Date",
     "venue": "Venue",
     "processing": "Processing...",
-    "error": "Error registering entry"
+    "error": "Error registering entry",
+    "placeOf": "Spot {current}/{total}",
+    "validate": "Validate",
+    "viewAllPlaces": "View all {count} group spots"
   },
   "attendance": {
     "title": "Attendance control",
@@ -472,7 +475,8 @@
     "sessionEntry": "Listening session entry ({places, plural, one {1 spot} other {# spots}})",
     "vatLine": "VAT ({rate}%)",
     "total": "Total",
-    "entryQr": "Entry QR code",
-    "entryQrNote": "Show this code at the session entrance to register your attendance"
+    "entryQr": "Entry QR codes",
+    "entryQrNote": "Each spot has its own QR. Every attendee must present their own QR at the entrance.",
+    "placeOf": "Spot {current} of {total}"
   }
 }

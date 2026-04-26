@@ -47,6 +47,9 @@ export async function GET(request: NextRequest) {
           { stripePaymentId: stripeSessionId },
         ].filter(Boolean) as { stripePaymentId: string }[],
       },
+      include: {
+        places: { orderBy: { placeNumber: 'asc' } },
+      },
     })
 
     if (!booking) {
@@ -85,6 +88,11 @@ export async function GET(request: NextRequest) {
         paymentMethod: booking.paymentMethod,
         createdAt: booking.createdAt,
         session: sessionData ?? null,
+        places: booking.places.map((p) => ({
+          id: p.id,
+          placeNumber: p.placeNumber,
+          attended: p.attended,
+        })),
       },
       buyerEmail: buyer?.email ?? null,
       buyerName: buyer?.name ?? null,

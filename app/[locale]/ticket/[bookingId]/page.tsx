@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
-import { generateQRDataURL } from '@/lib/qr'
+import { generatePlaceQRDataURL } from '@/lib/qr'
 import { getCompanyData, formatInvoiceNumber, calculateTaxBreakdown } from '@/lib/company'
 import type { Session, Locale } from '@/lib/sanity/types'
 import TicketView from './TicketView'
@@ -21,7 +21,10 @@ export default async function TicketPage({ params }: TicketPageProps) {
 
   const reserva = await prisma.reserva.findUnique({
     where: { id: bookingId },
-    include: { user: { select: { name: true, email: true } } },
+    include: {
+      user: { select: { name: true, email: true } },
+      places: { orderBy: { placeNumber: 'asc' } },
+    },
   })
 
   if (!reserva) notFound()
@@ -47,13 +50,22 @@ export default async function TicketPage({ params }: TicketPageProps) {
 
   if (!sessionData) notFound()
 
-  // Generate QR code
-  let qrDataUrl: string | undefined
-  try {
-    qrDataUrl = await generateQRDataURL(reserva.id, locale)
-  } catch (qrError) {
-    console.error('Failed to generate ticket QR code:', qrError)
-  }
+  // Generate one QR per place
+  const qrPlaces = await Promise.all(
+    reserva.places.map(async (place) => {
+      let qrDataUrl: string | undefined
+      try {
+        qrDataUrl = await generatePlaceQRDataURL(place.id, locale)
+      } catch (qrError) {
+        console.error('Failed to generate ticket QR code:', qrError)
+      }
+      return {
+        placeId: place.id,
+        placeNumber: place.placeNumber,
+        qrDataUrl,
+      }
+    })
+  )
 
   const dateLocaleMap = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' } as const
   const sessionDate = new Date(sessionData.date).toLocaleDateString(dateLocaleMap[locale], {
@@ -97,7 +109,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
         baseAmount: taxBreakdown.baseAmount.toFixed(2),
         vatRate: taxBreakdown.vatRate,
         vatAmount: taxBreakdown.vatAmount.toFixed(2),
-        qrDataUrl,
+        qrPlaces,
         company,
       }}
     />

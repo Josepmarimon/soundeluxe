@@ -71,7 +71,7 @@ export async function POST(request: Request) {
     const isGiftBooking = isGift === 'true'
 
     try {
-      // Create reserva in a transaction with availability check
+      // Create reserva + N places in a transaction with availability check
       const reserva = await prisma.$transaction(async (tx) => {
         // Check current booked places
         const { _sum } = await tx.reserva.aggregate({
@@ -94,6 +94,14 @@ export async function POST(request: Request) {
             status: 'CONFIRMED',
             paymentMethod,
             stripePaymentId: paymentIntentId || checkoutSession.id,
+            places: {
+              create: Array.from({ length: numPlacesInt }, (_, i) => ({
+                placeNumber: i + 1,
+              })),
+            },
+          },
+          include: {
+            places: { orderBy: { placeNumber: 'asc' } },
           },
         })
       })
@@ -127,8 +135,11 @@ export async function POST(request: Request) {
         const venueName = sessionData.sala.name[venueLocale] || sessionData.sala.name.ca
         const venueAddress = `${sessionData.sala.address.street}, ${sessionData.sala.address.city}`
 
-        // URL pública del QR (els clients de correu no carreguen data:URLs).
-        const qrDataUrl = `${APP_URL}/api/booking/${reserva.id}/qr-image?locale=${venueLocale}`
+        // URLs públiques dels QRs per plaça (un QR per ReservaPlace).
+        const qrPlaces = reserva.places.map((place) => ({
+          placeNumber: place.placeNumber,
+          qrUrl: `${APP_URL}/api/booking/place/${place.id}/qr-image?locale=${venueLocale}`,
+        }))
 
         const invoiceNumberFormatted = reserva.invoiceNumber
           ? await formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
@@ -158,7 +169,7 @@ export async function POST(request: Request) {
                 venueAddress,
                 numPlaces: numPlacesInt,
                 bookingId: reserva.id,
-                qrDataUrl,
+                qrPlaces,
                 giftMessage: giftMessage || undefined,
               }),
             })
@@ -187,7 +198,7 @@ export async function POST(request: Request) {
               venueAddress,
               numPlaces: numPlacesInt,
               totalAmount: totalAmount.toFixed(2),
-              qrDataUrl: isGiftBooking ? undefined : qrDataUrl,
+              qrPlaces: isGiftBooking ? undefined : qrPlaces,
               bookingId: reserva.id,
               invoiceNumber: invoiceNumberFormatted,
               isGiftPurchaser: isGiftBooking,

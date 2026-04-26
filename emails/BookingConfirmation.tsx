@@ -12,6 +12,11 @@ import {
   Text,
 } from '@react-email/components'
 
+interface QrPlace {
+  placeNumber: number
+  qrUrl: string
+}
+
 interface BookingConfirmationProps {
   name: string
   language: 'CA' | 'ES' | 'EN'
@@ -23,9 +28,10 @@ interface BookingConfirmationProps {
   numPlaces: number
   totalAmount: string
   bookingId: string
-  qrDataUrl?: string
+  // Llista de QRs (un per plaça). Buit/undefined → sense QR (regal al comprador).
+  qrPlaces?: QrPlace[]
   invoiceNumber?: string
-  // Si és true, oculta el QR i mostra missatge "has regalat aquesta entrada"
+  // Si és true, oculta els QRs i mostra missatge "has regalat aquesta entrada"
   isGiftPurchaser?: boolean
   recipientName?: string
   // Si present, afegeix CTA per establir contrasenya (lazy registration)
@@ -49,8 +55,9 @@ const translations = {
     reference: 'Referència',
     vatNote: 'IVA inclòs',
     cancellation: 'Política de cancel·lació: cancel·lació gratuïta fins 48h abans de la sessió.',
-    qrTitle: 'El teu codi QR d\'entrada',
-    qrNote: 'Mostra aquest codi a l\'entrada de la sessió',
+    qrTitle: 'Els teus codis QR',
+    qrNote: 'Cada plaça té el seu QR. Cadascú s\'ha de presentar amb el seu QR a l\'entrada.',
+    qrPlaceLabel: (n: number, total: number) => `Plaça ${n} de ${total}`,
     button: 'Veure les meves reserves',
     downloadTicket: 'Descarregar entrada / factura',
     invoiceNote: 'Factura simplificada',
@@ -75,8 +82,9 @@ const translations = {
     reference: 'Referencia',
     vatNote: 'IVA incluido',
     cancellation: 'Política de cancelación: cancelación gratuita hasta 48h antes de la sesión.',
-    qrTitle: 'Tu código QR de entrada',
-    qrNote: 'Muestra este código en la entrada de la sesión',
+    qrTitle: 'Tus códigos QR',
+    qrNote: 'Cada plaza tiene su QR. Cada persona debe presentarse con el suyo en la entrada.',
+    qrPlaceLabel: (n: number, total: number) => `Plaza ${n} de ${total}`,
     button: 'Ver mis reservas',
     downloadTicket: 'Descargar entrada / factura',
     invoiceNote: 'Factura simplificada',
@@ -101,8 +109,9 @@ const translations = {
     reference: 'Reference',
     vatNote: 'VAT included',
     cancellation: 'Cancellation policy: free cancellation up to 48h before the session.',
-    qrTitle: 'Your entry QR code',
-    qrNote: 'Show this code at the session entrance',
+    qrTitle: 'Your QR codes',
+    qrNote: 'Each spot has its own QR. Every attendee must present their own QR at the entrance.',
+    qrPlaceLabel: (n: number, total: number) => `Spot ${n} of ${total}`,
     button: 'View my bookings',
     downloadTicket: 'Download ticket / invoice',
     invoiceNote: 'Simplified invoice',
@@ -124,7 +133,7 @@ export default function BookingConfirmation({
   numPlaces,
   totalAmount,
   bookingId,
-  qrDataUrl,
+  qrPlaces,
   invoiceNumber,
   isGiftPurchaser = false,
   recipientName,
@@ -134,7 +143,7 @@ export default function BookingConfirmation({
   const lang = language.toLowerCase()
   const profileUrl = `https://soundeluxe.es/${lang}/profile`
   const ticketUrl = `https://soundeluxe.es/${lang}/ticket/${bookingId}`
-  const showQr = !isGiftPurchaser && qrDataUrl
+  const showQrs = !isGiftPurchaser && qrPlaces && qrPlaces.length > 0
   const showTicketButton = !isGiftPurchaser
 
   return (
@@ -200,17 +209,24 @@ export default function BookingConfirmation({
             )}
           </Text>
 
-          {/* QR Code */}
-          {showQr && (
+          {/* QR Codes — un per plaça */}
+          {showQrs && (
             <Section style={qrSection}>
               <Text style={qrTitle}>{t.qrTitle}</Text>
-              <Img
-                src={qrDataUrl}
-                width="200"
-                height="200"
-                alt="QR Code"
-                style={qrImage}
-              />
+              {qrPlaces!.map((place) => (
+                <div key={place.placeNumber} style={qrPlaceWrapper}>
+                  <Text style={qrPlaceLabel}>
+                    {t.qrPlaceLabel(place.placeNumber, qrPlaces!.length)}
+                  </Text>
+                  <Img
+                    src={place.qrUrl}
+                    width="200"
+                    height="200"
+                    alt={`QR ${place.placeNumber}/${qrPlaces!.length}`}
+                    style={qrImage}
+                  />
+                </div>
+              ))}
               <Text style={qrNote}>{t.qrNote}</Text>
             </Section>
           )}
@@ -391,6 +407,22 @@ const qrTitle = {
 const qrImage = {
   margin: '0 auto',
   borderRadius: '8px',
+}
+
+const qrPlaceWrapper = {
+  margin: '0 0 24px',
+  paddingBottom: '16px',
+  borderBottom: '1px dashed #e5e5e5',
+}
+
+const qrPlaceLabel = {
+  color: '#0a1929',
+  fontSize: '13px',
+  fontWeight: 'bold' as const,
+  textTransform: 'uppercase' as const,
+  letterSpacing: '1px',
+  margin: '0 0 8px',
+  textAlign: 'center' as const,
 }
 
 const qrNote = {

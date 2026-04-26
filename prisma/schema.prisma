@@ -86,11 +86,29 @@ model Reserva {
   // Relacions
   user                User          @relation(fields: [userId], references: [id])
   ressenya            Ressenya?
+  places              ReservaPlace[]
 
   @@index([userId])
   @@index([sessionId])
   @@index([status])
   @@map("reservas")
+}
+
+// Una entrada individual dins una Reserva. Es genera una per cada plaça
+// comprada perquè es pugui fer check-in per separat amb un QR propi.
+model ReservaPlace {
+  id          String    @id @default(cuid())
+  reservaId   String
+  placeNumber Int       // 1..N dins de la reserva
+  attended    Boolean   @default(false)
+  attendedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  reserva     Reserva   @relation(fields: [reservaId], references: [id], onDelete: Cascade)
+
+  @@unique([reservaId, placeNumber])
+  @@index([reservaId])
+  @@map("reserva_places")
 }
 
 model Votacion {

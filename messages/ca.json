@@ -426,7 +426,10 @@
     "date": "Data",
     "venue": "Lloc",
     "processing": "Processant...",
-    "error": "Error al registrar l'entrada"
+    "error": "Error al registrar l'entrada",
+    "placeOf": "Plaça {current}/{total}",
+    "validate": "Validar",
+    "viewAllPlaces": "Veure les {count} places del grup"
   },
   "attendance": {
     "title": "Control d'assistència",
@@ -472,7 +475,8 @@
     "sessionEntry": "Entrada sessió d'escolta ({places, plural, one {1 plaça} other {# places}})",
     "vatLine": "IVA ({rate}%)",
     "total": "Total",
-    "entryQr": "Codi QR d'entrada",
-    "entryQrNote": "Mostra aquest codi a l'entrada de la sessió per registrar la teva assistència"
+    "entryQr": "Codis QR d'entrada",
+    "entryQrNote": "Cada plaça té el seu QR. Cadascú s'ha de presentar amb el seu QR a l'entrada.",
+    "placeOf": "Plaça {current} de {total}"
   }
 }

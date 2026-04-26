@@ -4,6 +4,12 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 
+interface QrPlace {
+  placeId: string
+  placeNumber: number
+  qrDataUrl?: string
+}
+
 interface TicketData {
   invoiceNumber: string
   issueDate: string
@@ -20,7 +26,7 @@ interface TicketData {
   baseAmount: string
   vatRate: number
   vatAmount: string
-  qrDataUrl?: string
+  qrPlaces: QrPlace[]
   company: {
     name: string
     nif: string
@@ -48,48 +54,71 @@ export default function TicketView({ locale, ticket }: TicketViewProps) {
   const handleDownload = async () => {
     setGenerating(true)
     try {
-      const html2pdf = (await import('html2pdf.js')).default
+      const html2canvas = (await import('html2canvas-pro')).default
+      const { default: JsPdf } = await import('jspdf')
+
       const contentEl = document.getElementById('ticket-content')
       if (!contentEl) return
 
       const clone = contentEl.cloneNode(true) as HTMLElement
       const wrapper = document.createElement('div')
       wrapper.style.cssText = `
+        position: fixed;
+        left: -9999px;
+        top: 0;
         background: white;
         font-family: system-ui, -apple-system, sans-serif;
         padding: 0;
-        width: 210mm;
+        width: 794px;
       `
       applyPrintStyles(clone)
       wrapper.appendChild(clone)
-      wrapper.style.position = 'fixed'
-      wrapper.style.left = '-9999px'
-      wrapper.style.top = '0'
       document.body.appendChild(wrapper)
 
-      const filename = `SoundDeluxe_${ticket.invoiceNumber.replace(/\//g, '-')}.pdf`
-
-      await html2pdf()
-        .set({
-          margin: [15, 15, 15, 15],
-          filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            letterRendering: true,
-            backgroundColor: '#ffffff',
-          },
-          jsPDF: {
-            unit: 'mm',
-            format: 'a4',
-            orientation: 'portrait',
-          },
-        })
-        .from(wrapper)
-        .save()
-
+      const canvas = await html2canvas(clone, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+      })
       document.body.removeChild(wrapper)
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.95)
+      const pdf = new JsPdf({ unit: 'mm', format: 'a4', orientation: 'portrait' })
+      const pageWidth = pdf.internal.pageSize.getWidth()
+      const pageHeight = pdf.internal.pageSize.getHeight()
+      const margin = 15
+      const contentWidth = pageWidth - margin * 2
+      const contentHeight = (canvas.height * contentWidth) / canvas.width
+
+      if (contentHeight <= pageHeight - margin * 2) {
+        pdf.addImage(imgData, 'JPEG', margin, margin, contentWidth, contentHeight)
+      } else {
+        // Múltiples pàgines: dividir la imatge en seccions
+        const pageContentHeight = pageHeight - margin * 2
+        const pixelsPerMm = canvas.width / contentWidth
+        const sliceHeightPx = pageContentHeight * pixelsPerMm
+        let yOffset = 0
+        let firstPage = true
+        while (yOffset < canvas.height) {
+          const sliceCanvas = document.createElement('canvas')
+          sliceCanvas.width = canvas.width
+          sliceCanvas.height = Math.min(sliceHeightPx, canvas.height - yOffset)
+          const ctx = sliceCanvas.getContext('2d')!
+          ctx.fillStyle = '#ffffff'
+          ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height)
+          ctx.drawImage(canvas, 0, -yOffset)
+          const sliceData = sliceCanvas.toDataURL('image/jpeg', 0.95)
+          const sliceHeightMm = (sliceCanvas.height * contentWidth) / canvas.width
+
+          if (!firstPage) pdf.addPage()
+          pdf.addImage(sliceData, 'JPEG', margin, margin, contentWidth, sliceHeightMm)
+          firstPage = false
+          yOffset += sliceHeightPx
+        }
+      }
+
+      const filename = `SoundDeluxe_${ticket.invoiceNumber.replace(/\//g, '-')}.pdf`
+      pdf.save(filename)
     } catch (err) {
       console.error('Error generating PDF:', err)
     } finally {
@@ -224,17 +253,60 @@ export default function TicketView({ locale, ticket }: TicketViewProps) {
               </table>
             </div>
 
-            {/* QR Code and entry info */}
-            <div className="flex items-center gap-6 bg-zinc-50 rounded-xl p-5" data-section="qr">
-              {ticket.qrDataUrl && (
-                <div className="flex-shrink-0">
-                  <img src={ticket.qrDataUrl} alt="QR Code" className="w-28 h-28 rounded-lg" />
+            {/* Entry stubs: un QR per cada plaça */}
+            <div className="space-y-4" data-section="qr">
+              <p className="text-[10px] uppercase tracking-widest text-fg-muted font-bold">
+                {t('entryQr')}
+              </p>
+              {ticket.qrPlaces.map((place) => (
+                <div
+                  key={place.placeId}
+                  className="border-2 border-dashed border-zinc-300 rounded-xl p-5 bg-zinc-50"
+                  data-section="qr-place"
+                >
+                  <div className="flex flex-col sm:flex-row gap-5">
+                    {place.qrDataUrl && (
+                      <div className="flex-shrink-0 flex flex-col items-center gap-2">
+                        <img
+                          src={place.qrDataUrl}
+                          alt={`QR ${place.placeNumber}/${ticket.qrPlaces.length}`}
+                          className="w-32 h-32 rounded-lg bg-white p-1"
+                        />
+                        <p className="font-mono text-[10px] text-zinc-500">
+                          {t('placeOf', { current: place.placeNumber, total: ticket.qrPlaces.length })}
+                        </p>
+                      </div>
+                    )}
+                    <div className="min-w-0 flex-1 space-y-2.5">
+                      <div>
+                        <p className="font-bold text-zinc-900 text-base leading-tight">{ticket.albumTitle}</p>
+                        <p className="text-zinc-600 text-sm">{ticket.albumArtist}</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-1.5 text-sm">
+                        <div className="flex items-start gap-2">
+                          <svg className="w-4 h-4 text-zinc-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span className="text-zinc-800">{ticket.sessionDate}</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <svg className="w-4 h-4 text-zinc-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          <div className="min-w-0">
+                            <p className="text-zinc-800 font-medium">{ticket.venueName}</p>
+                            <p className="text-zinc-500 text-xs">{ticket.venueAddress}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-fg-subtle text-xs italic pt-1">{t('entryQrNote')}</p>
+                    </div>
+                  </div>
                 </div>
-              )}
-              <div className="min-w-0">
-                <p className="font-bold text-zinc-800 mb-1">{t('entryQr')}</p>
-                <p className="text-fg-subtle text-sm">{t('entryQrNote')}</p>
-              </div>
+              ))}
             </div>
 
             {/* Footer */}
@@ -265,9 +337,26 @@ function colorToHex(color: string): string {
   return _colorCtx.fillStyle
 }
 
+const UNSUPPORTED_COLOR_FN = /\b(oklch|oklab|lab|lch|color)\s*\(/i
+
+/**
+ * Replace any unsupported color function inside a string value (gradients,
+ * box-shadow, etc.) by parsing each color token through canvas.
+ */
+function sanitizeColorString(value: string): string {
+  if (!UNSUPPORTED_COLOR_FN.test(value)) return value
+  // Match outermost color function calls like `oklch(...)` with balanced parens.
+  return value.replace(/(oklch|oklab|lab|lch|color)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/gi, (match) => {
+    try {
+      return colorToHex(match)
+    } catch {
+      return match
+    }
+  })
+}
+
 /**
  * Apply print-friendly styles for PDF generation.
- * The ticket is already white-background, so only minor adjustments are needed.
  */
 function applyPrintStyles(el: HTMLElement) {
   el.style.opacity = '1'
@@ -275,13 +364,37 @@ function applyPrintStyles(el: HTMLElement) {
   el.style.transition = 'none'
   el.style.animation = 'none'
 
-  // Convert all colors to hex — html2canvas can't parse lab(), oklch(), etc.
   const computed = window.getComputedStyle(el)
-  const colorProps = ['color', 'backgroundColor', 'borderColor', 'borderTopColor', 'borderBottomColor', 'borderLeftColor', 'borderRightColor'] as const
+
+  // Direct color properties — convert via canvas to hex.
+  const colorProps = [
+    'color',
+    'backgroundColor',
+    'borderTopColor',
+    'borderRightColor',
+    'borderBottomColor',
+    'borderLeftColor',
+    'outlineColor',
+    'textDecorationColor',
+    'caretColor',
+    'columnRuleColor',
+    'fill',
+    'stroke',
+  ] as const
   for (const prop of colorProps) {
-    const val = computed[prop]
-    if (val && val !== 'transparent' && val !== 'rgba(0, 0, 0, 0)') {
+    const val = computed[prop as any] as string
+    if (val && val !== 'none' && val !== 'transparent' && val !== 'rgba(0, 0, 0, 0)') {
       el.style[prop as any] = colorToHex(val)
+    }
+  }
+
+  // Composite properties that can embed colors (gradients, shadows). Sanitize tokens.
+  const compositeProps = ['backgroundImage', 'boxShadow', 'textShadow'] as const
+  for (const prop of compositeProps) {
+    const val = computed[prop as any] as string
+    if (val && val !== 'none') {
+      const sanitized = sanitizeColorString(val)
+      if (sanitized !== val) el.style[prop as any] = sanitized
     }
   }
 
@@ -306,8 +419,8 @@ function applyPrintStyles(el: HTMLElement) {
 
   // Process children
   Array.from(el.children).forEach((child) => {
-    if (child instanceof HTMLElement) {
-      applyPrintStyles(child)
+    if (child instanceof HTMLElement || child instanceof SVGElement) {
+      applyPrintStyles(child as HTMLElement)
     }
   })
 }

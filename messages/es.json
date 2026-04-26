@@ -426,7 +426,10 @@
     "date": "Fecha",
     "venue": "Lugar",
     "processing": "Procesando...",
-    "error": "Error al registrar la entrada"
+    "error": "Error al registrar la entrada",
+    "placeOf": "Plaza {current}/{total}",
+    "validate": "Validar",
+    "viewAllPlaces": "Ver las {count} plazas del grupo"
   },
   "attendance": {
     "title": "Control de asistencia",
@@ -472,7 +475,8 @@
     "sessionEntry": "Entrada sesión de escucha ({places, plural, one {1 plaza} other {# plazas}})",
     "vatLine": "IVA ({rate}%)",
     "total": "Total",
-    "entryQr": "Código QR de entrada",
-    "entryQrNote": "Muestra este código en la entrada de la sesión para registrar tu asistencia"
+    "entryQr": "Códigos QR de entrada",
+    "entryQrNote": "Cada plaza tiene su QR. Cada persona debe presentarse con el suyo en la entrada.",
+    "placeOf": "Plaza {current} de {total}"
   }
 }

@@ -43,14 +43,18 @@ export async function POST(request: Request) {
       })
     }
 
-    // Perform check-in
-    const updated = await prisma.reserva.update({
-      where: { id: bookingId },
-      data: {
-        attended: true,
-        attendedAt: new Date(),
-      },
-      include: { user: { select: { name: true, email: true } } },
+    // Perform check-in: marca la reserva i totes les seves places com a attended.
+    const now = new Date()
+    const updated = await prisma.$transaction(async (tx) => {
+      await tx.reservaPlace.updateMany({
+        where: { reservaId: bookingId, attended: false },
+        data: { attended: true, attendedAt: now },
+      })
+      return tx.reserva.update({
+        where: { id: bookingId },
+        data: { attended: true, attendedAt: now },
+        include: { user: { select: { name: true, email: true } } },
+      })
     })
 
     return NextResponse.json({

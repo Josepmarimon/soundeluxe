@@ -12,6 +12,11 @@ import {
   Text,
 } from '@react-email/components'
 
+interface QrPlace {
+  placeNumber: number
+  qrUrl: string
+}
+
 interface GiftReceivedProps {
   recipientName: string
   buyerName: string
@@ -23,7 +28,7 @@ interface GiftReceivedProps {
   venueAddress: string
   numPlaces: number
   bookingId: string
-  qrDataUrl?: string
+  qrPlaces?: QrPlace[]
   giftMessage?: string
 }
 
@@ -41,8 +46,9 @@ const translations = {
     venue: 'Lloc',
     places: 'Places',
     reference: 'Referència',
-    qrTitle: 'El teu codi QR d\'entrada',
-    qrNote: 'Mostra aquest codi a l\'entrada de la sessió',
+    qrTitle: 'Els teus codis QR',
+    qrNote: 'Cada plaça té el seu QR. Cadascú s\'ha de presentar amb el seu QR a l\'entrada.',
+    qrPlaceLabel: (n: number, total: number) => `Plaça ${n} de ${total}`,
     button: 'Veure entrada',
     cancellation: 'Si no pots assistir, contacta amb la persona que t\'ha fet el regal.',
     footer: 'Sound Deluxe - Experiències audiòfiles d\'alta fidelitat',
@@ -60,8 +66,9 @@ const translations = {
     venue: 'Lugar',
     places: 'Plazas',
     reference: 'Referencia',
-    qrTitle: 'Tu código QR de entrada',
-    qrNote: 'Muestra este código en la entrada de la sesión',
+    qrTitle: 'Tus códigos QR',
+    qrNote: 'Cada plaza tiene su QR. Cada persona debe presentarse con el suyo en la entrada.',
+    qrPlaceLabel: (n: number, total: number) => `Plaza ${n} de ${total}`,
     button: 'Ver entrada',
     cancellation: 'Si no puedes asistir, contacta con la persona que te ha hecho el regalo.',
     footer: 'Sound Deluxe - Experiencias audiófilas de alta fidelidad',
@@ -79,8 +86,9 @@ const translations = {
     venue: 'Venue',
     places: 'Places',
     reference: 'Reference',
-    qrTitle: 'Your entry QR code',
-    qrNote: 'Show this code at the session entrance',
+    qrTitle: 'Your QR codes',
+    qrNote: 'Each spot has its own QR. Every attendee must present their own QR at the entrance.',
+    qrPlaceLabel: (n: number, total: number) => `Spot ${n} of ${total}`,
     button: 'View ticket',
     cancellation: 'If you cannot attend, please contact the person who gave you this gift.',
     footer: 'Sound Deluxe - High-fidelity audiophile experiences',
@@ -98,7 +106,7 @@ export default function GiftReceived({
   venueAddress,
   numPlaces,
   bookingId,
-  qrDataUrl,
+  qrPlaces,
   giftMessage,
 }: GiftReceivedProps) {
   const t = translations[language]
@@ -155,16 +163,23 @@ export default function GiftReceived({
 
           <Text style={referenceText}>{t.reference}: {bookingId}</Text>
 
-          {qrDataUrl && (
+          {qrPlaces && qrPlaces.length > 0 && (
             <Section style={qrSection}>
               <Text style={qrTitle}>{t.qrTitle}</Text>
-              <Img
-                src={qrDataUrl}
-                width="200"
-                height="200"
-                alt="QR Code"
-                style={qrImage}
-              />
+              {qrPlaces.map((place) => (
+                <div key={place.placeNumber} style={qrPlaceWrapper}>
+                  <Text style={qrPlaceLabel}>
+                    {t.qrPlaceLabel(place.placeNumber, qrPlaces.length)}
+                  </Text>
+                  <Img
+                    src={place.qrUrl}
+                    width="200"
+                    height="200"
+                    alt={`QR ${place.placeNumber}/${qrPlaces.length}`}
+                    style={qrImage}
+                  />
+                </div>
+              ))}
               <Text style={qrNote}>{t.qrNote}</Text>
             </Section>
           )}
@@ -277,6 +292,20 @@ const qrTitle = {
   textAlign: 'center' as const,
 }
 const qrImage = { margin: '0 auto', borderRadius: '8px' }
+const qrPlaceWrapper = {
+  margin: '0 0 24px',
+  paddingBottom: '16px',
+  borderBottom: '1px dashed #e5e5e5',
+}
+const qrPlaceLabel = {
+  color: '#0a1929',
+  fontSize: '13px',
+  fontWeight: 'bold' as const,
+  textTransform: 'uppercase' as const,
+  letterSpacing: '1px',
+  margin: '0 0 8px',
+  textAlign: 'center' as const,
+}
 const qrNote = {
   color: '#737373',
   fontSize: '13px',
