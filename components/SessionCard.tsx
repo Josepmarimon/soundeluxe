@@ -242,9 +242,13 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
                   {session.album.salePrice}€
                 </span>
               </div>
-              <button className="bg-bg text-fg px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs hover:bg-surface-raised transition-all shadow-md">
+              <a
+                href={`/${locale}/albums?search=${encodeURIComponent(session.album.title)}`}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-bg text-fg px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs hover:bg-surface-raised transition-all shadow-md"
+              >
                 {t('sessions.buyDisc')}
-              </button>
+              </a>
             </div>
           </div>
         )}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import type { Album } from '@/lib/sanity/types'
 import AlbumCard from '@/components/AlbumCard'
@@ -16,9 +17,11 @@ interface AlbumCatalogProps {
 
 export default function AlbumCatalog({ albums, genres, artists, showVoteButton = false, hideTitleSearch = false, hideArtistSearch = false }: AlbumCatalogProps) {
   const t = useTranslations()
+  const searchParams = useSearchParams()
+  const initialSearch = searchParams?.get('search') ?? ''
   const [selectedGenre, setSelectedGenre] = useState<string>('')
   const [artistSearch, setArtistSearch] = useState<string>('')
-  const [searchQuery, setSearchQuery] = useState<string>('')
+  const [searchQuery, setSearchQuery] = useState<string>(initialSearch)
   const [genresOpen, setGenresOpen] = useState<boolean>(false)
 
   // Filter albums based on selected filters

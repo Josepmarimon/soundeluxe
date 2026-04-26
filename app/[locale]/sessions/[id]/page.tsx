@@ -164,7 +164,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
                   </p>
                 </div>
                 <a
-                  href={`mailto:info@sounddeluxe.com?subject=Compra%20vinilo%20${encodeURIComponent(session.album.title)}`}
+                  href={`/${locale}/albums?search=${encodeURIComponent(session.album.title)}`}
                   className="flex-shrink-0 px-4 py-2 bg-primary text-on-primary rounded-full text-xs font-bold hover:bg-primary-hover transition-colors"
                 >
                   {t('sessions.buyDisc')}
