@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { DayPicker } from 'react-day-picker'
 import { ca, es, enUS } from 'date-fns/locale'
 import { AnimatePresence, motion } from 'framer-motion'
-import type { Locale, MultilingualText } from '@/lib/sanity/types'
+import type { Locale, MultilingualText, MultilingualRichText } from '@/lib/sanity/types'
 import type { Image as SanityImage } from 'sanity'
 import SessionHighlight from './SessionHighlight'
 import { getSessionDayKey } from '@/lib/datetime'
@@ -27,7 +27,10 @@ export interface CalendarSession {
     _id: string
     title: string
     artist: string
+    year?: number
+    genre?: string
     coverImage?: SanityImage
+    description?: MultilingualRichText
   }
   sala?: {
     _id: string

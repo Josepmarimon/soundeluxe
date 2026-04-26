@@ -7,13 +7,27 @@ import { useRouter } from 'next/navigation'
 import { parseISO, differenceInDays, differenceInHours } from 'date-fns'
 import Image from 'next/image'
 import { urlForImage } from '@/lib/sanity/image'
-import type { Locale, MultilingualText } from '@/lib/sanity/types'
-import type { Image as SanityImage } from 'sanity'
+import type { Locale, MultilingualText, MultilingualRichText } from '@/lib/sanity/types'
+import type { Image as SanityImage, PortableTextBlock } from 'sanity'
 import GiftModal from '@/components/GiftModal'
 import GuestCheckoutForm from '@/components/GuestCheckoutForm'
 import { formatSessionDateTime } from '@/lib/datetime'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function richTextToPlainText(blocks?: PortableTextBlock[]): string {
+  if (!blocks || blocks.length === 0) return ''
+  return blocks
+    .map((block) => {
+      if (block._type !== 'block' || !Array.isArray(block.children)) return ''
+      return (block.children as Array<{ text?: string }>)
+        .map((c) => c.text ?? '')
+        .join('')
+    })
+    .filter(Boolean)
+    .join(' ')
+    .trim()
+}
 
 interface CalendarSession {
   _id: string
@@ -25,7 +39,10 @@ interface CalendarSession {
     _id: string
     title: string
     artist: string
+    year?: number
+    genre?: string
     coverImage?: SanityImage
+    description?: MultilingualRichText
   }
   sala?: {
     _id: string
@@ -237,7 +254,7 @@ export default function SessionHighlight({ sessions, availability, isNextSession
         <div className="flex flex-col md:flex-row gap-6">
           {/* Album cover - Left side */}
           <div className="w-full md:w-2/5 flex-shrink-0">
-            <div className="relative aspect-square w-full rounded-xl overflow-hidden shadow-lg">
+            <div className="group relative aspect-square w-full rounded-xl overflow-hidden shadow-lg">
               <Image
                 src={imageUrl}
                 alt={`${session.album.title} - ${session.album.artist}`}
@@ -245,6 +262,49 @@ export default function SessionHighlight({ sessions, availability, isNextSession
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 300px"
               />
+              {/* Hover overlay with album info — mirrors the back of SessionCard flip */}
+              <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col pointer-events-none group-hover:pointer-events-auto">
+                <div className="flex-shrink-0 mb-2">
+                  <h4 className="text-sm md:text-base font-bold text-black leading-tight line-clamp-2">
+                    {session.album.title}
+                  </h4>
+                  <p className="text-xs md:text-sm text-zinc-800 line-clamp-1">
+                    {session.album.artist}
+                  </p>
+                </div>
+
+                {(session.album.year || session.album.genre) && (
+                  <div className="flex-shrink-0 flex flex-wrap gap-1.5 mb-2">
+                    {session.album.year && (
+                      <span className="text-[10px] md:text-[11px] font-semibold text-black bg-black/10 rounded-full px-2 py-0.5">
+                        {session.album.year}
+                      </span>
+                    )}
+                    {session.album.genre && (
+                      <span className="text-[10px] md:text-[11px] font-semibold text-black bg-black/10 rounded-full px-2 py-0.5 line-clamp-1">
+                        {session.album.genre}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {session.album.description?.[locale] && (
+                  <p className="text-[11px] md:text-xs text-black/85 leading-snug line-clamp-6">
+                    {richTextToPlainText(session.album.description[locale])}
+                  </p>
+                )}
+
+                <div className="flex-1" />
+
+                <div className="flex-shrink-0 pt-2">
+                  <a
+                    href={`/${locale}/sessions/${session._id}`}
+                    className="block w-full bg-bg text-fg py-1.5 md:py-2 rounded-full font-bold text-xs md:text-sm text-center shadow-lg hover:bg-surface-raised transition-colors"
+                  >
+                    {t('sessions.moreInfo')}
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
