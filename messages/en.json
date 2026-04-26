@@ -54,7 +54,8 @@
     "dateTbdShort": "Date TBC",
     "venueTbd": "Venue to be confirmed",
     "venueTbdShort": "Venue TBC",
-    "bookingUnavailable": "Booking available once details are confirmed"
+    "bookingUnavailable": "Booking available once details are confirmed",
+    "moreInfo": "More information"
   },
   "experience": {
     "title": "An unmatched sonic experience",

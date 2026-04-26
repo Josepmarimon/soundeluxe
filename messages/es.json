@@ -54,7 +54,8 @@
     "dateTbdShort": "Fecha por confirmar",
     "venueTbd": "Lugar pendiente de confirmar",
     "venueTbdShort": "Lugar por confirmar",
-    "bookingUnavailable": "Reserva disponible cuando se confirmen los detalles"
+    "bookingUnavailable": "Reserva disponible cuando se confirmen los detalles",
+    "moreInfo": "Más información"
   },
   "experience": {
     "title": "Una experiencia sonora inigualable",

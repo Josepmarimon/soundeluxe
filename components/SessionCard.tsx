@@ -1,16 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import type { PortableTextBlock } from 'sanity'
 import type { SessionListItem, Locale } from '@/lib/sanity/types'
 import AlbumCarousel from '@/components/AlbumCarousel'
-import GiftModal from '@/components/GiftModal'
-import GuestCheckoutForm from '@/components/GuestCheckoutForm'
 import { formatSessionDateTime } from '@/lib/datetime'
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 interface SessionCardProps {
   session: SessionListItem
@@ -21,102 +15,27 @@ interface SessionCardProps {
   onFlip?: () => void
 }
 
+function richTextToPlainText(blocks?: PortableTextBlock[]): string {
+  if (!blocks || blocks.length === 0) return ''
+  return blocks
+    .map((block) => {
+      if (block._type !== 'block' || !Array.isArray(block.children)) return ''
+      return (block.children as Array<{ text?: string }>)
+        .map((c) => c.text ?? '')
+        .join('')
+    })
+    .filter(Boolean)
+    .join(' ')
+    .trim()
+}
+
 export default function SessionCard({ session, availablePlaces, showAlbumSale = true, enableFlip = false, isFlipped = false, onFlip }: SessionCardProps) {
   const t = useTranslations()
   const locale = useLocale() as Locale
-  const { status } = useSession()
-  const router = useRouter()
   const isSoldOut = availablePlaces !== undefined && availablePlaces === 0
   const hasDate = Boolean(session.date)
   const hasVenue = Boolean(session.sala)
   const isBookable = hasDate && hasVenue && !isSoldOut
-
-  const [numPlaces, setNumPlaces] = useState(1)
-  const [checkoutLoading, setCheckoutLoading] = useState(false)
-  const [checkoutError, setCheckoutError] = useState<string | null>(null)
-  const [accountExists, setAccountExists] = useState(false)
-  const [giftOpen, setGiftOpen] = useState(false)
-  const [guestName, setGuestName] = useState('')
-  const [guestEmail, setGuestEmail] = useState('')
-
-  const isLoggedIn = status === 'authenticated'
-  const maxPlaces = Math.min(4, availablePlaces ?? 4)
-  const total = session.price * numPlaces
-
-  useEffect(() => {
-    if (!isFlipped) {
-      setNumPlaces(1)
-      setCheckoutError(null)
-      setAccountExists(false)
-      setGiftOpen(false)
-    }
-  }, [isFlipped])
-
-  const goToLoginWithEmail = (e?: React.MouseEvent) => {
-    e?.stopPropagation()
-    const callback = `/${locale}/sessions/${session._id}`
-    const params = new URLSearchParams({ callbackUrl: callback })
-    if (guestEmail.trim()) params.set('email', guestEmail.trim().toLowerCase())
-    router.push(`/${locale}/login?${params.toString()}`)
-  }
-
-  const handleCheckout = async (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setCheckoutError(null)
-    setAccountExists(false)
-
-    let trimmedEmail = ''
-    let trimmedName = ''
-    if (!isLoggedIn) {
-      trimmedEmail = guestEmail.trim().toLowerCase()
-      trimmedName = guestName.trim()
-      if (!trimmedEmail || !trimmedName) {
-        setCheckoutError(t('booking.guest.errors.missingFields'))
-        return
-      }
-      if (!EMAIL_RE.test(trimmedEmail)) {
-        setCheckoutError(t('booking.guest.errors.invalidEmail'))
-        return
-      }
-    }
-
-    setCheckoutLoading(true)
-    try {
-      const payload: Record<string, unknown> = { sessionId: session._id, numPlaces, locale }
-      if (!isLoggedIn) {
-        payload.guestEmail = trimmedEmail
-        payload.guestName = trimmedName
-      }
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-      const data = await res.json()
-      if (!res.ok) {
-        if (res.status === 409 && data?.code === 'ACCOUNT_EXISTS') {
-          setAccountExists(true)
-          setCheckoutError(t('booking.errors.accountExists'))
-          return
-        }
-        if (res.status === 409) {
-          setCheckoutError(t('booking.errors.soldOut'))
-          return
-        }
-        if (res.status === 401) {
-          router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${session._id}`)
-          return
-        }
-        setCheckoutError(t('booking.errors.generic'))
-        return
-      }
-      window.location.href = data.url
-    } catch {
-      setCheckoutError(t('booking.errors.generic'))
-    } finally {
-      setCheckoutLoading(false)
-    }
-  }
 
   const dateIso = hasDate ? (session.date as string) : null
 
@@ -201,10 +120,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
 
             {/* Back Side */}
             <div className="session-card-back">
-              <div
-                className="bg-primary rounded-lg shadow-md h-full p-3 md:p-4 flex flex-col"
-                onClick={(e) => e.stopPropagation()}
-              >
+              <div className="bg-primary rounded-lg shadow-md h-full p-3 md:p-4 flex flex-col">
                 <div className="flex-shrink-0 mb-2 md:mb-3">
                   <h3 className="text-sm md:text-base font-bold text-black leading-tight line-clamp-2">
                     {session.album.title}
@@ -214,150 +130,39 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
                   </p>
                 </div>
 
-                {isLoggedIn || !isBookable ? (
-                  <div className="flex-shrink-0 space-y-1 md:space-y-1.5 text-[10px] md:text-[11px] mb-3">
-                    <div className="flex items-start gap-1.5">
-                      <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <span className="text-black hidden md:block">{formattedDateDesktop}</span>
-                      <span className="text-black md:hidden">{formattedDateMobile}</span>
-                    </div>
-                    <div className="flex items-start gap-1.5">
-                      <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span className={`line-clamp-1 ${session.sala ? 'text-black' : 'text-black/60 italic'}`}>{venueLabel}</span>
-                    </div>
-                    <div className="flex items-start gap-1.5">
-                      <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                      </svg>
-                      <span className="text-black line-clamp-1">{session.sessionType.name[locale]}</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex-shrink-0 mb-3 space-y-2">
-                    <div className="flex items-center gap-1.5">
-                      <svg className="w-3.5 h-3.5 text-black flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                      <p className="text-[11px] md:text-xs font-bold text-black">
-                        {t('booking.guest.subtitle')}
-                      </p>
-                    </div>
-                    <GuestCheckoutForm
-                      name={guestName}
-                      email={guestEmail}
-                      onNameChange={setGuestName}
-                      onEmailChange={setGuestEmail}
-                      disabled={checkoutLoading}
-                      variant="oncolor"
-                    />
-                    <p className="text-[10px] text-black/70">
-                      {t('booking.guest.loginHint')}{' '}
-                      <button
-                        type="button"
-                        onClick={goToLoginWithEmail}
-                        className="text-black underline font-semibold hover:text-black/80"
-                      >
-                        {t('booking.guest.loginInstead')}
-                      </button>
-                    </p>
-                  </div>
+                <div className="flex-shrink-0 flex flex-wrap gap-1.5 mb-2 md:mb-3">
+                  {session.album.year && (
+                    <span className="text-[10px] md:text-[11px] font-semibold text-black bg-black/10 rounded-full px-2 py-0.5">
+                      {session.album.year}
+                    </span>
+                  )}
+                  {session.album.genre && (
+                    <span className="text-[10px] md:text-[11px] font-semibold text-black bg-black/10 rounded-full px-2 py-0.5 line-clamp-1">
+                      {session.album.genre}
+                    </span>
+                  )}
+                </div>
+
+                {session.album.description?.[locale] && (
+                  <p className="text-[11px] md:text-xs text-black/85 leading-snug line-clamp-6 md:line-clamp-7">
+                    {richTextToPlainText(session.album.description[locale])}
+                  </p>
                 )}
 
-                {/* Spacer pushes checkout block to the bottom (only when metadata shown) */}
-                {(isLoggedIn || !isBookable) && <div className="flex-1" />}
+                <div className="flex-1" />
 
-                <div className="flex-shrink-0 border-t border-black/20 pt-2 md:pt-3 space-y-2 md:space-y-2.5">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 md:gap-2">
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setNumPlaces(Math.max(1, numPlaces - 1)) }}
-                        disabled={numPlaces <= 1 || isSoldOut}
-                        aria-label="−"
-                        className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-black text-black flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-primary transition-colors text-sm md:text-base font-bold"
-                      >
-                        −
-                      </button>
-                      <span className="text-base md:text-lg font-black text-black w-5 md:w-6 text-center">{numPlaces}</span>
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setNumPlaces(Math.min(maxPlaces, numPlaces + 1)) }}
-                        disabled={numPlaces >= maxPlaces || isSoldOut}
-                        aria-label="+"
-                        className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-black text-black flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-primary transition-colors text-sm md:text-base font-bold"
-                      >
-                        +
-                      </button>
-                    </div>
-                    <span className="text-lg md:text-xl font-black text-black">
-                      {total.toFixed(0)}<span className="text-sm md:text-base font-bold">€</span>
-                    </span>
-                  </div>
-
-                  {checkoutError && (
-                    <div className="space-y-0.5">
-                      <p className="text-red-700 text-[10px] md:text-[11px]">{checkoutError}</p>
-                      {accountExists && (
-                        <button
-                          type="button"
-                          onClick={goToLoginWithEmail}
-                          className="text-black underline text-[10px] md:text-[11px] font-semibold hover:text-black/80"
-                        >
-                          {t('booking.guest.loginInstead')}
-                        </button>
-                      )}
-                    </div>
-                  )}
-
-                  {isSoldOut ? (
-                    <div className="w-full bg-card-muted text-fg py-1.5 md:py-2 rounded-full font-semibold text-xs md:text-sm text-center">
-                      {t('booking.soldOut')}
-                    </div>
-                  ) : !isBookable ? (
-                    <div className="w-full bg-black/10 text-black py-1.5 md:py-2 rounded-full font-semibold text-[10px] md:text-xs text-center px-2">
-                      {t('sessions.bookingUnavailable')}
-                    </div>
-                  ) : (
-                    <div className="flex w-full bg-bg text-fg rounded-full shadow-lg overflow-hidden divide-x divide-fg/15">
-                      <button
-                        type="button"
-                        onClick={handleCheckout}
-                        disabled={checkoutLoading}
-                        className="flex-1 py-1.5 md:py-2 px-2 font-bold text-xs md:text-sm hover:bg-surface-raised transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {checkoutLoading ? t('booking.processing') : t('booking.bookNow')}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setGiftOpen(true) }}
-                        disabled={checkoutLoading}
-                        className="py-1.5 md:py-2 px-3 md:px-4 font-bold text-xs md:text-sm hover:bg-surface-raised transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
-                        aria-label={t('booking.gift.cta')}
-                      >
-                        <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                        </svg>
-                        <span className="hidden sm:inline">{t('booking.gift.cta')}</span>
-                      </button>
-                    </div>
-                  )}
+                <div className="flex-shrink-0 pt-2 md:pt-3">
+                  <a
+                    href={`/${locale}/sessions/${session._id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="block w-full bg-bg text-fg py-1.5 md:py-2 rounded-full font-bold text-xs md:text-sm text-center shadow-lg hover:bg-surface-raised transition-colors"
+                  >
+                    {t('sessions.moreInfo')}
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-          <GiftModal
-            open={giftOpen}
-            onClose={() => setGiftOpen(false)}
-            sessionId={session._id}
-            numPlaces={numPlaces}
-            total={total}
-            locale={locale}
-          />
       </article>
     )
   }
