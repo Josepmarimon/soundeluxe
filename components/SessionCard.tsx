@@ -7,8 +7,10 @@ import { useRouter } from 'next/navigation'
 import type { SessionListItem, Locale } from '@/lib/sanity/types'
 import AlbumCarousel from '@/components/AlbumCarousel'
 import GiftModal from '@/components/GiftModal'
-import GuestCheckoutModal from '@/components/GuestCheckoutModal'
+import GuestCheckoutForm from '@/components/GuestCheckoutForm'
 import { formatSessionDateTime } from '@/lib/datetime'
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 interface SessionCardProps {
   session: SessionListItem
@@ -32,9 +34,12 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
   const [numPlaces, setNumPlaces] = useState(1)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [accountExists, setAccountExists] = useState(false)
   const [giftOpen, setGiftOpen] = useState(false)
-  const [guestOpen, setGuestOpen] = useState(false)
+  const [guestName, setGuestName] = useState('')
+  const [guestEmail, setGuestEmail] = useState('')
 
+  const isLoggedIn = status === 'authenticated'
   const maxPlaces = Math.min(4, availablePlaces ?? 4)
   const total = session.price * numPlaces
 
@@ -42,28 +47,58 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
     if (!isFlipped) {
       setNumPlaces(1)
       setCheckoutError(null)
+      setAccountExists(false)
       setGiftOpen(false)
-      setGuestOpen(false)
     }
   }, [isFlipped])
 
+  const goToLoginWithEmail = (e?: React.MouseEvent) => {
+    e?.stopPropagation()
+    const callback = `/${locale}/sessions/${session._id}`
+    const params = new URLSearchParams({ callbackUrl: callback })
+    if (guestEmail.trim()) params.set('email', guestEmail.trim().toLowerCase())
+    router.push(`/${locale}/login?${params.toString()}`)
+  }
+
   const handleCheckout = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    if (status !== 'authenticated') {
-      // Obre modal de guest checkout (lazy registration)
-      setGuestOpen(true)
-      return
-    }
-    setCheckoutLoading(true)
     setCheckoutError(null)
+    setAccountExists(false)
+
+    let trimmedEmail = ''
+    let trimmedName = ''
+    if (!isLoggedIn) {
+      trimmedEmail = guestEmail.trim().toLowerCase()
+      trimmedName = guestName.trim()
+      if (!trimmedEmail || !trimmedName) {
+        setCheckoutError(t('booking.guest.errors.missingFields'))
+        return
+      }
+      if (!EMAIL_RE.test(trimmedEmail)) {
+        setCheckoutError(t('booking.guest.errors.invalidEmail'))
+        return
+      }
+    }
+
+    setCheckoutLoading(true)
     try {
+      const payload: Record<string, unknown> = { sessionId: session._id, numPlaces, locale }
+      if (!isLoggedIn) {
+        payload.guestEmail = trimmedEmail
+        payload.guestName = trimmedName
+      }
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId: session._id, numPlaces, locale }),
+        body: JSON.stringify(payload),
       })
       const data = await res.json()
       if (!res.ok) {
+        if (res.status === 409 && data?.code === 'ACCOUNT_EXISTS') {
+          setAccountExists(true)
+          setCheckoutError(t('booking.errors.accountExists'))
+          return
+        }
         if (res.status === 409) {
           setCheckoutError(t('booking.errors.soldOut'))
           return
@@ -179,31 +214,62 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
                   </p>
                 </div>
 
-                <div className="flex-shrink-0 space-y-1 md:space-y-1.5 text-[10px] md:text-[11px] mb-3">
-                  <div className="flex items-start gap-1.5">
-                    <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span className="text-black hidden md:block">{formattedDateDesktop}</span>
-                    <span className="text-black md:hidden">{formattedDateMobile}</span>
+                {isLoggedIn || !isBookable ? (
+                  <div className="flex-shrink-0 space-y-1 md:space-y-1.5 text-[10px] md:text-[11px] mb-3">
+                    <div className="flex items-start gap-1.5">
+                      <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <span className="text-black hidden md:block">{formattedDateDesktop}</span>
+                      <span className="text-black md:hidden">{formattedDateMobile}</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <span className={`line-clamp-1 ${session.sala ? 'text-black' : 'text-black/60 italic'}`}>{venueLabel}</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                      </svg>
+                      <span className="text-black line-clamp-1">{session.sessionType.name[locale]}</span>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-1.5">
-                    <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <span className={`line-clamp-1 ${session.sala ? 'text-black' : 'text-black/60 italic'}`}>{venueLabel}</span>
+                ) : (
+                  <div className="flex-shrink-0 mb-3 space-y-2">
+                    <div className="flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5 text-black flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      <p className="text-[11px] md:text-xs font-bold text-black">
+                        {t('booking.guest.subtitle')}
+                      </p>
+                    </div>
+                    <GuestCheckoutForm
+                      name={guestName}
+                      email={guestEmail}
+                      onNameChange={setGuestName}
+                      onEmailChange={setGuestEmail}
+                      disabled={checkoutLoading}
+                      variant="oncolor"
+                    />
+                    <p className="text-[10px] text-black/70">
+                      {t('booking.guest.loginHint')}{' '}
+                      <button
+                        type="button"
+                        onClick={goToLoginWithEmail}
+                        className="text-black underline font-semibold hover:text-black/80"
+                      >
+                        {t('booking.guest.loginInstead')}
+                      </button>
+                    </p>
                   </div>
-                  <div className="flex items-start gap-1.5">
-                    <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                    </svg>
-                    <span className="text-black line-clamp-1">{session.sessionType.name[locale]}</span>
-                  </div>
-                </div>
+                )}
 
-                {/* Spacer pushes checkout block to the bottom */}
-                <div className="flex-1" />
+                {/* Spacer pushes checkout block to the bottom (only when metadata shown) */}
+                {(isLoggedIn || !isBookable) && <div className="flex-1" />}
 
                 <div className="flex-shrink-0 border-t border-black/20 pt-2 md:pt-3 space-y-2 md:space-y-2.5">
                   <div className="flex items-center justify-between gap-2">
@@ -234,7 +300,18 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
                   </div>
 
                   {checkoutError && (
-                    <p className="text-red-700 text-[10px] md:text-[11px]">{checkoutError}</p>
+                    <div className="space-y-0.5">
+                      <p className="text-red-700 text-[10px] md:text-[11px]">{checkoutError}</p>
+                      {accountExists && (
+                        <button
+                          type="button"
+                          onClick={goToLoginWithEmail}
+                          className="text-black underline text-[10px] md:text-[11px] font-semibold hover:text-black/80"
+                        >
+                          {t('booking.guest.loginInstead')}
+                        </button>
+                      )}
+                    </div>
                   )}
 
                   {isSoldOut ? (
@@ -276,14 +353,6 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
           <GiftModal
             open={giftOpen}
             onClose={() => setGiftOpen(false)}
-            sessionId={session._id}
-            numPlaces={numPlaces}
-            total={total}
-            locale={locale}
-          />
-          <GuestCheckoutModal
-            open={guestOpen}
-            onClose={() => setGuestOpen(false)}
             sessionId={session._id}
             numPlaces={numPlaces}
             total={total}

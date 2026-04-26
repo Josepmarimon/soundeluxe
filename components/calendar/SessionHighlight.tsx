@@ -10,8 +10,10 @@ import { urlForImage } from '@/lib/sanity/image'
 import type { Locale, MultilingualText } from '@/lib/sanity/types'
 import type { Image as SanityImage } from 'sanity'
 import GiftModal from '@/components/GiftModal'
-import GuestCheckoutModal from '@/components/GuestCheckoutModal'
+import GuestCheckoutForm from '@/components/GuestCheckoutForm'
 import { formatSessionDateTime } from '@/lib/datetime'
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 interface CalendarSession {
   _id: string
@@ -64,8 +66,10 @@ export default function SessionHighlight({ sessions, availability, isNextSession
   const [numPlaces, setNumPlaces] = useState(1)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [accountExists, setAccountExists] = useState(false)
   const [giftOpen, setGiftOpen] = useState(false)
-  const [guestOpen, setGuestOpen] = useState(false)
+  const [guestName, setGuestName] = useState('')
+  const [guestEmail, setGuestEmail] = useState('')
 
   useEffect(() => {
     if (sessions.length === 0) {
@@ -77,15 +81,15 @@ export default function SessionHighlight({ sessions, availability, isNextSession
     }
     setNumPlaces(1)
     setCheckoutError(null)
+    setAccountExists(false)
     setGiftOpen(false)
-    setGuestOpen(false)
   }, [sessions, isNextSession])
 
   useEffect(() => {
     setNumPlaces(1)
     setCheckoutError(null)
+    setAccountExists(false)
     setGiftOpen(false)
-    setGuestOpen(false)
   }, [selectedSessionIndex])
 
   if (sessions.length === 0 || !selectedDate) {
@@ -141,21 +145,53 @@ export default function SessionHighlight({ sessions, availability, isNextSession
   const maxPlaces = Math.min(4, sessionAvailable)
   const total = session.price * numPlaces
 
+  const isLoggedIn = status === 'authenticated'
+
+  const goToLoginWithEmail = () => {
+    const callback = `/${locale}/sessions/${session._id}`
+    const params = new URLSearchParams({ callbackUrl: callback })
+    if (guestEmail.trim()) params.set('email', guestEmail.trim().toLowerCase())
+    router.push(`/${locale}/login?${params.toString()}`)
+  }
+
   const handleCheckout = async () => {
-    if (status !== 'authenticated') {
-      setGuestOpen(true)
-      return
-    }
-    setCheckoutLoading(true)
     setCheckoutError(null)
+    setAccountExists(false)
+
+    let trimmedEmail = ''
+    let trimmedName = ''
+    if (!isLoggedIn) {
+      trimmedEmail = guestEmail.trim().toLowerCase()
+      trimmedName = guestName.trim()
+      if (!trimmedEmail || !trimmedName) {
+        setCheckoutError(t('booking.guest.errors.missingFields'))
+        return
+      }
+      if (!EMAIL_RE.test(trimmedEmail)) {
+        setCheckoutError(t('booking.guest.errors.invalidEmail'))
+        return
+      }
+    }
+
+    setCheckoutLoading(true)
     try {
+      const payload: Record<string, unknown> = { sessionId: session._id, numPlaces, locale }
+      if (!isLoggedIn) {
+        payload.guestEmail = trimmedEmail
+        payload.guestName = trimmedName
+      }
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId: session._id, numPlaces, locale }),
+        body: JSON.stringify(payload),
       })
       const data = await res.json()
       if (!res.ok) {
+        if (res.status === 409 && data?.code === 'ACCOUNT_EXISTS') {
+          setAccountExists(true)
+          setCheckoutError(t('booking.errors.accountExists'))
+          return
+        }
         if (res.status === 409) {
           setCheckoutError(t('booking.errors.soldOut'))
           return
@@ -296,13 +332,23 @@ export default function SessionHighlight({ sessions, availability, isNextSession
 
                 {/* Time / Session selector */}
                 <div className={`flex items-start gap-2.5 text-fg ${sessions.length > 1 ? 'col-span-2' : 'col-span-2 sm:col-span-1'}`}>
-                  <div className="w-8 h-8 rounded-full bg-card-raised flex items-center justify-center flex-shrink-0">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    !hasSelection && sessions.length > 1 ? 'bg-primary/20 ring-2 ring-primary' : 'bg-card-raised'
+                  }`}>
                     <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs text-fg-subtle">
+                  <div className={`min-w-0 flex-1 transition-all ${
+                    !hasSelection && sessions.length > 1
+                      ? 'rounded-lg ring-2 ring-primary/60 bg-primary/5 p-3 -m-1'
+                      : ''
+                  }`}>
+                    <p className={`${
+                      !hasSelection && sessions.length > 1
+                        ? 'text-sm font-bold text-primary'
+                        : 'text-xs text-fg-subtle'
+                    }`}>
                       {sessions.length > 1 ? t('calendar.pickSession') : t('nextSession.time')}
                     </p>
                     {sessions.length > 1 ? (
@@ -323,6 +369,8 @@ export default function SessionHighlight({ sessions, availability, isNextSession
                               className={`session-pill flex flex-col items-start px-3 py-1 rounded-lg border transition-all ${
                                 isActive
                                   ? 'border-primary bg-primary/15'
+                                  : !hasSelection
+                                  ? 'border-primary/60 bg-card hover:bg-primary/10 hover:border-primary'
                                   : 'border-outline hover:bg-card-hover/50'
                               }`}
                             >
@@ -351,8 +399,39 @@ export default function SessionHighlight({ sessions, availability, isNextSession
               </div>
             </div>
 
-            {/* Bottom: place selector + total + buy/gift */}
+            {/* Bottom: guest fields (if not logged in) + place selector + total + buy/gift */}
             <div className="pt-4 border-t border-outline space-y-3">
+              {!isLoggedIn && isBookable && hasSelection && (
+                <div className="rounded-xl border border-primary/40 bg-primary/5 p-3 space-y-2.5">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <p className="text-xs font-semibold text-fg">
+                      {t('booking.guest.subtitle')}
+                    </p>
+                  </div>
+                  <GuestCheckoutForm
+                    name={guestName}
+                    email={guestEmail}
+                    onNameChange={setGuestName}
+                    onEmailChange={setGuestEmail}
+                    disabled={checkoutLoading}
+                    variant="compact"
+                  />
+                  <p className="text-[11px] text-fg-subtle">
+                    {t('booking.guest.loginHint')}{' '}
+                    <button
+                      type="button"
+                      onClick={goToLoginWithEmail}
+                      className="text-fg underline hover:text-primary"
+                    >
+                      {t('booking.guest.loginInstead')}
+                    </button>
+                  </p>
+                </div>
+              )}
+
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1">{t('booking.selectPlaces')}</p>
@@ -385,13 +464,18 @@ export default function SessionHighlight({ sessions, availability, isNextSession
               </div>
 
               {checkoutError && (
-                <p className="text-red-400 text-xs">{checkoutError}</p>
-              )}
-
-              {!hasSelection && (
-                <p className="text-xs text-fg-subtle text-center">
-                  {t('calendar.selectSessionFirst')}
-                </p>
+                <div className="space-y-1">
+                  <p className="text-red-400 text-xs">{checkoutError}</p>
+                  {accountExists && (
+                    <button
+                      type="button"
+                      onClick={goToLoginWithEmail}
+                      className="text-fg underline text-xs hover:text-primary"
+                    >
+                      {t('booking.guest.loginInstead')}
+                    </button>
+                  )}
+                </div>
               )}
 
               {isSoldOut ? (
@@ -401,6 +485,13 @@ export default function SessionHighlight({ sessions, availability, isNextSession
               ) : !isBookable ? (
                 <div className="w-full bg-card-raised text-fg-subtle px-6 py-3 rounded-full font-semibold text-xs text-center border border-outline">
                   {t('sessions.bookingUnavailable')}
+                </div>
+              ) : !hasSelection ? (
+                <div
+                  aria-disabled="true"
+                  className="w-full bg-card-muted text-fg-subtle px-6 py-3 rounded-full font-semibold text-sm text-center border border-outline cursor-not-allowed"
+                >
+                  ↑ {t('calendar.selectSessionFirst')}
                 </div>
               ) : (
                 <div className="flex w-full bg-primary text-on-primary rounded-full shadow-lg overflow-hidden divide-x divide-on-primary/30">
@@ -435,14 +526,6 @@ export default function SessionHighlight({ sessions, availability, isNextSession
             <GiftModal
               open={giftOpen}
               onClose={() => setGiftOpen(false)}
-              sessionId={session._id}
-              numPlaces={numPlaces}
-              total={total}
-              locale={locale}
-            />
-            <GuestCheckoutModal
-              open={guestOpen}
-              onClose={() => setGuestOpen(false)}
               sessionId={session._id}
               numPlaces={numPlaces}
               total={total}
