@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { urlForImage } from '@/lib/sanity/image'
 import { locales, type Locale } from '@/i18n'
 import BookingQRButton from '@/components/BookingQRButton'
+import { formatSessionDateTime, resolveSessionLocale } from '@/lib/datetime'
 
 interface Vote {
   id: string
@@ -339,10 +340,13 @@ export default function ProfilePage() {
                             <span className="text-fg-subtle">{t('sessions.date')}</span>
                             <p className="text-fg font-medium">
                               {booking.session?.date
-                                ? new Date(booking.session.date).toLocaleDateString(locale, {
+                                ? formatSessionDateTime(booking.session.date, resolveSessionLocale(locale), {
                                     day: 'numeric',
                                     month: 'short',
                                     year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: false,
                                   })
                                 : '—'}
                             </p>

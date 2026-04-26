@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { formatSessionDateTime, resolveSessionLocale } from '@/lib/datetime'
 
 interface BookingData {
   id: string
@@ -120,17 +121,15 @@ export default function BookingConfirmationPoller({
 
   // Booking confirmed
   const sessionDate = booking.session?.date
-    ? new Date(booking.session.date).toLocaleDateString(
-        locale === 'ca' ? 'ca-ES' : locale === 'es' ? 'es-ES' : 'en-GB',
-        {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        }
-      )
+    ? formatSessionDateTime(booking.session.date, resolveSessionLocale(locale), {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      })
     : ''
 
   const setPasswordCta =

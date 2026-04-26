@@ -31,8 +31,7 @@ export default defineType({
       title: 'Sala',
       type: 'reference',
       to: [{ type: 'sala' }],
-      validation: (Rule) => Rule.required(),
-      description: 'Sala on es farà la sessió',
+      description: 'Sala on es farà la sessió. Si encara no està definida, deixa-ho buit i al frontend apareixerà "Lloc pendent de confirmar".',
       group: 'config',
     }),
     defineField({
@@ -58,8 +57,7 @@ export default defineType({
       name: 'date',
       title: 'Data i hora',
       type: 'datetime',
-      validation: (Rule) => Rule.required(),
-      description: 'Data i hora de la sessió',
+      description: 'Data i hora de la sessió. Si encara no està definida, deixa-ho buit i al frontend apareixerà "Data pendent de confirmar".',
       options: {
         dateFormat: 'DD-MM-YYYY',
         timeFormat: 'HH:mm',
@@ -157,16 +155,18 @@ export default defineType({
     },
     prepare(selection) {
       const { albumTitle, albumArtist, albumCover, date, sala, price } = selection
-      const dateObj = new Date(date)
-      const formattedDate = dateObj.toLocaleDateString('ca-ES', {
-        day: 'numeric',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-      })
+      const formattedDate = date
+        ? new Date(date).toLocaleDateString('ca-ES', {
+            day: 'numeric',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit',
+          })
+        : 'Data pendent'
+      const venueLabel = sala || 'Lloc pendent'
       return {
         title: `${albumTitle} - ${albumArtist}`,
-        subtitle: `${formattedDate} · ${sala} · ${price}€`,
+        subtitle: `${formattedDate} · ${venueLabel} · ${price}€`,
         media: albumCover,
       }
     },

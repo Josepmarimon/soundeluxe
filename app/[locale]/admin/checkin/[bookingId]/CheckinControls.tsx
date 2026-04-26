@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { formatSessionDateTime, resolveSessionLocale } from '@/lib/datetime'
 
 interface PlaceState {
   id: string
@@ -28,6 +29,7 @@ export default function CheckinControls({
   places: initialPlaces,
 }: CheckinControlsProps) {
   const t = useTranslations('checkin')
+  const sessionLocale = resolveSessionLocale(useLocale())
   const [places, setPlaces] = useState(initialPlaces)
   const [groupAttendedAt, setGroupAttendedAt] = useState(initialAttendedAt)
   const [groupAttended, setGroupAttended] = useState(initialAttended)
@@ -100,7 +102,7 @@ export default function CheckinControls({
   }
 
   const time = (iso: string | null) =>
-    iso ? new Date(iso).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }) : ''
+    iso ? formatSessionDateTime(iso, sessionLocale, { hour: '2-digit', minute: '2-digit', hour12: false }) : ''
 
   return (
     <div className="space-y-4">

@@ -4,11 +4,11 @@ import { useState, useMemo, useEffect } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { DayPicker } from 'react-day-picker'
 import { ca, es, enUS } from 'date-fns/locale'
-import { format, parseISO } from 'date-fns'
 import { AnimatePresence, motion } from 'framer-motion'
 import type { Locale, MultilingualText } from '@/lib/sanity/types'
 import type { Image as SanityImage } from 'sanity'
 import SessionHighlight from './SessionHighlight'
+import { getSessionDayKey } from '@/lib/datetime'
 import './calendarStyles.css'
 
 const dateFnsLocales: Record<string, typeof ca> = {
@@ -19,7 +19,7 @@ const dateFnsLocales: Record<string, typeof ca> = {
 
 export interface CalendarSession {
   _id: string
-  date: string
+  date?: string
   price: number
   totalPlaces: number
   durationMinutes?: number
@@ -63,34 +63,47 @@ export default function SessionsCalendar({ sessions, availability, title }: Sess
 
   const dateFnsLocale = dateFnsLocales[locale] || enUS
 
-  // Create a map of dates that have sessions
-  const sessionDates = useMemo(() => {
-    const dateMap = new Map<string, CalendarSession[]>()
+  // Calendar can only display sessions with a confirmed date.
+  type DatedSession = CalendarSession & { date: string }
+  const datedSessions = useMemo(
+    () => sessions.filter((s): s is DatedSession => Boolean(s.date)),
+    [sessions]
+  )
 
-    sessions.forEach((session) => {
-      const dateKey = format(parseISO(session.date), 'yyyy-MM-dd')
+  // Group sessions by Madrid calendar day (string key) so a session at
+  // 23:30 UTC near midnight always lands on the right Spanish day.
+  const sessionDates = useMemo(() => {
+    const dateMap = new Map<string, DatedSession[]>()
+
+    datedSessions.forEach((session) => {
+      const dateKey = getSessionDayKey(session.date)
       const existing = dateMap.get(dateKey) || []
       dateMap.set(dateKey, [...existing, session])
     })
 
     return dateMap
-  }, [sessions])
+  }, [datedSessions])
 
-  // Get the first future session date
+  // Get the first future session date.
+  // Uses absolute time comparison (TZ-agnostic via getTime).
   const firstFutureSessionDate = useMemo(() => {
-    if (sessions.length === 0) return undefined
+    if (datedSessions.length === 0) return undefined
 
-    const now = new Date()
-    const futureSessions = sessions
-      .filter((s) => parseISO(s.date) >= now)
-      .sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime())
+    const nowMs = Date.now()
+    const futureSessions = datedSessions
+      .map((s) => ({ s, ms: new Date(s.date).getTime() }))
+      .filter(({ ms }) => ms >= nowMs)
+      .sort((a, b) => a.ms - b.ms)
 
-    if (futureSessions.length > 0) {
-      return parseISO(futureSessions[0].date)
-    }
+    if (futureSessions.length === 0) return undefined
 
-    return undefined
-  }, [sessions])
+    // Return the Date that DayPicker should highlight: the Madrid day of the
+    // first upcoming session, anchored at local midnight so the calendar grid
+    // (which renders in browser TZ) selects the visually correct cell.
+    const dayKey = getSessionDayKey(futureSessions[0].s.date)
+    const [y, m, d] = dayKey.split('-').map(Number)
+    return new Date(y, m - 1, d)
+  }, [datedSessions])
 
   // Initialize selected date with the first future session date
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(firstFutureSessionDate)
@@ -102,17 +115,18 @@ export default function SessionsCalendar({ sessions, availability, title }: Sess
     }
   }, [firstFutureSessionDate, selectedDate])
 
-  // Get sessions for a specific date
-  const getSessionsForDate = (date: Date) => {
-    const dateKey = format(date, 'yyyy-MM-dd')
-    return sessionDates.get(dateKey) || []
+  // DayPicker passes a Date anchored at local midnight for each cell.
+  // We bucket sessions by Madrid calendar day, so we look them up by the
+  // YYYY-MM-DD that the user actually sees on the calendar UI.
+  const localDayKey = (date: Date) => {
+    const y = date.getFullYear()
+    const m = String(date.getMonth() + 1).padStart(2, '0')
+    const d = String(date.getDate()).padStart(2, '0')
+    return `${y}-${m}-${d}`
   }
 
-  // Check if a date has sessions
-  const hasSessionsOnDate = (date: Date) => {
-    const dateKey = format(date, 'yyyy-MM-dd')
-    return sessionDates.has(dateKey)
-  }
+  const getSessionsForDate = (date: Date) => sessionDates.get(localDayKey(date)) || []
+  const hasSessionsOnDate = (date: Date) => sessionDates.has(localDayKey(date))
 
   // Handle day click - update selected date instead of opening modal
   const handleDayClick = (date: Date) => {
@@ -134,11 +148,14 @@ export default function SessionsCalendar({ sessions, availability, title }: Sess
   const defaultMonth = useMemo(() => {
     if (selectedDate) return selectedDate
     if (firstFutureSessionDate) return firstFutureSessionDate
-    if (sessions.length === 0) return new Date()
+    if (datedSessions.length === 0) return new Date()
 
-    const dates = sessions.map((s) => parseISO(s.date))
-    return new Date(Math.min(...dates.map((d) => d.getTime())))
-  }, [sessions, selectedDate, firstFutureSessionDate])
+    const earliestKey = datedSessions
+      .map((s) => getSessionDayKey(s.date))
+      .sort()[0]
+    const [y, m, d] = earliestKey.split('-').map(Number)
+    return new Date(y, m - 1, d)
+  }, [datedSessions, selectedDate, firstFutureSessionDate])
 
   // Get sessions for the currently selected date
   const selectedSessions = useMemo(() => {
@@ -150,10 +167,10 @@ export default function SessionsCalendar({ sessions, availability, title }: Sess
   // Check if selected date is the "next" session (first future session)
   const isNextSession = useMemo(() => {
     if (!selectedDate || !firstFutureSessionDate) return false
-    return format(selectedDate, 'yyyy-MM-dd') === format(firstFutureSessionDate, 'yyyy-MM-dd')
+    return localDayKey(selectedDate) === localDayKey(firstFutureSessionDate)
   }, [selectedDate, firstFutureSessionDate])
 
-  if (sessions.length === 0) {
+  if (datedSessions.length === 0) {
     return null
   }
 
@@ -197,7 +214,7 @@ export default function SessionsCalendar({ sessions, availability, title }: Sess
         <div className="w-full lg:w-2/3 relative overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
-              key={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : 'empty'}
+              key={selectedDate ? localDayKey(selectedDate) : 'empty'}
               initial={{ y: 100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ x: '100%', opacity: 0 }}

@@ -48,6 +48,8 @@ export async function GET(request: Request) {
     album: sessionData?.album.title || null,
     artist: sessionData?.album.artist || null,
     sessionDate: sessionData?.date || null,
-    venue: sessionData?.sala.name[locale as keyof typeof sessionData.sala.name] || sessionData?.sala.name.ca || null,
+    venue: sessionData?.sala
+      ? (sessionData.sala.name[locale as keyof typeof sessionData.sala.name] || sessionData.sala.name.ca)
+      : null,
   })
 }

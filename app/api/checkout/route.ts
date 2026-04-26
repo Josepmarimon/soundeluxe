@@ -8,6 +8,7 @@ import { getAvailablePlaces } from '@/lib/booking'
 import { prisma } from '@/lib/prisma'
 import type { Session } from '@/lib/sanity/types'
 import { APP_URL } from '@/lib/resend'
+import { formatSessionDateTime, resolveSessionLocale } from '@/lib/datetime'
 
 const MAX_PLACES_PER_BOOKING = 4
 const PASSWORD_SETUP_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000 // 7 dies
@@ -163,6 +164,14 @@ export async function POST(request: Request) {
       )
     }
 
+    // Block booking when date or venue is not yet confirmed
+    if (!session.date || !session.sala) {
+      return NextResponse.json(
+        { error: 'Session details not yet confirmed', code: 'SESSION_INCOMPLETE' },
+        { status: 400 }
+      )
+    }
+
     // Check session is in the future
     if (new Date(session.date) < new Date()) {
       return NextResponse.json(
@@ -183,15 +192,15 @@ export async function POST(request: Request) {
 
     const totalAmount = session.price * numPlaces
 
-    // Format date for display
-    const sessionDate = new Date(session.date)
-    const dateStr = sessionDate.toLocaleDateString(locale === 'ca' ? 'ca-ES' : locale === 'es' ? 'es-ES' : 'en-GB', {
+    // Format date for display (always in Madrid TZ)
+    const dateStr = formatSessionDateTime(session.date, resolveSessionLocale(locale), {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
+      hour12: false,
     })
 
     const vatLabel = locale === 'ca' ? 'IVA inclòs' : locale === 'es' ? 'IVA incluido' : 'VAT included'

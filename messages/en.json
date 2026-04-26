@@ -49,7 +49,12 @@
     "duration": "Duration",
     "vinyl": "Vinyl",
     "discPrice": "Disc price",
-    "buyDisc": "Buy Now"
+    "buyDisc": "Buy Now",
+    "dateTbd": "Date to be confirmed",
+    "dateTbdShort": "Date TBC",
+    "venueTbd": "Venue to be confirmed",
+    "venueTbdShort": "Venue TBC",
+    "bookingUnavailable": "Booking available once details are confirmed"
   },
   "experience": {
     "title": "An unmatched sonic experience",
@@ -440,7 +445,8 @@
     "notCheckedIn": "Pending",
     "totalBookings": "bookings",
     "places": "spots",
-    "noBookings": "No bookings for this session"
+    "noBookings": "No bookings for this session",
+    "dateTbd": "Date TBC"
   },
   "scanner": {
     "title": "Entry Scanner",

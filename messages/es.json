@@ -49,7 +49,12 @@
     "duration": "Duración",
     "vinyl": "Vinilo",
     "discPrice": "Precio del disco",
-    "buyDisc": "Quiero Comprar"
+    "buyDisc": "Quiero Comprar",
+    "dateTbd": "Fecha pendiente de confirmar",
+    "dateTbdShort": "Fecha por confirmar",
+    "venueTbd": "Lugar pendiente de confirmar",
+    "venueTbdShort": "Lugar por confirmar",
+    "bookingUnavailable": "Reserva disponible cuando se confirmen los detalles"
   },
   "experience": {
     "title": "Una experiencia sonora inigualable",
@@ -440,7 +445,8 @@
     "notCheckedIn": "Pendientes",
     "totalBookings": "reservas",
     "places": "plazas",
-    "noBookings": "No hay reservas para esta sesión"
+    "noBookings": "No hay reservas para esta sesión",
+    "dateTbd": "Fecha por confirmar"
   },
   "scanner": {
     "title": "Escáner de entrada",

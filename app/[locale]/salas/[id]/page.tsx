@@ -8,10 +8,11 @@ import type { Sala, Locale, MultilingualText } from '@/lib/sanity/types'
 import { urlForImage } from '@/lib/sanity/image'
 import type { Image as SanityImage } from 'sanity'
 import SessionsCalendar from '@/components/calendar/SessionsCalendar'
+import { formatSessionDateTime } from '@/lib/datetime'
 
 interface SalaSession {
   _id: string
-  date: string
+  date?: string
   price: number
   totalPlaces: number
   album: {
@@ -49,18 +50,22 @@ export default async function SalaPage({ params }: SalaPageProps) {
   }
 
   const now = new Date()
-  const futureSessions = sessions.filter((s) => new Date(s.date) > now).reverse()
-  const pastSessions = sessions.filter((s) => new Date(s.date) <= now)
+  // Sessions without a confirmed date are treated as upcoming announcements.
+  const futureSessions = sessions
+    .filter((s) => !s.date || new Date(s.date) > now)
+    .reverse()
+  const pastSessions = sessions.filter((s) => s.date && new Date(s.date) <= now)
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString(locale, {
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return t('sessions.dateTbd')
+    return formatSessionDateTime(dateString, locale, {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
+      hour12: false,
     })
   }
 
@@ -257,7 +262,7 @@ function SessionCard({
 }: {
   session: SalaSession
   locale: Locale
-  formatDate: (date: string) => string
+  formatDate: (date?: string) => string
   isPast: boolean
 }) {
   const coverUrl = session.album.coverImage

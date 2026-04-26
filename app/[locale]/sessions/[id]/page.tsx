@@ -9,6 +9,7 @@ import PortableTextContent from '@/components/PortableTextContent'
 import AlbumCarousel from '@/components/AlbumCarousel'
 import BookingWidget from '@/components/BookingWidget'
 import { getAvailablePlaces } from '@/lib/booking'
+import { formatSessionDateTime } from '@/lib/datetime'
 
 interface SessionPageProps {
   params: Promise<{
@@ -29,13 +30,20 @@ export default async function SessionPage({ params }: SessionPageProps) {
 
   const availablePlaces = await getAvailablePlaces(session._id, session.totalPlaces)
 
-  const date = new Date(session.date)
+  const hasDate = Boolean(session.date)
+  const hasVenue = Boolean(session.sala)
+  const isBookable = hasDate && hasVenue
 
-  const weekday = date.toLocaleDateString(locale, { weekday: 'long' })
-  const day = date.toLocaleDateString(locale, { day: '2-digit' })
-  const month = date.toLocaleDateString(locale, { month: 'short' }).replace('.', '')
-  const year = date.toLocaleDateString(locale, { year: 'numeric' })
-  const time = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
+  const dateIso = hasDate ? (session.date as string) : null
+  const weekday = dateIso ? formatSessionDateTime(dateIso, locale, { weekday: 'long' }) : ''
+  const day = dateIso ? formatSessionDateTime(dateIso, locale, { day: '2-digit' }) : ''
+  const month = dateIso
+    ? formatSessionDateTime(dateIso, locale, { month: 'short' }).replace('.', '')
+    : ''
+  const year = dateIso ? formatSessionDateTime(dateIso, locale, { year: 'numeric' }) : ''
+  const time = dateIso
+    ? formatSessionDateTime(dateIso, locale, { hour: '2-digit', minute: '2-digit', hour12: false })
+    : ''
 
   return (
     <div className="min-h-screen bg-transparent">
@@ -182,18 +190,31 @@ export default async function SessionPage({ params }: SessionPageProps) {
             <div className="bg-card rounded-2xl overflow-hidden border border-outline shadow-2xl">
               {/* Date */}
               <div className="p-4 border-b border-outline">
-                <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-1.5">
-                  <span className="capitalize">{weekday}</span> · {day} {month} {year}
-                </p>
-                <p className="text-3xl font-black text-fg leading-none">
-                  {time}
-                  <span className="text-base text-fg-subtle font-bold ml-1">h</span>
-                  {session.durationMinutes && (
-                    <span className="text-sm text-fg-subtle font-medium ml-2">
-                      · {session.durationMinutes} min
-                    </span>
-                  )}
-                </p>
+                {hasDate ? (
+                  <>
+                    <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-1.5">
+                      <span className="capitalize">{weekday}</span> · {day} {month} {year}
+                    </p>
+                    <p className="text-3xl font-black text-fg leading-none">
+                      {time}
+                      <span className="text-base text-fg-subtle font-bold ml-1">h</span>
+                      {session.durationMinutes && (
+                        <span className="text-sm text-fg-subtle font-medium ml-2">
+                          · {session.durationMinutes} min
+                        </span>
+                      )}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold mb-1.5">
+                      {t('sessions.date')}
+                    </p>
+                    <p className="text-base font-bold text-fg-subtle italic">
+                      {t('sessions.dateTbd')}
+                    </p>
+                  </>
+                )}
               </div>
 
               {/* Venue */}
@@ -202,30 +223,42 @@ export default async function SessionPage({ params }: SessionPageProps) {
                   <p className="text-[10px] uppercase tracking-wider text-fg-subtle font-bold">
                     {t('sessions.venue')}
                   </p>
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${session.sala.address.street}, ${session.sala.address.city}`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-card-raised hover:bg-card-hover text-fg rounded-full text-[10px] font-semibold transition-colors"
-                  >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                    </svg>
-                    {t('venue.viewOnMap')}
-                  </a>
+                  {hasVenue && session.sala?.address && (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${session.sala.address.street}, ${session.sala.address.city}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-card-raised hover:bg-card-hover text-fg rounded-full text-[10px] font-semibold transition-colors"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                      </svg>
+                      {t('venue.viewOnMap')}
+                    </a>
+                  )}
                 </div>
-                <p className="text-base font-bold text-fg truncate">
-                  {session.sala.name[locale]}
-                </p>
-                <p className="text-xs text-fg-subtle mt-0.5 truncate">
-                  {session.sala.address.street}, {session.sala.address.city}
-                </p>
-                {session.sala.capacity && (
-                  <p className="inline-flex items-center gap-1 mt-2 text-[11px] text-fg-subtle">
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    {t('venue.capacity')} {session.sala.capacity}
+                {hasVenue && session.sala ? (
+                  <>
+                    <p className="text-base font-bold text-fg truncate">
+                      {session.sala.name[locale]}
+                    </p>
+                    {session.sala.address && (
+                      <p className="text-xs text-fg-subtle mt-0.5 truncate">
+                        {session.sala.address.street}, {session.sala.address.city}
+                      </p>
+                    )}
+                    {session.sala.capacity && (
+                      <p className="inline-flex items-center gap-1 mt-2 text-[11px] text-fg-subtle">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        {t('venue.capacity')} {session.sala.capacity}
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-base font-bold text-fg-subtle italic">
+                    {t('sessions.venueTbd')}
                   </p>
                 )}
               </div>
@@ -240,13 +273,19 @@ export default async function SessionPage({ params }: SessionPageProps) {
                   <span className="text-xl text-fg-subtle font-bold ml-0.5">€</span>
                 </p>
 
-                <BookingWidget
-                  sessionId={session._id}
-                  price={session.price}
-                  totalPlaces={session.totalPlaces}
-                  availablePlaces={availablePlaces}
-                  locale={locale}
-                />
+                {isBookable ? (
+                  <BookingWidget
+                    sessionId={session._id}
+                    price={session.price}
+                    totalPlaces={session.totalPlaces}
+                    availablePlaces={availablePlaces}
+                    locale={locale}
+                  />
+                ) : (
+                  <div className="w-full text-center bg-card-raised text-fg-subtle text-xs font-semibold rounded-full py-3 px-4 border border-outline">
+                    {t('sessions.bookingUnavailable')}
+                  </div>
+                )}
 
                 <div className="flex items-center justify-center gap-3 mt-3 text-[10px] text-fg-subtle">
                   <span className="inline-flex items-center gap-1">
@@ -289,7 +328,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
         </div>
 
         {/* Venue section: photos + details */}
-        {((session.sala.photos && session.sala.photos.length > 0) ||
+        {session.sala && ((session.sala.photos && session.sala.photos.length > 0) ||
           (session.sala.accessibility && session.sala.accessibility[locale]) ||
           (session.sala.schedule && session.sala.schedule[locale])) && (
           <section className="mt-10">
@@ -305,7 +344,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
                     <div key={index} className="aspect-[4/3] rounded-lg overflow-hidden ring-1 ring-outline/50">
                       <Image
                         src={photoUrl}
-                        alt={`${session.sala.name[locale]} ${index + 1}`}
+                        alt={`${session.sala!.name[locale]} ${index + 1}`}
                         width={600}
                         height={450}
                         className="object-cover w-full h-full hover:scale-105 transition-transform duration-500"

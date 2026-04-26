@@ -7,6 +7,7 @@ import { generatePlaceQRDataURL } from '@/lib/qr'
 import { getCompanyData, formatInvoiceNumber, calculateTaxBreakdown } from '@/lib/company'
 import type { Session, Locale } from '@/lib/sanity/types'
 import TicketView from './TicketView'
+import { formatSessionDateTime, SESSION_LOCALE_MAP } from '@/lib/datetime'
 
 interface TicketPageProps {
   params: Promise<{ locale: Locale; bookingId: string }>
@@ -67,15 +68,25 @@ export default async function TicketPage({ params }: TicketPageProps) {
     })
   )
 
-  const dateLocaleMap = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' } as const
-  const sessionDate = new Date(sessionData.date).toLocaleDateString(dateLocaleMap[locale], {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  const tbdDateLabel = { ca: 'Data pendent de confirmar', es: 'Fecha pendiente de confirmar', en: 'Date to be confirmed' } as const
+  const tbdVenueLabel = { ca: 'Lloc pendent de confirmar', es: 'Lugar pendiente de confirmar', en: 'Venue to be confirmed' } as const
+  const sessionDate = sessionData.date
+    ? formatSessionDateTime(sessionData.date, locale, {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      })
+    : tbdDateLabel[locale]
+  const venueName = sessionData.sala
+    ? (sessionData.sala.name[locale] || sessionData.sala.name.ca)
+    : tbdVenueLabel[locale]
+  const venueAddress = sessionData.sala?.address
+    ? `${sessionData.sala.address.street}, ${sessionData.sala.address.city}`
+    : ''
 
   const totalAmount = Number(reserva.totalAmount)
   const company = await getCompanyData()
@@ -84,7 +95,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
     ? await formatInvoiceNumber(reserva.invoiceNumber, reserva.createdAt)
     : reserva.id.slice(0, 12).toUpperCase()
 
-  const issueDate = reserva.createdAt.toLocaleDateString(dateLocaleMap[locale], {
+  const issueDate = reserva.createdAt.toLocaleDateString(SESSION_LOCALE_MAP[locale], {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -102,8 +113,8 @@ export default async function TicketPage({ params }: TicketPageProps) {
         albumTitle: sessionData.album.title,
         albumArtist: sessionData.album.artist,
         sessionDate,
-        venueName: sessionData.sala.name[locale] || sessionData.sala.name.ca,
-        venueAddress: `${sessionData.sala.address.street}, ${sessionData.sala.address.city}`,
+        venueName,
+        venueAddress,
         numPlaces: reserva.numPlaces,
         totalAmount: totalAmount.toFixed(2),
         baseAmount: taxBreakdown.baseAmount.toFixed(2),

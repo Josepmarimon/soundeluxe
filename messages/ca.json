@@ -49,7 +49,12 @@
     "duration": "Durada",
     "vinyl": "Vinil",
     "discPrice": "Preu del disc",
-    "buyDisc": "Vull Comprar"
+    "buyDisc": "Vull Comprar",
+    "dateTbd": "Data pendent de confirmar",
+    "dateTbdShort": "Data per confirmar",
+    "venueTbd": "Lloc pendent de confirmar",
+    "venueTbdShort": "Lloc per confirmar",
+    "bookingUnavailable": "Reserva disponible quan es confirmin els detalls"
   },
   "experience": {
     "title": "Una experiència sonora inigualable",
@@ -440,7 +445,8 @@
     "notCheckedIn": "Pendents",
     "totalBookings": "reserves",
     "places": "places",
-    "noBookings": "No hi ha reserves per a aquesta sessió"
+    "noBookings": "No hi ha reserves per a aquesta sessió",
+    "dateTbd": "Data per confirmar"
   },
   "scanner": {
     "title": "Escàner d'entrada",

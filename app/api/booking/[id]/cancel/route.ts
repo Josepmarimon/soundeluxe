@@ -8,6 +8,7 @@ import { resend, FROM_EMAIL, isResendConfigured } from '@/lib/resend'
 import { formatInvoiceNumber } from '@/lib/company'
 import BookingCancellation from '@/emails/BookingCancellation'
 import type { Session } from '@/lib/sanity/types'
+import { formatSessionDateTime } from '@/lib/datetime'
 
 const CANCELLATION_WINDOW_HOURS = 48
 
@@ -68,12 +69,15 @@ export async function POST(
       return NextResponse.json({ error: 'Session not found' }, { status: 404 })
     }
 
-    // Check 48h cancellation policy (staff can override)
-    const sessionDate = new Date(sessionData.date)
+    // Check 48h cancellation policy (staff can override).
+    // If the session has no confirmed date yet, cancellation is always allowed.
     const now = new Date()
-    const hoursUntilSession = (sessionDate.getTime() - now.getTime()) / (1000 * 60 * 60)
+    const sessionDate = sessionData.date ? new Date(sessionData.date) : null
+    const hoursUntilSession = sessionDate
+      ? (sessionDate.getTime() - now.getTime()) / (1000 * 60 * 60)
+      : Number.POSITIVE_INFINITY
 
-    if (sessionDate <= now) {
+    if (sessionDate && sessionDate <= now) {
       return NextResponse.json(
         { error: 'Cannot cancel a booking for a past session' },
         { status: 400 }
@@ -127,17 +131,20 @@ export async function POST(
     // Send cancellation email
     if (reserva.user.email && isResendConfigured) {
       const emailLocale = (locale?.toUpperCase() || reserva.user.language || 'CA') as 'CA' | 'ES' | 'EN'
-      const dateLocaleMap = { CA: 'ca-ES', ES: 'es-ES', EN: 'en-GB' } as const
-      const dateStr = sessionDate.toLocaleDateString(dateLocaleMap[emailLocale], {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      })
-
+      const tbdDateLabel = { CA: 'Data pendent de confirmar', ES: 'Fecha pendiente de confirmar', EN: 'Date to be confirmed' } as const
+      const tbdVenueLabel = { CA: 'Lloc pendent de confirmar', ES: 'Lugar pendiente de confirmar', EN: 'Venue to be confirmed' } as const
       const venueLocale = emailLocale.toLowerCase() as 'ca' | 'es' | 'en'
+      const dateStr = sessionDate
+        ? formatSessionDateTime(sessionDate, venueLocale, {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          })
+        : tbdDateLabel[emailLocale]
 
       try {
         await resend.emails.send({
@@ -152,7 +159,9 @@ export async function POST(
             albumTitle: sessionData.album.title,
             albumArtist: sessionData.album.artist,
             sessionDate: dateStr,
-            venueName: sessionData.sala.name[venueLocale] || sessionData.sala.name.ca,
+            venueName: sessionData.sala
+              ? (sessionData.sala.name[venueLocale] || sessionData.sala.name.ca)
+              : tbdVenueLabel[emailLocale],
             numPlaces: reserva.numPlaces,
             refundAmount: refundAmount.toFixed(2) + '€',
             bookingId: reserva.id,

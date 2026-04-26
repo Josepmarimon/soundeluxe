@@ -9,6 +9,7 @@ import BookingConfirmation from '@/emails/BookingConfirmation'
 import GiftReceived from '@/emails/GiftReceived'
 import type { Session } from '@/lib/sanity/types'
 import type Stripe from 'stripe'
+import { formatSessionDateTime } from '@/lib/datetime'
 
 export const dynamic = 'force-dynamic'
 
@@ -119,21 +120,27 @@ export async function POST(request: Request) {
       })
 
       if (user?.email && isResendConfigured) {
-        const sessionDate = new Date(sessionData.date)
         const emailLocale = (locale?.toUpperCase() || user.language || 'CA') as 'CA' | 'ES' | 'EN'
-        const dateLocaleMap = { CA: 'ca-ES', ES: 'es-ES', EN: 'en-GB' } as const
-        const dateStr = sessionDate.toLocaleDateString(dateLocaleMap[emailLocale], {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        })
-
+        const tbdDateLabel = { CA: 'Data pendent de confirmar', ES: 'Fecha pendiente de confirmar', EN: 'Date to be confirmed' } as const
+        const tbdVenueLabel = { CA: 'Lloc pendent de confirmar', ES: 'Lugar pendiente de confirmar', EN: 'Venue to be confirmed' } as const
         const venueLocale = emailLocale.toLowerCase() as 'ca' | 'es' | 'en'
-        const venueName = sessionData.sala.name[venueLocale] || sessionData.sala.name.ca
-        const venueAddress = `${sessionData.sala.address.street}, ${sessionData.sala.address.city}`
+        const dateStr = sessionData.date
+          ? formatSessionDateTime(sessionData.date, venueLocale, {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            })
+          : tbdDateLabel[emailLocale]
+        const venueName = sessionData.sala
+          ? (sessionData.sala.name[venueLocale] || sessionData.sala.name.ca)
+          : tbdVenueLabel[emailLocale]
+        const venueAddress = sessionData.sala?.address
+          ? `${sessionData.sala.address.street}, ${sessionData.sala.address.city}`
+          : ''
 
         // URLs públiques dels QRs per plaça (un QR per ReservaPlace).
         const qrPlaces = reserva.places.map((place) => ({

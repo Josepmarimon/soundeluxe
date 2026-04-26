@@ -72,21 +72,21 @@ export interface SessionType {
 // Session
 export interface Session {
   _id: string
-  date: string
+  date?: string
   price: number
   totalPlaces: number
   durationMinutes?: number
   vinylInfo?: MultilingualText
   specialNotes?: MultilingualText
   album: Album
-  sala: Sala
+  sala?: Sala
   sessionType: SessionType
 }
 
 // Simplified session for list views
 export interface SessionListItem {
   _id: string
-  date: string
+  date?: string
   price: number
   totalPlaces: number
   durationMinutes?: number
@@ -102,7 +102,7 @@ export interface SessionListItem {
     salePrice?: number
     inStock?: boolean
   }
-  sala: {
+  sala?: {
     _id: string
     name: MultilingualText
     address?: {

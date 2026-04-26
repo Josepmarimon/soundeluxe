@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { formatSessionDateTime, resolveSessionLocale } from '@/lib/datetime'
 
 interface Props {
   placeId: string
@@ -58,7 +59,7 @@ export default function PlaceCheckinControls({
 
   if (attended) {
     const time = attendedAt
-      ? new Date(attendedAt).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+      ? formatSessionDateTime(attendedAt, resolveSessionLocale(locale), { hour: '2-digit', minute: '2-digit', hour12: false })
       : ''
 
     return (

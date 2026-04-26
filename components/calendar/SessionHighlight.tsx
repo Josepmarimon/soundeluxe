@@ -11,6 +11,7 @@ import type { Locale, MultilingualText } from '@/lib/sanity/types'
 import type { Image as SanityImage } from 'sanity'
 import GiftModal from '@/components/GiftModal'
 import GuestCheckoutModal from '@/components/GuestCheckoutModal'
+import { formatSessionDateTime } from '@/lib/datetime'
 
 interface CalendarSession {
   _id: string
@@ -116,16 +117,17 @@ export default function SessionHighlight({ sessions, availability, isNextSession
     }
   }
 
-  // Format date with weekday
-  const formattedDate = sessionDate.toLocaleDateString(locale, {
+  // Format date with weekday — always in Madrid TZ.
+  const formattedDate = formatSessionDateTime(sessionDate, locale, {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
   })
 
-  const formattedTime = sessionDate.toLocaleTimeString(locale, {
+  const formattedTime = formatSessionDateTime(sessionDate, locale, {
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   })
 
   const imageUrl = session.album.coverImage
@@ -134,6 +136,8 @@ export default function SessionHighlight({ sessions, availability, isNextSession
 
   const sessionAvailable = availability?.[session._id] ?? session.totalPlaces
   const isSoldOut = sessionAvailable === 0
+  const hasVenue = Boolean(session.sala)
+  const isBookable = hasVenue && !isSoldOut
   const maxPlaces = Math.min(4, sessionAvailable)
   const total = session.price * numPlaces
 
@@ -304,9 +308,10 @@ export default function SessionHighlight({ sessions, availability, isNextSession
                     {sessions.length > 1 ? (
                       <div className="flex flex-wrap gap-1.5 mt-1.5">
                         {sessions.map((s, idx) => {
-                          const sTime = parseISO(s.date).toLocaleTimeString(locale, {
+                          const sTime = formatSessionDateTime(s.date, locale, {
                             hour: '2-digit',
                             minute: '2-digit',
+                            hour12: false,
                           })
                           const isActive = idx === selectedSessionIndex
                           return (
@@ -392,6 +397,10 @@ export default function SessionHighlight({ sessions, availability, isNextSession
               {isSoldOut ? (
                 <div className="w-full bg-card-muted text-fg-muted px-6 py-3 rounded-full font-bold text-sm shadow-lg text-center">
                   {t('booking.soldOut')}
+                </div>
+              ) : !isBookable ? (
+                <div className="w-full bg-card-raised text-fg-subtle px-6 py-3 rounded-full font-semibold text-xs text-center border border-outline">
+                  {t('sessions.bookingUnavailable')}
                 </div>
               ) : (
                 <div className="flex w-full bg-primary text-on-primary rounded-full shadow-lg overflow-hidden divide-x divide-on-primary/30">

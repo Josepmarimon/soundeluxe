@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import { formatSessionDateTime, resolveSessionLocale } from '@/lib/datetime'
 
 interface SessionOption {
   _id: string
@@ -65,7 +66,7 @@ export default function AttendanceDashboard({ sessions, locale }: AttendanceDash
     }
   }, [selectedSessionId, fetchAttendance])
 
-  const dateLocaleMap: Record<string, string> = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }
+  const sessionLocale = resolveSessionLocale(locale)
 
   return (
     <div>
@@ -79,12 +80,15 @@ export default function AttendanceDashboard({ sessions, locale }: AttendanceDash
         >
           <option value="">{t('selectSession')}...</option>
           {sessions.map((s) => {
-            const date = new Date(s.date).toLocaleDateString(dateLocaleMap[locale], {
-              day: 'numeric',
-              month: 'short',
-              hour: '2-digit',
-              minute: '2-digit',
-            })
+            const date = s.date
+              ? formatSessionDateTime(s.date, sessionLocale, {
+                  day: 'numeric',
+                  month: 'short',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                })
+              : t('dateTbd')
             return (
               <option key={s._id} value={s._id}>
                 {s.album.title} — {s.album.artist} ({date})
@@ -155,7 +159,7 @@ export default function AttendanceDashboard({ sessions, locale }: AttendanceDash
                     </span>
                     {booking.attended ? (
                       <span className="text-emerald-400 text-xs">
-                        {booking.attendedAt && new Date(booking.attendedAt).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+                        {booking.attendedAt && formatSessionDateTime(booking.attendedAt, sessionLocale, { hour: '2-digit', minute: '2-digit', hour12: false })}
                       </span>
                     ) : (
                       <span className="text-fg-dim text-xs">—</span>

@@ -8,6 +8,7 @@ import type { SessionListItem, Locale } from '@/lib/sanity/types'
 import AlbumCarousel from '@/components/AlbumCarousel'
 import GiftModal from '@/components/GiftModal'
 import GuestCheckoutModal from '@/components/GuestCheckoutModal'
+import { formatSessionDateTime } from '@/lib/datetime'
 
 interface SessionCardProps {
   session: SessionListItem
@@ -24,6 +25,9 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
   const { status } = useSession()
   const router = useRouter()
   const isSoldOut = availablePlaces !== undefined && availablePlaces === 0
+  const hasDate = Boolean(session.date)
+  const hasVenue = Boolean(session.sala)
+  const isBookable = hasDate && hasVenue && !isSoldOut
 
   const [numPlaces, setNumPlaces] = useState(1)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
@@ -79,24 +83,32 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
     }
   }
 
-  const date = new Date(session.date)
+  const dateIso = hasDate ? (session.date as string) : null
 
   // Format with weekday for desktop
-  const formattedDateDesktop = date.toLocaleDateString(locale, {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  const formattedDateDesktop = dateIso
+    ? formatSessionDateTime(dateIso, locale, {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      })
+    : t('sessions.dateTbd')
 
   // Format without weekday for mobile
-  const formattedDateMobile = date.toLocaleDateString(locale, {
-    day: 'numeric',
-    month: 'long',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  const formattedDateMobile = dateIso
+    ? formatSessionDateTime(dateIso, locale, {
+        day: 'numeric',
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      })
+    : t('sessions.dateTbdShort')
+
+  const venueLabel = session.sala ? session.sala.name[locale] : t('sessions.venueTbdShort')
 
   if (enableFlip) {
     return (
@@ -180,7 +192,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span className="text-black line-clamp-1">{session.sala.name[locale]}</span>
+                    <span className={`line-clamp-1 ${session.sala ? 'text-black' : 'text-black/60 italic'}`}>{venueLabel}</span>
                   </div>
                   <div className="flex items-start gap-1.5">
                     <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -228,6 +240,10 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
                   {isSoldOut ? (
                     <div className="w-full bg-card-muted text-fg py-1.5 md:py-2 rounded-full font-semibold text-xs md:text-sm text-center">
                       {t('booking.soldOut')}
+                    </div>
+                  ) : !isBookable ? (
+                    <div className="w-full bg-black/10 text-black py-1.5 md:py-2 rounded-full font-semibold text-[10px] md:text-xs text-center px-2">
+                      {t('sessions.bookingUnavailable')}
                     </div>
                   ) : (
                     <div className="flex w-full bg-bg text-fg rounded-full shadow-lg overflow-hidden divide-x divide-fg/15">
@@ -314,7 +330,7 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
           <p className="text-zinc-800 line-clamp-2 md:hidden">{formattedDateMobile}</p>
           <p className="text-zinc-800 line-clamp-2 hidden md:block">{formattedDateDesktop}</p>
           {/* Venue - only show on desktop */}
-          <p className="hidden md:block text-zinc-700 line-clamp-1">{session.sala.name[locale]}</p>
+          <p className={`hidden md:block line-clamp-1 ${session.sala ? 'text-zinc-700' : 'text-zinc-500 italic'}`}>{venueLabel}</p>
         </div>
 
         {/* Session Price & Booking */}
@@ -322,8 +338,21 @@ export default function SessionCard({ session, availablePlaces, showAlbumSale = 
           <span className="text-lg md:text-xl font-bold text-black">
             {session.price}€
           </span>
-          <button className={`px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs transition-all shadow-md ${isSoldOut ? 'bg-card-muted text-fg cursor-not-allowed' : 'bg-primary text-on-primary hover:bg-primary-dark'}`}>
-            {isSoldOut ? t('booking.soldOut') : t('sessions.book')}
+          <button
+            disabled={!isBookable}
+            className={`px-2 md:px-4 py-1 md:py-1.5 rounded-full font-semibold text-[10px] md:text-xs transition-all shadow-md ${
+              isSoldOut
+                ? 'bg-card-muted text-fg cursor-not-allowed'
+                : !isBookable
+                ? 'bg-zinc-200 text-zinc-500 cursor-not-allowed'
+                : 'bg-primary text-on-primary hover:bg-primary-dark'
+            }`}
+          >
+            {isSoldOut
+              ? t('booking.soldOut')
+              : !isBookable
+              ? t('sessions.dateTbdShort')
+              : t('sessions.book')}
           </button>
         </div>
 

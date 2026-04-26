@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { formatSessionDateTime, resolveSessionLocale } from '@/lib/datetime'
 
 interface BookingResult {
   success: boolean
@@ -389,7 +390,7 @@ export default function ScannerClient({ locale }: { locale: string }) {
               </p>
               {booking.attendedAt && (
                 <p className="text-fg-subtle text-xs mt-1">
-                  {new Date(booking.attendedAt).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+                  {formatSessionDateTime(booking.attendedAt, resolveSessionLocale(locale), { hour: '2-digit', minute: '2-digit', hour12: false })}
                 </p>
               )}
               <button

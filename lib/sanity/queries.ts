@@ -44,9 +44,10 @@ export const sessionsQuery = groq`
   }
 `
 
-// Get upcoming sessions (future dates only)
+// Get upcoming sessions: future-dated + sessions without a date yet (TBD).
+// Sorting: dated sessions first by date asc, then dateless sessions at the end.
 export const upcomingSessionsQuery = groq`
-  *[_type == "session" && isActive == true && date > now()] | order(date asc) {
+  *[_type == "session" && isActive == true && (!defined(date) || date > now())] | order(coalesce(date, "9999-12-31") asc) {
     _id,
     date,
     price,

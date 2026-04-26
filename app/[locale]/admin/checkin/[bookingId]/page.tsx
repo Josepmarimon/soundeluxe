@@ -6,6 +6,7 @@ import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
 import type { Session, Locale } from '@/lib/sanity/types'
 import CheckinControls from './CheckinControls'
+import { formatSessionDateTime } from '@/lib/datetime'
 
 interface CheckinPageProps {
   params: Promise<{ locale: Locale; bookingId: string }>
@@ -74,14 +75,19 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
   const sessionData: Session | null = await client.fetch(sessionByIdQuery, { id: reserva.sessionId })
 
   const userName = reserva.user.name || reserva.user.email
-  const sessionDate = sessionData
-    ? new Date(sessionData.date).toLocaleDateString(locale === 'ca' ? 'ca-ES' : locale === 'es' ? 'es-ES' : 'en-GB', {
+  const tbdDateLabel = { ca: 'Data per confirmar', es: 'Fecha por confirmar', en: 'Date TBC' } as const
+  const tbdVenueLabel = { ca: 'Lloc per confirmar', es: 'Lugar por confirmar', en: 'Venue TBC' } as const
+  const sessionDate = sessionData?.date
+    ? formatSessionDateTime(sessionData.date, locale, {
         weekday: 'long',
         day: 'numeric',
         month: 'long',
         hour: '2-digit',
         minute: '2-digit',
+        hour12: false,
       })
+    : sessionData
+    ? tbdDateLabel[locale]
     : ''
 
   return (
@@ -121,7 +127,7 @@ export default async function CheckinPage({ params }: CheckinPageProps) {
               </div>
               <div className="flex justify-between">
                 <span className="text-fg-subtle">{t('checkin.venue')}</span>
-                <span className="text-fg">{sessionData.sala.name[locale] || sessionData.sala.name.ca}</span>
+                <span className="text-fg">{sessionData.sala ? (sessionData.sala.name[locale] || sessionData.sala.name.ca) : tbdVenueLabel[locale]}</span>
               </div>
               <div className="border-t border-outline pt-3 flex justify-between">
                 <span className="text-fg-muted font-semibold">{t('checkin.places')}</span>

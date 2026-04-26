@@ -6,6 +6,7 @@ import { client } from '@/lib/sanity/client'
 import { sessionByIdQuery } from '@/lib/sanity/queries'
 import type { Session, Locale } from '@/lib/sanity/types'
 import PlaceCheckinControls from './PlaceCheckinControls'
+import { formatSessionDateTime } from '@/lib/datetime'
 
 interface PageProps {
   params: Promise<{ locale: Locale; placeId: string }>
@@ -78,17 +79,19 @@ export default async function PlaceCheckinPage({ params }: PageProps) {
   })
 
   const userName = place.reserva.user.name || place.reserva.user.email
-  const sessionDate = sessionData
-    ? new Date(sessionData.date).toLocaleDateString(
-        locale === 'ca' ? 'ca-ES' : locale === 'es' ? 'es-ES' : 'en-GB',
-        {
-          weekday: 'long',
-          day: 'numeric',
-          month: 'long',
-          hour: '2-digit',
-          minute: '2-digit',
-        }
-      )
+  const tbdDateLabel = { ca: 'Data per confirmar', es: 'Fecha por confirmar', en: 'Date TBC' } as const
+  const tbdVenueLabel = { ca: 'Lloc per confirmar', es: 'Lugar por confirmar', en: 'Venue TBC' } as const
+  const sessionDate = sessionData?.date
+    ? formatSessionDateTime(sessionData.date, locale, {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      })
+    : sessionData
+    ? tbdDateLabel[locale]
     : ''
 
   const attendedCount = place.reserva.places.filter((p) => p.attended).length
@@ -132,7 +135,7 @@ export default async function PlaceCheckinPage({ params }: PageProps) {
               </div>
               <div className="flex justify-between">
                 <span className="text-fg-subtle">{t('checkin.venue')}</span>
-                <span className="text-fg">{sessionData.sala.name[locale] || sessionData.sala.name.ca}</span>
+                <span className="text-fg">{sessionData.sala ? (sessionData.sala.name[locale] || sessionData.sala.name.ca) : tbdVenueLabel[locale]}</span>
               </div>
             </div>
           )}
