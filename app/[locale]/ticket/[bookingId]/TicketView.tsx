@@ -172,7 +172,7 @@ export default function TicketView({ locale, ticket }: TicketViewProps) {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <img
-                  src="/logo-black.svg"
+                  src="/logo-black.png"
                   alt="Sound Deluxe"
                   className="h-10 w-auto mb-1"
                 />
