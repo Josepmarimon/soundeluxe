@@ -10,6 +10,7 @@ import { urlForImage } from '@/lib/sanity/image'
 import type { Locale, MultilingualText } from '@/lib/sanity/types'
 import type { Image as SanityImage } from 'sanity'
 import GiftModal from '@/components/GiftModal'
+import GuestCheckoutModal from '@/components/GuestCheckoutModal'
 
 interface CalendarSession {
   _id: string
@@ -63,6 +64,7 @@ export default function SessionHighlight({ sessions, availability, isNextSession
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [giftOpen, setGiftOpen] = useState(false)
+  const [guestOpen, setGuestOpen] = useState(false)
 
   useEffect(() => {
     if (sessions.length === 0) {
@@ -75,12 +77,14 @@ export default function SessionHighlight({ sessions, availability, isNextSession
     setNumPlaces(1)
     setCheckoutError(null)
     setGiftOpen(false)
+    setGuestOpen(false)
   }, [sessions, isNextSession])
 
   useEffect(() => {
     setNumPlaces(1)
     setCheckoutError(null)
     setGiftOpen(false)
+    setGuestOpen(false)
   }, [selectedSessionIndex])
 
   if (sessions.length === 0 || !selectedDate) {
@@ -135,7 +139,7 @@ export default function SessionHighlight({ sessions, availability, isNextSession
 
   const handleCheckout = async () => {
     if (status !== 'authenticated') {
-      router.push(`/${locale}/login?callbackUrl=/${locale}/sessions/${session._id}`)
+      setGuestOpen(true)
       return
     }
     setCheckoutLoading(true)
@@ -422,6 +426,14 @@ export default function SessionHighlight({ sessions, availability, isNextSession
             <GiftModal
               open={giftOpen}
               onClose={() => setGiftOpen(false)}
+              sessionId={session._id}
+              numPlaces={numPlaces}
+              total={total}
+              locale={locale}
+            />
+            <GuestCheckoutModal
+              open={guestOpen}
+              onClose={() => setGuestOpen(false)}
               sessionId={session._id}
               numPlaces={numPlaces}
               total={total}
