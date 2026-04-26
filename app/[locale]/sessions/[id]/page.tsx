@@ -146,32 +146,6 @@ export default async function SessionPage({ params }: SessionPageProps) {
               </div>
             )}
 
-            {session.album.salePrice && session.album.inStock && (
-              <div className="mt-4 max-w-[520px] flex items-center gap-3 p-3 rounded-xl bg-primary/8 border border-primary/30">
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="9" strokeWidth={2} />
-                    <circle cx="12" cy="12" r="3" strokeWidth={2} />
-                  </svg>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[11px] uppercase tracking-wider text-fg-subtle font-bold">
-                    {t('sessions.discPrice')}
-                  </p>
-                  <p className="text-base font-bold text-fg">
-                    {session.album.salePrice}€
-                    <span className="ml-2 text-[11px] text-primary font-semibold">· En stock</span>
-                  </p>
-                </div>
-                <a
-                  href={`/${locale}/albums?search=${encodeURIComponent(session.album.title)}`}
-                  className="flex-shrink-0 px-4 py-2 bg-primary text-on-primary rounded-full text-xs font-bold hover:bg-primary-hover transition-colors"
-                >
-                  {t('sessions.buyDisc')}
-                </a>
-              </div>
-            )}
-
             {session.album.description && (
               <div className="mt-5 max-w-prose text-sm text-fg/85 leading-relaxed">
                 <PortableTextContent value={session.album.description[locale]} />
