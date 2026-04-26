@@ -10,6 +10,7 @@ import HeroAlbumsCarousel from '@/components/HeroAlbumsCarousel'
 import NewsletterForm from '@/components/NewsletterForm'
 import SessionsCalendar from '@/components/calendar/SessionsCalendar'
 import Testimonials from '@/components/Testimonials'
+import { getSessionDayKey } from '@/lib/datetime'
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const t = await getTranslations()
@@ -33,6 +34,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const availability = sessions.length > 0
     ? await getBatchAvailability(sessions.map((s) => ({ _id: s._id, totalPlaces: s.totalPlaces })))
     : {}
+
+  // Sessions on the first future Madrid day are featured in the "Propera Sessió"
+  // calendar highlight, so exclude them from the "Totes les sessions" grid below.
+  const nowMs = Date.now()
+  const futureSessions = sessions
+    .filter((s) => s.date)
+    .map((s) => ({ s, ms: new Date(s.date as string).getTime() }))
+    .filter(({ ms }) => ms >= nowMs)
+    .sort((a, b) => a.ms - b.ms)
+  const nextDayKey = futureSessions[0]
+    ? getSessionDayKey(futureSessions[0].s.date as string)
+    : null
+  const sessionsForGrid = nextDayKey
+    ? sessions.filter((s) => !s.date || getSessionDayKey(s.date) !== nextDayKey)
+    : sessions
 
   // Filter features with images and map to safe type
   const featuresWithImages = (homePageData?.experienceFeatures || [])
@@ -71,14 +87,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <p className="text-center text-fg text-lg">
               {t('sessions.noSessions')}
             </p>
-          ) : (
+          ) : sessionsForGrid.length > 0 ? (
             <>
               <h3 className="text-3xl md:text-4xl font-bold text-fg mb-8 text-center">
                 {t('sessions.allSessions')}
               </h3>
-              <SessionFilters sessions={sessions} availability={availability} showAlbumSale={false} enableFlip={true} />
+              <SessionFilters sessions={sessionsForGrid} availability={availability} showAlbumSale={false} enableFlip={true} />
             </>
-          )}
+          ) : null}
         </div>
       </section>
 
