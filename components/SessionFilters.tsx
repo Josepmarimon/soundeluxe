@@ -49,12 +49,19 @@ export default function SessionFilters({ sessions, availability, showAlbumSale =
   const [artistSearch, setArtistSearch] = useState<string>('')
   const [genresOpen, setGenresOpen] = useState<boolean>(false)
 
+  // Sessions whose album reference doesn't resolve (e.g. unpublished album) are dropped:
+  // the rest of the UI assumes session.album is non-null.
+  const validSessions = useMemo(
+    () => sessions.filter((session) => session.album),
+    [sessions]
+  )
+
   // Extract unique genres and artists from sessions
   const { genres, artists } = useMemo(() => {
     const genreSet = new Set<string>()
     const artistSet = new Set<string>()
 
-    sessions.forEach((session) => {
+    validSessions.forEach((session) => {
       if (session.album.genre) genreSet.add(session.album.genre)
       if (session.album.artist) artistSet.add(session.album.artist)
     })
@@ -63,11 +70,11 @@ export default function SessionFilters({ sessions, availability, showAlbumSale =
       genres: Array.from(genreSet).sort(),
       artists: Array.from(artistSet).sort(),
     }
-  }, [sessions])
+  }, [validSessions])
 
   // Filter sessions based on selected filters
   const filteredSessions = useMemo(() => {
-    return sessions.filter((session) => {
+    return validSessions.filter((session) => {
       const matchesGenre = !selectedGenre || session.album.genre === selectedGenre
       const matchesArtist =
         !artistSearch ||
@@ -75,7 +82,7 @@ export default function SessionFilters({ sessions, availability, showAlbumSale =
 
       return matchesGenre && matchesArtist
     })
-  }, [sessions, selectedGenre, artistSearch])
+  }, [validSessions, selectedGenre, artistSearch])
 
   // Get genre display name
   const getGenreName = (genre: string) => {

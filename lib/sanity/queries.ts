@@ -46,8 +46,10 @@ export const sessionsQuery = groq`
 
 // Get upcoming sessions: future-dated + sessions without a date yet (TBD).
 // Sorting: dated sessions first by date asc, then dateless sessions at the end.
+// `defined(album->_id)` drops sessions whose album reference doesn't resolve
+// (e.g. references to unpublished/deleted album docs) so the UI never gets album: null.
 export const upcomingSessionsQuery = groq`
-  *[_type == "session" && isActive == true && (!defined(date) || date > now())] | order(coalesce(date, "9999-12-31") asc) {
+  *[_type == "session" && isActive == true && defined(album->_id) && (!defined(date) || date > now())] | order(coalesce(date, "9999-12-31") asc) {
     _id,
     date,
     price,
