@@ -451,6 +451,32 @@ export const footerContentQuery = groq`
       legal,
       contact
     },
-    copyrightText
+    copyrightText,
+    contactPage {
+      title,
+      subtitle,
+      hoursTitle,
+      hoursLines,
+      emailLabel,
+      phoneLabel,
+      addressLabel
+    }
+  }
+`
+
+// Get about page content
+export const aboutPageQuery = groq`
+  *[_type == "aboutPage"][0] {
+    _id,
+    title,
+    intro,
+    missionTitle,
+    missionText,
+    experienceTitle,
+    experienceText,
+    valuesTitle,
+    valuesList,
+    ctaTitle,
+    ctaText
   }
 `

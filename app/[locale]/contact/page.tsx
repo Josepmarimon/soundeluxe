@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server'
-import type { Locale } from '@/lib/sanity/types'
+import type { FooterContent, Locale } from '@/lib/sanity/types'
+import { client } from '@/lib/sanity/client'
+import { footerContentQuery } from '@/lib/sanity/queries'
 
 interface ContactPageProps {
   params: Promise<{
@@ -10,6 +12,7 @@ interface ContactPageProps {
 export default async function ContactPage({ params }: ContactPageProps) {
   const { locale } = await params
   const t = await getTranslations()
+  const footerData: FooterContent | null = await client.fetch(footerContentQuery)
 
   const content = {
     ca: {
@@ -99,16 +102,31 @@ export default async function ContactPage({ params }: ContactPageProps) {
   }
 
   const pageContent = content[locale]
+  const cp = footerData?.contactPage
+
+  const contactEmail = footerData?.contactInfo?.email || 'info@sounddeluxe.com'
+  const contactPhone = footerData?.contactInfo?.phone || '+34 123 456 789'
+  const contactAddress = footerData?.contactInfo?.address?.[locale] || null
+
+  const title = cp?.title?.[locale] || pageContent.title
+  const subtitle = cp?.subtitle?.[locale] || pageContent.subtitle
+  const emailLabel = cp?.emailLabel?.[locale] || pageContent.email
+  const phoneLabel = cp?.phoneLabel?.[locale] || pageContent.phone
+  const addressLabel = cp?.addressLabel?.[locale] || pageContent.address
+  const hoursTitle = cp?.hoursTitle?.[locale] || pageContent.hours.title
+  const hoursLines = cp?.hoursLines?.[locale]?.length
+    ? cp.hoursLines[locale]!
+    : [pageContent.hours.weekdays, pageContent.hours.weekend, pageContent.hours.sunday]
 
   return (
     <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto mb-12">
           <h1 className="text-4xl md:text-6xl font-bold text-fg mb-4">
-            {pageContent.title}
+            {title}
           </h1>
           <p className="text-xl text-fg">
-            {pageContent.subtitle}
+            {subtitle}
           </p>
         </div>
 
@@ -118,52 +136,48 @@ export default async function ContactPage({ params }: ContactPageProps) {
             {/* Email */}
             <div className="bg-surface-alt p-6 rounded-lg shadow-md">
               <h3 className="text-black font-semibold mb-2">
-                {pageContent.email}
+                {emailLabel}
               </h3>
               <a
-                href="mailto:info@sounddeluxe.com"
+                href={`mailto:${contactEmail}`}
                 className="text-zinc-700 hover:text-primary transition-colors"
               >
-                info@sounddeluxe.com
+                {contactEmail}
               </a>
             </div>
 
             {/* Phone */}
             <div className="bg-surface-alt p-6 rounded-lg shadow-md">
               <h3 className="text-black font-semibold mb-2">
-                {pageContent.phone}
+                {phoneLabel}
               </h3>
               <a
-                href="tel:+34123456789"
+                href={`tel:${contactPhone.replace(/\s/g, '')}`}
                 className="text-zinc-700 hover:text-primary transition-colors"
               >
-                +34 123 456 789
+                {contactPhone}
               </a>
             </div>
 
             {/* Address */}
             <div className="bg-surface-alt p-6 rounded-lg shadow-md">
               <h3 className="text-black font-semibold mb-2">
-                {pageContent.address}
+                {addressLabel}
               </h3>
-              <address className="text-zinc-700 not-italic">
-                {pageContent.addressLine1}
-                <br />
-                {pageContent.addressLine2}
-                <br />
-                {pageContent.addressLine3}
+              <address className="text-zinc-700 not-italic whitespace-pre-line">
+                {contactAddress ?? `${pageContent.addressLine1}\n${pageContent.addressLine2}\n${pageContent.addressLine3}`}
               </address>
             </div>
 
             {/* Hours */}
             <div className="bg-surface-alt p-6 rounded-lg shadow-md">
               <h3 className="text-black font-semibold mb-3">
-                {pageContent.hours.title}
+                {hoursTitle}
               </h3>
               <div className="space-y-1 text-zinc-700">
-                <p>{pageContent.hours.weekdays}</p>
-                <p>{pageContent.hours.weekend}</p>
-                <p>{pageContent.hours.sunday}</p>
+                {hoursLines.map((line, idx) => (
+                  <p key={idx}>{line}</p>
+                ))}
               </div>
             </div>
           </div>

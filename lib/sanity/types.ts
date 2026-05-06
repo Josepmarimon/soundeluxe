@@ -273,4 +273,36 @@ export interface FooterContent {
     contact?: MultilingualText
   }
   copyrightText?: MultilingualText
+  contactPage?: {
+    title?: MultilingualText
+    subtitle?: MultilingualText
+    hoursTitle?: MultilingualText
+    hoursLines?: {
+      ca?: string[]
+      es?: string[]
+      en?: string[]
+    }
+    emailLabel?: MultilingualText
+    phoneLabel?: MultilingualText
+    addressLabel?: MultilingualText
+  }
+}
+
+// About Page
+export interface AboutPage {
+  _id: string
+  title?: MultilingualText
+  intro?: MultilingualText
+  missionTitle?: MultilingualText
+  missionText?: MultilingualText
+  experienceTitle?: MultilingualText
+  experienceText?: MultilingualText
+  valuesTitle?: MultilingualText
+  valuesList?: {
+    ca?: string[]
+    es?: string[]
+    en?: string[]
+  }
+  ctaTitle?: MultilingualText
+  ctaText?: MultilingualText
 }

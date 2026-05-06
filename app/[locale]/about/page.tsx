@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server'
-import type { Locale } from '@/lib/sanity/types'
+import type { AboutPage, Locale } from '@/lib/sanity/types'
+import { client } from '@/lib/sanity/client'
+import { aboutPageQuery } from '@/lib/sanity/queries'
 
 interface AboutPageProps {
   params: Promise<{
@@ -10,8 +12,9 @@ interface AboutPageProps {
 export default async function AboutPage({ params }: AboutPageProps) {
   const { locale } = await params
   const t = await getTranslations()
+  const aboutData: AboutPage | null = await client.fetch(aboutPageQuery)
 
-  const content = {
+  const fallback = {
     ca: {
       title: 'Sobre nosaltres',
       intro: 'Sound Deluxe neix de la passió per la música i l\'experiència d\'escoltar-la com mai abans.',
@@ -26,6 +29,8 @@ export default async function AboutPage({ params }: AboutPageProps) {
         'Comunitat d\'audiòfils i melòmans',
         'Autenticitat en cada experiència',
       ],
+      ctaTitle: 'Vine a viure l\'experiència',
+      ctaText: 'Descobreix les nostres properes sessions i reserva la teva plaça.',
     },
     es: {
       title: 'Sobre nosotros',
@@ -41,6 +46,8 @@ export default async function AboutPage({ params }: AboutPageProps) {
         'Comunidad de audiófilos y melómanos',
         'Autenticidad en cada experiencia',
       ],
+      ctaTitle: 'Ven a vivir la experiencia',
+      ctaText: 'Descubre nuestras próximas sesiones y reserva tu plaza.',
     },
     en: {
       title: 'About us',
@@ -56,47 +63,61 @@ export default async function AboutPage({ params }: AboutPageProps) {
         'Community of audiophiles and music lovers',
         'Authenticity in every experience',
       ],
+      ctaTitle: 'Come live the experience',
+      ctaText: 'Discover our upcoming sessions and book your spot.',
     },
   }
 
-  const pageContent = content[locale]
+  const fb = fallback[locale]
+  const title = aboutData?.title?.[locale] || fb.title
+  const intro = aboutData?.intro?.[locale] || fb.intro
+  const missionTitle = aboutData?.missionTitle?.[locale] || fb.mission
+  const missionText = aboutData?.missionText?.[locale] || fb.missionText
+  const experienceTitle = aboutData?.experienceTitle?.[locale] || fb.experience
+  const experienceText = aboutData?.experienceText?.[locale] || fb.experienceText
+  const valuesTitle = aboutData?.valuesTitle?.[locale] || fb.values
+  const valuesList = aboutData?.valuesList?.[locale]?.length
+    ? aboutData.valuesList[locale]!
+    : fb.valuesList
+  const ctaTitle = aboutData?.ctaTitle?.[locale] || fb.ctaTitle
+  const ctaText = aboutData?.ctaText?.[locale] || fb.ctaText
 
   return (
     <div className="min-h-screen bg-transparent">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-4xl md:text-6xl font-bold text-fg mb-8">
-          {pageContent.title}
+          {title}
         </h1>
 
         <div className="space-y-12 text-fg">
           <p className="text-xl leading-relaxed">
-            {pageContent.intro}
+            {intro}
           </p>
 
           <section>
             <h2 className="text-3xl font-bold text-fg mb-4">
-              {pageContent.mission}
+              {missionTitle}
             </h2>
             <p className="text-lg leading-relaxed">
-              {pageContent.missionText}
+              {missionText}
             </p>
           </section>
 
           <section>
             <h2 className="text-3xl font-bold text-fg mb-4">
-              {pageContent.experience}
+              {experienceTitle}
             </h2>
             <p className="text-lg leading-relaxed">
-              {pageContent.experienceText}
+              {experienceText}
             </p>
           </section>
 
           <section>
             <h2 className="text-3xl font-bold text-fg mb-4">
-              {pageContent.values}
+              {valuesTitle}
             </h2>
             <ul className="space-y-3">
-              {pageContent.valuesList.map((value, index) => (
+              {valuesList.map((value, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <span className="text-fg">•</span>
                   <span className="text-lg">{value}</span>
@@ -107,18 +128,10 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
           <section className="bg-surface-alt p-8 rounded-lg mt-12 shadow-lg">
             <h2 className="text-2xl font-bold text-black mb-4">
-              {locale === 'ca'
-                ? 'Vine a viure l\'experiència'
-                : locale === 'es'
-                  ? 'Ven a vivir la experiencia'
-                  : 'Come live the experience'}
+              {ctaTitle}
             </h2>
             <p className="text-zinc-700 mb-6">
-              {locale === 'ca'
-                ? 'Descobreix les nostres properes sessions i reserva la teva plaça.'
-                : locale === 'es'
-                  ? 'Descubre nuestras próximas sesiones y reserva tu plaza.'
-                  : 'Discover our upcoming sessions and book your spot.'}
+              {ctaText}
             </p>
             <a
               href={`/${locale}/sessions`}

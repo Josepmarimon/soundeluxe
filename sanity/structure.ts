@@ -65,6 +65,15 @@ export const structure: StructureResolver = (S) =>
                     .title('Configuració general')
                 ),
               S.listItem()
+                .title('Pàgina Sobre nosaltres')
+                .icon(() => 'ℹ️')
+                .child(
+                  S.document()
+                    .schemaType('aboutPage')
+                    .documentId('aboutPage')
+                    .title('Pàgina Sobre nosaltres')
+                ),
+              S.listItem()
                 .title('Footer')
                 .icon(() => '📋')
                 .child(
