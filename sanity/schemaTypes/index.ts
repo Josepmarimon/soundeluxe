@@ -11,6 +11,7 @@ import sessionType from './sessionType'
 import session from './session'
 import homePage from './homePage'
 import aboutPage from './aboutPage'
+import contactPage from './contactPage'
 import testimonial from './testimonial'
 import galleryCategory from './galleryCategory'
 import galleryImage from './galleryImage'
@@ -34,6 +35,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     session,
     homePage,
     aboutPage,
+    contactPage,
     testimonial,
     galleryCategory,
     galleryImage,

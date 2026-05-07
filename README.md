@@ -24,7 +24,7 @@ Sound Deluxe ofereix experiències d'escolta d'àlbums complets amb la màxima q
 ## 📁 Estructura del Projecte
 
 ```
-sounddeluxe/
+soundeluxe/
 ├── app/                    # Next.js App Router
 │   ├── [locale]/          # Rutes multiidioma
 │   └── api/               # API Routes

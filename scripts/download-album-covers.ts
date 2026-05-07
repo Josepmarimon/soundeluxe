@@ -32,7 +32,7 @@ async function searchMusicBrainz(artist: string, album: string): Promise<string 
   try {
     const response = await fetch(searchUrl, {
       headers: {
-        'User-Agent': 'SoundDeluxe/1.0.0 (contact@soundeluxe.com)',
+        'User-Agent': 'SoundDeluxe/1.0.0 (contact@soundeluxe.es)',
       },
     })
 
@@ -63,7 +63,7 @@ async function downloadCoverArt(releaseId: string, outputPath: string): Promise<
     const response = await fetch(coverUrl, {
       redirect: 'follow',
       headers: {
-        'User-Agent': 'SoundDeluxe/1.0.0 (contact@soundeluxe.com)',
+        'User-Agent': 'SoundDeluxe/1.0.0 (contact@soundeluxe.es)',
       },
     })
 

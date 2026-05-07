@@ -1,8 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { client } from '@/lib/sanity/client'
-import { faqPageQuery } from '@/lib/sanity/queries'
-import type { FAQPage } from '@/lib/sanity/types'
+import { faqPageQuery, footerContentQuery } from '@/lib/sanity/queries'
+import type { FAQPage, FooterContent } from '@/lib/sanity/types'
 import FAQAccordion from '@/components/FAQAccordion'
 import PortableTextContent from '@/components/PortableTextContent'
 
@@ -11,8 +11,12 @@ export default async function FAQPageRoute({ params }: { params: Promise<{ local
   const { locale } = await params
   const typedLocale = locale as 'ca' | 'es' | 'en'
 
-  // Fetch FAQ data from Sanity
-  const pageConfig: FAQPage | null = await client.fetch(faqPageQuery)
+  // Fetch FAQ data and shared contact info from Sanity
+  const [pageConfig, footerData] = await Promise.all([
+    client.fetch<FAQPage | null>(faqPageQuery),
+    client.fetch<FooterContent | null>(footerContentQuery),
+  ])
+  const contactEmail = footerData?.contactInfo?.email
 
   // Default values if no content in Sanity
   const title = pageConfig?.title?.[typedLocale] || t('title')
@@ -70,12 +74,14 @@ export default async function FAQPageRoute({ params }: { params: Promise<{ local
         {pageConfig?.contactInfo?.[typedLocale] && (
           <section className="mt-12 p-6 bg-card/50 rounded-lg border border-outline-subtle">
             <p className="text-fg">{pageConfig.contactInfo[typedLocale]}</p>
-            <a
-              href="mailto:info@soundeluxe.com"
-              className="inline-block mt-2 text-primary hover:text-primary-light transition-colors font-medium"
-            >
-              info@soundeluxe.com
-            </a>
+            {contactEmail && (
+              <a
+                href={`mailto:${contactEmail}`}
+                className="inline-block mt-2 text-primary hover:text-primary-light transition-colors font-medium"
+              >
+                {contactEmail}
+              </a>
+            )}
           </section>
         )}
 

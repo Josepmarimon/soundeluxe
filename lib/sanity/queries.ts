@@ -451,16 +451,7 @@ export const footerContentQuery = groq`
       legal,
       contact
     },
-    copyrightText,
-    contactPage {
-      title,
-      subtitle,
-      hoursTitle,
-      hoursLines,
-      emailLabel,
-      phoneLabel,
-      addressLabel
-    }
+    copyrightText
   }
 `
 
@@ -478,5 +469,30 @@ export const aboutPageQuery = groq`
     valuesList,
     ctaTitle,
     ctaText
+  }
+`
+
+// Get contact page content
+export const contactPageQuery = groq`
+  *[_type == "contactPage"][0] {
+    _id,
+    title,
+    subtitle,
+    emailLabel,
+    phoneLabel,
+    addressLabel,
+    socialLabel,
+    hoursTitle,
+    hoursLines,
+    formTitle,
+    formNameLabel,
+    formNamePlaceholder,
+    formEmailLabel,
+    formEmailPlaceholder,
+    formSubjectLabel,
+    formSubjectPlaceholder,
+    formMessageLabel,
+    formMessagePlaceholder,
+    formSubmitLabel
   }
 `

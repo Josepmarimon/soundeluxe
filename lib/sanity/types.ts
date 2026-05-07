@@ -273,19 +273,33 @@ export interface FooterContent {
     contact?: MultilingualText
   }
   copyrightText?: MultilingualText
-  contactPage?: {
-    title?: MultilingualText
-    subtitle?: MultilingualText
-    hoursTitle?: MultilingualText
-    hoursLines?: {
-      ca?: string[]
-      es?: string[]
-      en?: string[]
-    }
-    emailLabel?: MultilingualText
-    phoneLabel?: MultilingualText
-    addressLabel?: MultilingualText
+}
+
+// Contact Page
+export interface ContactPage {
+  _id: string
+  title?: MultilingualText
+  subtitle?: MultilingualText
+  emailLabel?: MultilingualText
+  phoneLabel?: MultilingualText
+  addressLabel?: MultilingualText
+  socialLabel?: MultilingualText
+  hoursTitle?: MultilingualText
+  hoursLines?: {
+    ca?: string[]
+    es?: string[]
+    en?: string[]
   }
+  formTitle?: MultilingualText
+  formNameLabel?: MultilingualText
+  formNamePlaceholder?: MultilingualText
+  formEmailLabel?: MultilingualText
+  formEmailPlaceholder?: MultilingualText
+  formSubjectLabel?: MultilingualText
+  formSubjectPlaceholder?: MultilingualText
+  formMessageLabel?: MultilingualText
+  formMessagePlaceholder?: MultilingualText
+  formSubmitLabel?: MultilingualText
 }
 
 // About Page

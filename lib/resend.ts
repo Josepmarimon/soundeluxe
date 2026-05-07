@@ -9,7 +9,7 @@ if (!process.env.RESEND_API_KEY && process.env.NODE_ENV !== 'production') {
 
 export const resend = new Resend(apiKey)
 
-export const FROM_EMAIL = process.env.FROM_EMAIL || 'Sound Deluxe <noreply@soundeluxe.com>'
+export const FROM_EMAIL = process.env.FROM_EMAIL || 'Sound Deluxe <noreply@soundeluxe.es>'
 
 export const FROM_EMAIL_COMERCIAL = process.env.FROM_EMAIL_COMERCIAL || 'Txell Castelló — Sound Deluxe <txell@soundeluxe.es>'
 

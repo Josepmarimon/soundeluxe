@@ -82,55 +82,55 @@ const aboutPageDoc = {
   },
 }
 
-const contactPagePatch = {
-  contactPage: {
-    title: {
-      ca: 'Contacte',
-      es: 'Contacto',
-      en: 'Contact',
-    },
-    subtitle: {
-      ca: 'Tens alguna pregunta? Estem aquí per ajudar-te',
-      es: '¿Tienes alguna pregunta? Estamos aquí para ayudarte',
-      en: 'Have any questions? We\'re here to help',
-    },
-    hoursTitle: {
-      ca: 'Horari d\'atenció',
-      es: 'Horario de atención',
-      en: 'Opening hours',
-    },
-    hoursLines: {
-      ca: [
-        'Dilluns a Divendres: 10:00 - 20:00',
-        'Dissabte: 12:00 - 18:00',
-        'Diumenge: Tancat',
-      ],
-      es: [
-        'Lunes a Viernes: 10:00 - 20:00',
-        'Sábado: 12:00 - 18:00',
-        'Domingo: Cerrado',
-      ],
-      en: [
-        'Monday to Friday: 10:00 - 20:00',
-        'Saturday: 12:00 - 18:00',
-        'Sunday: Closed',
-      ],
-    },
-    emailLabel: {
-      ca: 'Correu electrònic',
-      es: 'Correo electrónico',
-      en: 'Email',
-    },
-    phoneLabel: {
-      ca: 'Telèfon',
-      es: 'Teléfono',
-      en: 'Phone',
-    },
-    addressLabel: {
-      ca: 'Adreça',
-      es: 'Dirección',
-      en: 'Address',
-    },
+const contactPageDoc = {
+  _id: 'contactPage',
+  _type: 'contactPage',
+  title: {
+    ca: 'Contacte',
+    es: 'Contacto',
+    en: 'Contact',
+  },
+  subtitle: {
+    ca: 'Tens alguna pregunta? Estem aquí per ajudar-te',
+    es: '¿Tienes alguna pregunta? Estamos aquí para ayudarte',
+    en: 'Have any questions? We\'re here to help',
+  },
+  hoursTitle: {
+    ca: 'Horari d\'atenció',
+    es: 'Horario de atención',
+    en: 'Opening hours',
+  },
+  hoursLines: {
+    ca: [
+      'Dilluns a Divendres: 10:00 - 20:00',
+      'Dissabte: 12:00 - 18:00',
+      'Diumenge: Tancat',
+    ],
+    es: [
+      'Lunes a Viernes: 10:00 - 20:00',
+      'Sábado: 12:00 - 18:00',
+      'Domingo: Cerrado',
+    ],
+    en: [
+      'Monday to Friday: 10:00 - 20:00',
+      'Saturday: 12:00 - 18:00',
+      'Sunday: Closed',
+    ],
+  },
+  emailLabel: {
+    ca: 'Correu electrònic',
+    es: 'Correo electrónico',
+    en: 'Email',
+  },
+  phoneLabel: {
+    ca: 'Telèfon',
+    es: 'Teléfono',
+    en: 'Phone',
+  },
+  addressLabel: {
+    ca: 'Adreça',
+    es: 'Dirección',
+    en: 'Address',
   },
 }
 
@@ -139,19 +139,9 @@ async function seed() {
   await client.createOrReplace(aboutPageDoc)
   console.log('✅ aboutPage creat/actualitzat')
 
-  console.log('🌱 Patching footerContent.contactPage...')
-  const existingFooter = await client.fetch('*[_type == "footerContent"][0]{_id}')
-  if (existingFooter?._id) {
-    await client.patch(existingFooter._id).set(contactPagePatch).commit()
-    console.log(`✅ footerContent (${existingFooter._id}) actualitzat amb camps de contactPage`)
-  } else {
-    await client.createOrReplace({
-      _id: 'footerContent',
-      _type: 'footerContent',
-      ...contactPagePatch,
-    })
-    console.log('✅ footerContent creat amb camps de contactPage')
-  }
+  console.log('🌱 Seeding contactPage...')
+  await client.createOrReplace(contactPageDoc)
+  console.log('✅ contactPage creat/actualitzat')
 
   console.log('\n✨ Seed completat')
 }

@@ -98,7 +98,7 @@ export default defineType({
       name: 'contactEmail',
       title: 'Email de contacte',
       type: 'string',
-      description: 'Email per a consultes legals (ex: info@sounddeluxe.com)',
+      description: 'Email per a consultes legals (ex: info@soundeluxe.es)',
     }),
   ],
   preview: {
