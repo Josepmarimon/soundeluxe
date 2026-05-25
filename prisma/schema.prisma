@@ -342,6 +342,20 @@ model CommercialLinkVisit {
   @@map("commercial_link_visits")
 }
 
+// Tracking de visites públiques (analítica interna)
+// No emmagatzemem IP ni dades personals — només ruta, idioma i moment.
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  locale    String?
+  referrer  String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
+  @@map("page_views")
+}
+
 enum CommercialLinkStatus {
   PENDING
   SENT

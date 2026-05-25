@@ -14,6 +14,7 @@ import {schema} from './sanity/schemaTypes'
 import {structure} from './sanity/structure'
 import {suggestionsPlugin} from './sanity/tools/suggestionsPlugin'
 import {subscribersPlugin} from './sanity/tools/subscribersPlugin'
+import {statsPlugin} from './sanity/tools/statsPlugin'
 import {importFromMusicBrainz} from './sanity/actions/importFromMusicBrainz'
 import './sanity/studio.css'
 
@@ -31,6 +32,7 @@ export default defineConfig({
     // Custom tools
     suggestionsPlugin(),
     subscribersPlugin(),
+    statsPlugin(),
   ],
   document: {
     actions: (prev, context) => {

@@ -9,6 +9,7 @@ import Navbar from '@/components/Navbar'
 import FooterWrapper from '@/components/FooterWrapper'
 import SessionProvider from '@/components/SessionProvider'
 import RegisterModalProvider from '@/components/RegisterModalProvider'
+import PageViewTracker from '@/components/PageViewTracker'
 import { client } from '@/lib/sanity/client'
 import { homePageFlagsQuery } from '@/lib/sanity/queries'
 
@@ -104,6 +105,7 @@ export default async function LocaleLayout({
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
             <RegisterModalProvider>
+              <PageViewTracker locale={locale} />
               <Navbar showShop={showShop} showGallery={showGallery} />
               <main className="pt-16">{children}</main>
               <FooterWrapper />
