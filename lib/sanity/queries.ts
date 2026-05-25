@@ -268,9 +268,9 @@ export const votableAlbumsQuery = groq`
   }
 `
 
-// Get site settings (lightweight query for navigation, etc.)
-export const siteSettingsQuery = groq`
-  *[_type == "homePage"][0] {
+// Get homePage feature flags (lightweight query for navigation, etc.)
+export const homePageFlagsQuery = groq`
+  *[_id == "homePage"][0] {
     showShop,
     showGallery
   }
@@ -278,7 +278,7 @@ export const siteSettingsQuery = groq`
 
 // Get home page configuration
 export const homePageQuery = groq`
-  *[_type == "homePage"][0] {
+  *[_id == "homePage"][0] {
     _id,
     showShop,
     heroTitle,
@@ -379,7 +379,7 @@ export const galleryImagesQuery = groq`
 
 // Get gallery page configuration
 export const galleryPageQuery = groq`
-  *[_type == "galleryPage"][0] {
+  *[_id == "galleryPage"][0] {
     _id,
     title,
     subtitle,
@@ -391,7 +391,7 @@ export const galleryPageQuery = groq`
 
 // Get FAQ page configuration
 export const faqPageQuery = groq`
-  *[_type == "faqPage"][0] {
+  *[_id == "faqPage"][0] {
     _id,
     title,
     subtitle,
@@ -457,7 +457,7 @@ export const footerContentQuery = groq`
 
 // Get about page content
 export const aboutPageQuery = groq`
-  *[_type == "aboutPage"][0] {
+  *[_id == "aboutPage"][0] {
     _id,
     title,
     intro,
@@ -474,7 +474,7 @@ export const aboutPageQuery = groq`
 
 // Get contact page content
 export const contactPageQuery = groq`
-  *[_type == "contactPage"][0] {
+  *[_id == "contactPage"][0] {
     _id,
     title,
     subtitle,

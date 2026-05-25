@@ -35,7 +35,7 @@ const COMPANY_FALLBACK: CompanyData = {
 }
 
 const billingConfigQuery = groq`
-  *[_type == "billingConfig"][0] {
+  *[_id == "billingConfig"][0] {
     companyName,
     nif,
     address,

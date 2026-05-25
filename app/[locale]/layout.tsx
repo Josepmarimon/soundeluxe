@@ -10,7 +10,7 @@ import FooterWrapper from '@/components/FooterWrapper'
 import SessionProvider from '@/components/SessionProvider'
 import RegisterModalProvider from '@/components/RegisterModalProvider'
 import { client } from '@/lib/sanity/client'
-import { siteSettingsQuery } from '@/lib/sanity/queries'
+import { homePageFlagsQuery } from '@/lib/sanity/queries'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -81,13 +81,13 @@ export default async function LocaleLayout({
   }
 
   // Fetch site settings and messages in parallel
-  const [messages, siteSettings] = await Promise.all([
+  const [messages, homePageFlags] = await Promise.all([
     getMessages(),
-    client.fetch<{ showShop?: boolean; showGallery?: boolean }>(siteSettingsQuery),
+    client.fetch<{ showShop?: boolean; showGallery?: boolean }>(homePageFlagsQuery),
   ])
 
-  const showShop = siteSettings?.showShop ?? true
-  const showGallery = siteSettings?.showGallery ?? false
+  const showShop = homePageFlags?.showShop ?? true
+  const showGallery = homePageFlags?.showGallery ?? false
 
   return (
     <html lang={locale}>

@@ -23,7 +23,7 @@ async function getSiteSettings(): Promise<SiteSettings> {
   }
 
   const settings = await client.fetch<SiteSettings | null>(`
-    *[_type == "siteSettings"][0]{
+    *[_id == "siteSettings"][0]{
       newsletterPaused,
       testEmails[]{ email, name }
     }

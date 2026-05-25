@@ -42,6 +42,52 @@ export const structure: StructureResolver = (S) =>
                   S.documentTypeList('sala')
                     .title('Sales d\'escolta')
                 ),
+              S.listItem()
+                .title('Testimonis')
+                .icon(() => '💬')
+                .child(
+                  S.documentTypeList('testimonial')
+                    .title('Testimonis')
+                    .defaultOrdering([{field: 'order', direction: 'asc'}])
+                ),
+            ])
+        ),
+
+      S.divider(),
+
+      // === GALERIA ===
+      S.listItem()
+        .title('Galeria')
+        .icon(() => '🖼️')
+        .child(
+          S.list()
+            .title('Galeria')
+            .items([
+              S.listItem()
+                .title('Pàgina Galeria')
+                .icon(() => '📄')
+                .child(
+                  S.document()
+                    .schemaType('galleryPage')
+                    .documentId('galleryPage')
+                    .title('Configuració pàgina Galeria')
+                ),
+              S.listItem()
+                .title('Categories')
+                .icon(() => '🏷️')
+                .child(
+                  S.documentTypeList('galleryCategory')
+                    .title('Categories de galeria')
+                    .defaultOrdering([{field: 'order', direction: 'asc'}])
+                ),
+              S.listItem()
+                .title('Imatges')
+                .icon(() => '📸')
+                .child(
+                  S.documentTypeList('galleryImage')
+                    .title('Imatges de galeria')
+                    .defaultOrdering([{field: 'order', direction: 'asc'}])
+                ),
             ])
         ),
 
@@ -83,6 +129,15 @@ export const structure: StructureResolver = (S) =>
                     .title('Pàgina de Contacte')
                 ),
               S.listItem()
+                .title('Pàgina FAQ')
+                .icon(() => '❓')
+                .child(
+                  S.document()
+                    .schemaType('faqPage')
+                    .documentId('faqPage')
+                    .title('Pàgina de Preguntes Freqüents')
+                ),
+              S.listItem()
                 .title('Footer')
                 .icon(() => '📋')
                 .child(
@@ -90,6 +145,15 @@ export const structure: StructureResolver = (S) =>
                     .schemaType('footerContent')
                     .documentId('footerContent')
                     .title('Contingut del Footer')
+                ),
+              S.listItem()
+                .title('Newsletter')
+                .icon(() => '📧')
+                .child(
+                  S.document()
+                    .schemaType('siteSettings')
+                    .documentId('siteSettings')
+                    .title('Configuració Newsletter')
                 ),
               S.listItem()
                 .title('Facturació')

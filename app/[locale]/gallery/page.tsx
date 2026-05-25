@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { client } from '@/lib/sanity/client'
-import { galleryImagesQuery, galleryCategoriesQuery, galleryPageQuery, siteSettingsQuery } from '@/lib/sanity/queries'
+import { galleryImagesQuery, galleryCategoriesQuery, galleryPageQuery, homePageFlagsQuery } from '@/lib/sanity/queries'
 import type { GalleryImage, GalleryCategory, GalleryPage } from '@/lib/sanity/types'
 import Gallery from '@/components/Gallery'
 
@@ -10,8 +10,8 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
   const { locale } = await params
   const typedLocale = locale as 'ca' | 'es' | 'en'
 
-  const siteSettings = await client.fetch<{ showGallery?: boolean }>(siteSettingsQuery)
-  if (!siteSettings?.showGallery) {
+  const homePageFlags = await client.fetch<{ showGallery?: boolean }>(homePageFlagsQuery)
+  if (!homePageFlags?.showGallery) {
     notFound()
   }
 
