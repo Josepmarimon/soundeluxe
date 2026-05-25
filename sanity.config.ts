@@ -13,6 +13,7 @@ import {apiVersion, dataset, projectId} from './sanity/env'
 import {schema} from './sanity/schemaTypes'
 import {structure} from './sanity/structure'
 import {suggestionsPlugin} from './sanity/tools/suggestionsPlugin'
+import {subscribersPlugin} from './sanity/tools/subscribersPlugin'
 import {importFromMusicBrainz} from './sanity/actions/importFromMusicBrainz'
 import './sanity/studio.css'
 
@@ -29,6 +30,7 @@ export default defineConfig({
     visionTool({defaultApiVersion: apiVersion}),
     // Custom tools
     suggestionsPlugin(),
+    subscribersPlugin(),
   ],
   document: {
     actions: (prev, context) => {
