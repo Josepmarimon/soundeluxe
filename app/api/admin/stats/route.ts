@@ -87,35 +87,43 @@ export async function GET(request: NextRequest) {
     start.setUTCHours(0, 0, 0, 0)
     start.setUTCDate(start.getUTCDate() - (days - 1))
 
-    const [registrations, subscribersAnon, subscribersUsers, pageViews, topPages] =
-      await Promise.all([
-        prisma.user.findMany({
-          where: { createdAt: { gte: start } },
-          select: { createdAt: true },
-        }),
-        prisma.subscriber.findMany({
-          where: {
-            confirmedAt: { gte: start, not: null },
-            unsubscribedAt: null,
-          },
-          select: { confirmedAt: true },
-        }),
-        prisma.user.findMany({
-          where: {
-            newsletterSubscribed: true,
-            newsletterConfirmedAt: { gte: start, not: null },
-          },
-          select: { newsletterConfirmedAt: true },
-        }),
-        prisma.pageView.count({ where: { createdAt: { gte: start } } }),
-        prisma.pageView.groupBy({
-          by: ['path'],
-          where: { createdAt: { gte: start } },
-          _count: { path: true },
-          orderBy: { _count: { path: 'desc' } },
-          take: 20,
-        }),
-      ])
+    const [
+      registrations,
+      subscribersAnon,
+      subscribersUsers,
+      pageViewRows,
+      topPages,
+    ] = await Promise.all([
+      prisma.user.findMany({
+        where: { createdAt: { gte: start } },
+        select: { createdAt: true },
+      }),
+      prisma.subscriber.findMany({
+        where: {
+          confirmedAt: { gte: start, not: null },
+          unsubscribedAt: null,
+        },
+        select: { confirmedAt: true },
+      }),
+      prisma.user.findMany({
+        where: {
+          newsletterSubscribed: true,
+          newsletterConfirmedAt: { gte: start, not: null },
+        },
+        select: { newsletterConfirmedAt: true },
+      }),
+      prisma.pageView.findMany({
+        where: { createdAt: { gte: start } },
+        select: { createdAt: true },
+      }),
+      prisma.pageView.groupBy({
+        by: ['path'],
+        where: { createdAt: { gte: start } },
+        _count: { path: true },
+        orderBy: { _count: { path: 'desc' } },
+        take: 20,
+      }),
+    ])
 
     const registrationsSeries = fillSeries(
       registrations,
@@ -139,16 +147,24 @@ export async function GET(request: NextRequest) {
       granularity,
     )
 
+    const pageViewsSeries = fillSeries(
+      pageViewRows,
+      start,
+      days,
+      granularity,
+    )
+
     const totals = {
       registrations: registrations.length,
       subscribers: subscriberRows.length,
-      pageViews,
+      pageViews: pageViewRows.length,
     }
 
     return NextResponse.json({
       range: rangeKey,
       granularity,
       totals,
+      pageViews: pageViewsSeries,
       registrations: registrationsSeries,
       subscribers: subscribersSeries,
       topPages: topPages.map((p) => ({
