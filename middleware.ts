@@ -1,21 +1,46 @@
+import { NextRequest, NextResponse } from 'next/server'
 import createMiddleware from 'next-intl/middleware'
-import { locales, defaultLocale } from './i18n'
+import { locales, defaultLocale, type Locale } from './i18n'
 
-export default createMiddleware({
-  // A list of all locales that are supported
+const intlMiddleware = createMiddleware({
   locales,
-
-  // Used when no locale matches
   defaultLocale,
-
-  // Don't redirect if the path already includes a locale
   localePrefix: 'as-needed',
-
-  // Detect locale from the browser's Accept-Language header
-  localeDetection: true,
+  localeDetection: false,
 })
 
+function detectLocale(request: NextRequest): Locale {
+  const accept = request.headers.get('accept-language') ?? ''
+  const primary = accept.split(',')[0]?.trim().toLowerCase() ?? ''
+  if (primary.startsWith('es')) return 'es'
+  return defaultLocale
+}
+
+export default function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const hasLocalePrefix = locales.some(
+    (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`),
+  )
+
+  if (!hasLocalePrefix) {
+    const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value as
+      | Locale
+      | undefined
+    const target =
+      cookieLocale && locales.includes(cookieLocale)
+        ? cookieLocale
+        : detectLocale(request)
+
+    if (target !== defaultLocale) {
+      const url = request.nextUrl.clone()
+      url.pathname = `/${target}${pathname}`
+      return NextResponse.redirect(url)
+    }
+  }
+
+  return intlMiddleware(request)
+}
+
 export const config = {
-  // Match only internationalized pathnames, exclude studio and api routes
   matcher: ['/', '/(ca|es|en)/:path*', '/((?!_next|_vercel|studio|api|.*\\..*).*)'],
 }
