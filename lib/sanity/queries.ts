@@ -431,7 +431,7 @@ export const legalPageQuery = groq`
 
 // Get footer content
 export const footerContentQuery = groq`
-  *[_type == "footerContent"][0] {
+  *[_id == "footerContent"][0] {
     _id,
     description,
     contactInfo {
