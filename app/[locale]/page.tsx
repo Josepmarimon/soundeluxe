@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 import { client } from '@/lib/sanity/client'
 import { upcomingSessionsQuery, homePageQuery, testimonialsQuery, albumCoversQuery } from '@/lib/sanity/queries'
@@ -7,6 +8,8 @@ import { urlForImage } from '@/lib/sanity/image'
 import SessionFilters from '@/components/SessionFilters'
 import { getBatchAvailability } from '@/lib/booking'
 import HeroAlbumsCarousel from '@/components/HeroAlbumsCarousel'
+import HeroVideo from '@/components/HeroVideo'
+import TypewriterText from '@/components/TypewriterText'
 import NewsletterForm from '@/components/NewsletterForm'
 import SessionsCalendar from '@/components/calendar/SessionsCalendar'
 import Testimonials from '@/components/Testimonials'
@@ -50,6 +53,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     ? sessions.filter((s) => !s.date || getSessionDayKey(s.date) !== nextDayKey)
     : sessions
 
+  // Hero background: prefer the video when available, fall back to the image
+  const heroVideoUrl = homePageData?.heroBackgroundVideo?.asset?.url || null
+  const heroImageUrl = homePageData?.heroBackgroundImage
+    ? urlForImage(homePageData.heroBackgroundImage)?.width(1920).url() || null
+    : null
+  const heroTitleText = homePageData?.heroTitle?.[typedLocale] || t('hero.title')
+  const heroSubtitleText =
+    homePageData?.heroSubtitle?.[typedLocale] || t('hero.subtitle')
+
   // Filter features with images and map to safe type
   const featuresWithImages = (homePageData?.experienceFeatures || [])
     .filter((feature) => feature.image)
@@ -62,8 +74,50 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <div className="min-h-screen bg-transparent">
       {/* Hero Section */}
+      <section className="relative w-full h-[60vh] md:h-[75vh] flex items-center justify-center text-center px-4 overflow-hidden">
+        {/* Background: vídeo de la sala d'escolta (fallback a imatge) */}
+        {heroVideoUrl ? (
+          <>
+            <HeroVideo videoUrl={heroVideoUrl} />
+            <div className="absolute inset-0 bg-black/50 z-10" />
+          </>
+        ) : heroImageUrl ? (
+          <>
+            <div
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundImage: `url(${heroImageUrl})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <div className="absolute inset-0 bg-black/60 z-10" />
+          </>
+        ) : null}
+
+        {/* Text a sobre */}
+        <div className="max-w-4xl mx-auto relative z-20">
+          <div className="mb-6 flex justify-center">
+            <Image
+              src="/logo-gold.png"
+              alt="Sound Deluxe"
+              width={440}
+              height={120}
+              className="h-10 md:h-14 w-auto"
+              priority
+            />
+          </div>
+          <h1 className="hero-title italic text-4xl md:text-6xl text-white tracking-tight drop-shadow-lg">
+            <TypewriterText text={heroTitleText} speedMs={70} />
+          </h1>
+          <p className="mt-6 text-lg md:text-xl text-white/85 max-w-2xl mx-auto drop-shadow">
+            {heroSubtitleText}
+          </p>
+        </div>
+      </section>
+
+      {/* Carrusel de portades de discos */}
       <section className="relative w-full">
-        {/* Carrusel de portades de discos */}
         <div className="relative h-[35vh] w-full">
           <HeroAlbumsCarousel albums={albumCovers} />
         </div>
